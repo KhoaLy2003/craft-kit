@@ -17,20 +17,61 @@ Each step is documented with:
 - **Gate** — `none` / `soft` / `hard`
 - **Notes** — special handling, gaps to watch for
 
+## Orchestrator Announcement Convention
+
+At the start of every step, the orchestrating agent MUST:
+1. Emit a step banner before doing any work
+2. Record the wall-clock start time and current `budget.spent()` value — get the time by running `new Date().toLocaleTimeString()` via `eval(js)` at the exact moment the step starts; do not estimate or leave as `—`
+3. Include `PROJECT_ROOT: <absolute path to project folder>` in the context of every dispatched subagent task — subagents resolve file paths relative to the workspace root, not the project folder, and will write outputs to the wrong location without an explicit path
+4. After every subagent task that writes files, verify the file exists at the expected path before marking the step `complete`. If absent, recover from `agent://<id>` and write directly
+
+```
+---
+Phase 2 · Step N — [Step Name]  |  Feature: [feature-slug]
+Skill / Agent: [name]  |  Gate: [none / soft / hard]
+Started: HH:MM  |  Credits at start: NNNN
+---
+```
+
+At the end of every step, update `phase-2-session.md` with duration and credit delta before advancing.
+
+## Session Log
+
+The orchestrator maintains a `phase-2-session.md` file at the project root for each feature cycle. Created at Step 1, updated after every step.
+
+```markdown
+# Phase 2 Session Log — [feature-slug]
+
+| Step | Name | Skill / Agent | Status | Started | Duration | Credits | Output |
+|---|---|---|---|---|---|---|---|
+| 1 | Brainstorm & Spec | `brainstorming` | complete | 10:00 | 18 min | 290 | `specs/[slug]/spec.md` |
+| 2 | Plan | `writing-plans` | complete | 10:18 | 4 min | 180 | `specs/[slug]/plan.md` |
+| 3 | Assign Specialists | manual / `task` | in progress | 10:22 | — | — | — |
+...
+```
+
+- **Started** — local wall-clock time at step start (HH:MM)
+- **Duration** — wall-clock minutes from step start to log update
+- **Credits** — `budget.spent()` delta between step start and end (OMP credits; check dashboard for USD equivalent)
+- **Output** — file produced; `—` if step is not yet complete
+
+Status values: `pending` · `in progress` · `complete` · `skipped` · `blocked`
+
+The session log is the user's single source of truth for what ran, how long it took, and what it cost. It does not replace the gate outputs — it points to them.
 ---
 
 ## Step 1 — Brainstorm and Spec
 
 - **Skill**: `/skill:brainstorming`
-- **Trigger**: Orchestrator selects the next `pending` feature from `roadmap.md`
-- **Inputs**: The feature's entry in `roadmap.md`; `constitution.md`; `architecture.md`; `design-system.md`
+- **Trigger**: Orchestrator selects the next `pending` feature from `docs/roadmap.md`
+- **Inputs**: The feature's entry in `docs/roadmap.md`; `docs/constitution.md`; `docs/architecture.md`; `docs/design-system.md`
 - **Output**: `specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior, non-goals, open questions resolved
 - **Gate**: `hard` — the `brainstorming` skill has a built-in user approval gate on the written spec; the orchestrator does not advance until the user explicitly approves
 - **Notes**:
   - The `brainstorming` skill handles the full loop: clarifying questions → proposed approaches → design sections → written spec → user review.
   - Scope must stay within the feature's roadmap entry. If brainstorming reveals the feature is larger than the estimate, flag this and re-agree scope before proceeding — do not silently expand.
   - The spec is a single feature, never multiple features batched together.
-  - The spec must check compliance against `constitution.md`.
+  - The spec must check compliance against `docs/constitution.md`.
   - When the user approves, the terminal state is `specs/<feature-slug>/spec.md`. Do not invoke `writing-plans` from inside the skill — that is the next step.
 
 ---
@@ -39,13 +80,14 @@ Each step is documented with:
 
 - **Skill**: `/skill:writing-plans`
 - **Trigger**: `specs/<feature-slug>/spec.md` exists and is approved (Step 1 gate passed)
-- **Inputs**: `specs/<feature-slug>/spec.md`; `architecture.md`; `constitution.md`
+- **Inputs**: `specs/<feature-slug>/spec.md`; `docs/architecture.md`; `docs/constitution.md`
 - **Output**: `specs/<feature-slug>/plan.md` — ordered implementation plan with concrete tasks; each task has exact files, interfaces, test steps, and implementation steps; no placeholders
-- **Gate**: `soft`
+- **Gate**: `soft` — present a plan summary before advancing; do not dispatch Step 3 silently
 - **Notes**:
   - The skill's self-review loop (placeholder scan, spec coverage, type consistency check) must complete before the plan is used in Step 3.
   - Tasks must be marked parallel vs. sequential based on file scope — this is what Step 3 uses to decide the dispatch strategy.
-  - The plan must validate against `architecture.md` and `constitution.md` before it is finalized.
+  - The plan must validate against `docs/architecture.md` and `docs/constitution.md` before it is finalized.
+  - **Gate behaviour:** After the plan is written, present a summary (task count, files, key decisions, parallel groups identified) and give the user an opportunity to request changes before advancing to Step 3. A soft gate is not a silent advance — it is an advance with visibility.
 
 ---
 
@@ -76,14 +118,14 @@ Each step is documented with:
 
 ## Step 4 — Implement
 
-- **Skill**: `/skill:subagent-driven-development` (default) OR `/skill:dispatching-parallel-agents` (for tasks with provably disjoint file scope)
+- **Skill**: `/skill:subagent-driven-development` (sequential tasks) or `/skill:dispatching-parallel-agents` (parallel groups identified in Step 3)
 - **Trigger**: `plan.md` exists with `Specialist:` annotations (Step 3 complete)
-- **Inputs**: `plan.md` with specialist annotations; `specs/<feature-slug>/spec.md`; `constitution.md`
+- **Inputs**: `plan.md` with specialist annotations; `specs/<feature-slug>/spec.md`; `docs/constitution.md`
 - **Output**: Code changes on a feature branch
 - **Gate**: `soft` — recommended: review the first 3–5 tasks before continuing unattended when working in an unfamiliar codebase pattern for the first time
 - **Notes**:
-  - Use `subagent-driven-development` by default. It dispatches one implementer subagent per task, runs a task reviewer after each, and a final whole-branch review at the end. When dispatching each implementer, use the `Specialist:` annotation from the plan to select the right agent.
-  - Use `dispatching-parallel-agents` for groups of tasks whose file scopes are provably disjoint — for example, all frontend tasks and all backend tasks can often run in parallel.
+  - Use `subagent-driven-development` for sequential task chains. It dispatches one implementer subagent per task, runs a task reviewer after each, and a final whole-branch review at the end. Use the `Specialist:` annotation from Step 3 to select the right agent for each task.
+  - For groups marked `<!-- Parallel group -->` in `plan.md` (identified in Step 3), use `dispatching-parallel-agents` instead. Do not re-evaluate which tasks can parallelize here — that decision was made in Step 3.
   - Do not commit after individual tasks during implementation. Leave all changes uncommitted until the user has reviewed the complete feature and explicitly approves shipping.
   - `subagent-driven-development` already includes a final whole-branch code review internally. Step 5 is an additional review on top of that — it covers spec compliance and constitution adherence with the full feature context.
 
@@ -93,13 +135,13 @@ Each step is documented with:
 
 - **Agent**: `code-reviewer`
 - **Trigger**: All tasks in `plan.md` complete; feature branch ready
-- **Inputs**: Full diff of the feature branch against base; `specs/<feature-slug>/spec.md`; `constitution.md`
+- **Inputs**: Full diff of the feature branch against base; `specs/<feature-slug>/spec.md`; `docs/constitution.md`
 - **Output**: Review findings; all issues fixed directly on the branch before advancing
 - **Gate**: `none` — code review runs to completion; every finding is fixed immediately; there are no deferred findings at this stage
 - **Notes**:
   - Dispatch the `code-reviewer` agent with the branch diff, spec, and constitution all as input.
   - Any finding — critical, important, or minor — is fixed in this step. Do not advance to E2E testing with known open issues.
-  - Architectural disagreements with `constitution.md` must be called out explicitly, not silently fixed.
+  - Architectural disagreements with `docs/constitution.md` must be called out explicitly, not silently fixed.
   - If this step's review reveals a spec gap (something the spec did not cover but the implementation made a decision about), document the decision in the spec before advancing.
 
 ---
@@ -138,22 +180,22 @@ Each step is documented with:
 
 - **Skill**: `/skill:finishing-a-development-branch` (for branch finalization); `task` agent (for PR creation)
 - **Trigger**: Step 7 gate approved
-- **Inputs**: Feature branch; `roadmap.md`
-- **Output**: Committed and pushed feature branch; pull request opened against the main branch; `roadmap.md` feature status updated to `shipped`
+- **Inputs**: Feature branch; `docs/roadmap.md`
+- **Output**: Committed and pushed feature branch; pull request opened against the main branch; `docs/roadmap.md` feature status updated to `shipped`
 - **Gate**: `none`
 - **Notes**:
   - Commit all changes with a clear, descriptive commit message referencing the feature slug.
   - Push the feature branch to the remote.
   - Open a pull request to the main branch — do not merge directly; do not push to main.
-  - Update `roadmap.md` to set this feature's `Status` column to `shipped`.
-  - After this step, the orchestrator selects the next `pending` feature from `roadmap.md` (in build order) and restarts at Step 1.
+  - Update `docs/roadmap.md` to set this feature's `Status` column to `shipped`.
+  - After this step, the orchestrator selects the next `pending` feature from `docs/roadmap.md` (in build order) and restarts at Step 1.
 
 ---
 
 ## Flow Diagram
 
 ```
-Pull next pending feature from roadmap.md
+Pull next pending feature from docs/roadmap.md
          │
          ▼
 [1] Brainstorm & Spec [hard gate]
@@ -180,7 +222,7 @@ Pull next pending feature from roadmap.md
 [8] Ship (commit + push + PR to main + update roadmap.md)
          │
          ▼
-Pull next pending feature from roadmap.md ──────────────────────┘
+Pull next pending feature from docs/roadmap.md ─────────────────┘
 ```
 
 ---

@@ -45,7 +45,7 @@
 <!-- These should be direct implementations of principles stated in constitution.md, not new decisions -->
 
 - [ ] Naming convention documented (file/folder naming, per constitution.md)
-- [ ] Commit message convention configured (e.g. commitlint, or documented in CONTRIBUTING.md)
+- [ ] Commit message convention configured (e.g. commitlint, or documented in `README.md` under Contributing)
 - [ ] Test organization convention documented (where tests live relative to source)
 
 ---
@@ -75,6 +75,7 @@
 <!-- This is the final checkpoint before Phase 2 begins. Unlike other gates, this one confirms the ENTIRE Bootstrap phase, not just this step. -->
 
 - [ ] All sections above are checked
-- [ ] `idea-brief.md`, `market-notes.md`, `tech-options.md`, `prototype/`, `design-system.md`, `roadmap.md`, `architecture.md`, `constitution.md` all exist and are `approved`
-- [ ] `roadmap.md` Status column shows all features as `pending` (none started yet)
-- [ ] Orchestrator state file initialized, ready to select first feature from `roadmap.md`
+- [ ] `docs/idea-brief.md`, `docs/market-notes.md`, `docs/tech-options.md`, `docs/prototype/`, `docs/design-system.md`, `docs/roadmap.md`, `docs/architecture.md`, `docs/constitution.md` all exist and are `approved`
+- [ ] `docs/roadmap.md` Status column shows all features as `pending` (none started yet)
+- [ ] `specs/` directory created at project root (Phase 2 will write `specs/<feature-slug>/spec.md` and `plan.md` here)
+- [ ] Phase 2 entry point confirmed: the next action is to open a new agent session, reference `phase-2-feature-dev.md`, and tell the orchestrator to begin with the first `pending` feature in `docs/roadmap.md` (build order)

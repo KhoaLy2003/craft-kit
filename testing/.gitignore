@@ -1,0 +1,13 @@
+# Each subdirectory here is a standalone test project — not tracked in the parent repo.
+# Naming convention: testing/<round>/<project-slug>/
+#   round:         round-01, round-02, ...
+#   project-slug:  short kebab-case name for the idea being tested
+#
+# Example:
+#   testing/round-01/invoice-tracker/
+#   testing/round-01/habit-log/
+#   testing/round-02/recipe-planner/
+
+*
+!.gitignore
+!testing-log.md
