@@ -46,7 +46,7 @@
 
 - [ ] **Design file** — I have an existing `DESIGN.md` or equivalent design document.
       Path or location: ___
-      *(Step 5 will use the import path and skip the AI design session.)*
+      *(Save the file to `docs/DESIGN.md` inside your project folder. Step 5 will use the import path and skip the AI design session.)*
 
 - [ ] **Tech preference** — I already know the stack or framework I want to use.
       Preference: ___
@@ -79,8 +79,13 @@
 
 ## Steps to Adjust
 
-<!-- Any Phase 1 steps you want to skip or handle differently from the default.
-     Leave blank to run all 9 steps as documented in kit/phase-1-bootstrap.md.
+<!-- Note any steps you want to skip or approach differently from the default.
+     Leave blank if you have no pre-made decisions to record.
+
+     IMPORTANT: Leaving this blank does NOT pre-answer in-chat gate choices.
+     Optional steps (like Step 2 — Market Research) are always offered in chat,
+     regardless of what you write here. This section is for recording decisions
+     you have already made — not for bypassing the gates where the agent asks.
 
      Examples:
      - "Skip Step 2 market research — I know this space well and the decision

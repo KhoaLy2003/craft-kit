@@ -75,7 +75,7 @@
 <!-- This is the final checkpoint before Phase 2 begins. Unlike other gates, this one confirms the ENTIRE Bootstrap phase, not just this step. -->
 
 - [ ] All sections above are checked
-- [ ] `docs/idea-brief.md`, `docs/market-notes.md`, `docs/tech-options.md`, `docs/prototype/`, `docs/design-system.md`, `docs/roadmap.md`, `docs/architecture.md`, `docs/constitution.md` all exist and are `approved`
+- [ ] `docs/idea-brief.md`, `docs/market-notes.md`, `docs/tech-options.md`, `docs/prototype/`, `docs/DESIGN.md`, `docs/roadmap.md`, `docs/architecture.md`, `docs/constitution.md` all exist and are `approved`
 - [ ] `docs/roadmap.md` Status column shows all features as `pending` (none started yet)
 - [ ] `specs/` directory created at project root (Phase 2 will write `specs/<feature-slug>/spec.md` and `plan.md` here)
 - [ ] Phase 2 entry point confirmed: the next action is to open a new agent session, reference `phase-2-feature-dev.md`, and tell the orchestrator to begin with the first `pending` feature in `docs/roadmap.md` (build order)

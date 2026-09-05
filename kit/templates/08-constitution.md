@@ -6,7 +6,7 @@
 - **Version**: 1.0.0
 - **Ratified**: <!-- YYYY-MM-DD, original adoption date -->
 - **Last amended**: <!-- YYYY-MM-DD, same as ratified date if this is the first version -->
-- **Based on**: `architecture.md`, `design-system.md`, `roadmap.md`
+- **Based on**: `architecture.md`, `DESIGN.md`, `roadmap.md`
 
 > Read by every step in Phase 2. Every principle below must be concrete enough to change at least one downstream plan or diff — remove any principle that wouldn't alter a decision if deleted. Personal workflow preferences (branching habits, PR etiquette) do not belong here; this file only contains rules that shape code and architecture output.
 

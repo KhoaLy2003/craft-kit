@@ -1,4 +1,4 @@
-# design-system.md — Output Template for Step 5: Product Design
+# DESIGN.md — Output Template for Step 5: Product Design
 
 > **Step 5 has two paths — choose based on what you already have:**
 >
@@ -7,7 +7,7 @@
 > | **Import** | You have an existing `DESIGN.md` | Agent extracts + normalizes it into this template; AI design session is skipped |
 > | **AI** | No `DESIGN.md` yet | `designer` agent runs the full design session from the prototype |
 >
-> Both paths produce the same `design-system.md` output and must pass the same gate before Step 6.
+> Both paths produce the same `docs/DESIGN.md` output and must pass the same gate before Step 6.
 
 ## Metadata
 

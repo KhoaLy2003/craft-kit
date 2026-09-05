@@ -12,10 +12,13 @@ Built on top of the [Oh My Pi](https://omp.dev) superpowers skill set. Designed 
 | `phase-1-bootstrap.md` | One-time setup workflow: from raw idea to a ready-to-code codebase |
 | `phase-2-feature-dev.md` | Standard Phase 2: one feature per cycle, repeated — for M/L features or complex codebases |
 | `phase-2-single-pass.md` | Single-pass Phase 2: all features in one cycle — for small apps with S/M features |
+| `phase-bug-fix.md` | Bug fix workflow: Assess → Fix → Verify — for bugs against shipped features |
 | `task-agent-rubric.md` | Reference table for matching plan tasks to specialist agents |
 | `templates/phase-1-kickoff.md` | **Start here for new projects** — fill this in before starting Phase 1 |
 | `templates/` | Output templates for every Phase 1 artifact (filled by the agent, not you) |
 | `samples/` | Reference examples — e.g. `DESIGN.md` (Airbnb-style design system) for Step 5 import path |
+| `guides/evolving-specs.md` | How to handle spec and artifact changes after a feature ships |
+| `CHANGELOG.md` | History of all kit changes |
 
 ---
 
@@ -24,7 +27,7 @@ Built on top of the [Oh My Pi](https://omp.dev) superpowers skill set. Designed 
 ### Phase 1 — Bootstrap (once per project)
 
 Takes a raw idea through market research, prototype, design, roadmap, architecture, and working scaffold.
-Produces the foundation files every Phase 2 cycle reads: `constitution.md`, `architecture.md`, `roadmap.md`, `design-system.md`.
+Produces the foundation files every Phase 2 cycle reads: `constitution.md`, `architecture.md`, `roadmap.md`, `DESIGN.md`.
 
 Run this once when starting a new project. Skip it entirely on existing projects.
 
@@ -49,6 +52,8 @@ The phase files are orchestration scripts for the main OMP agent — you do not 
 
 **Prerequisites:** an empty (or near-empty) repository; OMP configured with the skills and agents listed under [Required Skills and Agents](#required-skills-and-agents).
 
+**Kickoff check:** before starting Step 1, the orchestrator MUST verify that every required skill and agent is available. Missing skills surface as errors mid-run, not upfront. Check each skill with `/skill:<name>` and each agent by attempting a minimal dispatch. Report any that are missing and stop — do not begin Phase 1 against an incomplete toolset.
+
 **Before starting:**
 Copy `templates/phase-1-kickoff.md` to your project root, fill it in with your idea, target user, anything you already have (design files, tech preferences), hard constraints, and any steps you want to skip. Rough notes are fine — the agent asks clarifying questions in Step 1.
 
@@ -70,7 +75,7 @@ Step 3 dispatches `research-analyst` to map the technology landscape and `librar
 Step 4 dispatches the `designer` agent to produce a journey map and wireframes, then `frontend-developer` to wire them into a clickable HTML prototype in `prototype/`. No real backend — faked data is explicitly documented.
 
 Step 5 is the design system session. Two paths:
-- **Import path** — if you already have a `DESIGN.md`, provide it; the agent extracts and normalizes it into `design-system.md`. The AI design session is skipped. See `samples/DESIGN.md` for the expected format.
+- **Import path** — if you already have a `DESIGN.md`, provide the path; the agent reads it and normalizes it into `docs/DESIGN.md`. The AI design session is skipped. See `samples/DESIGN.md` for the expected format.
 - **AI path** — no existing design file; the `designer` agent runs a full session from the prototype and produces tokens, components, and finalized mock screens.
 
 Step 5 is the second hard gate — design direction is locked here. Changing it after this point is expensive.
@@ -89,13 +94,13 @@ Step 9 scaffolds the codebase: folder structure, linter, formatter, test framewo
 
 | Step | What you receive | Your decision |
 |---|---|---|
-| Step 2 — Market Research | Research report with competitor map and "reasons this might not work" section | Proceed / Pivot / Stop |
+| Step 2 — Market Research *(optional)* | Research report with competitor map and "reasons this might not work" section | Proceed / Pivot / Stop — or skip Step 2 entirely if you already have external validation |
 | Step 5 — Product Design | Design tokens, component list, finalized mock screens | Approve / Request changes |
 | Step 6 — Roadmap | MoSCoW feature list with build order and deferred items | Approve / Reprioritize / Cut scope |
 | Step 8 — Constitution | Governing principles for AI-generated code | Approve / Refine principles |
 
-**End state:** A running scaffold at "hello world" level, plus a `docs/` folder at your project root containing 8 approved artifacts:
-`docs/idea-brief.md` · `docs/market-notes.md` · `docs/tech-options.md` · `docs/prototype/` · `docs/design-system.md` · `docs/roadmap.md` · `docs/architecture.md` · `docs/constitution.md`
+**End state:** A running scaffold at "hello world" level, plus a `docs/` folder at your project root containing up to 8 approved artifacts:
+`docs/idea-brief.md` · `docs/market-notes.md` *(if Step 2 was run)* · `docs/tech-options.md` · `docs/prototype/` · `docs/DESIGN.md` · `docs/roadmap.md` · `docs/architecture.md` · `docs/constitution.md`
 
 ---
 
@@ -117,9 +122,9 @@ Run this cycle once per feature, starting from the first pending feature in buil
 **Start each feature cycle:**
 > "Pick the next `pending` feature from `docs/roadmap.md` (by build order) and run the Phase 2 cycle using `kit/phase-2-feature-dev.md`."
 
-8 steps per feature: Brainstorm & Spec (hard gate) → Plan → Assign Specialists → Implement → Code Review → E2E Testing → Manual Check (hard gate) → Ship. The orchestrator then picks the next pending feature and repeats.
+9 steps per feature: Brainstorm & Spec (hard gate) → Plan → Assign Specialists → Implement → Converge → Code Review → E2E Testing → Manual Check (hard gate) → Ship. The orchestrator then picks the next pending feature and repeats.
 
-**Hard gates:** Step 1 (spec approval) and Step 7 (manual check before ship) — one pair per feature.
+**Hard gates:** Step 1 (spec approval) and Step 8 (manual check before ship) — one pair per feature.
 
 **Artifacts per feature:**
 ```
@@ -137,9 +142,9 @@ Run this cycle once, covering all Must features in the roadmap in a single pass.
 **Start the single-pass cycle:**
 > "Run Phase 2 single-pass using `kit/phase-2-single-pass.md` for all Must features in `docs/roadmap.md`."
 
-6 steps total: Full-App Spec (hard gate) → Plan → Implement → Code Review + E2E → Manual Check (hard gate) → Ship.
+7 steps total: Full-App Spec (hard gate) → Plan (hard gate) → Implement → Converge → Code Review + E2E → Manual Check (hard gate) → Ship.
 
-**Hard gates:** Step 1 (complete app spec approval) and Step 5 (full app walkthrough before ship) — two gates total regardless of feature count.
+**Hard gates:** Step 1 (complete app spec approval), Step 2 (plan approval), and Step 6 (full app walkthrough before ship) — three gates total.
 
 **Artifacts:**
 ```
@@ -160,7 +165,7 @@ Skip Phase 1. Before running Phase 2 for the first time, create a `docs/` folder
 |---|---|---|
 | `docs/constitution.md` | `templates/08-constitution.md` | **Start here.** Phase 2 cannot run without it. Document governing principles for AI-generated code: naming, types, testing standard, architectural boundaries tied to your stack. Be specific — vague principles ("code should be clean") are dropped by the gate checklist. |
 | `docs/architecture.md` | `templates/07-architecture.md` | Document your existing stack, folder layout, and key architectural decisions. Phase 2 Step 2 (Plan) validates every task plan against this. If the architecture isn't documented, plans drift from how the codebase is actually structured. |
-| `docs/design-system.md` | `templates/05-design-system.md` | Required for projects with UI. Use the import path if you have a design file (see `samples/DESIGN.md`); use the AI path or fill manually otherwise. Phase 2 Step 1 (Brainstorm) reads this for any UI-touching feature. |
+| `docs/DESIGN.md` | `templates/05-design-system.md` | Required for projects with UI. Use the import path if you have a design file (see `samples/DESIGN.md`); use the AI path or fill manually otherwise. Phase 2 Step 1 (Brainstorm) reads this for any UI-touching feature. |
 | `docs/roadmap.md` | `templates/06-roadmap.md` | List the features you intend to build, in MoSCoW priority, with build order. Phase 2 reads this to select the next feature and updates `Status` as features ship. |
 
 Also create `specs/` at the project root — Phase 2 writes per-feature specs and plans there.
@@ -193,9 +198,9 @@ This kit assumes the following are configured in your AI agent harness:
 - `frontend-developer` — frontend implementation
 - `code-reviewer` — code review
 - `qa-expert` — test planning and execution
-- `ui-ux-tester` — UI/UX flow testing
-
 > If your setup uses different agent names, update `task-agent-rubric.md` to match.
+>
+> **If any skill or agent is missing:** install it before starting Phase 1. A missing skill discovered mid-run requires restarting from the step that needs it. The orchestrator checks availability at Phase 1 kickoff and reports any gaps.
 
 ---
 

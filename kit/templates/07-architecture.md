@@ -4,7 +4,7 @@
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
-- **Based on**: `tech-options.md`, `design-system.md`, `roadmap.md`
+- **Based on**: `tech-options.md`, `DESIGN.md`, `roadmap.md`
 
 > This is the final decision. `tech-options.md` was exploratory — this document commits.
 

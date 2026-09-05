@@ -4,7 +4,7 @@
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
-- **Based on**: `idea-brief.md`, `market-notes.md`, `prototype/`, `design-system.md`
+- **Based on**: `idea-brief.md`, `market-notes.md`, `prototype/`, `DESIGN.md`
 - **Phase 2 Track**: `standard` | `single-pass` <!-- decided at Step 6 gate; see phase-1-bootstrap.md Step 6 Notes for criteria -->
 
 > Product-scope decision, not a technical one. Do not assume any specific tech stack when writing this. The orchestrator reads this file to select the next feature for Phase 2 — keep the `Status` column accurate.

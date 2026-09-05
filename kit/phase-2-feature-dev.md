@@ -19,6 +19,8 @@ Each step is documented with:
 
 ## Orchestrator Announcement Convention
 
+> **Before starting any step, read `kit/phase-2-checklist.md` — the Standard Loop section for that step plus the Universal section at the top.**
+
 At the start of every step, the orchestrating agent MUST:
 1. Emit a step banner before doing any work
 2. Record the wall-clock start time and current `budget.spent()` value — get the time by running `new Date().toLocaleTimeString()` via `eval(js)` at the exact moment the step starts; do not estimate or leave as `—`
@@ -47,7 +49,12 @@ The orchestrator maintains a `phase-2-session.md` file at the project root for e
 | 1 | Brainstorm & Spec | `brainstorming` | complete | 10:00 | 18 min | 290 | `specs/[slug]/spec.md` |
 | 2 | Plan | `writing-plans` | complete | 10:18 | 4 min | 180 | `specs/[slug]/plan.md` |
 | 3 | Assign Specialists | manual / `task` | in progress | 10:22 | — | — | — |
-...
+| 4 | Implement | `subagent-driven-development` | pending | — | — | — | — |
+| 5 | Converge | `task` | pending | — | — | — | — |
+| 6 | Code Review | `code-reviewer` | pending | — | — | — | — |
+| 7 | E2E Testing | `qa-expert` / `ui-ux-tester` | pending | — | — | — | — |
+| 8 | Manual Double Check | human | pending | — | — | — | — |
+| 9 | Ship | `finishing-a-development-branch` + `task` | pending | — | — | — | — |
 ```
 
 - **Started** — local wall-clock time at step start (HH:MM)
@@ -64,9 +71,10 @@ The session log is the user's single source of truth for what ran, how long it t
 
 - **Skill**: `/skill:brainstorming`
 - **Trigger**: Orchestrator selects the next `pending` feature from `docs/roadmap.md`
-- **Inputs**: The feature's entry in `docs/roadmap.md`; `docs/constitution.md`; `docs/architecture.md`; `docs/design-system.md`
+- **Inputs**: The feature's entry in `docs/roadmap.md`; `docs/constitution.md`; `docs/architecture.md`; `docs/DESIGN.md`
 - **Output**: `specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior, non-goals, open questions resolved
 - **Gate**: `hard` — the `brainstorming` skill has a built-in user approval gate on the written spec; the orchestrator does not advance until the user explicitly approves
+- **Gate Summary**: *"The spec for [feature name] is done — acceptance criteria, edge cases, and non-goals are defined. Does this correctly describe the feature as you want it built?"*
 - **Notes**:
   - The `brainstorming` skill handles the full loop: clarifying questions → proposed approaches → design sections → written spec → user review.
   - Scope must stay within the feature's roadmap entry. If brainstorming reveals the feature is larger than the estimate, flag this and re-agree scope before proceeding — do not silently expand.
@@ -127,14 +135,28 @@ The session log is the user's single source of truth for what ran, how long it t
   - Use `subagent-driven-development` for sequential task chains. It dispatches one implementer subagent per task, runs a task reviewer after each, and a final whole-branch review at the end. Use the `Specialist:` annotation from Step 3 to select the right agent for each task.
   - For groups marked `<!-- Parallel group -->` in `plan.md` (identified in Step 3), use `dispatching-parallel-agents` instead. Do not re-evaluate which tasks can parallelize here — that decision was made in Step 3.
   - Do not commit after individual tasks during implementation. Leave all changes uncommitted until the user has reviewed the complete feature and explicitly approves shipping.
-  - `subagent-driven-development` already includes a final whole-branch code review internally. Step 5 is an additional review on top of that — it covers spec compliance and constitution adherence with the full feature context.
 
 ---
 
-## Step 5 — Code Review
+## Step 5 — Converge
+
+- **Agent**: `task` agent (spec-coverage analysis)
+- **Trigger**: All tasks in `plan.md` complete; feature branch ready
+- **Inputs**: `specs/<feature-slug>/spec.md` (acceptance criteria list); full branch diff
+- **Output**: Convergence report — COVERED / GAP per acceptance criterion; empty gap list = converged
+- **Gate**: `none` — loops until the gap list is empty; only then advances to Step 6
+- **Notes**:
+  - **Converge is distinct from code review.** It asks one question: *does the implementation attempt every acceptance criterion in the spec?* Not whether the code is well-written — that is Step 6.
+  - For each acceptance criterion in `spec.md`: find evidence in the branch diff (functions, tests, UI components, validation logic). Mark COVERED if evidence exists; GAP if none is found.
+  - Any GAP becomes an implementation task appended to `plan.md`. Dispatch the implementer for those gap tasks only. Re-run Converge. Repeat until the gap list is empty.
+  - A COVERED criterion is not a guarantee of correctness — only that an attempt was made. Correctness is verified by code review (Step 6) and E2E (Step 7).
+  - Common gap sources: edge cases specified but not handled, error states documented but not coded, validation rules in spec but absent from implementation.
+  - When the gap list is empty, note "Converged" in the session log and proceed.
+
+## Step 6 — Code Review
 
 - **Agent**: `code-reviewer`
-- **Trigger**: All tasks in `plan.md` complete; feature branch ready
+- **Trigger**: Step 5 converged (gap list empty); feature branch ready
 - **Inputs**: Full diff of the feature branch against base; `specs/<feature-slug>/spec.md`; `docs/constitution.md`
 - **Output**: Review findings; all issues fixed directly on the branch before advancing
 - **Gate**: `none` — code review runs to completion; every finding is fixed immediately; there are no deferred findings at this stage
@@ -146,40 +168,41 @@ The session log is the user's single source of truth for what ran, how long it t
 
 ---
 
-## Step 6 — End-to-End Testing
+## Step 7 — End-to-End Testing
 
 - **Agent**: `qa-expert` agent (test planning and execution); `ui-ux-tester` agent (for UI-heavy flows with browser interaction)
-- **Trigger**: Step 5 complete with all issues resolved
+- **Trigger**: Step 6 complete with all issues resolved
 - **Inputs**: Running application (started fresh for this test run); `specs/<feature-slug>/spec.md` (acceptance criteria); real data scenarios
 - **Output**: Test results; any failure triggers an immediate fix loop and re-run of this step before advancing
 - **Gate**: `soft`
 - **Notes**:
   - This is a full end-to-end test of the real, running application. Not unit tests. Not mocked data. Start the actual application.
   - Walk through the complete user flow from start to finish using real data and a real process — the same path a real user would take, not a happy-path shortcut.
-  - Cover every acceptance criterion in the spec.
+  - Cover every acceptance criterion in the spec. **Test shared interaction patterns (modal behavior, form validation, navigation) once per pattern — not once per acceptance criterion.** Repeated identical flows add time without additional coverage.
   - Any failure found here is fixed immediately, and this step re-runs in full — do not carry failures forward to the manual check.
-  - Use `qa-expert` for backend/API/data-flow testing. Use `ui-ux-tester` when the feature has a significant UI component and browser-driven interaction verification is needed.
+  - Use `qa-expert` for backend/API/data-flow testing. Use `ui-ux-tester` when the feature has a significant UI component and browser-driven interaction verification is needed. **Model:** `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate.
 
 ---
 
-## Step 7 — Manual Double Check
+## Step 8 — Manual Double Check
 
 - **Who**: Human only — no agent or skill
-- **Trigger**: Step 6 passes with no unresolved failures
+- **Trigger**: Step 7 passes with no unresolved failures
 - **Inputs**: Running application
 - **Output**: Human confirmation (no file output)
 - **Gate**: `hard` — orchestrator must not proceed without explicit approval
+- **Gate Summary**: *"E2E testing passed and the feature is complete. Please walk through it yourself in the running app — this is the last check before the code ships."*
 - **Notes**:
   - One additional full walkthrough of the feature in the running application — independent of the E2E test pass.
   - This is the final safety net before code ships. It exists because E2E tests verify acceptance criteria; a human check catches things the criteria did not anticipate.
-  - If anything is found here: fix it, re-run Step 6, then return to this step.
+  - If anything is found here: fix it, re-run Step 7, then return to this step.
 
 ---
 
-## Step 8 — Ship
+## Step 9 — Ship
 
 - **Skill**: `/skill:finishing-a-development-branch` (for branch finalization); `task` agent (for PR creation)
-- **Trigger**: Step 7 gate approved
+- **Trigger**: Step 8 gate approved
 - **Inputs**: Feature branch; `docs/roadmap.md`
 - **Output**: Committed and pushed feature branch; pull request opened against the main branch; `docs/roadmap.md` feature status updated to `shipped`
 - **Gate**: `none`
@@ -189,6 +212,7 @@ The session log is the user's single source of truth for what ran, how long it t
   - Open a pull request to the main branch — do not merge directly; do not push to main.
   - Update `docs/roadmap.md` to set this feature's `Status` column to `shipped`.
   - After this step, the orchestrator selects the next `pending` feature from `docs/roadmap.md` (in build order) and restarts at Step 1.
+  - **Spec persistence:** if this is the first feature shipped on this project, decide how specs will evolve when requirements change and record the decision in `docs/constitution.md`. See `kit/guides/evolving-specs.md` for the three models: flow-forward (feature directories are immutable history), flow-back (any artifact can be updated; team reconciles afterward), living spec (`spec.md` is the contract; plan/tasks are regenerated from it when it changes).
 
 ---
 
@@ -210,16 +234,19 @@ Pull next pending feature from docs/roadmap.md
 [4] Implement (subagent-driven / parallel dispatch)
          │
          ▼
-[5] Code Review → fix all findings → done
+[5] Converge — spec coverage check → gap tasks → re-implement → repeat until converged
          │
          ▼
-[6] E2E Testing (real app, real data, full flow) → fix failures → re-run
+[6] Code Review → fix all findings → done
          │
          ▼
-[7] Manual Double Check [hard gate]
+[7] E2E Testing (real app, real data, full flow) → fix failures → re-run
          │
          ▼
-[8] Ship (commit + push + PR to main + update roadmap.md)
+[8] Manual Double Check [hard gate]
+         │
+         ▼
+[9] Ship (commit + push + PR to main + update roadmap.md)
          │
          ▼
 Pull next pending feature from docs/roadmap.md ─────────────────┘
@@ -237,7 +264,8 @@ This phase uses the following skills without modifying them. Each skill is invok
 | 2 | `writing-plans` | Plan document with tasks |
 | 3 | Kit step (you) | Specialist annotations on each task |
 | 4 | `subagent-driven-development` / `dispatching-parallel-agents` | Code on feature branch |
-| 5 | `code-reviewer` | Review findings, all fixed inline |
-| 6 | `qa-expert` / `ui-ux-tester` | Test results, failures fixed inline |
-| 7 | Human | Approval gate |
-| 8 | `finishing-a-development-branch` + `task` | Committed branch + PR |
+| 5 | `task` | Convergence report; gap tasks appended to plan.md |
+| 6 | `code-reviewer` | Review findings, all fixed inline |
+| 7 | `qa-expert` / `ui-ux-tester` | Test results, failures fixed inline |
+| 8 | Human | Approval gate |
+| 9 | `finishing-a-development-branch` + `task` | Committed branch + PR |
