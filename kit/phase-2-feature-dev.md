@@ -14,57 +14,17 @@ Each step is documented with:
 - **Trigger** — what causes this step to start
 - **Inputs** — context/files this step reads
 - **Outputs** — what you have by the end of this step (not necessarily a structured file — the superpowers skills produce their own internal artifacts; this describes the *result* from your perspective)
-- **Gate** — `none` / `soft` / `hard`
+- **Gate** — `none` / `soft` / `hard` — see `kit/gate-management.md` for gate type definitions
 - **Notes** — special handling, gaps to watch for
 
-## Orchestrator Announcement Convention
+## Orchestrator Conventions
 
-> **Before starting any step, read `kit/phase-2-checklist.md` — the Standard Loop section for that step plus the Universal section at the top.**
+> Before starting any step, read `kit/phase-2-checklist.md` — the Standard Loop section for that step plus the Universal section at the top.
 
-At the start of every step, the orchestrating agent MUST:
-1. Emit a step banner before doing any work
-2. Record the wall-clock start time and current `budget.spent()` value — get the time by running `new Date().toLocaleTimeString()` via `eval(js)` at the exact moment the step starts; do not estimate or leave as `—`
-3. Include `PROJECT_ROOT: <absolute path to project folder>` in the context of every dispatched subagent task — subagents resolve file paths relative to the workspace root, not the project folder, and will write outputs to the wrong location without an explicit path
-4. After every subagent task that writes files, verify the file exists at the expected path before marking the step `complete`. If absent, recover from `agent://<id>` and write directly
+Read `kit/orchestrator-conventions.md` for the universal rules every orchestrating agent must follow: step banner format, time recording, PROJECT_ROOT requirement, file-write verification, gate summary protocol, and the fail-fast write instruction.
 
-```
----
-Phase 2 · Step N — [Step Name]  |  Feature: [feature-slug]
-Skill / Agent: [name]  |  Gate: [none / soft / hard]
-Started: HH:MM  |  Credits at start: NNNN
----
-```
+Read `kit/session-logging.md` for the session log schema and the Phase 2 Standard Loop starter template.
 
-At the end of every step, update `phase-2-session.md` with duration and credit delta before advancing.
-
-## Session Log
-
-The orchestrator maintains a `phase-2-session.md` file at the project root for each feature cycle. Created at Step 1, updated after every step.
-
-```markdown
-# Phase 2 Session Log — [feature-slug]
-
-| Step | Name | Skill / Agent | Status | Started | Duration | Credits | Output |
-|---|---|---|---|---|---|---|---|
-| 1 | Brainstorm & Spec | `brainstorming` | complete | 10:00 | 18 min | 290 | `specs/[slug]/spec.md` |
-| 2 | Plan | `writing-plans` | complete | 10:18 | 4 min | 180 | `specs/[slug]/plan.md` |
-| 3 | Assign Specialists | manual / `task` | in progress | 10:22 | — | — | — |
-| 4 | Implement | `subagent-driven-development` | pending | — | — | — | — |
-| 5 | Converge | `task` | pending | — | — | — | — |
-| 6 | Code Review | `code-reviewer` | pending | — | — | — | — |
-| 7 | E2E Testing | `qa-expert` / `ui-ux-tester` | pending | — | — | — | — |
-| 8 | Manual Double Check | human | pending | — | — | — | — |
-| 9 | Ship | `finishing-a-development-branch` + `task` | pending | — | — | — | — |
-```
-
-- **Started** — local wall-clock time at step start (HH:MM)
-- **Duration** — wall-clock minutes from step start to log update
-- **Credits** — `budget.spent()` delta between step start and end (OMP credits; check dashboard for USD equivalent)
-- **Output** — file produced; `—` if step is not yet complete
-
-Status values: `pending` · `in progress` · `complete` · `skipped` · `blocked`
-
-The session log is the user's single source of truth for what ran, how long it took, and what it cost. It does not replace the gate outputs — it points to them.
 ---
 
 ## Step 1 — Brainstorm and Spec

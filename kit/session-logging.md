@@ -1,0 +1,102 @@
+# Session Logging
+
+> Every orchestrated phase maintains a session log at the project root.
+> The log is the user's single source of truth for what ran, how long it took, and what it cost.
+> It does not replace gate outputs — it points to them.
+
+---
+
+## Column Definitions
+
+| Column | What to record |
+|---|---|
+| **Step** | Step number |
+| **Name** | Step name |
+| **Skill / Agent** | Skill or agent invoked |
+| **Status** | Current status (see status values below) |
+| **Started** | Local wall-clock time at step start — `new Date().toLocaleTimeString()`, never estimated |
+| **Duration** | Wall-clock minutes from step start to log update |
+| **Credits** | `budget.spent()` delta between step start and end (OMP credits; check dashboard for USD equivalent) |
+| **Output** | File produced; `—` if step is not yet complete |
+
+## Status Values
+
+`pending` · `in progress` · `complete` · `skipped` · `blocked`
+
+---
+
+## Log Templates
+
+### Phase 1
+
+Create as `phase-1-session.md` at the project root at Step 1 start. Update after every step.
+
+```markdown
+# Phase 1 Session Log — [project-name]
+
+| Step | Name | Skill / Agent | Status | Started | Duration | Credits | Output |
+|---|---|---|---|---|---|---|---|
+| 1 | Product Ideation | `brainstorming` (Architectural) | pending | — | — | — | — |
+| 2 | Market Research | `market-researcher` | pending | — | — | — | — |
+| 3 | Tech Research | `research-analyst` + `librarian` | pending | — | — | — | — |
+| 4 | Interactive Prototype | `task` + `frontend-developer` | pending | — | — | — | — |
+| 5 | Product Design | `designer` | pending | — | — | — | — |
+| 6 | Roadmap Generation | `task` | pending | — | — | — | — |
+| 7 | Tech Stack & Architecture | `research-analyst` | pending | — | — | — | — |
+| 8 | Constitution | `task` | pending | — | — | — | — |
+| 9 | Scaffold | `task` / `frontend-developer` | pending | — | — | — | — |
+```
+
+### Phase 2 — Standard Loop
+
+Create as `phase-2-session.md` at the project root at Step 1 start. One log per feature cycle.
+
+```markdown
+# Phase 2 Session Log — [feature-slug]
+
+| Step | Name | Skill / Agent | Status | Started | Duration | Credits | Output |
+|---|---|---|---|---|---|---|---|
+| 1 | Brainstorm & Spec | `brainstorming` | pending | — | — | — | — |
+| 2 | Plan | `writing-plans` | pending | — | — | — | — |
+| 3 | Assign Specialists | manual / `task` | pending | — | — | — | — |
+| 4 | Implement | `subagent-driven-development` | pending | — | — | — | — |
+| 5 | Converge | `task` | pending | — | — | — | — |
+| 6 | Code Review | `code-reviewer` | pending | — | — | — | — |
+| 7 | E2E Testing | `qa-expert` / `ui-ux-tester` | pending | — | — | — | — |
+| 8 | Manual Double Check | human | pending | — | — | — | — |
+| 9 | Ship | `finishing-a-development-branch` + `task` | pending | — | — | — | — |
+```
+
+### Phase 2 — Single-Pass
+
+Create as `phase-2-session.md` at the project root at Step 1 start.
+
+```markdown
+# Phase 2 Session Log — Single-Pass
+
+| Step | Name | Skill / Agent | Status | Started | Duration | Credits | Output |
+|---|---|---|---|---|---|---|---|
+| 1 | Full-App Spec | `brainstorming` | pending | — | — | — | — |
+| 2 | Plan | `writing-plans` | pending | — | — | — | — |
+| 3 | Implement | `<specialist>` | pending | — | — | — | — |
+| 4 | Converge | `task` | pending | — | — | — | — |
+| 5 | Code Review + E2E | `code-reviewer` + `ui-ux-tester` | pending | — | — | — | — |
+| 6 | Manual Check | human | pending | — | — | — | — |
+| 7 | Ship | `finishing-a-development-branch` + `task` | pending | — | — | — | — |
+```
+
+### Bug Fix
+
+Create as `bug-session.md` at the project root at Step 1 start.
+
+The bug fix log omits the Credits column — fixes are short enough that per-step credit tracking adds overhead without insight.
+
+```markdown
+# Bug Fix Session — [bug-slug]
+
+| Step | Name | Agent | Status | Started | Duration | Output |
+|---|---|---|---|---|---|---|
+| 1 | Assess | `scout` + human | pending | — | — | — |
+| 2 | Fix | specialist | pending | — | — | — |
+| 3 | Verify | `qa-expert` + human | pending | — | — | — |
+```

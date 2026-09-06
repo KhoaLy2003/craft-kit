@@ -11,28 +11,11 @@
 
 Three steps: **Assess → Fix → Verify**. Each step has a gate. The gate at Assess is the most important — do not proceed to Fix until the diagnosis is confirmed.
 
-## Orchestrator Announcement Convention
+## Orchestrator Conventions
 
-At the start of every step:
-1. Emit a step banner: `Bug Fix · Step N — [Step Name] | Slug: [bug-slug] | Gate: [none/hard]`
-2. Record wall-clock start time via `eval(js)`: `new Date().toLocaleTimeString()`
-3. Update `bug-session.md` at the end of each step
+Read `kit/orchestrator-conventions.md` for the universal rules every orchestrating agent must follow. For bug fixes, the key items are: step banner (use `Bug Fix · Step N — [Step Name]  |  Slug: [bug-slug]  |  Gate: [none/hard]`), wall-clock time recording, file-write verification, and gate summary protocol at the Assess and Verify hard gates.
 
----
-
-## Session Log
-
-Create `bug-session.md` at the project root at Step 1.
-
-```markdown
-# Bug Fix Session — [bug-slug]
-
-| Step | Name | Agent | Status | Started | Duration | Output |
-|---|---|---|---|---|---|---|
-| 1 | Assess | `scout` + human | pending | — | — | — |
-| 2 | Fix | specialist | pending | — | — | — |
-| 3 | Verify | `qa-expert` + human | pending | — | — | — |
-```
+Read `kit/session-logging.md` for the session log schema and the Bug Fix starter template (`bug-session.md`).
 
 ---
 

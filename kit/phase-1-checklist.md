@@ -15,7 +15,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - [ ] Record start time: run `new Date().toLocaleTimeString()` via `eval(js)` — do not estimate or leave as `—`
 - [ ] Record `budget.spent()` at step start
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch
-- [ ] Include **fail-fast write instruction** (Convention item 6) in every subagent dispatch that writes files
+- [ ] Include **fail-fast write instruction** (see `kit/orchestrator-conventions.md` item 6) in every subagent dispatch that writes files
 - [ ] After every subagent write: verify file exists on disk; recover from `agent://` and write directly if absent
 - [ ] Update `phase-1-session.md` with duration and credit delta at step end before advancing
 
@@ -60,7 +60,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - **[BLOCK]** Verify `docs/prototype/journey-map.md` and `docs/prototype/prototype-brief.md` exist on disk before dispatching `frontend-developer`
 - [ ] HTML prototype: CSS **required** for structural clarity (layout, grouping, hierarchy, state visibility) — no brand colors, no visual polish
 - **[BLOCK]** Verify all HTML files exist on disk after `frontend-developer` completes
-- [ ] Walk review questions before advancing: requirements, user flow, states, edge cases (see Step 4 Review in `phase-1-bootstrap.md`)
+- [ ] Walk review questions before advancing: requirements, user flow, states, edge cases (see `kit/steps/p1-04-prototype.md`)
 - **[BLOCK]** `prototype-brief.md` Definition of Done checklist: **all 11 items** must be checked before advancing
 
 ---

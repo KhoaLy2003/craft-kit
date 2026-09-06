@@ -24,53 +24,16 @@ Each step is documented with:
 - **Trigger** — what causes this step to start
 - **Inputs** — context/files this step reads
 - **Outputs** — what you have by the end of this step
-- **Gate** — `none` / `soft` / `hard`
+- **Gate** — `none` / `soft` / `hard` — see `kit/gate-management.md` for gate type definitions
 - **Notes** — special handling
 
-## Orchestrator Announcement Convention
+## Orchestrator Conventions
 
-> **Before starting any step, read `kit/phase-2-checklist.md` — the Single-Pass section for that step plus the Universal section at the top.**
+> Before starting any step, read `kit/phase-2-checklist.md` — the Single-Pass section for that step plus the Universal section at the top.
 
-At the start of every step, the orchestrating agent MUST:
-1. Emit a step banner before doing any work
-2. Record the wall-clock start time and current `budget.spent()` value — get the time by running `new Date().toLocaleTimeString()` via `eval(js)` at the exact moment the step starts; do not estimate or leave as `—`
-3. Include `PROJECT_ROOT: <absolute path to project folder>` in the context of every dispatched subagent task
-4. After every subagent task that writes files, verify the file exists at the expected path before marking the step `complete`. If absent, recover from `agent://<id>` and write directly
+Read `kit/orchestrator-conventions.md` for the universal rules every orchestrating agent must follow: step banner format, time recording, PROJECT_ROOT requirement, file-write verification, gate summary protocol, and the fail-fast write instruction.
 
-```
----
-Phase 2 (Single-Pass) · Step N — [Step Name]
-Skill / Agent: [name]  |  Gate: [none / soft / hard]
-Started: HH:MM  |  Credits at start: NNNN
----
-```
-
-At the end of every step, update `phase-2-session.md` with duration and credit delta before advancing.
-
-## Session Log
-
-The orchestrator creates `phase-2-session.md` at the project root at Step 1 and updates it after every step.
-
-```markdown
-# Phase 2 Session Log — Single-Pass
-
-| Step | Name | Skill / Agent | Status | Started | Duration | Credits | Output |
-|---|---|---|---|---|---|---|---|
-| 1 | Full-App Spec | `brainstorming` | pending | — | — | — | — |
-| 2 | Plan | `writing-plans` | pending | — | — | — | — |
-| 3 | Implement | `<specialist>` | pending | — | — | — | — |
-| 4 | Converge | `task` | pending | — | — | — | — |
-| 5 | Code Review + E2E | `code-reviewer` + `ui-ux-tester` | pending | — | — | — | — |
-| 6 | Manual Check | human | pending | — | — | — | — |
-| 7 | Ship | `finishing-a-development-branch` + `task` | pending | — | — | — | — |
-```
-
-- **Started** — local wall-clock time at step start (HH:MM)
-- **Duration** — wall-clock minutes from step start to log update
-- **Credits** — `budget.spent()` delta between step start and end
-- **Output** — file or artifact produced; `—` if not yet complete
-
-Status values: `pending` · `in progress` · `complete` · `blocked`
+Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-Pass starter template.
 
 ---
 
@@ -152,7 +115,6 @@ Status values: `pending` · `in progress` · `complete` · `blocked`
   - Dispatch `code-reviewer` first. It reviews the entire branch diff — all features, all files — against the spec and constitution in one pass. All findings are fixed before E2E begins. Do not run E2E against code with known review findings open.
   - E2E testing starts the real running application and walks through the **complete user flow as a real user would** — not feature by feature, but as a finished product. Every acceptance criterion across all features in `specs/full-app/spec.md` must be exercised.
   - Pay particular attention to **cross-feature interactions** — features that work in isolation but break when combined. These are the failure mode most specific to single-pass development. Test these exhaustively. For shared interaction patterns (modal behavior, form validation, navigation) that repeat across features, test each pattern once — not once per feature.
-  - **E2E uses a batch approach, not inline fixes.** The E2E agent runs all test steps to completion before fixing anything. For each step: mark **FAIL** if the step fails independently, or **BLOCKED** if the failure is caused by a prior failing step (not independently testable). Once all steps are recorded, batch all FAIL items to the implementer agent. After all fixes are applied, run the **full suite again** — every step — to confirm no regressions before advancing. An inline fix-and-continue approach lacks this regression guarantee and produces an incomplete failure picture.
   - Use `ui-ux-tester` for browser-driven UI verification; `qa-expert` for storage, data integrity, and non-UI flows (e.g. export file format, localStorage error handling). **Model:** `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate.
 
 ---

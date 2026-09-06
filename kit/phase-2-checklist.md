@@ -16,6 +16,7 @@
 - [ ] Record `budget.spent()` at step start
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch
 - [ ] After every subagent write: verify file exists on disk; recover from `agent://` if absent
+- [ ] Include **fail-fast write instruction** (see `kit/orchestrator-conventions.md` item 6) in every subagent dispatch that writes files
 - [ ] Update `phase-2-session.md` with duration and credit delta at step end
 - [ ] **Do NOT commit after individual tasks** — all changes accumulate on the feature branch until Manual Check / Step 6 approval
 
@@ -78,7 +79,6 @@
 - [ ] E2E on real running application; complete user flow from start to finish; every acceptance criterion exercised
 - [ ] Cross-feature interactions tested exhaustively — the failure mode most specific to single-pass
 - [ ] Shared interaction patterns (modal, form validation, navigation): test once per pattern, not once per criterion
-- **[BLOCK]** E2E uses batch approach: run ALL steps first → mark each FAIL (independent) or BLOCKED (caused by prior failure) → batch all FAILs to implementer → **full re-run** after all fixes confirm zero regressions
 
 ---
 
