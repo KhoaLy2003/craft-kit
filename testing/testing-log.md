@@ -50,8 +50,6 @@ Issues found but not yet fixed — carried across rounds until resolved.
 
 **The single-pass track worked correctly.** Once Phase 1 produced correct inputs, Phase 2 single-pass delivered: spec, plan, implementation, review, and E2E in one cycle with no per-feature overhead.
 
-**E2E batch-fix beats inline-fix for regression safety.** Running all test steps before fixing any of them gives the implementer the complete failure picture and catches cascade failures cleanly. The mandatory full re-run after fixes is the explicit regression guarantee that inline-fix lacks.
-
 **Hosted-BaaS infrastructure steps are operator prerequisites.** Schema migrations and serverless function deployments require authenticated CLI or dashboard access — unavailable to any agentic worker. Plan them as `[OPERATOR]` steps; `npx supabase@latest` provides CLI without global install.
 
 **Supabase Realtime does not echo `postgres_changes` to the originating client.** Cross-tab delivery works; same-tab self-updates require an explicit local state update after the write is confirmed. Any Supabase + Realtime implementation must handle this.
