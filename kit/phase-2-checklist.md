@@ -78,7 +78,7 @@
 - [ ] E2E on real running application; complete user flow from start to finish; every acceptance criterion exercised
 - [ ] Cross-feature interactions tested exhaustively — the failure mode most specific to single-pass
 - [ ] Shared interaction patterns (modal, form validation, navigation): test once per pattern, not once per criterion
-- **[BLOCK]** E2E uses batch approach: run ALL steps first → mark each FAIL (independent) or BLOCKED (caused by prior failure) → batch all FAILs to implementer → **full re-run** after all fixes confirm zero regressions
+- **[BLOCK]** Any E2E failure: fix immediately → full re-run (not partial re-run)
 
 ---
 

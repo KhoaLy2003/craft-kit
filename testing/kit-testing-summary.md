@@ -13,7 +13,6 @@ For issue detail, kit file changes, open issues, and lessons: see `testing/testi
 |---|---|---|---|---|---|---|---|
 | 01 | reading-list | React + Vite + TS + Tailwind + localStorage | single-pass | **PASS** | not tracked | not tracked | 13 / 13 / 0 |
 | 02 | meal-planner | Vanilla HTML + CSS + JS *(agent-chosen)* | single-pass | **FAIL** | not tracked | not tracked | 6 / 4 / 2 |
-| 03 | chore-splitter | React 18 + Vite + TS + Supabase (Postgres + Realtime + Edge Functions) | single-pass | **PASS** | ~4h 30m | not tracked | 8 / 8 / 1 |
 
 ---
 
@@ -184,6 +183,7 @@ Outcome
   Issues found / fixed / open: 6 / 4 / 2
   Detail: testing-log.md Issues 14–16
 ```
+| 03 | chore-splitter | React 18 + Vite + TS + Supabase (Postgres + Realtime + Edge Functions) | single-pass | **PASS** | ~4h | ~80k est. | 8 / 8 / 1 |
 
 ---
 

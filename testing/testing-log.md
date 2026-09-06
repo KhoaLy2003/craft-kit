@@ -13,7 +13,6 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | # | Issue | Round found | Impact | Status |
 |---|---|---|---|---|
 | Open 1 | No way to skip per-task review in `subagent-driven-development` — results in 3 review layers when kit intent is 1 | Round 01 | Medium — cost/overhead | Open |
-| Open 2 | Agent write failures add wall-clock overhead | Round 02 | Low (non-blocking) | **Fixed Round 03** — Issue 18 fail-fast write instruction eliminates retry spiral |
 
 ---
 
@@ -34,9 +33,7 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | `kit/templates/phase-1-kickoff.md` | 03 | Removed "run all 9 steps" framing; gate-bypass warning; DESIGN.md path guidance |
 | `kit/stack-catalog.md` | 03 | Created — 6 stack entries; `Requires` field; fail-fast write note |
 | `kit/phase-1-checklist.md` | 03 | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance |
-| `kit/phase-2-checklist.md` | 03 | Created; Step 5 updated — batch E2E approach (Issue 25) |
-| `kit/CHANGELOG.md` | 02, 03 | Created Round 02; Round 03 entries added (Issues 17–25) |
-| `kit/phase-2-single-pass.md` | 01, 02, 03 | (see above) + Step 5 batch E2E approach (Issue 25) |
+| `kit/phase-2-checklist.md` | 03 | Created — per-step checklist for both Phase 2 tracks; `docs/DESIGN.md` in inputs |
 
 ---
 
@@ -49,12 +46,6 @@ Issues found but not yet fixed — carried across rounds until resolved.
 **Agent routing matters as much as instructions.** Dispatching the `designer` for wireframes produced polished UI despite explicit low-fidelity instructions. The constraint fought the agent's training. Correct routing (use `task` for structural work, `designer` for visual work) removes the tension entirely.
 
 **The single-pass track worked correctly.** Once Phase 1 produced correct inputs, Phase 2 single-pass delivered: spec, plan, implementation, review, and E2E in one cycle with no per-feature overhead.
-
-**E2E batch-fix beats inline-fix for regression safety.** Running all test steps before fixing any of them gives the implementer the complete failure picture and catches cascade failures cleanly. The mandatory full re-run after fixes is the explicit regression guarantee that inline-fix lacks.
-
-**Hosted-BaaS infrastructure steps are operator prerequisites.** Schema migrations and serverless function deployments require authenticated CLI or dashboard access — unavailable to any agentic worker. Plan them as `[OPERATOR]` steps; `npx supabase@latest` provides CLI without global install.
-
-**Supabase Realtime does not echo `postgres_changes` to the originating client.** Cross-tab delivery works; same-tab self-updates require an explicit local state update after the write is confirmed. Any Supabase + Realtime implementation must handle this.
 
 ---
 

@@ -75,4 +75,23 @@
      - Solo developer, no team -->
 
 
+---
+
+## Steps to Adjust
+
+<!-- Note any steps you want to skip or approach differently from the default.
+     Leave blank if you have no pre-made decisions to record.
+
+     IMPORTANT: Leaving this blank does NOT pre-answer in-chat gate choices.
+     Optional steps (like Step 2 — Market Research) are always offered in chat,
+     regardless of what you write here. This section is for recording decisions
+     you have already made — not for bypassing the gates where the agent asks.
+
+     Examples:
+     - "Skip Step 2 market research — I know this space well and the decision
+       to proceed is already made."
+     - "Step 5: use the import path with the design file listed above."
+     - "Step 3: I'm committed to Next.js + Supabase. Skip broad stack research
+       and go straight to library-level research for those choices." -->
+
 
