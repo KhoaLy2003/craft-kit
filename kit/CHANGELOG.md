@@ -5,6 +5,28 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+## 2026-09-05 (Round 03 — chore-splitter)
+
+### Added
+- **`kit/phase-1-checklist.md`** — per-step pre-flight checklist for all 9 Phase 1 steps plus Phase Close. Surfaces [HARD GATE], [BLOCK], [SOFT GATE], and [LOOP] items at a glance without requiring full step-notes reads. Issue 22.
+- **`kit/phase-2-checklist.md`** — same structure for both Phase 2 tracks (single-pass Steps 1–7; standard loop Steps 1–9). Issue 22.
+- **`kit/stack-catalog.md`** — 6 pre-researched stack entries with `Requires:` field (runtime, accounts, CLI). Orchestrator reads catalog before web-searching; reduces Step 3 from ~30 min to ~2 min for common stacks. Issue 18.
+- **Fail-fast write instruction** (`phase-1-bootstrap.md` Orchestrator Convention item 6) — subagent dispatch must include: "If any file write fails on the first attempt, stop immediately. Yield the content as your final result." Eliminates multi-attempt write spirals. Issue 18.
+- **Step 9 pre-flight environment check** (`phase-1-bootstrap.md`) — verify Node.js, npm, git; check `kit/stack-catalog.md` `Requires`; confirm hosted-BaaS account credentials before scaffold dispatch. Issue 19.
+- **Step 3 catalog-first** (`phase-1-bootstrap.md`) — read `kit/stack-catalog.md` before web-searching; only search for stacks not in catalog or facts older than 3 months. Issue 18.
+- **Phase Handoff ready-to-paste prompt** (`phase-1-bootstrap.md`) — filled-in Phase 2 kickoff prompt emitted at Phase 1 close; user copies without editing. Issue 15.
+- **Batch E2E approach** (`phase-2-single-pass.md` Step 5, `phase-2-checklist.md` Step 5) — E2E agent runs all test steps first, marking FAIL vs BLOCKED; batches all failures to the implementer; full suite re-run after all fixes confirms no regressions. Replaces inline fix-and-continue. Issue 25.
+
+### Changed
+- **Step 4 renamed and reframed** (`phase-1-bootstrap.md`) — "Prototype Mock (HTML)" → "Interactive Prototype". State coverage (empty + error + success) and realistic mock data required. Hard fidelity rule: no brand colors, no custom fonts, no visual polish. Agent routing: `task` (not `designer`) for prototype. Issue 20, 21.
+- **`templates/04b-prototype-brief.md` rewritten** — State Coverage, Mock Data, Feedback Log with classification. DoD 6 → 11 items. Issue 21.
+- **Step 5 conditional path** (`phase-1-bootstrap.md`) — if `docs/DESIGN.md` exists, skip external-source presentation; ask "use it or run fresh session?" External sources only shown when no file found. Issues 23, 24.
+- **Output renamed `docs/DESIGN.md`** across all kit files (`phase-1-bootstrap.md`, `phase-2-*.md`, `phase-2-checklist.md`, `README.md`, all `kit/templates/`) — was `docs/design-system.md`; inconsistency with source files from getdesign.md and freedesignmd.com. Issue 23.
+- **Kickoff template** (`templates/phase-1-kickoff.md`) — "run all 9 steps" framing removed; replaced with gate-bypass warning: leaving blank does NOT pre-answer in-chat gate choices. Issue 17.
+- **Step 5 E2E instructions** (`phase-2-single-pass.md`, `phase-2-checklist.md`) — batch approach mandated (see Added above). Issue 25.
+
+---
+
 ## 2026-09-04 (Round 02 — meal-planner)
 
 ### Changed
