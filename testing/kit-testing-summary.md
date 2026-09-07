@@ -14,6 +14,7 @@ For issue detail, kit file changes, open issues, and lessons: see `testing/testi
 | 01 | reading-list | React + Vite + TS + Tailwind + localStorage | single-pass | **PASS** | not tracked | not tracked | 13 / 13 / 0 |
 | 02 | meal-planner | Vanilla HTML + CSS + JS *(agent-chosen)* | single-pass | **FAIL** | not tracked | not tracked | 6 / 4 / 2 |
 | 03 | chore-splitter | React 18 + Vite + TS + Supabase (Postgres + Realtime + Edge Functions) | single-pass | **PASS** | ~4h 30m | not tracked | 8 / 8 / 1 |
+| 04 | court-booking | Next.js 14 App Router + TS strict + Supabase Postgres (Drizzle) + NextAuth.js v5 + Tailwind CSS | single-pass | **PASS** | ~8h+ | not tracked | 3 / 1 / 2 |
 
 ---
 
@@ -239,4 +240,72 @@ Outcome
   Failure reason:   n/a
   Issues found / fixed / open: 8 / 8 / 1   (Issues 25 + 3 Lessons; Open Issue 1 carried forward)
   Detail: testing-log.md Round 03 Close section
+```
+
+---
+
+## Round 04 — court-booking
+
+```
+Result:          PASS
+Date:            2026-09-06 → 2026-09-07
+Sessions:        3+  (Phase 1; Phase 2 + redesign in separate sessions)
+
+Project
+  Domain:        sports facility booking
+  Stack:         Next.js 14 App Router · TypeScript strict · Supabase Postgres (Drizzle ORM) · NextAuth.js v5 · Tailwind CSS (Bento Quiet)
+  Phase 2 track: single-pass
+
+Complexity
+  Must features:   5   (F01–F05)
+  Should features: 1   (F06 — shipped in same pass)
+  Could features:  0
+  Feature sizes:   S (2), M (4)
+
+Kit state going in
+  Issues fixed before this round: 26   (Issues 1–26 from Rounds 01–03 + refactor)
+  Known open issues carried in:   1   (Open Issue 1 — SDD per-task review)
+
+Phase 1
+  Steps run:      8 of 8   (Step 2 — Market Research skipped by user; 8-step schema post-Issue-26 refactor)
+  Wall-clock:     ~2h
+  Credits:        not tracked reliably
+  Slowest step:   Step 9 — Scaffold (~45 min; Next.js + Supabase + NextAuth setup)
+  Costliest step: Step 9 — Scaffold (estimated highest)
+
+Phase 2
+  Steps run:      7 of 7   (all steps)
+  Wall-clock:     ~6h   (includes E2E retry due to bcrypt env-var interpolation bug)
+  Credits:        not tracked reliably
+  Slowest step:   Step 5 — Code Review + E2E (~5h total across two E2E runs)
+  Costliest step: Step 5 — Code Review + E2E
+
+Redesign cycle (new pattern — separate from Phase 2)
+  Steps run:      3 of 3   (Audit+Fix, Code Review, Manual Check)
+  Wall-clock:     ~30 min
+  Credits:        not tracked
+  Branch:         feature/court-booking-redesign off feature/court-booking
+
+Total
+  Wall-clock:     ~8h+
+  Credits:        not tracked reliably
+  USD estimate:   n/a
+
+Quality
+  Hard gates triggered:    5   (spec, plan, manual check — Phase 2; manual check — redesign; plus Phase 1 gates)
+  Write failures recovered: 0
+  E2E tests:               30 / 30 passing   (second run; first run timed out on auth bug)
+  Spec coverage gaps:      1   (AC-01.5 missing redirect; fixed at Converge)
+
+Outcome
+  What was built:   Court booking MVP — owner auth, court management, player availability view, slot booking
+                    with atomic double-booking prevention, booking dashboard, slot management (block/cancel/unblock).
+                    Separate redesign cycle: left-aligned homepage, slot chip animations, focus-visible rings,
+                    confirmation page redesign, 404 page, favicon.
+  Failure reason:   n/a
+  Issues found / fixed / open: 3 / 1 / 2   (Issues 27–29; 27 fixed; 28–29 open)
+  Kit improvements: specs/ → docs/specs/ path refactor (8 files); session logs + kickoff → docs/ (8 files);
+                    design-taste-frontend added to task-agent-rubric.md
+  New pattern:      Redesign cycle as clean post-Phase-2 step — own branch, own session log, own code review
+  Detail:           testing-log.md Round 04 section (Issues 27–29 + Round 04 Close)
 ```

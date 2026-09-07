@@ -14,6 +14,9 @@ Issues found but not yet fixed — carried across rounds until resolved.
 |---|---|---|---|---|
 | Open 1 | No way to skip per-task review in `subagent-driven-development` — results in 3 review layers when kit intent is 1 | Round 01 | Medium — cost/overhead | Open |
 | Open 2 | Agent write failures add wall-clock overhead | Round 02 | Low (non-blocking) | **Fixed Round 03** — Issue 18 fail-fast write instruction eliminates retry spiral |
+| 26 | Step 3 (Tech Research) removed; research absorbed into Step 7 (now Step 6 Architecture); Steps 4–9 renumbered to 3–8 | Refactor | Medium — structural workflow change | Fixed |
+| 28 | Step 1 idea-brief written before clarifying questions were answered | Round 04 | Medium — rework + session log error | Open |
+| 29 | No file-content preview before marking a step complete; syntax errors go unnoticed | Round 04 | Low — cosmetic in this case; potentially higher risk | Open |
 
 ---
 
@@ -21,22 +24,30 @@ Issues found but not yet fixed — carried across rounds until resolved.
 
 | File | Rounds | Nature of changes |
 |---|---|---|
-| `kit/phase-1-bootstrap.md` | 01, 02, 03 | Orchestrator convention; step scope; Step 4 richer process + CSS rule; Step 5 output renamed to `docs/DESIGN.md` + path descriptions; Steps 6/7/8 inputs; Phase 1 Output Checklist; Step 7 hard gate; Step 9 pre-flight; Phase Handoff; item 6 fail-fast; Step 3 catalog-first |
+| `kit/phase-1-bootstrap.md` | 01, 02, 03, refactor | Orchestrator convention; step scope; Step 4 richer process + CSS rule; Step 5 output renamed to `docs/DESIGN.md` + path descriptions; Steps 6/7/8 inputs; Phase 1 Output Checklist; Step 7 hard gate; Step 9 pre-flight; Phase Handoff; item 6 fail-fast; Step 3 catalog-first; **Issue 26**: step table renumbered (8 steps), output checklist removes `docs/tech-options.md`, flow diagram updated |
 | `kit/phase-2-single-pass.md` | 01, 02, 03 | Created Round 01; Step 2 hard gate; Step 3 branch creation; checklist reference; Step 1 input renamed to `docs/DESIGN.md` |
 | `kit/phase-2-feature-dev.md` | 01, 03 | Orchestrator convention; session log schema; soft gate tightening; checklist reference; Step 1 input renamed to `docs/DESIGN.md` |
-| `kit/README.md` | 01, 02, 03 | Phase 2 track table; doc path updates; `design-system.md` → `DESIGN.md` throughout |
+| `kit/README.md` | 01, 02, 03, refactor | Phase 2 track table; doc path updates; `design-system.md` → `DESIGN.md` throughout; **Issue 26**: step groupings renumbered, Step 3 description removed, Architecture step updated, hard gates table updated, end-state artifact list removes `docs/tech-options.md` |
 | `kit/templates/04b-prototype-brief.md` | 03 | Full rewrite — State Coverage, Mock Data, Feedback Log, DoD 11 items; CSS clarity item |
 | `kit/templates/05-design-system.md` | 03 | Title and output reference updated to `docs/DESIGN.md` |
 | `kit/templates/06-roadmap.md` | 01, 03 | Phase 2 Track field; `design-system.md` → `DESIGN.md` in Based on |
-| `kit/templates/07-architecture.md` | 03 | `design-system.md` → `DESIGN.md` in Based on |
+| `kit/templates/07-architecture.md` | 03, refactor | `design-system.md` → `DESIGN.md` in Based on; **Issue 26**: "Based on" updated, tech-options references removed from Sections 1, 3, and header note |
 | `kit/templates/08-constitution.md` | 03 | `design-system.md` → `DESIGN.md` in Based on |
-| `kit/templates/09-scaffold-checklist.md` | 01, 03 | Phase 1 Closeout section; `design-system.md` → `DESIGN.md` in artifact list |
+| `kit/templates/09-scaffold-checklist.md` | 01, 03, refactor | Phase 1 Closeout section; `design-system.md` → `DESIGN.md` in artifact list; **Issue 26**: `docs/tech-options.md` removed from artifact list; title updated to Step 8 |
 | `kit/templates/phase-1-kickoff.md` | 03 | Removed "run all 9 steps" framing; gate-bypass warning; DESIGN.md path guidance |
 | `kit/stack-catalog.md` | 03 | Created — 6 stack entries; `Requires` field; fail-fast write note |
-| `kit/phase-1-checklist.md` | 03 | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance |
+| `kit/phase-1-checklist.md` | 03, 04 | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance; **Round 04**: Step 5 expanded to check project root `DESIGN.md` and auto-proceed without user confirmation (Issue 27) |
 | `kit/phase-2-checklist.md` | 03 | Created; Step 5 updated — batch E2E approach (Issue 25) |
 | `kit/CHANGELOG.md` | 02, 03 | Created Round 02; Round 03 entries added (Issues 17–25) |
-| `kit/phase-2-single-pass.md` | 01, 02, 03 | (see above) + Step 5 batch E2E approach (Issue 25) |
+| `kit/phase-1-checklist.md` | 03, refactor | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance; **Issue 26**: full rewrite — Step 3 (Tech Research) section removed, all steps renumbered, Step 6 gains three-stage research checklist |
+| `kit/steps/p1-03-tech-research.md` | refactor | **Issue 26**: deleted — step removed; research absorbed into architecture step |
+| `kit/templates/03-tech-options.md` | refactor | **Issue 26**: deleted — artifact removed |
+| `kit/steps/p1-03-prototype.md` | refactor | **Issue 26**: renamed from p1-04; step number and trigger updated |
+| `kit/steps/p1-04-design.md` | refactor | **Issue 26**: renamed from p1-05; step number and internal references updated |
+| `kit/steps/p1-05-roadmap.md` | refactor | **Issue 26**: renamed from p1-06; step number and trigger updated |
+| `kit/steps/p1-06-architecture.md` | refactor | **Issue 26**: renamed from p1-07; full rewrite — absorbs Step 3 catalog-first research as Stage 1; two-stage process becomes Stages 2–3; inputs updated |
+| `kit/steps/p1-07-constitution.md` | refactor | **Issue 26**: renamed from p1-08; step number updated |
+| `kit/steps/p1-08-scaffold.md` | refactor | **Issue 26**: renamed from p1-09; step number and trigger updated |
 
 ---
 
@@ -55,6 +66,88 @@ Issues found but not yet fixed — carried across rounds until resolved.
 **Supabase Realtime does not echo `postgres_changes` to the originating client.** Cross-tab delivery works; same-tab self-updates require an explicit local state update after the write is confirmed. Any Supabase + Realtime implementation must handle this.
 
 ---
+
+## Round 04 — court-booking
+
+### Round 04 Mid-Round Checkpoint
+
+*Updated at Step 6 stop — Phase 1 in progress, stopped at Roadmap gate by user.*
+
+| Field | Value |
+|---|---|
+| Phase 1 steps complete | 5 of 9 (Steps 1, 3, 4, 5; Step 2 skipped) |
+| Phase 1 steps remaining | 4 (Steps 6–9; Step 6 gate not yet approved) |
+| Wall-clock elapsed | ~40 min |
+| Credits spent (Phase 1 so far) | not tracked reliably |
+| Kit issues found this round | 3 (Issues 27–29) |
+| Kit issues fixed this round | 1 (Issue 27 fixed); Issues 28–29 documented, not yet fixed |
+| Blocking issues | None — round stopped by user, not by a blocker |
+
+*Next: resume at Step 6 gate — user to approve roadmap, then Steps 7–9.*
+
+---
+
+### Issue 27 — Step 5 only checked `docs/DESIGN.md`, missed DESIGN.md at project root
+
+- **Discovered at:** Phase 1 Step 5, Round 04 — court-booking
+- **Problem:** The Step 5 pre-flight check only looked for `docs/DESIGN.md`. When the user placed `DESIGN.md` at the project root (not in `docs/`), the check came back negative and the orchestrator asked the user which path to take — a redundant confirmation when a design file clearly already exists.
+- **Impact:** Unnecessary user friction; forces a confirmation that adds no information when the answer is obvious (if any DESIGN.md exists, use it).
+- **Root cause:** The checklist only specified one search path (`docs/DESIGN.md`). Common placement patterns (project root, referenced in kickoff but not yet moved to docs/) were not covered.
+- **Fix applied:**
+  - Updated `kit/phase-1-checklist.md` Step 5 to check three locations in order: `docs/DESIGN.md`, project root `DESIGN.md`, and any path referenced in the kickoff form.
+  - If ANY is found with content: copy to `docs/DESIGN.md` if not already there, mark Step 5 complete, advance to Step 6 — **no user confirmation required**.
+  - Rationale added: the user already has a design file; asking them to confirm is redundant friction.
+- **Status:** Fixed
+
+---
+
+### Issue 28 — Step 1 idea-brief written before clarifying questions were answered
+
+- **Discovered at:** Phase 1 Step 1, Round 04 — court-booking (raised by user)
+- **Problem:** The orchestrator asked Q1 (clarifying question), received an advisory to proceed, made assumptions, and wrote `docs/idea-brief.md` before getting any answers. The user correctly flagged this: the brainstorming skill's contract is questions → answers → document, not questions → document → answers.
+- **Impact:** The idea-brief had to be deleted and rewritten after Q&A. Step 1 was marked complete without user approval, then reverted. Added ~10 minutes of rework and a session log syntax error.
+- **Root cause:** The kit's Step 1 notes say to "fill `templates/01-idea-brief.md`" but do not explicitly state "only after all clarifying questions are answered." The brainstorming skill's gate ("do not implement until approved") applies, but it is not restated in the step notes where an orchestrator would read it.
+- **Fix applied:** None yet — needs a note added to `kit/steps/p1-01-ideation.md` (or `kit/phase-1-checklist.md` Step 1 section) explicitly stating: *"Do not write `docs/idea-brief.md` until all clarifying questions are answered and the user has reviewed the draft."*
+- **Status:** Open
+
+---
+
+### Issue 29 — No file-content preview before marking a step complete; syntax errors go unnoticed
+
+- **Discovered at:** Phase 1 Step 1, Round 04 — court-booking (raised by user)
+- **Problem:** After Step 1, the session log had a missing markdown table separator row (`|---|`) — a syntax error introduced when an edit operation overwrote the separator row with a data row. The error was only discovered because the user inspected the file manually. The kit has no convention requiring the orchestrator to preview generated files before marking a step complete.
+- **Impact:** Malformed files can persist undetected until a downstream step reads them. In this case the error was cosmetic, but a malformed `roadmap.md` or `constitution.md` could cause downstream parse failures.
+- **Root cause:** The Universal checklist items in `kit/phase-1-checklist.md` require verifying that a file *exists* on disk but do not require previewing its content for structural correctness.
+- **Fix applied:** None yet — needs a Universal checklist item: *"After every file write: open the file and verify the top 20 lines render correctly (no missing table separators, no truncation, no placeholder text)."*
+- **Status:** Open
+
+
+---
+
+### Round 04 Close — court-booking
+
+**Result: PASS.** Phase 1 complete (8 of 8 steps; Step 2 skipped), Phase 2 single-pass complete (7 of 7 steps, 30/30 E2E), redesign cycle complete (3 of 3 steps).
+
+#### Kit changes made this round
+
+**Structural refactor — `specs/` → `docs/specs/`** (applied pre-Phase-2, same session):
+- Problem: `docs/` (Phase 1 artifacts) and `specs/` (Phase 2 artifacts) were sibling directories at project root — arbitrary split, no rule backing it.
+- Fix: Moved `specs/` under `docs/` so one rule covers all non-code artifacts: *"`docs/` owns all non-code artifacts."* Also eliminated the `full-app/` subfolder from single-pass (no subfolder needed when there is only ever one spec).
+- Files changed: `kit/README.md`, `kit/phase-2-single-pass.md`, `kit/phase-2-feature-dev.md`, `kit/phase-2-checklist.md`, `kit/phase-bug-fix.md`, `kit/guides/evolving-specs.md`, `kit/templates/09-scaffold-checklist.md`, `AGENTS.md`
+
+**Structural refactor — session logs and kickoff moved into `docs/`** (applied pre-Phase-2, same session):
+- Problem: `phase-1-session.md`, `phase-2-session.md`, `phase-1-kickoff.md` were at project root — inconsistent with the new "everything in docs/" rule.
+- Fix: All three move to `docs/`. Session logs are operational records, but merging them into `docs/` keeps the rule simple.
+- Files changed: `kit/session-logging.md`, `kit/phase-1-checklist.md`, `kit/phase-2-checklist.md`, `kit/phase-2-single-pass.md`, `kit/phase-bug-fix.md`, `kit/README.md`, `kit/steps/p1-01-ideation.md`, `AGENTS.md`
+
+**`design-taste-frontend` added to task-agent-rubric.md** (applied post-Phase-2):
+- Added row in routing table for UI visual quality tasks referencing `/skill:design-taste-frontend` (new UI) and `/skill:redesign-existing-projects` (existing UI upgrades).
+- File changed: `kit/task-agent-rubric.md`
+
+#### New pattern validated: redesign as a separate post-Phase-2 cycle
+
+Phase 2 delivered functional code; a separate redesign cycle (own branch, own session log, own code review gate) upgraded visual quality without touching functional behaviour. This pattern worked cleanly. Consider adding it as an optional post-Phase-2 step in the kit for UI-heavy projects.
+
 
 ## Round 03 — chore-splitter
 
@@ -496,3 +589,22 @@ Phase 2 completed 2026-09-05. All 7 single-pass steps finished; F01–F06 shippe
 - **Observation:** The mark-done write succeeded (confirmed by Supabase response), but the same browser tab that made the write never received the Realtime UPDATE event. Cross-tab updates worked perfectly. This is expected Supabase behavior — Realtime `postgres_changes` subscriptions don't reliably deliver events back to the connection that caused the change.
 - **Fix in this run:** Added `onMarkDone` callback from ThisWeek → AssignmentCard; local state updated immediately after confirmed write. Realtime still delivers to other clients.
 - **Action:** Add this as a `constitution.md` note or architectural risk item for any future Supabase + Realtime project in the kit. Template `docs/architecture.md` could note this as a known behavior under "Harder / constraints introduced."
+
+---
+
+### Issue 26 — Step 3 (Tech Research) removed; research absorbed into Architecture step; steps renumbered
+
+- **Discovered at:** Post-Round 03 refactor — user-initiated structural investigation
+- **Problem:** Step 3 (Technical Research) produced `docs/tech-options.md` as an exploratory artifact. Investigation confirmed that Steps 4–6 do not consume `tech-options.md` content (Step 4's trigger referenced it only as a file-existence signal, not for its content). The document existed solely to feed Step 7. Running a separate catalog-lookup + research-analyst dispatch to produce an intermediate artifact, then re-reading that artifact in Step 7's analysis stage, adds a full step with no downstream benefit to Steps 4–6 and no structural value to the final decision — Step 7 already re-derives the same comparison.
+- **Impact:** Medium — one fewer step in Phase 1 (9 → 8); `docs/tech-options.md` artifact removed; Steps 4–9 renumbered to 3–8; step filenames updated.
+- **Root cause:** Step 3 was designed early in kit development when the two-document paper trail (options → decision) was considered beneficial. Testing confirmed Steps 4–6 don't read it, making it a pure intermediate artifact that only the orchestrator produces and Step 7 consumes — collapsible without information loss.
+- **Fix applied:**
+  - Deleted `kit/steps/p1-03-tech-research.md` and `kit/templates/03-tech-options.md`
+  - Created `kit/steps/p1-06-architecture.md` (from p1-07): absorbs Step 3's catalog-first research + web-search stage as a new Stage 1; existing two-stage analysis + confirmation process becomes Stages 2 and 3; inputs updated to include `idea-brief.md`, `market-notes.md` (optional), `kit/stack-catalog.md`; trigger updated to "Step 5 gate approved"
+  - Renamed step files: p1-04 → p1-03, p1-05 → p1-04, p1-06 → p1-05, p1-08 → p1-07, p1-09 → p1-08; updated all internal trigger/step-number references
+  - Updated `kit/phase-1-bootstrap.md`: step table renumbered (8 steps), output checklist removes `docs/tech-options.md`, flow diagram updated
+  - Updated `kit/phase-1-checklist.md`: Step 3 section removed; all subsequent steps renumbered; Architecture step gains research-stage checklist items; Phase 1 Close removes `docs/tech-options.md`
+  - Updated `kit/README.md`: step groupings renumbered, Step 3 description removed, Architecture step updated to reflect self-contained research, hard gates table updated, end-state artifact list removes `docs/tech-options.md`
+  - Updated `kit/templates/07-architecture.md`: "Based on" updated; tech-options references removed from Sections 1, 3, and the header note
+  - Updated `kit/templates/09-scaffold-checklist.md`: `docs/tech-options.md` removed from Phase 1 Closeout artifact list
+- **Status:** Fixed
