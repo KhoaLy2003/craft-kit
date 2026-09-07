@@ -12,10 +12,10 @@ Completed feature directories are **immutable historical records**. When require
 
 **How it works:**
 1. Open a new session for the changed feature.
-2. Run the Phase 2 cycle from Step 1 (Brainstorm & Spec) in a new `specs/<feature-slug-v2>/` directory.
+2. Run the Phase 2 cycle from Step 1 (Brainstorm & Spec) in a new `docs/specs/<feature-slug-v2>/` directory.
 3. Reference the original spec in the new spec's context section so the agent understands what is changing and why.
 4. The new cycle produces its own spec, plan, and branch. Ship it as a normal feature.
-5. Leave the original `specs/<feature-slug>/` directory unchanged.
+5. Leave the original `docs/specs/<feature-slug>/` directory unchanged.
 
 **Good fit when:**
 - Auditability matters — you want a clear record of how requirements evolved over time

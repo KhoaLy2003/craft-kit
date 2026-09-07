@@ -1,7 +1,7 @@
-# Phase 1 · Step 4 — Interactive Prototype
+# Phase 1 · Step 3 — Interactive Prototype
 
-- **Agent/Skill**: `task` agent (journey map + prototype brief); `frontend-developer` agent (interactive HTML)
-- **Trigger**: `docs/tech-options.md` exists
+- **Agent/Skill**: Your general-purpose agent (journey map + prototype brief); `frontend-developer` agent (interactive HTML)
+- **Trigger**: Step 2 complete or skipped
 - **Inputs**: `docs/idea-brief.md`; `docs/market-notes.md` *(if Step 2 was run)*; `kit/resource/interactive-prototype-process.md` *(reference — agents must read this before building)*
 - **Outputs**: `docs/prototype/` folder containing:
   - `docs/prototype/journey-map.md` — one persona, one scenario, end-to-end journey
@@ -23,7 +23,7 @@
 
   **Priority hierarchy (in order):** Flow → Function → Usability → Data → Visual Polish. A prototype that shows the right flow with ugly styling is more valuable than a beautiful prototype that doesn't cover the real workflow.
 
-  **Agent routing:** Do NOT dispatch the `designer` agent. Use `task` for the journey map and prototype brief. Use `frontend-developer` for the HTML. Reserve `designer` for Step 5.
+  **Agent routing:** Do NOT use a visual design agent for this step. Use your general-purpose agent for the journey map and prototype brief. Use `frontend-developer` for the HTML.
 
   **CSS and fidelity — simple, not confusing:**
 
@@ -50,4 +50,4 @@
   - **State coverage:** represent the happy path AND: the empty state (what does the screen look like before any data exists?), at least one validation/error state (what happens when the user submits with missing or invalid input?), and the success state after completing a key action.
   - **Faked parts documented:** every hardcoded value, simulated behavior, and missing backend connection must be listed explicitly in `prototype-brief.md` — not left ambiguous.
 
-  **Dispatch order:** (1) Dispatch `task` agent for `journey-map.md` and `prototype-brief.md`. (2) After both files are verified on disk, dispatch `frontend-developer` for the HTML prototype, passing the prototype-brief as its spec. Include the fail-fast write instruction (see `kit/orchestrator-conventions.md` item 6) in both dispatches.
+  **Dispatch order:** (1) Dispatch your general-purpose agent for `journey-map.md` and `prototype-brief.md`. (2) After both files are verified on disk, dispatch `frontend-developer` for the HTML prototype, passing the prototype-brief as its spec. Include the fail-fast write instruction (see `kit/orchestrator-conventions.md` item 6) in both dispatches.

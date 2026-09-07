@@ -13,7 +13,7 @@ Each step is documented with:
 - **Skill/Agent** — what to invoke
 - **Trigger** — what causes this step to start
 - **Inputs** — context/files this step reads
-- **Outputs** — what you have by the end of this step (not necessarily a structured file — the superpowers skills produce their own internal artifacts; this describes the *result* from your perspective)
+- **Outputs** — what you have by the end of this step (not necessarily a structured file — the skills produce their own internal artifacts; this describes the *result* from your perspective)
 - **Gate** — `none` / `soft` / `hard` — see `kit/gate-management.md` for gate type definitions
 - **Notes** — special handling, gaps to watch for
 
@@ -29,10 +29,10 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 ## Step 1 — Brainstorm and Spec
 
-- **Skill**: `/skill:brainstorming`
+- **Skill**: `brainstorming` skill
 - **Trigger**: Orchestrator selects the next `pending` feature from `docs/roadmap.md`
 - **Inputs**: The feature's entry in `docs/roadmap.md`; `docs/constitution.md`; `docs/architecture.md`; `docs/DESIGN.md`
-- **Output**: `specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior, non-goals, open questions resolved
+- **Output**: `docs/specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior, non-goals, open questions resolved
 - **Gate**: `hard` — the `brainstorming` skill has a built-in user approval gate on the written spec; the orchestrator does not advance until the user explicitly approves
 - **Gate Summary**: *"The spec for [feature name] is done — acceptance criteria, edge cases, and non-goals are defined. Does this correctly describe the feature as you want it built?"*
 - **Notes**:
@@ -40,16 +40,16 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
   - Scope must stay within the feature's roadmap entry. If brainstorming reveals the feature is larger than the estimate, flag this and re-agree scope before proceeding — do not silently expand.
   - The spec is a single feature, never multiple features batched together.
   - The spec must check compliance against `docs/constitution.md`.
-  - When the user approves, the terminal state is `specs/<feature-slug>/spec.md`. Do not invoke `writing-plans` from inside the skill — that is the next step.
+  - When the user approves, the terminal state is `docs/specs/<feature-slug>/spec.md`. Do not invoke `writing-plans` from inside the skill — that is the next step.
 
 ---
 
 ## Step 2 — Plan
 
-- **Skill**: `/skill:writing-plans`
-- **Trigger**: `specs/<feature-slug>/spec.md` exists and is approved (Step 1 gate passed)
-- **Inputs**: `specs/<feature-slug>/spec.md`; `docs/architecture.md`; `docs/constitution.md`
-- **Output**: `specs/<feature-slug>/plan.md` — ordered implementation plan with concrete tasks; each task has exact files, interfaces, test steps, and implementation steps; no placeholders
+- **Skill**: `writing-plans` skill
+- **Trigger**: `docs/specs/<feature-slug>/spec.md` exists and is approved (Step 1 gate passed)
+- **Inputs**: `docs/specs/<feature-slug>/spec.md`; `docs/architecture.md`; `docs/constitution.md`
+- **Output**: `docs/specs/<feature-slug>/plan.md` — ordered implementation plan with concrete tasks; each task has exact files, interfaces, test steps, and implementation steps; no placeholders
 - **Gate**: `soft` — present a plan summary before advancing; do not dispatch Step 3 silently
 - **Notes**:
   - The skill's self-review loop (placeholder scan, spec coverage, type consistency check) must complete before the plan is used in Step 3.
@@ -61,7 +61,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 ## Step 3 — Assign Specialists
 
-- **Who**: You (or a `task` agent reviewing the plan)
+- **Who**: You (or your general-purpose agent reviewing the plan)
 - **Trigger**: `plan.md` finalized
 - **Inputs**: `plan.md`; `task-agent-rubric.md` (this kit)
 - **Output**: `plan.md` with each task annotated with `Specialist:` — the agent that should implement it
@@ -86,9 +86,9 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 ## Step 4 — Implement
 
-- **Skill**: `/skill:subagent-driven-development` (sequential tasks) or `/skill:dispatching-parallel-agents` (parallel groups identified in Step 3)
+- **Skill**: `subagent-driven-development` skill (sequential tasks) or `dispatching-parallel-agents` skill (parallel groups identified in Step 3)
 - **Trigger**: `plan.md` exists with `Specialist:` annotations (Step 3 complete)
-- **Inputs**: `plan.md` with specialist annotations; `specs/<feature-slug>/spec.md`; `docs/constitution.md`
+- **Inputs**: `plan.md` with specialist annotations; `docs/specs/<feature-slug>/spec.md`; `docs/constitution.md`
 - **Output**: Code changes on a feature branch
 - **Gate**: `soft` — recommended: review the first 3–5 tasks before continuing unattended when working in an unfamiliar codebase pattern for the first time
 - **Notes**:
@@ -100,9 +100,9 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 ## Step 5 — Converge
 
-- **Agent**: `task` agent (spec-coverage analysis)
+- **Agent**: Your general-purpose agent (spec-coverage analysis)
 - **Trigger**: All tasks in `plan.md` complete; feature branch ready
-- **Inputs**: `specs/<feature-slug>/spec.md` (acceptance criteria list); full branch diff
+- **Inputs**: `docs/specs/<feature-slug>/spec.md` (acceptance criteria list); full branch diff
 - **Output**: Convergence report — COVERED / GAP per acceptance criterion; empty gap list = converged
 - **Gate**: `none` — loops until the gap list is empty; only then advances to Step 6
 - **Notes**:
@@ -117,7 +117,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 - **Agent**: `code-reviewer`
 - **Trigger**: Step 5 converged (gap list empty); feature branch ready
-- **Inputs**: Full diff of the feature branch against base; `specs/<feature-slug>/spec.md`; `docs/constitution.md`
+- **Inputs**: Full diff of the feature branch against base; `docs/specs/<feature-slug>/spec.md`; `docs/constitution.md`
 - **Output**: Review findings; all issues fixed directly on the branch before advancing
 - **Gate**: `none` — code review runs to completion; every finding is fixed immediately; there are no deferred findings at this stage
 - **Notes**:
@@ -132,7 +132,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 - **Agent**: `qa-expert` agent (test planning and execution); `ui-ux-tester` agent (for UI-heavy flows with browser interaction)
 - **Trigger**: Step 6 complete with all issues resolved
-- **Inputs**: Running application (started fresh for this test run); `specs/<feature-slug>/spec.md` (acceptance criteria); real data scenarios
+- **Inputs**: Running application (started fresh for this test run); `docs/specs/<feature-slug>/spec.md` (acceptance criteria); real data scenarios
 - **Output**: Test results; any failure triggers an immediate fix loop and re-run of this step before advancing
 - **Gate**: `soft`
 - **Notes**:
@@ -161,7 +161,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 ## Step 9 — Ship
 
-- **Skill**: `/skill:finishing-a-development-branch` (for branch finalization); `task` agent (for PR creation)
+- **Skill**: `finishing-a-development-branch` skill (for branch finalization); your general-purpose agent (for PR creation)
 - **Trigger**: Step 8 gate approved
 - **Inputs**: Feature branch; `docs/roadmap.md`
 - **Output**: Committed and pushed feature branch; pull request opened against the main branch; `docs/roadmap.md` feature status updated to `shipped`
@@ -214,7 +214,7 @@ Pull next pending feature from docs/roadmap.md ───────────
 
 ---
 
-## Notes on Superpowers Skills
+## Notes on Skills
 
 This phase uses the following skills without modifying them. Each skill is invoked as-is; the workflow just sequences them and adds the specialist assignment step between planning and implementation.
 
@@ -224,8 +224,8 @@ This phase uses the following skills without modifying them. Each skill is invok
 | 2 | `writing-plans` | Plan document with tasks |
 | 3 | Kit step (you) | Specialist annotations on each task |
 | 4 | `subagent-driven-development` / `dispatching-parallel-agents` | Code on feature branch |
-| 5 | `task` | Convergence report; gap tasks appended to plan.md |
+| 5 | general-purpose agent | Convergence report; gap tasks appended to plan.md |
 | 6 | `code-reviewer` | Review findings, all fixed inline |
 | 7 | `qa-expert` / `ui-ux-tester` | Test results, failures fixed inline |
 | 8 | Human | Approval gate |
-| 9 | `finishing-a-development-branch` + `task` | Committed branch + PR |
+| 9 | `finishing-a-development-branch` + general-purpose agent | Committed branch + PR |

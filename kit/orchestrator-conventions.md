@@ -49,3 +49,4 @@ At the start of every step, the orchestrating agent MUST:
    This prevents subagents from spending 20+ minutes on write-retry spirals.
 
 At the **end of every step**, update the session log with duration and credit delta before advancing. See `kit/session-logging.md` for the log schema and phase-specific starter templates.
+

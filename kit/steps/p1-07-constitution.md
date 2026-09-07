@@ -1,6 +1,6 @@
-# Phase 1 · Step 8 — Constitution / AI Working Guideline
+# Phase 1 · Step 7 — Constitution / AI Working Guideline
 
-- **Agent/Skill**: `task` agent
+- **Agent/Skill**: Your general-purpose agent
 - **Trigger**: `docs/architecture.md` exists and is `approved`
 - **Inputs**: `docs/architecture.md`, `docs/DESIGN.md`, `docs/roadmap.md`
 - **Outputs**: `docs/constitution.md` (or `CLAUDE.md` / `AGENTS.md` at project root if required by the agent harness)

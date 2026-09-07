@@ -5,7 +5,7 @@
 > | Path | When to use | What runs |
 > |---|---|---|
 > | **Import** | You have an existing `DESIGN.md` | Agent extracts + normalizes it into this template; AI design session is skipped |
-> | **AI** | No `DESIGN.md` yet | `designer` agent runs the full design session from the prototype |
+> | **AI** | No `DESIGN.md` yet | Your general-purpose agent (or a dedicated visual design agent) runs the full design session from the prototype |
 >
 > Both paths produce the same `docs/DESIGN.md` output and must pass the same gate before Step 6.
 

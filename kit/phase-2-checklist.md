@@ -17,7 +17,7 @@
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch
 - [ ] After every subagent write: verify file exists on disk; recover from `agent://` if absent
 - [ ] Include **fail-fast write instruction** (see `kit/orchestrator-conventions.md` item 6) in every subagent dispatch that writes files
-- [ ] Update `phase-2-session.md` with duration and credit delta at step end
+- [ ] Update `docs/phase-2-session.md` with duration and credit delta at step end
 - [ ] **Do NOT commit after individual tasks** — all changes accumulate on the feature branch until Manual Check / Step 6 approval
 
 ---
@@ -39,7 +39,7 @@
 
 ### Step 2 — Plan
 
-- [ ] Inputs: `specs/full-app/spec.md`; `docs/architecture.md`; `docs/constitution.md`
+- [ ] Inputs: `docs/specs/spec.md`; `docs/architecture.md`; `docs/constitution.md`
 - [ ] Identify **dominant specialist** — the single agent type handling the majority of tasks
 - [ ] If tasks genuinely split across two domains: this project should use the standard loop — stop and reassess track
 - [ ] Tasks sequenced by dependency order (build order), not MoSCoW priority
@@ -63,7 +63,7 @@
 
 ### Step 4 — Converge
 
-- [ ] For each acceptance criterion in `specs/full-app/spec.md`: find evidence in the branch diff
+- [ ] For each acceptance criterion in `docs/specs/spec.md`: find evidence in the branch diff
   - COVERED: evidence exists (function, component, validation logic, test)
   - GAP: no evidence found
 - **[LOOP]** Any GAP → append gap task to plan → implement → re-run Converge → repeat until zero gaps
@@ -119,7 +119,7 @@
 
 ### Step 2 — Plan
 
-- [ ] Inputs: `specs/<feature-slug>/spec.md`; `docs/architecture.md`; `docs/constitution.md`
+- [ ] Inputs: `docs/specs/<feature-slug>/spec.md`; `docs/architecture.md`; `docs/constitution.md`
 - [ ] Tasks sequenced by dependency order (build order), not priority
 - [ ] Tasks marked **parallel vs. sequential** by file scope — used by Step 4 to decide dispatch strategy
 - [ ] Plan validates against `docs/architecture.md` and `docs/constitution.md` before finalising
@@ -147,7 +147,7 @@
 
 ### Step 5 — Converge
 
-- [ ] For each acceptance criterion in `specs/<feature-slug>/spec.md`: find evidence in the branch diff
+- [ ] For each acceptance criterion in `docs/specs/<feature-slug>/spec.md`: find evidence in the branch diff
   - COVERED: evidence exists
   - GAP: no evidence found
 - **[LOOP]** Any GAP → append gap task to plan → dispatch implementer for gap tasks only → re-run Converge → repeat until zero gaps
@@ -158,7 +158,7 @@
 
 ### Step 6 — Code Review
 
-- [ ] `code-reviewer` reviews the **entire branch diff** against `specs/<feature-slug>/spec.md` and `docs/constitution.md`
+- [ ] `code-reviewer` reviews the **entire branch diff** against `docs/specs/<feature-slug>/spec.md` and `docs/constitution.md`
 - **[BLOCK]** Every finding — critical, important, or minor — fixed before advancing; no deferred findings
 - [ ] Architectural disagreements with `docs/constitution.md` called out explicitly, not silently fixed
 - [ ] Spec gap discovered during review: document the implementation decision in the spec before advancing
@@ -168,7 +168,7 @@
 ### Step 7 — End-to-End Testing
 
 - [ ] Real running application; real data; complete flow — not mocked, not unit tests
-- [ ] Every acceptance criterion in `specs/<feature-slug>/spec.md` exercised
+- [ ] Every acceptance criterion in `docs/specs/<feature-slug>/spec.md` exercised
 - [ ] Shared interaction patterns: test once per pattern
 - **[BLOCK]** Any failure: fix immediately → full re-run of Step 7 (not partial)
 - [ ] Use `qa-expert` for backend/data flows; `ui-ux-tester` for browser-driven UI verification

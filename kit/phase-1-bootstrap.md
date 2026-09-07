@@ -21,23 +21,19 @@ Before executing each step, read its step file. The step file is the authoritati
 |---|---|---|---|
 | 1 | Product Ideation | `none` | `kit/steps/p1-01-ideation.md` |
 | 2 | Market Research *(optional)* | `hard` | `kit/steps/p1-02-market-research.md` |
-| 3 | Technical Research | `none` | `kit/steps/p1-03-tech-research.md` |
-| 4 | Interactive Prototype | `none` | `kit/steps/p1-04-prototype.md` |
-| 5 | Product Design | `hard` | `kit/steps/p1-05-design.md` |
-| 6 | Roadmap Generation | `hard` | `kit/steps/p1-06-roadmap.md` |
-| 7 | Tech Stack & Architecture | `hard` | `kit/steps/p1-07-architecture.md` |
-| 8 | Constitution | `hard` | `kit/steps/p1-08-constitution.md` |
-| 9 | Scaffold | `none` | `kit/steps/p1-09-scaffold.md` |
+| 3 | Interactive Prototype | `none` | `kit/steps/p1-03-prototype.md` |
+| 4 | Product Design | `hard` | `kit/steps/p1-04-design.md` |
+| 5 | Roadmap Generation | `hard` | `kit/steps/p1-05-roadmap.md` |
+| 6 | Tech Stack & Architecture | `hard` | `kit/steps/p1-06-architecture.md` |
+| 7 | Constitution | `hard` | `kit/steps/p1-07-constitution.md` |
+| 8 | Scaffold | `none` | `kit/steps/p1-08-scaffold.md` |
 
 ---
-
-## Phase 1 Output Checklist
 
 Before Phase 2 starts, verify all of these exist and are marked `approved`:
 
 - [ ] `docs/idea-brief.md`
 - [ ] `docs/market-notes.md` *(skip this check if Step 2 was skipped)*
-- [ ] `docs/tech-options.md`
 - [ ] `docs/prototype/` (journey-map.md + prototype-brief.md + walkable HTML)
 - [ ] `docs/DESIGN.md`
 - [ ] `docs/roadmap.md` (all features `pending`)
@@ -54,7 +50,7 @@ After the Phase 1 Output Checklist passes, **close this session** and open a new
 **Why:** After 9 steps, this session carries a large context — market research deliberations, prototype feedback, design discussions — that is no longer relevant to Phase 2. Carrying it forward raises per-message cost and risks stale Phase 1 reasoning influencing Phase 2 decisions.
 
 **How to start Phase 2:**
-1. Open a new OMP session with the working directory set to the project root.
+1. Open a new session with the working directory set to the project root.
 2. Copy and paste the prompt below into the first message — fill in the two bracketed values, then send.
 
 ```
@@ -74,7 +70,7 @@ The new session has no memory of Phase 1 deliberations — only the four files a
 ## Flow Diagram
 
 ```
-Ideation → Market Research [optional, hard gate if run] → Tech Research → Prototype Mock → Product Design [hard gate]
+Ideation → Market Research [optional, hard gate if run] → Prototype → Product Design [hard gate]
     → Roadmap [hard gate] → Architecture [hard gate] → Constitution [hard gate] → Scaffold
                                                                            │
                                                                            ▼

@@ -1,4 +1,4 @@
-# scaffold-checklist.md — Output Template for Step 9: Scaffold & Convention Setup
+# scaffold-checklist.md — Output Template for Step 8: Scaffold & Convention Setup
 
 ## Metadata
 
@@ -75,7 +75,7 @@
 <!-- This is the final checkpoint before Phase 2 begins. Unlike other gates, this one confirms the ENTIRE Bootstrap phase, not just this step. -->
 
 - [ ] All sections above are checked
-- [ ] `docs/idea-brief.md`, `docs/market-notes.md`, `docs/tech-options.md`, `docs/prototype/`, `docs/DESIGN.md`, `docs/roadmap.md`, `docs/architecture.md`, `docs/constitution.md` all exist and are `approved`
+- [ ] `docs/idea-brief.md`, `docs/market-notes.md`, `docs/prototype/`, `docs/DESIGN.md`, `docs/roadmap.md`, `docs/architecture.md`, `docs/constitution.md` all exist and are `approved`
 - [ ] `docs/roadmap.md` Status column shows all features as `pending` (none started yet)
-- [ ] `specs/` directory created at project root (Phase 2 will write `specs/<feature-slug>/spec.md` and `plan.md` here)
+- [ ] `docs/specs/` directory created (Phase 2 will write `docs/specs/<feature-slug>/spec.md` and `plan.md` here; single-pass writes `docs/specs/spec.md` and `plan.md` directly)
 - [ ] Phase 2 entry point confirmed: the next action is to open a new agent session, reference `phase-2-feature-dev.md`, and tell the orchestrator to begin with the first `pending` feature in `docs/roadmap.md` (build order)

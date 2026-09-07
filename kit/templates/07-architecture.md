@@ -4,16 +4,14 @@
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
-- **Based on**: `tech-options.md`, `DESIGN.md`, `roadmap.md`
+- **Based on**: `idea-brief.md`, `market-notes.md` *(if Step 2 was run)*, `DESIGN.md`, `roadmap.md`
 
-> This is the final decision. `tech-options.md` was exploratory — this document commits.
+> This is the final decision. Stack research was conducted in Step 6; this document commits.
 
 ---
 
 ## 1. Context
-
-<!-- The situation driving this decision. Pull from tech-options.md's requirements, plus roadmap.md's scope/complexity (feature count, sizes) as they affect the choice. -->
-
+<!-- The situation driving this decision. Pull from the Step 6 research findings, plus roadmap.md's scope/complexity (feature count, sizes) as they affect the choice. -->
 -
 
 ---
@@ -29,9 +27,7 @@
 ---
 
 ## 3. Options Considered
-
-<!-- Pulled from tech-options.md. For each option NOT chosen, state why in one line. -->
-
+<!-- From the Step 6 research phase. For each option NOT chosen, state why in one line. -->
 | Option | Considered | Rejected because |
 |---|---|---|
 | | | |

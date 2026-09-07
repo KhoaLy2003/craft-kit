@@ -1,7 +1,7 @@
 # Product Development Kit
 
 A reusable, agent-friendly workflow kit for building software products with AI coding agents.
-Built on top of the [Oh My Pi](https://omp.dev) superpowers skill set. Designed to be dropped into any project and used immediately.
+Works with any multi-agent AI coding harness. Designed to be dropped into any project and used immediately.
 
 ---
 
@@ -34,7 +34,7 @@ Run this once when starting a new project. Skip it entirely on existing projects
 ### Phase 2 — Feature Development (once per feature)
 
 Takes one feature from `roadmap.md` through brainstorming, planning, implementation, review, testing, and shipping.
-Powered by the superpowers skill set: `brainstorming` → `writing-plans` → `subagent-driven-development` / `dispatching-parallel-agents` → code review → E2E testing → ship.
+Powered by a set of workflow skills: `brainstorming` → `writing-plans` → `subagent-driven-development` / `dispatching-parallel-agents` → code review → E2E testing → ship.
 
 Run this cycle for every feature — including the first MVP feature.
 
@@ -42,7 +42,7 @@ Run this cycle for every feature — including the first MVP feature.
 
 ## How to Use This Kit
 
-The phase files are orchestration scripts for the main OMP agent — you do not execute steps manually. You start a session, reference the phase file, and participate at the gates. The agent handles dispatching, artifact creation, and advancing between steps.
+The phase files are orchestration scripts for the main orchestrating agent — you do not execute steps manually. You start a session, reference the phase file, and participate at the gates. The agent handles dispatching, artifact creation, and advancing between steps.
 
 **Artifacts** (filled templates, specs, plans) land at your **project root**, not inside `kit/`. The kit folder is a reference — never edit files inside it.
 
@@ -50,57 +50,56 @@ The phase files are orchestration scripts for the main OMP agent — you do not 
 
 ### Phase 1 — New project
 
-**Prerequisites:** an empty (or near-empty) repository; OMP configured with the skills and agents listed under [Required Skills and Agents](#required-skills-and-agents).
+**Prerequisites:** an empty (or near-empty) repository; your agent harness configured with the skills and agents listed under [Required Skills and Agents](#required-skills-and-agents).
 
-**Kickoff check:** before starting Step 1, the orchestrator MUST verify that every required skill and agent is available. Missing skills surface as errors mid-run, not upfront. Check each skill with `/skill:<name>` and each agent by attempting a minimal dispatch. Report any that are missing and stop — do not begin Phase 1 against an incomplete toolset.
+**Kickoff check:** before starting Step 1, the orchestrator MUST verify that every required skill and agent is available. Missing skills surface as errors mid-run, not upfront. Verify each skill is available in your harness and each agent can be dispatched successfully. Report any that are missing and stop — do not begin Phase 1 against an incomplete toolset.
 
 **Before starting:**
-Copy `templates/phase-1-kickoff.md` to your project root, fill it in with your idea, target user, anything you already have (design files, tech preferences), hard constraints, and any steps you want to skip. Rough notes are fine — the agent asks clarifying questions in Step 1.
+Copy `templates/phase-1-kickoff.md` to `docs/` in your project root, fill it in with your idea, target user, anything you already have (design files, tech preferences), hard constraints, and any steps you want to skip. Rough notes are fine — the agent asks clarifying questions in Step 1.
 
 **Start the session:**
-> "Start Phase 1 using `phase-1-kickoff.md`."
+> "Start Phase 1 using `docs/phase-1-kickoff.md`."
 
 The agent reads your kickoff file and `kit/phase-1-bootstrap.md` together, then begins Step 1.
 
-**What happens across the 9 steps:**
+**What happens across the 8 steps:**
 
-**Steps 1–3 — Ideation, Market Research, Tech Research**
+**Steps 1–2 — Ideation, Market Research**
 Step 1 is a conversation: the agent asks clarifying questions about your idea and produces `idea-brief.md`. You review and approve it before anything else runs.
 
 Step 2 dispatches the `market-researcher` agent and delivers a research report covering market size, direct competitors, and genuine reasons the idea might not work. This is the first hard gate — you decide whether to proceed, pivot, or stop. If you stop, the rest of Phase 1 does not run.
 
-Step 3 dispatches `research-analyst` to map the technology landscape and `librarian` for source-verified library research. It produces a `tech-options.md` with 2–3 viable stacks and their tradeoffs — no commitment yet. The final stack decision happens in Step 7.
+**Steps 3–4 — Prototype, Product Design**
+Step 3 dispatches your general-purpose agent to produce a journey map and prototype brief, then `frontend-developer` to wire them into a clickable HTML prototype in `prototype/`. No real backend — faked data is explicitly documented.
 
-**Steps 4–5 — Prototype, Product Design**
-Step 4 dispatches the `designer` agent to produce a journey map and wireframes, then `frontend-developer` to wire them into a clickable HTML prototype in `prototype/`. No real backend — faked data is explicitly documented.
-
-Step 5 is the design system session. Two paths:
+Step 4 is the design system session. Two paths:
 - **Import path** — if you already have a `DESIGN.md`, provide the path; the agent reads it and normalizes it into `docs/DESIGN.md`. The AI design session is skipped. See `samples/DESIGN.md` for the expected format.
-- **AI path** — no existing design file; the `designer` agent runs a full session from the prototype and produces tokens, components, and finalized mock screens.
+- **AI path** — no existing design file; your general-purpose agent runs a design session from the prototype and produces tokens, components, and finalized mock screens.
 
-Step 5 is the second hard gate — design direction is locked here. Changing it after this point is expensive.
+Step 4 is a hard gate — design direction is locked here. Changing it after this point is expensive.
 
-**Steps 6–7 — Roadmap, Architecture**
-Step 6 is a product decision: the agent drafts a MoSCoW-prioritized feature list with build order; you decide what's in scope, what's deferred, and in what order Phase 2 runs. Hard gate — the orchestrator does not advance until you explicitly approve the feature list.
+**Steps 5–6 — Roadmap, Architecture**
+Step 5 is a product decision: the agent drafts a MoSCoW-prioritized feature list with build order; you decide what's in scope, what's deferred, and in what order Phase 2 runs. Hard gate — the orchestrator does not advance until you explicitly approve the feature list.
 
-Step 7 picks the tech stack. The `research-analyst` agent documents the decision and ties it to the roadmap's complexity. You sign off and the document is marked `approved`. No separate hard gate — approval is embedded in the session.
+Step 6 picks the tech stack. First, the `research-analyst` reads `kit/stack-catalog.md` (catalog-first) and surfaces 2–3 viable options with tradeoffs informed by the roadmap's actual scope. Then it produces a ranked recommendation in chat — no document yet. You confirm the stack choice, and only then is `architecture.md` written. Hard gate — the stack choice is irreversible once Phase 2 begins.
 
-**Steps 8–9 — Constitution, Scaffold**
-Step 8 produces `constitution.md` — the governing principles for every AI agent that touches code on this project. Each principle must be concrete enough to change a real plan or diff. Hard gate — these rules apply to every Phase 2 session that follows.
+**Steps 7–8 — Constitution, Scaffold**
+Step 7 produces `constitution.md` — the governing principles for every AI agent that touches code on this project. Each principle must be concrete enough to change a real plan or diff. Hard gate — these rules apply to every Phase 2 session that follows.
 
-Step 9 scaffolds the codebase: folder structure, linter, formatter, test framework, CI, README, and a smoke test. When the smoke test passes and every checklist item is checked, Phase 1 is closed.
+Step 8 scaffolds the codebase: folder structure, linter, formatter, test framework, CI, README, and a smoke test. When the smoke test passes and every checklist item is checked, Phase 1 is closed.
 
 **Phase 1 hard gates:**
 
 | Step | What you receive | Your decision |
 |---|---|---|
 | Step 2 — Market Research *(optional)* | Research report with competitor map and "reasons this might not work" section | Proceed / Pivot / Stop — or skip Step 2 entirely if you already have external validation |
-| Step 5 — Product Design | Design tokens, component list, finalized mock screens | Approve / Request changes |
-| Step 6 — Roadmap | MoSCoW feature list with build order and deferred items | Approve / Reprioritize / Cut scope |
-| Step 8 — Constitution | Governing principles for AI-generated code | Approve / Refine principles |
+| Step 4 — Product Design | Design tokens, component list, finalized mock screens | Approve / Request changes |
+| Step 5 — Roadmap | MoSCoW feature list with build order and deferred items | Approve / Reprioritize / Cut scope |
+| Step 6 — Tech Stack & Architecture | Ranked stack recommendation with tradeoffs | Confirm stack choice |
+| Step 7 — Constitution | Governing principles for AI-generated code | Approve / Refine principles |
 
-**End state:** A running scaffold at "hello world" level, plus a `docs/` folder at your project root containing up to 8 approved artifacts:
-`docs/idea-brief.md` · `docs/market-notes.md` *(if Step 2 was run)* · `docs/tech-options.md` · `docs/prototype/` · `docs/DESIGN.md` · `docs/roadmap.md` · `docs/architecture.md` · `docs/constitution.md`
+**End state:** A running scaffold at "hello world" level, plus a `docs/` folder at your project root containing up to 7 approved artifacts:
+`docs/idea-brief.md` · `docs/market-notes.md` *(if Step 2 was run)* · `docs/prototype/` · `docs/DESIGN.md` · `docs/roadmap.md` · `docs/architecture.md` · `docs/constitution.md`
 
 ---
 
@@ -128,7 +127,7 @@ Run this cycle once per feature, starting from the first pending feature in buil
 
 **Artifacts per feature:**
 ```
-specs/<feature-slug>/
+docs/specs/<feature-slug>/
   spec.md    ← approved spec
   plan.md    ← annotated task plan
 ```
@@ -148,7 +147,7 @@ Run this cycle once, covering all Must features in the roadmap in a single pass.
 
 **Artifacts:**
 ```
-specs/full-app/
+docs/specs/
   spec.md    ← approved full-app spec (one section per feature)
   plan.md    ← complete task plan in dependency order
 ```
@@ -168,7 +167,7 @@ Skip Phase 1. Before running Phase 2 for the first time, create a `docs/` folder
 | `docs/DESIGN.md` | `templates/05-design-system.md` | Required for projects with UI. Use the import path if you have a design file (see `samples/DESIGN.md`); use the AI path or fill manually otherwise. Phase 2 Step 1 (Brainstorm) reads this for any UI-touching feature. |
 | `docs/roadmap.md` | `templates/06-roadmap.md` | List the features you intend to build, in MoSCoW priority, with build order. Phase 2 reads this to select the next feature and updates `Status` as features ship. |
 
-Also create `specs/` at the project root — Phase 2 writes per-feature specs and plans there.
+Phase 2 writes specs and plans into `docs/specs/` — no separate root-level `specs/` directory needed.
 
 Once those files exist, start Phase 2 with the prompt above.
 
@@ -178,7 +177,7 @@ Once those files exist, start Phase 2 with the prompt above.
 
 This kit assumes the following are configured in your AI agent harness:
 
-**Skills (superpowers):**
+**Skills:**
 - `brainstorming`
 - `writing-plans`
 - `subagent-driven-development`
@@ -188,26 +187,22 @@ This kit assumes the following are configured in your AI agent harness:
 - `using-git-worktrees`
 - `verification-before-completion`
 
-**Agents:**
-- `task` — general-purpose (bundled)
-- `scout` — read-only research (bundled)
-- `designer` — UI/UX design (bundled)
+**Agents — specialist (install before starting):**
 - `market-researcher` — market analysis
-- `research-analyst` — research and synthesis
-- `librarian` — library/API research (bundled)
+- `research-analyst` — technology and domain research, synthesis
 - `frontend-developer` — frontend implementation
 - `code-reviewer` — code review
 - `qa-expert` — test planning and execution
-> If your setup uses different agent names, update `task-agent-rubric.md` to match.
->
-> **If any skill or agent is missing:** install it before starting Phase 1. A missing skill discovered mid-run requires restarting from the step that needs it. The orchestrator checks availability at Phase 1 kickoff and reports any gaps.
+- `ui-ux-tester` — browser-driven UI/UX testing
+
+> **If any skill or agent is missing or unverified:** resolve it before starting Phase 1. A missing agent discovered mid-run requires restarting from the step that needs it. The orchestrator checks availability at Phase 1 kickoff and reports any gaps.
 
 ---
 
 ## Kit Philosophy
 
 - **One feature at a time.** Never batch multiple features into a single spec/plan/implement pass.
-- **Skills run as-is.** This kit orchestrates existing superpowers skills — it does not modify or replace them.
+- **Skills run as-is.** This kit orchestrates existing skills — it does not modify or replace them.
 - **Templates are fill-in forms.** Each Phase 1 step has a corresponding template in `templates/`. Copy the template into your project and fill it in; do not edit the kit template itself.
 - **Constitution first.** Every Phase 2 step checks compliance against `constitution.md`. If there is no constitution, Phase 2 has no ground truth to check against.
 - **Human gates are real gates.** Steps marked `hard gate` require explicit human approval before the orchestrator continues — they are not suggestions.

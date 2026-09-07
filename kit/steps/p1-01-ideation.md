@@ -2,7 +2,7 @@
 
 - **Agent/Skill**: `brainstorming` skill (Architectural path)
 - **Trigger**: Starting a new project with no existing codebase
-- **Inputs**: `phase-1-kickoff.md` (user-filled project context — idea, target user, constraints, existing assets, steps to skip); fall back to conversational clarification if the kickoff file is absent or thin
+- **Inputs**: `docs/phase-1-kickoff.md` (user-filled project context — idea, target user, constraints, existing assets, steps to skip); fall back to conversational clarification if the kickoff file is absent or thin
 - **Outputs**: `docs/idea-brief.md`
 - **Template**: `templates/01-idea-brief.md`
 - **Gate**: `none`

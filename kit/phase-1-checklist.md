@@ -17,7 +17,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch
 - [ ] Include **fail-fast write instruction** (see `kit/orchestrator-conventions.md` item 6) in every subagent dispatch that writes files
 - [ ] After every subagent write: verify file exists on disk; recover from `agent://` and write directly if absent
-- [ ] Update `phase-1-session.md` with duration and credit delta at step end before advancing
+- [ ] Update `docs/phase-1-session.md` with duration and credit delta at step end before advancing
 
 ---
 
@@ -28,7 +28,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - [ ] Clarifying questions cover: problem today, who has it, existing alternatives, what's out of scope — stop there
 - [ ] `docs/idea-brief.md` written and `Status: approved` before advancing
 - **[HARD GATE]** After Step 1 completes, present the Step 2 choice in chat:
-  *"Step 2 (Market Research) validates demand and finds competitive risks. Proceed or skip to Step 3?"*
+  *"Step 2 (Market Research) validates demand and finds competitive risks. Proceed or skip to Step 3 (Prototype)?"*
   Wait for the user's answer. **This is required even if the kickoff says "run all steps."**
 
 ---
@@ -43,49 +43,42 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ---
 
-## Step 3 — Technical Research
-
-- [ ] Read `kit/stack-catalog.md` **first** — before any web searches
-- [ ] Web-search only for stacks not in the catalog, or for volatile facts (pricing/limits) with `Last verified` >3 months old
-- [ ] Fail-fast write instruction included in dispatch prompt
-- [ ] Section 5 (open questions for Step 7) filled — do not leave empty or skip
-- **[BLOCK]** `docs/tech-options.md` verified to exist on disk after agent completes; recover from `agent://` if absent
-
----
-
-## Step 4 — Interactive Prototype
+## Step 3 — Interactive Prototype
 
 - [ ] Read `kit/resource/interactive-prototype-process.md` before dispatching anything
-- [ ] Dispatch **`task` agent** for journey map and prototype brief — **NOT** `designer`
+- [ ] Dispatch **your general-purpose agent** for journey map and prototype brief — **NOT** a visual design agent
 - **[BLOCK]** Verify `docs/prototype/journey-map.md` and `docs/prototype/prototype-brief.md` exist on disk before dispatching `frontend-developer`
 - [ ] HTML prototype: CSS **required** for structural clarity (layout, grouping, hierarchy, state visibility) — no brand colors, no visual polish
 - **[BLOCK]** Verify all HTML files exist on disk after `frontend-developer` completes
-- [ ] Walk review questions before advancing: requirements, user flow, states, edge cases (see `kit/steps/p1-04-prototype.md`)
+- [ ] Walk review questions before advancing: requirements, user flow, states, edge cases (see `kit/steps/p1-03-prototype.md`)
 - **[BLOCK]** `prototype-brief.md` Definition of Done checklist: **all 11 items** must be checked before advancing
 
 ---
 
-## Step 5 — Product Design
+## Step 4 — Product Design
 
-- **[MUST DO FIRST]** Check `docs/DESIGN.md` at `PROJECT_ROOT` (glob or bash). Also check kickoff form for a referenced design file.
+- **[MUST DO FIRST]** Check for an existing design file — in order:
+  1. `docs/DESIGN.md` at `PROJECT_ROOT`
+  2. `DESIGN.md` at `PROJECT_ROOT` (project root, not in docs/)
+  3. Any path explicitly listed in the kickoff form under "Design file"
 
-- **If `docs/DESIGN.md` found and has content:**
-  - **Skip Step 5 entirely.** Mark `complete` in session log. Advance to Step 6 immediately. No agent runs.
+- **If ANY of the above is found and has content:**
+  - **Skip Step 4 entirely — no user confirmation needed.** Copy the file to `docs/DESIGN.md` if it is not already there. Mark `complete` in session log. Advance to Step 5 immediately. No agent runs, no gate.
+  - Rationale: the user already has a design file; asking them to confirm is redundant friction.
 
-- **If no `docs/DESIGN.md` found:**
+- **If no design file is found anywhere:**
   - Present sources: **getdesign.md** (https://getdesign.md/design-md) · **freedesignmd.com** (https://freedesignmd.com)
   - Tell user: *"Save the downloaded file to `docs/DESIGN.md` in the project folder, then say 'downloaded'."*
   - After user confirms download: check `docs/DESIGN.md` exists and has content automatically — do not ask for path
-    - Found → mark Step 5 complete, advance to Step 6. No agent runs.
+    - Found → mark Step 4 complete, advance to Step 5. No agent runs.
     - Not found → tell user; wait for them to confirm placement before checking again
-  - AI chosen → dispatch `designer` agent; write output to `docs/DESIGN.md`
+  - AI chosen → dispatch your general-purpose agent (or a dedicated visual design agent if available); write output to `docs/DESIGN.md`
     - **[HARD GATE]** Gate Summary: *"The design direction is set — colors, typography, and components are locked. Does this match what you want?"*
-
 ---
 
-## Step 6 — Roadmap Generation
+## Step 5 — Roadmap Generation
 
-- [ ] `task` agent drafts; human makes all priority and cut/keep decisions
+- [ ] Your general-purpose agent drafts; human makes all priority and cut/keep decisions
 - [ ] Build order accounts for dependencies, not just priority
 - [ ] Deferred features explicitly listed — not silently dropped
 - [ ] All features start with `Status: pending`
@@ -95,15 +88,19 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ---
 
-## Step 7 — Tech Stack and Architecture Decision
+## Step 6 — Tech Stack Research and Architecture Decision
 
-> **Critical: two stages. Do not collapse into one.**
+> **Critical: three stages. Do not collapse into one.**
 
-- **Stage 1 — Analysis (chat only):**
+- **Stage 1 — Research (catalog-first):**
+  - [ ] Read `kit/stack-catalog.md` **first** — before any web searches
+  - [ ] Web-search only for stacks not in the catalog, or for volatile facts (pricing/limits) with `Last verified` >3 months old
+  - [ ] Surface 2–3 viable options with pros/cons, informed by roadmap scope
+- **Stage 2 — Analysis (chat only):**
   - [ ] `research-analyst` produces a ranked recommendation **in chat** — two or three stacks with tradeoffs, one clearly recommended
   - [ ] **No document written yet** — `docs/architecture.md` must not exist at this stage
   - [ ] Stack name explicitly stated in the chat recommendation
-- **[HARD GATE — Stage 2 — Confirmation]:**
+- **[HARD GATE — Stage 3 — Confirmation]:**
   - Gate Summary: *"The recommended stack is [X]. Review the reasoning and confirm before we write the architecture document."*
   - Wait for the user to name the stack. "Looks good" or "proceed" counts **only if the stack name was surfaced** in the gate message.
   - **Only after confirmation**: write `docs/architecture.md` with `Status: draft`; orchestrator sets `Status: approved` in the file
@@ -112,7 +109,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ---
 
-## Step 8 — Constitution / AI Working Guideline
+## Step 7 — Constitution / AI Working Guideline
 
 - [ ] Every principle concrete enough to change at least one downstream decision — reject any that wouldn't alter a diff
 - [ ] No personal workflow preferences — only rules that shape code and architecture output
@@ -122,7 +119,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ---
 
-## Step 9 — Scaffold and Convention Setup
+## Step 8 — Scaffold and Convention Setup
 
 **Pre-flight checks — run ALL of these before dispatching the scaffold agent:**
 
@@ -151,7 +148,6 @@ Before closing the session:
 - **[BLOCK]** Phase 1 Output Checklist — verify all items exist and are `approved`:
   - [ ] `docs/idea-brief.md`
   - [ ] `docs/market-notes.md` *(skip if Step 2 was skipped)*
-  - [ ] `docs/tech-options.md`
   - [ ] `docs/prototype/` (journey-map.md + prototype-brief.md + walkable HTML)
   - [ ] `docs/DESIGN.md`
   - [ ] `docs/roadmap.md` (all features `pending`)

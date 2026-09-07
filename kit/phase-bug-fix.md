@@ -15,21 +15,21 @@ Three steps: **Assess → Fix → Verify**. Each step has a gate. The gate at As
 
 Read `kit/orchestrator-conventions.md` for the universal rules every orchestrating agent must follow. For bug fixes, the key items are: step banner (use `Bug Fix · Step N — [Step Name]  |  Slug: [bug-slug]  |  Gate: [none/hard]`), wall-clock time recording, file-write verification, and gate summary protocol at the Assess and Verify hard gates.
 
-Read `kit/session-logging.md` for the session log schema and the Bug Fix starter template (`bug-session.md`).
+Read `kit/session-logging.md` for the session log schema and the Bug Fix starter template (`docs/bug-session.md`).
 
 ---
 
 ## Step 1 — Assess
 
-- **Agents**: `scout` (read-only codebase research); human confirms the diagnosis
+- **Agents**: Your general-purpose agent (read-only codebase research — instruct it to read only, no edits); human confirms the diagnosis
 - **Trigger**: A bug report exists with a reproducible symptom
 - **Inputs**: Bug report; running application; codebase
-- **Output**: `specs/bugs/<bug-slug>/assess.md` — symptom, reproduction steps, root cause location, proposed fix scope
+- **Output**: `docs/specs/bugs/<bug-slug>/assess.md` — symptom, reproduction steps, root cause location, proposed fix scope
 - **Gate**: `hard` — do not proceed to Fix until the root cause is confirmed
 - **Gate Summary**: *"The diagnosis is: [one sentence root cause]. The fix will touch: [files/scope]. Does this match what you believe is broken?"*
 - **Notes**:
   - **Reproduce first.** Confirm you can trigger the symptom reliably before reading any code. An unreproducible bug cannot be verified fixed.
-  - Dispatch `scout` to locate the relevant code. It reads — it does not edit. Ask it to find where the reported behavior originates, not to propose a fix.
+  - Dispatch your general-purpose agent to locate the relevant code. Instruct it to read only — no edits at this stage. Ask it to find where the reported behavior originates, not to propose a fix.
   - Document the full causal chain: *what the user does → what the system does → where it goes wrong → why it goes wrong there*. A symptom description ("button doesn't work") is not a root cause.
   - Bound the fix scope explicitly: which files, which functions, what is in and what is out. A fix that touches more than the root cause is a spec violation.
   - `assess.md` template:
@@ -59,9 +59,9 @@ Read `kit/session-logging.md` for the session log schema and the Bug Fix starter
 
 ## Step 2 — Fix
 
-- **Agent**: Specialist matched to the affected code (e.g. `frontend-developer`, `task`)
+- **Agent**: Specialist matched to the affected code (e.g. `frontend-developer`, or your general-purpose agent)
 - **Trigger**: Step 1 gate approved — root cause confirmed, fix scope defined
-- **Inputs**: `specs/bugs/<bug-slug>/assess.md`; affected files identified in Assess
+- **Inputs**: `docs/specs/bugs/<bug-slug>/assess.md`; affected files identified in Assess
 - **Output**: Code changes on a `fix/<bug-slug>` branch
 - **Gate**: `none`
 - **Notes**:
@@ -85,7 +85,7 @@ Read `kit/session-logging.md` for the session log schema and the Bug Fix starter
   - Run the affected E2E flow from Phase 2 (if one exists) to confirm no regression in related behavior.
   - Dispatch `qa-expert` for any non-UI verification (data integrity, API behavior, error handling). For UI symptoms, verify in the running browser.
   - Once verified: commit with message `fix(<scope>): <one-line description> — resolves <bug-slug>`. Push the branch and open a PR against main.
-  - Update `bug-session.md` with the final status and PR link.
+  - Update `docs/bug-session.md` with the final status and PR link.
 
 ---
 

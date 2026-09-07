@@ -4,7 +4,7 @@
 >
 > All features are spec'd, planned, implemented, reviewed, tested, and shipped in a single cycle. No per-feature loop.
 >
-> Prerequisites: Phase 1 complete; `docs/roadmap.md` with all Must features `pending`; `phase-1-kickoff.md` Phase 2 approach set to `single-pass`.
+> Prerequisites: Phase 1 complete; `docs/roadmap.md` with all Must features `pending`; `docs/phase-1-kickoff.md` Phase 2 approach set to `single-pass`.
 
 ---
 
@@ -39,10 +39,10 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 
 ## Step 1 — Full-App Spec
 
-- **Skill**: `/skill:brainstorming` (Architectural path)
+- **Skill**: `brainstorming` skill (Architectural path)
 - **Trigger**: `docs/roadmap.md` exists with all features `pending`; Phase 2 approach is `single-pass`
 - **Inputs**: All Must features in `docs/roadmap.md`; `docs/architecture.md`; `docs/DESIGN.md`; `docs/constitution.md`
-- **Output**: `specs/full-app/spec.md` — one document, one `##` section per feature in roadmap build order
+- **Output**: `docs/specs/spec.md` — one document, one `##` section per feature in roadmap build order
 - **Gate**: `hard` — you review the complete spec and approve once before implementation starts
 - **Gate Summary**: *"The full-app spec is ready — one section per feature with acceptance criteria and edge cases. This is the most consequential approval: a wrong assumption here propagates into every feature. Review each section before approving."*
 - **Notes**:
@@ -57,9 +57,9 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 
 ## Step 2 — Plan
 
-- **Skill**: `/skill:writing-plans`
-- **Trigger**: `specs/full-app/spec.md` approved (Step 1 gate passed)
-- **Inputs**: `specs/full-app/spec.md`; `docs/architecture.md`; `docs/constitution.md`
+- **Skill**: `writing-plans` skill
+- **Trigger**: `docs/specs/spec.md` approved (Step 1 gate passed)
+- **Inputs**: `docs/specs/spec.md`; `docs/architecture.md`; `docs/constitution.md`
 - **Gate**: `hard` — the plan covers all features; a wrong assumption here propagates into every task downstream
 - **Gate Summary**: *"The implementation plan is ready. Review the task summary above — once approved, implementation begins and covers all features in one pass."*
 - **Notes**:
@@ -75,15 +75,15 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 ## Step 3 — Implement
 
 - **Skill/Agent**: Dominant specialist identified in Step 2 (e.g. `frontend-developer`)
-- **Trigger**: `specs/full-app/plan.md` finalised
-- **Inputs**: `specs/full-app/plan.md`; `specs/full-app/spec.md`; `docs/constitution.md`
+- **Trigger**: `docs/specs/plan.md` finalised
+- **Inputs**: `docs/specs/plan.md`; `docs/specs/spec.md`; `docs/constitution.md`
 - **Output**: All feature code on a single branch (`feature/full-app` or `feature/<project-slug>`)
 - **Gate**: `soft` — review progress at the midpoint (after roughly half the tasks) if working in an unfamiliar pattern
 - **Notes**:
   - **Before dispatching the agent:** the orchestrator MUST create and switch to a feature branch (`git checkout -b feature/<project-slug>`) if it does not already exist. Include the branch name in the step banner. Implementation MUST NOT begin on `main`. If no git repo exists, that is a Phase 1 gap — stop and resolve it before proceeding.
   - One agent implements all tasks in plan order using `subagent-driven-development`. No per-task specialist routing. No per-task reviewer.
   - No commits during implementation. All changes accumulate on the feature branch until Step 6 (manual check) approval.
-  - If a task reveals a spec gap or contradiction, pause and update `specs/full-app/spec.md` before continuing. Do not guess and proceed.
+  - If a task reveals a spec gap or contradiction, pause and update `docs/specs/spec.md` before continuing. Do not guess and proceed.
   - If a foundational task (early in build order) fails or reveals blocking complexity that invalidates later tasks, stop and re-evaluate scope. Proceeding past a broken foundation wastes every subsequent task.
   - The agent must check every completed task against `docs/constitution.md` before moving to the next — violations caught here are cheaper than at code review.
 
@@ -91,15 +91,15 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 
 ## Step 4 — Converge
 
-- **Agent**: `task` agent (spec-coverage analysis)
+- **Agent**: Your general-purpose agent (spec-coverage analysis)
 - **Trigger**: All implementation tasks complete; feature branch ready
-- **Inputs**: `specs/full-app/spec.md` (all features' acceptance criteria); full branch diff
+- **Inputs**: `docs/specs/spec.md` (all features' acceptance criteria); full branch diff
 - **Output**: Convergence report — COVERED / GAP per acceptance criterion across all features; empty gap list = converged
 - **Gate**: `none` — loops until the gap list is empty; only then advances to Step 5
 - **Notes**:
   - **Converge is distinct from code review.** It asks: *does the implementation attempt every acceptance criterion across every feature in the spec?* Not whether the code is well-written — that is Step 5.
-  - For each acceptance criterion in each feature section of `specs/full-app/spec.md`: find evidence in the branch diff. Mark COVERED if evidence exists; GAP if none is found.
-  - Any GAP becomes an implementation task appended to `specs/full-app/plan.md`. Dispatch the implementer for those gap tasks. Re-run Converge. Repeat until the gap list is empty.
+  - For each acceptance criterion in each feature section of `docs/specs/spec.md`: find evidence in the branch diff. Mark COVERED if evidence exists; GAP if none is found.
+  - Any GAP becomes an implementation task appended to `docs/specs/plan.md`. Dispatch the implementer for those gap tasks. Re-run Converge. Repeat until the gap list is empty.
   - A COVERED criterion is not a guarantee of correctness — only that an attempt was made. Correctness is verified by code review and E2E in Step 5.
   - Common gap sources: edge cases specified but not handled, error states documented but not coded, cross-feature interactions specified in the spec but not wired in the implementation.
   - When the gap list is empty, note "Converged" in the session log and proceed to Step 5.
@@ -108,12 +108,12 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 
 - **Agents**: `code-reviewer` then `ui-ux-tester` (UI-heavy flows) and/or `qa-expert` (data/storage verification)
 - **Trigger**: Step 4 converged (gap list empty)
-- **Inputs**: Full branch diff; `specs/full-app/spec.md`; `docs/constitution.md`; running application
+- **Inputs**: Full branch diff; `docs/specs/spec.md`; `docs/constitution.md`; running application
 - **Output**: All review findings fixed; all acceptance criteria verified against the running app
 - **Gate**: `none` — runs to completion; every finding and every failing criterion is fixed before advancing
 - **Notes**:
   - Dispatch `code-reviewer` first. It reviews the entire branch diff — all features, all files — against the spec and constitution in one pass. All findings are fixed before E2E begins. Do not run E2E against code with known review findings open.
-  - E2E testing starts the real running application and walks through the **complete user flow as a real user would** — not feature by feature, but as a finished product. Every acceptance criterion across all features in `specs/full-app/spec.md` must be exercised.
+  - E2E testing starts the real running application and walks through the **complete user flow as a real user would** — not feature by feature, but as a finished product. Every acceptance criterion across all features in `docs/specs/spec.md` must be exercised.
   - Pay particular attention to **cross-feature interactions** — features that work in isolation but break when combined. These are the failure mode most specific to single-pass development. Test these exhaustively. For shared interaction patterns (modal behavior, form validation, navigation) that repeat across features, test each pattern once — not once per feature.
   - Use `ui-ux-tester` for browser-driven UI verification; `qa-expert` for storage, data integrity, and non-UI flows (e.g. export file format, localStorage error handling). **Model:** `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate.
 
@@ -137,7 +137,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 
 ## Step 7 — Ship
 
-- **Skill**: `/skill:finishing-a-development-branch`; `task` agent (PR creation)
+- **Skill**: `finishing-a-development-branch` skill; your general-purpose agent (PR creation)
 - **Trigger**: Step 6 gate approved
 - **Inputs**: Feature branch; `docs/roadmap.md`
 - **Output**: Committed branch; PR opened against main; all Must features in `docs/roadmap.md` marked `shipped`

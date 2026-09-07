@@ -1,7 +1,7 @@
-# Phase 1 · Step 9 — Scaffold and Convention Setup
+# Phase 1 · Step 8 — Scaffold and Convention Setup
 
-- **Agent/Skill**: `task` agent (general); `frontend-developer` agent (if stack is primarily frontend)
-- **Trigger**: Step 8 gate approved
+- **Agent/Skill**: Your general-purpose agent; or `frontend-developer` if the stack is primarily frontend
+- **Trigger**: Step 7 gate approved
 - **Inputs**: `docs/architecture.md`, `docs/constitution.md`
 - **Outputs**: Initialized, runnable codebase — repository structure, linter/formatter, test framework, basic CI, README
 - **Template**: `templates/09-scaffold-checklist.md` (use as the completion checklist, not just reference — check items off as the agent completes them)
