@@ -171,7 +171,7 @@
 - [ ] Every acceptance criterion in `docs/specs/<feature-slug>/spec.md` exercised
 - [ ] Shared interaction patterns: test once per pattern
 - **[BLOCK]** Any failure: fix immediately → full re-run of Step 7 (not partial)
-- [ ] Use `qa-expert` for backend/data flows; `ui-ux-tester` for browser-driven UI verification
+- [ ] Use `ui-ux-tester` for browser-driven UI verification; your general-purpose agent for backend/data flows
 
 ---
 

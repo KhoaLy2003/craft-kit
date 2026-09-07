@@ -79,7 +79,6 @@ Update this section to match the agents actually configured in your harness. Rep
 |---|---|---|
 | `frontend-developer` | Specialist | UI components, pages, CSS, state management; invoke the `design-taste-frontend` skill for premium new UI, `redesign-existing-projects` skill for existing UI upgrades |
 | `code-reviewer` | Review | Code review with spec and constitution compliance check |
-| `qa-expert` | Testing | Test planning, API/data-flow E2E testing |
 | `ui-ux-tester` | Testing | Browser-driven UI/UX flow testing |
 | `market-researcher` | Research | Market landscape, competitor analysis |
 | `research-analyst` | Research | Technology and domain research, synthesis |

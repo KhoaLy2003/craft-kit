@@ -62,7 +62,7 @@ Create as `docs/phase-2-session.md` at Step 1 start. One log per feature cycle.
 | 4 | Implement | `subagent-driven-development` | pending | — | — | — | — |
 | 5 | Converge | general-purpose agent | pending | — | — | — | — |
 | 6 | Code Review | `code-reviewer` | pending | — | — | — | — |
-| 7 | E2E Testing | `qa-expert` / `ui-ux-tester` | pending | — | — | — | — |
+| 7 | E2E Testing | `ui-ux-tester` / general-purpose agent | pending | — | — | — | — |
 | 8 | Manual Double Check | human | pending | — | — | — | — |
 | 9 | Ship | `finishing-a-development-branch` + general-purpose agent | pending | — | — | — | — |
 ```
@@ -98,5 +98,5 @@ The bug fix log omits the Credits column — fixes are short enough that per-ste
 |---|---|---|---|---|---|---|
 | 1 | Assess | general-purpose agent + human | pending | — | — | — |
 | 2 | Fix | specialist | pending | — | — | — |
-| 3 | Verify | `qa-expert` + human | pending | — | — | — |
+| 3 | Verify | `ui-ux-tester` / general-purpose agent + human | pending | — | — | — |
 ```

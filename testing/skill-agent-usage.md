@@ -34,7 +34,6 @@
 | `research-analyst` | — | — | — | — | — | P1 Step 6 |
 | `frontend-developer` | — | — | — | — | — | P1 Step 3; P2 Steps 3–4 (standard); P2 Step 3 (single-pass); Bug Fix Step 2 |
 | `code-reviewer` | — | — | — | — | — | P2 Step 6 (standard); P2 Step 5 (single-pass) |
-| `qa-expert` | — | — | — | — | — | P2 Step 7 (standard); P2 Step 5 (single-pass); Bug Fix Step 3 |
 | `ui-ux-tester` | — | — | — | — | — | P2 Step 7 (standard); P2 Step 5 (single-pass) |
 
 ---

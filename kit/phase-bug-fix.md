@@ -74,7 +74,7 @@ Read `kit/session-logging.md` for the session log schema and the Bug Fix starter
 
 ## Step 3 — Verify
 
-- **Agents**: `qa-expert` (symptom regression + related behavior); human confirms
+- **Agents**: `ui-ux-tester` (UI symptom verification); your general-purpose agent (non-UI symptom regression + related behavior); human confirms
 - **Trigger**: Fix complete on `fix/<bug-slug>` branch
 - **Inputs**: Running application with fix applied; original reproduction steps from `assess.md`
 - **Output**: Verification result — original symptom resolved, no regression detected; then commit + PR
@@ -83,7 +83,7 @@ Read `kit/session-logging.md` for the session log schema and the Bug Fix starter
 - **Notes**:
   - **Verify the original symptom first.** Follow the exact reproduction steps from `assess.md`. If the symptom still occurs, the fix is wrong — return to Step 2.
   - Run the affected E2E flow from Phase 2 (if one exists) to confirm no regression in related behavior.
-  - Dispatch `qa-expert` for any non-UI verification (data integrity, API behavior, error handling). For UI symptoms, verify in the running browser.
+  - For UI symptoms, use `ui-ux-tester` to verify in the running browser. For non-UI verification (data integrity, API behavior, error handling), dispatch your general-purpose agent.
   - Once verified: commit with message `fix(<scope>): <one-line description> — resolves <bug-slug>`. Push the branch and open a PR against main.
   - Update `docs/bug-session.md` with the final status and PR link.
 

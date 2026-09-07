@@ -65,7 +65,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 - **Notes**:
   - Tasks are sequenced by the roadmap's build order (dependency-driven), not MoSCoW priority. A data-layer task from an early feature comes before a UI task from a later feature if the UI depends on the data layer.
   - Tasks from different features may interleave where dependencies require it.
-  - Identify the **dominant specialist** here: the single agent type that handles the majority of tasks. For a frontend-only app this is `frontend-developer`. If tasks genuinely split across two domains, this project is not a good fit for the single-pass track — switch to `phase-2-feature-dev.md`.
+  - Identify the **dominant specialist** here: the single agent type that handles the majority of tasks.  If tasks genuinely split across two domains, this project is not a good fit for the single-pass track — switch to `phase-2-feature-dev.md`.
   - The plan must validate against `docs/architecture.md` and `docs/constitution.md` before it is finalised.
   - No specialist routing step (unlike the standard track). One specialist implements everything in Step 3.
   - **Gate behaviour:** Present a summary of the plan (task count, files created/modified, key interfaces, dominant specialist) and wait for explicit user approval before dispatching Step 3. The user may request changes to any task before approving.
@@ -74,7 +74,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 
 ## Step 3 — Implement
 
-- **Skill/Agent**: Dominant specialist identified in Step 2 (e.g. `frontend-developer`)
+- **Skill/Agent**: Dominant specialist identified in Step 2
 - **Trigger**: `docs/specs/plan.md` finalised
 - **Inputs**: `docs/specs/plan.md`; `docs/specs/spec.md`; `docs/constitution.md`
 - **Output**: All feature code on a single branch (`feature/full-app` or `feature/<project-slug>`)
@@ -86,7 +86,6 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
   - If a task reveals a spec gap or contradiction, pause and update `docs/specs/spec.md` before continuing. Do not guess and proceed.
   - If a foundational task (early in build order) fails or reveals blocking complexity that invalidates later tasks, stop and re-evaluate scope. Proceeding past a broken foundation wastes every subsequent task.
   - The agent must check every completed task against `docs/constitution.md` before moving to the next — violations caught here are cheaper than at code review.
-  - **`design-taste-frontend` skill — required for UI tasks:** when the dominant specialist is `frontend-developer` and any task involves new UI or premium visual quality work (signals: "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI"), include the `design-taste-frontend` skill in the dispatch for those tasks. Generic AI UI patterns are the most common quality failure in single-pass output.
 
 ---
 
@@ -107,7 +106,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
 
 ## Step 5 — Code Review + E2E
 
-- **Agents**: `code-reviewer` then `ui-ux-tester` (UI-heavy flows) and/or `qa-expert` (data/storage verification)
+- **Agents**: `code-reviewer` then `ui-ux-tester` (UI-heavy flows) and/or your general-purpose agent (data/storage verification)
 - **Trigger**: Step 4 converged (gap list empty)
 - **Inputs**: Full branch diff; `docs/specs/spec.md`; `docs/constitution.md`; running application
 - **Output**: All review findings fixed; all acceptance criteria verified against the running app
@@ -116,7 +115,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
   - Dispatch `code-reviewer` first. It reviews the entire branch diff — all features, all files — against the spec and constitution in one pass. All findings are fixed before E2E begins. Do not run E2E against code with known review findings open.
   - E2E testing starts the real running application and walks through the **complete user flow as a real user would** — not feature by feature, but as a finished product. Every acceptance criterion across all features in `docs/specs/spec.md` must be exercised.
   - Pay particular attention to **cross-feature interactions** — features that work in isolation but break when combined. These are the failure mode most specific to single-pass development. Test these exhaustively. For shared interaction patterns (modal behavior, form validation, navigation) that repeat across features, test each pattern once — not once per feature.
-  - Use `ui-ux-tester` for browser-driven UI verification; `qa-expert` for storage, data integrity, and non-UI flows (e.g. export file format, localStorage error handling). **Model:** `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate.
+  - Use `ui-ux-tester` for browser-driven UI verification; your general-purpose agent for storage, data integrity, and non-UI flows (e.g. export file format, localStorage error handling). **Model:** `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate.
 
 ---
 

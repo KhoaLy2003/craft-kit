@@ -193,7 +193,6 @@ This kit assumes the following are configured in your AI agent harness:
 - `research-analyst` — technology and domain research, synthesis
 - `frontend-developer` — frontend implementation
 - `code-reviewer` — code review
-- `qa-expert` — test planning and execution
 - `ui-ux-tester` — browser-driven UI/UX testing
 
 > **If any skill or agent is missing or unverified:** resolve it before starting Phase 1. A missing agent discovered mid-run requires restarting from the step that needs it. The orchestrator checks availability at Phase 1 kickoff and reports any gaps.

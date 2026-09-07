@@ -131,7 +131,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
 
 ## Step 7 — End-to-End Testing
 
-- **Agent**: `qa-expert` agent (test planning and execution); `ui-ux-tester` agent (for UI-heavy flows with browser interaction)
+- **Agent**: `ui-ux-tester` agent (browser-driven UI flows); your general-purpose agent (backend/API/data-flow verification)
 - **Trigger**: Step 6 complete with all issues resolved
 - **Inputs**: Running application (started fresh for this test run); `docs/specs/<feature-slug>/spec.md` (acceptance criteria); real data scenarios
 - **Output**: Test results; any failure triggers an immediate fix loop and re-run of this step before advancing
@@ -141,7 +141,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
   - Walk through the complete user flow from start to finish using real data and a real process — the same path a real user would take, not a happy-path shortcut.
   - Cover every acceptance criterion in the spec. **Test shared interaction patterns (modal behavior, form validation, navigation) once per pattern — not once per acceptance criterion.** Repeated identical flows add time without additional coverage.
   - Any failure found here is fixed immediately, and this step re-runs in full — do not carry failures forward to the manual check.
-  - Use `qa-expert` for backend/API/data-flow testing. Use `ui-ux-tester` when the feature has a significant UI component and browser-driven interaction verification is needed. **Model:** `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate.
+  - Use `ui-ux-tester` for browser-driven UI verification. Use your general-purpose agent for backend/API/data-flow testing (data integrity, error handling, non-UI acceptance criteria). **Model:** `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate.
 
 ---
 
@@ -227,6 +227,6 @@ This phase uses the following skills without modifying them. Each skill is invok
 | 4 | `subagent-driven-development` / `dispatching-parallel-agents` | Code on feature branch |
 | 5 | general-purpose agent | Convergence report; gap tasks appended to plan.md |
 | 6 | `code-reviewer` | Review findings, all fixed inline |
-| 7 | `qa-expert` / `ui-ux-tester` | Test results, failures fixed inline |
+| 7 | `ui-ux-tester` / general-purpose agent | Test results, failures fixed inline |
 | 8 | Human | Approval gate |
 | 9 | `finishing-a-development-branch` + general-purpose agent | Committed branch + PR |
