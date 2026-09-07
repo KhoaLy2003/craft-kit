@@ -12,7 +12,7 @@ After `writing-plans` produces `plan.md`, read each task and annotate it with `S
 | Task involves... | Signals in the task description | Use agent |
 |---|---|---|
 | React/Vue/Angular components, CSS, HTML, UI layout | "component", "page", "form", "style", "layout", "UI", "frontend" | `frontend-developer` |
-| UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` — invoke the `design-taste-frontend` skill inside the agent dispatch for new UI; `redesign-existing-projects` skill for upgrading existing UI |
+| UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` + `design-taste-frontend` skill (**required** — include in every dispatch matching these signals; generic AI patterns are the default failure mode for UI tasks) |
 | Visual design, icons, mockup implementation, accessibility | "design", "icon", "color", "typography", "accessibility", "a11y" | your general-purpose agent (or a dedicated visual design agent if available) |
 | REST/GraphQL API endpoints, controllers, middleware | "endpoint", "route", "controller", "handler", "API" | your general-purpose agent *(or a backend-developer agent if configured)* |
 | Database schema, migrations, queries, ORM models | "schema", "migration", "model", "query", "table", "index" | your general-purpose agent |

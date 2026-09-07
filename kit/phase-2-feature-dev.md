@@ -95,6 +95,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Standar
   - Use `subagent-driven-development` for sequential task chains. It dispatches one implementer subagent per task, runs a task reviewer after each, and a final whole-branch review at the end. Use the `Specialist:` annotation from Step 3 to select the right agent for each task.
   - For groups marked `<!-- Parallel group -->` in `plan.md` (identified in Step 3), use `dispatching-parallel-agents` instead. Do not re-evaluate which tasks can parallelize here — that decision was made in Step 3.
   - Do not commit after individual tasks during implementation. Leave all changes uncommitted until the user has reviewed the complete feature and explicitly approves shipping.
+  - **`design-taste-frontend` skill — required for UI tasks:** when dispatching `frontend-developer` for any task whose description contains signals from the second row of `task-agent-rubric.md` ("visual quality", "design upgrade", "polish", "no generic patterns", "premium UI"), include the `design-taste-frontend` skill in the dispatch. This is not optional — generic AI UI patterns are the most common quality failure in Phase 2 output.
 
 ---
 

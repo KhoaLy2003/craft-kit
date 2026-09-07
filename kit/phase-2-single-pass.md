@@ -86,6 +86,7 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
   - If a task reveals a spec gap or contradiction, pause and update `docs/specs/spec.md` before continuing. Do not guess and proceed.
   - If a foundational task (early in build order) fails or reveals blocking complexity that invalidates later tasks, stop and re-evaluate scope. Proceeding past a broken foundation wastes every subsequent task.
   - The agent must check every completed task against `docs/constitution.md` before moving to the next — violations caught here are cheaper than at code review.
+  - **`design-taste-frontend` skill — required for UI tasks:** when the dominant specialist is `frontend-developer` and any task involves new UI or premium visual quality work (signals: "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI"), include the `design-taste-frontend` skill in the dispatch for those tasks. Generic AI UI patterns are the most common quality failure in single-pass output.
 
 ---
 

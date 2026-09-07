@@ -186,6 +186,7 @@ This kit assumes the following are configured in your AI agent harness:
 - `finishing-a-development-branch`
 - `using-git-worktrees`
 - `verification-before-completion`
+- `design-taste-frontend` — invoked inside `frontend-developer` dispatches for new UI work at Phase 2 implementation
 
 **Agents — specialist (install before starting):**
 - `market-researcher` — market analysis
