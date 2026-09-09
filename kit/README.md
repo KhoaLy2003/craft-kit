@@ -14,7 +14,7 @@ Works with any multi-agent AI coding harness. Designed to be dropped into any pr
 | `phase-2-single-pass.md` | Single-pass Phase 2: all features in one cycle — for small apps with S/M features |
 | `phase-bug-fix.md` | Bug fix workflow: Assess → Fix → Verify — for bugs against shipped features |
 | `task-agent-rubric.md` | Reference table for matching plan tasks to specialist agents |
-| `templates/phase-1-kickoff.md` | **Start here for new projects** — fill this in before starting Phase 1 |
+| `templates/phase-1-kickoff.md` | **Start here for new projects** — copy to `docs/phase-1-kickoff.md` in your project root and fill it in before starting Phase 1 |
 | `templates/` | Output templates for every Phase 1 artifact (filled by the agent, not you) |
 | `samples/` | Reference examples — e.g. `DESIGN.md` (Airbnb-style design system) for Step 5 import path |
 | `guides/evolving-specs.md` | How to handle spec and artifact changes after a feature ships |
@@ -42,6 +42,18 @@ Run this cycle for every feature — including the first MVP feature.
 
 ## How to Use This Kit
 
+**Install the kit** in your project folder (requires Node.js 18+):
+
+```bash
+npx github:KhoaTonyRay/product-development-kit
+```
+
+This creates a `kit/` directory with all the phase files, templates, guides, and step detail files. To update an existing install:
+
+```bash
+npx github:KhoaTonyRay/product-development-kit --force
+```
+
 The phase files are orchestration scripts for the main orchestrating agent — you do not execute steps manually. You start a session, reference the phase file, and participate at the gates. The agent handles dispatching, artifact creation, and advancing between steps.
 
 **Artifacts** (filled templates, specs, plans) land at your **project root**, not inside `kit/`. The kit folder is a reference — never edit files inside it.
@@ -55,7 +67,7 @@ The phase files are orchestration scripts for the main orchestrating agent — y
 **Kickoff check:** before starting Step 1, the orchestrator MUST verify that every required skill and agent is available. Missing skills surface as errors mid-run, not upfront. Verify each skill is available in your harness and each agent can be dispatched successfully. Report any that are missing and stop — do not begin Phase 1 against an incomplete toolset.
 
 **Before starting:**
-Copy `templates/phase-1-kickoff.md` to `docs/` in your project root, fill it in with your idea, target user, anything you already have (design files, tech preferences), hard constraints, and any steps you want to skip. Rough notes are fine — the agent asks clarifying questions in Step 1.
+Copy `kit/templates/phase-1-kickoff.md` to `docs/phase-1-kickoff.md` in your project root, then fill it in with your idea, target user, anything you already have (design files, tech preferences), and hard constraints. Rough notes are fine — the agent asks clarifying questions in Step 1.
 
 **Start the session:**
 > "Start Phase 1 using `docs/phase-1-kickoff.md`."

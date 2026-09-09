@@ -17,6 +17,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch
 - [ ] Include **fail-fast write instruction** (see `kit/orchestrator-conventions.md` item 6) in every subagent dispatch that writes files
 - [ ] After every subagent write: verify file exists on disk; recover from `agent://` and write directly if absent
+- [ ] After every file write: read back the first 20 lines; confirm no missing table separator rows (`|---|`), no truncation, no placeholder text — see `kit/orchestrator-conventions.md` item 7
 - [ ] Update `docs/phase-1-session.md` with duration and credit delta at step end before advancing
 
 ---
@@ -27,6 +28,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - [ ] Stop after clarifying questions — do **NOT** enter "propose approaches" or "present design" phases
 - [ ] Clarifying questions cover: problem today, who has it, existing alternatives, what's out of scope — stop there
 - [ ] `docs/idea-brief.md` written and `Status: approved` before advancing
+- **[BLOCK]** Do not write `docs/idea-brief.md` until all clarifying questions are answered and the user has reviewed the draft — questions → answers → draft → user review → write
 - **[HARD GATE]** After Step 1 completes, present the Step 2 choice in chat:
   *"Step 2 (Market Research) validates demand and finds competitive risks. Proceed or skip to Step 3 (Prototype)?"*
   Wait for the user's answer. **This is required even if the kickoff says "run all steps."**

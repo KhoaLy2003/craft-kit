@@ -8,18 +8,38 @@ You don't need any technical knowledge. Your job is to describe your idea and gi
 
 ## What You Need
 
-- An AI assistant you can have an extended conversation with — ChatGPT, Claude, or any capable AI
-- This kit's files downloaded and accessible alongside your project
+- **Node.js 18 or later** — for the one-time install command below
+- **An AI assistant** — ChatGPT, Claude, or any capable AI you can have an extended conversation with
 
 That's it. The kit tells the AI what to do; you don't need to figure out how to guide it.
 
 ---
 
-## New Project — Four Steps
+## New Project — Five Steps
 
-### Step 1 — Describe your idea
+### Step 1 — Install the kit
 
-Copy `kit/templates/phase-1-kickoff.md` into your project folder and fill it in. It asks for:
+Run this in your project folder (or any empty folder):
+
+```bash
+npx github:KhoaTonyRay/product-development-kit
+```
+
+This creates a `kit/` folder with all the phase files, templates, and guides. You only need to do this once per project. To update to the latest version later:
+
+```bash
+npx github:KhoaTonyRay/product-development-kit --force
+```
+
+### Step 2 — Describe your idea
+
+Copy the kickoff form into your project's `docs/` folder:
+
+```bash
+cp kit/templates/phase-1-kickoff.md docs/phase-1-kickoff.md
+```
+
+Then fill in `docs/phase-1-kickoff.md`. It asks for:
 
 - What problem you're solving and for whom
 - Who the target user is
@@ -28,7 +48,7 @@ Copy `kit/templates/phase-1-kickoff.md` into your project folder and fill it in.
 
 Rough notes are fine — the AI will ask follow-up questions before committing to anything.
 
-### Step 2 — Hand the kit to your AI and start
+### Step 3 — Hand the kit to your AI and start
 
 Share `kit/phase-1-bootstrap.md` with your AI along with your filled-in kickoff form, then say:
 
@@ -36,22 +56,23 @@ Share `kit/phase-1-bootstrap.md` with your AI along with your filled-in kickoff 
 Start Phase 1 using the kickoff form I've shared.
 ```
 
-The AI reads both files and begins working through the nine steps. It announces each step as it starts.
+The AI reads both files and begins working through the eight steps. It announces each step as it starts.
 
-### Step 3 — Review and approve along the way
+### Step 4 — Review and approve along the way
 
-Phase 1 has four moments where the AI stops and waits for your sign-off before continuing:
+Phase 1 has five moments where the AI stops and waits for your sign-off before continuing:
 
 | What the AI has done | What you decide |
 |---|---|
 | Researched the market *(optional step)* | Is there a real need for this? Proceed, change direction, or stop. |
 | Designed the look and feel | Does the design match what you had in mind? |
-| Built the feature list | Is the list correct? Are the priorities right? |
+| Built the feature list and build order | Is the scope correct? Are the priorities right? |
+| Picked the tech stack and architecture | Is this the right foundation for what you want to build? |
 | Written the AI's working rules | Are the guidelines for how your app gets built correct? |
 
 At each point the AI gives you a one-sentence summary. You respond with approval or feedback — you don't need to read the full document it produced.
 
-### Step 4 — Move to building
+### Step 5 — Move to building
 
 When Phase 1 finishes, the AI gives you an exact message to start the next stage. Copy and paste it into a fresh conversation — the AI tells you what to say, with your project name already filled in.
 
@@ -61,7 +82,7 @@ Phase 2 builds your features one at a time. Before each feature ships, you walk 
 
 ## Already Have a Project?
 
-Skip Phase 1. You just need four planning documents in a `docs/` folder. See [Existing Projects](/guides/existing-projects) for what to include in each one.
+Skip Phase 1. Install the kit (`npx github:KhoaTonyRay/product-development-kit`), then create four planning documents in a `docs/` folder. See [Existing Projects](/guides/existing-projects) for what to include in each one.
 
 ---
 

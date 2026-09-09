@@ -1,4 +1,11 @@
+import { resolve } from 'path'
 import { defineConfig } from 'vitepress'
+
+// Resolve docs-site node_modules by absolute path. Needed because srcDir is '..'
+// which causes kit/ files to compile with physical paths outside this package.
+// Rollup SSR build can't resolve vue/server-renderer from those locations.
+// Aliases pin all Vue resolution to docs-site/node_modules.
+const nodeModules = resolve(__dirname, '../node_modules')
 
 export default defineConfig({
   title: 'Product Development Kit',
@@ -17,19 +24,39 @@ export default defineConfig({
     'kit/templates/**',
     'kit/samples/**',
     'kit/README.md',
+    // Internal resource files used by orchestrators; not standalone doc pages
+    'kit/resource/**',
+    // Root-level non-doc markdown files
+    'AGENTS.md',
   ],
 
   rewrites: {
-    // Phase files — served directly from kit, no adapted copies.
+    // Phase orchestration files — served directly from kit.
     'kit/phase-1-bootstrap.md':    'phases/phase-1.md',
     'kit/phase-2-feature-dev.md':  'phases/phase-2-standard.md',
     'kit/phase-2-single-pass.md':  'phases/phase-2-single-pass.md',
     'kit/phase-bug-fix.md':        'phases/bug-fix.md',
 
-    // Other kit files served directly.
-    'kit/CHANGELOG.md':             'changelog.md',
-    'kit/guides/evolving-specs.md': 'guides/evolving-specs.md',
-    'kit/task-agent-rubric.md':     'reference/task-agent-rubric.md',
+    // Phase 1 step detail files.
+    'kit/steps/p1-01-ideation.md':        'phases/steps/p1-01-ideation.md',
+    'kit/steps/p1-02-market-research.md': 'phases/steps/p1-02-market-research.md',
+    'kit/steps/p1-03-prototype.md':       'phases/steps/p1-03-prototype.md',
+    'kit/steps/p1-04-design.md':          'phases/steps/p1-04-design.md',
+    'kit/steps/p1-05-roadmap.md':         'phases/steps/p1-05-roadmap.md',
+    'kit/steps/p1-06-architecture.md':    'phases/steps/p1-06-architecture.md',
+    'kit/steps/p1-07-constitution.md':    'phases/steps/p1-07-constitution.md',
+    'kit/steps/p1-08-scaffold.md':        'phases/steps/p1-08-scaffold.md',
+
+    // Reference files — orchestrator conventions and runtime aids.
+    'kit/CHANGELOG.md':                   'changelog.md',
+    'kit/guides/evolving-specs.md':       'guides/evolving-specs.md',
+    'kit/task-agent-rubric.md':           'reference/task-agent-rubric.md',
+    'kit/orchestrator-conventions.md':    'reference/orchestrator-conventions.md',
+    'kit/gate-management.md':             'reference/gate-management.md',
+    'kit/session-logging.md':             'reference/session-logging.md',
+    'kit/stack-catalog.md':               'reference/stack-catalog.md',
+    'kit/phase-1-checklist.md':           'reference/phase-1-checklist.md',
+    'kit/phase-2-checklist.md':           'reference/phase-2-checklist.md',
 
     // Docs-layer files (content that has no equivalent in kit/).
     'docs-site/index.md':                      'index.md',
@@ -37,6 +64,20 @@ export default defineConfig({
     'docs-site/guides/existing-projects.md':   'guides/existing-projects.md',
     'docs-site/reference/required-skills.md':  'reference/required-skills.md',
     'docs-site/reference/templates.md':        'reference/templates.md',
+  },
+
+  // Fix SSR build: alias Vue packages to absolute paths so Rollup can find them
+  // when compiling pages from kit/ paths outside docs-site/.
+  vite: {
+    resolve: {
+      alias: [
+        // vue/server-renderer and vue itself: resolves from kit/ paths which have
+        // no ancestor node_modules. Once found here, @vue/* sibling packages
+        // resolve correctly within docs-site/node_modules/ without aliasing.
+        { find: /^vue\/server-renderer$/, replacement: resolve(nodeModules, 'vue/server-renderer/index.mjs') },
+        { find: 'vue', replacement: resolve(nodeModules, 'vue/dist/vue.esm-bundler.js') },
+      ],
+    },
   },
 
   themeConfig: {
@@ -89,6 +130,20 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Phase 1 — Step Detail',
+          collapsed: true,
+          items: [
+            { text: 'Step 1 — Product Ideation',          link: '/phases/steps/p1-01-ideation' },
+            { text: 'Step 2 — Market Research',           link: '/phases/steps/p1-02-market-research' },
+            { text: 'Step 3 — Interactive Prototype',     link: '/phases/steps/p1-03-prototype' },
+            { text: 'Step 4 — Product Design',            link: '/phases/steps/p1-04-design' },
+            { text: 'Step 5 — Roadmap Generation',        link: '/phases/steps/p1-05-roadmap' },
+            { text: 'Step 6 — Tech Stack & Architecture', link: '/phases/steps/p1-06-architecture' },
+            { text: 'Step 7 — Constitution',              link: '/phases/steps/p1-07-constitution' },
+            { text: 'Step 8 — Scaffold',                  link: '/phases/steps/p1-08-scaffold' },
+          ],
+        },
+        {
           text: 'Guides',
           items: [
             { text: 'Existing Projects', link: '/guides/existing-projects' },
@@ -116,11 +171,32 @@ export default defineConfig({
       ],
       '/reference/': [
         {
-          text: 'Reference',
+          text: 'Setup',
           items: [
             { text: 'What You Need',              link: '/reference/required-skills' },
-            { text: 'Task → Specialist Rubric', link: '/reference/task-agent-rubric' },
-            { text: 'Templates',                link: '/reference/templates' },
+            { text: 'Templates',                  link: '/reference/templates' },
+          ],
+        },
+        {
+          text: 'Orchestrator Reference',
+          items: [
+            { text: 'Task → Specialist Rubric',   link: '/reference/task-agent-rubric' },
+            { text: 'Orchestrator Conventions',   link: '/reference/orchestrator-conventions' },
+            { text: 'Gate Management',            link: '/reference/gate-management' },
+            { text: 'Session Logging',            link: '/reference/session-logging' },
+          ],
+        },
+        {
+          text: 'Checklists',
+          items: [
+            { text: 'Phase 1 — Pre-Step Checklist', link: '/reference/phase-1-checklist' },
+            { text: 'Phase 2 — Pre-Step Checklist', link: '/reference/phase-2-checklist' },
+          ],
+        },
+        {
+          text: 'Stack & Tech',
+          items: [
+            { text: 'Stack Catalog',              link: '/reference/stack-catalog' },
           ],
         },
       ],
@@ -132,8 +208,8 @@ export default defineConfig({
     ],
 
     footer: {
-      message: 'Built on <a href="https://omp.dev">Oh My Pi</a>.',
-      copyright: 'Product Development Kit',
+      message: 'Released under the MIT License.',
+      copyright: `Copyright © ${new Date().getFullYear()} Khoa Ly`,
     },
 
     search: {

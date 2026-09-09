@@ -8,7 +8,7 @@
   - `docs/prototype/prototype-brief.md` — screens, interactions, mock data, state coverage, faked parts
   - Playable HTML prototype (no real backend; opens as `file://`)
 - **Templates**: `templates/04a-journey-map.md`, `templates/04b-prototype-brief.md`
-- **Gate**: `none`
+- **Gate**: `hard`
 - **Review**: Open `docs/prototype/` entry screen in any browser as `file://`. Walk every flow in `docs/prototype/journey-map.md` Section 4 using the review questions below. The prototype is ready to advance when every screen in the flow is reachable by clicking and the Definition of Done checklist in `prototype-brief.md` is fully checked.
 
   **Review questions (run these before advancing — focus on product behavior, not appearance):**
@@ -16,7 +16,6 @@
   - *User flow:* Can you complete each task without instruction? Is the sequence of actions logical? Is any step confusing or unnecessary?
   - *States:* Does the empty state make sense? Do validation errors explain what went wrong? Does success feel complete?
   - *Edge cases:* What happens with no data? What happens when input is invalid? Are important error paths represented?
-
 - **Notes**:
 
   **Purpose — validate before building.** The prototype answers one question before significant development effort is committed: *"Are we building the right product, and does the proposed workflow actually work for the people who will use it?"* It is a learning and validation tool, not a commitment to the final implementation. Prototype code is temporary and disposable. Reference: `kit/resource/interactive-prototype-process.md`.
@@ -51,3 +50,4 @@
   - **Faked parts documented:** every hardcoded value, simulated behavior, and missing backend connection must be listed explicitly in `prototype-brief.md` — not left ambiguous.
 
   **Dispatch order:** (1) Dispatch your general-purpose agent for `journey-map.md` and `prototype-brief.md`. (2) After both files are verified on disk, dispatch `frontend-developer` for the HTML prototype, passing the prototype-brief as its spec. Include the fail-fast write instruction (see `kit/orchestrator-conventions.md` item 6) in both dispatches.
+

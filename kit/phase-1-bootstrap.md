@@ -17,16 +17,18 @@ Read `kit/session-logging.md` for the Phase 1 session log schema and starter tem
 
 Before executing each step, read its step file. The step file is the authoritative source for that step's inputs, outputs, notes, and review instructions. Read `kit/phase-1-checklist.md` for the pre-step checklist (checklist section for the current step + Universal section at the top).
 
-| # | Name | Gate | Step File |
-|---|---|---|---|
-| 1 | Product Ideation | `none` | `kit/steps/p1-01-ideation.md` |
-| 2 | Market Research *(optional)* | `hard` | `kit/steps/p1-02-market-research.md` |
-| 3 | Interactive Prototype | `none` | `kit/steps/p1-03-prototype.md` |
-| 4 | Product Design | `hard` | `kit/steps/p1-04-design.md` |
-| 5 | Roadmap Generation | `hard` | `kit/steps/p1-05-roadmap.md` |
-| 6 | Tech Stack & Architecture | `hard` | `kit/steps/p1-06-architecture.md` |
-| 7 | Constitution | `hard` | `kit/steps/p1-07-constitution.md` |
-| 8 | Scaffold | `none` | `kit/steps/p1-08-scaffold.md` |
+
+| #   | Name                          | Gate   | Step File                            |
+| --- | ----------------------------- | ------ | ------------------------------------ |
+| 1   | Product Ideation              | `none` | `kit/steps/p1-01-ideation.md`        |
+| 2   | Market Research *(optional)*  | `hard` | `kit/steps/p1-02-market-research.md` |
+| 3   | Interactive Prototype         | `hard` | `kit/steps/p1-03-prototype.md`       |
+| 4   | Product Design                | `hard` | `kit/steps/p1-04-design.md`          |
+| 5   | Roadmap Generation            | `hard` | `kit/steps/p1-05-roadmap.md`         |
+| 6   | Tech Stack &amp; Architecture | `hard` | `kit/steps/p1-06-architecture.md`    |
+| 7   | Constitution                  | `hard` | `kit/steps/p1-07-constitution.md`    |
+| 8   | Scaffold                      | `none` | `kit/steps/p1-08-scaffold.md`        |
+
 
 ---
 
@@ -50,6 +52,7 @@ After the Phase 1 Output Checklist passes, **close this session** and open a new
 **Why:** After 9 steps, this session carries a large context — market research deliberations, prototype feedback, design discussions — that is no longer relevant to Phase 2. Carrying it forward raises per-message cost and risks stale Phase 1 reasoning influencing Phase 2 decisions.
 
 **How to start Phase 2:**
+
 1. Open a new session with the working directory set to the project root.
 2. Copy and paste the prompt below into the first message — fill in the two bracketed values, then send.
 
@@ -76,3 +79,4 @@ Ideation → Market Research [optional, hard gate if run] → Prototype → Prod
                                                                            ▼
                                               Close Phase 1 session → Open new Phase 2 session
 ```
+

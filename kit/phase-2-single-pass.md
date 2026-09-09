@@ -104,10 +104,25 @@ Read `kit/session-logging.md` for the session log schema and the Phase 2 Single-
   - Common gap sources: edge cases specified but not handled, error states documented but not coded, cross-feature interactions specified in the spec but not wired in the implementation.
   - When the gap list is empty, note "Converged" in the session log and proceed to Step 5.
 
-## Step 5 — Code Review + E2E
+## Step 5a — E2E Testing Plan Documentation (NEW GATE)
 
-- **Agents**: `code-reviewer` then `ui-ux-tester` (UI-heavy flows) and/or your general-purpose agent (data/storage verification)
-- **Trigger**: Step 4 converged (gap list empty)
+- **Skill**: General-purpose agent
+- **Trigger**: Step 4 (Converge) complete; zero gaps
+- **Inputs**: `docs/specs/spec.md`; project architecture (database, auth, external services)
+- **Outputs**: `docs/E2E-TESTS.md` — comprehensive test documentation mapping all acceptance criteria to test cases
+- **Gate**: `hard` — user must review and approve the E2E testing plan before E2E testing begins
+- **Gate Summary**: *"E2E testing plan is ready — all acceptance criteria mapped to test cases. Review the plan and approve before E2E testing begins. This prevents running tests without a clear understanding of what's being tested and why."*
+- **Notes**:
+  - For projects with external services (Supabase, Auth0, etc.), the plan must document provisioning requirements
+  - E2E tests cannot run without provisioned external services — the plan must make this explicit
+  - The plan documents test data requirements, seed scripts, and troubleshooting
+  - For Supabase projects: `kit/guides/e2e-testing-plan.md` provides the provisioning workflow
+
+---
+
+
+## Step 5b — Code Review + E2E Testing
+- **Trigger**: Step 5a (E2E Testing Plan) approved by user
 - **Inputs**: Full branch diff; `docs/specs/spec.md`; `docs/constitution.md`; running application
 - **Output**: All review findings fixed; all acceptance criteria verified against the running app
 - **Gate**: `none` — runs to completion; every finding and every failing criterion is fixed before advancing
@@ -169,7 +184,10 @@ All roadmap Must features known + single-pass declared in docs/roadmap.md
 [4] Converge — spec coverage check → gap tasks → re-implement → repeat until converged
          │
          ▼
-[5] Code Review → fix all findings → E2E complete flow → fix all failures
+[5a] E2E Testing Plan — document all test cases, provisioning requirements  [hard gate]
+         │
+         ▼
+[5b] Code Review → fix all findings → E2E complete flow → fix all failures
          │
          ▼
 [6] Manual Check — complete app walkthrough as a real user  [hard gate]

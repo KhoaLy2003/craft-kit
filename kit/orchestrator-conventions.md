@@ -48,5 +48,7 @@ At the start of every step, the orchestrating agent MUST:
 
    This prevents subagents from spending 20+ minutes on write-retry spirals.
 
+7. **Preview every written file** — after every file write (by subagent or directly), read back the first 20 lines and confirm: no missing markdown table separator rows (`|---|`), no truncation mid-sentence, no placeholder text left unfilled. A file that exists on disk but is structurally broken causes silent failures in downstream steps that read it.
+
 At the **end of every step**, update the session log with duration and credit delta before advancing. See `kit/session-logging.md` for the log schema and phase-specific starter templates.
 

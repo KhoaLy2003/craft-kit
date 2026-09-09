@@ -16,7 +16,7 @@ hero:
 features:
   - icon: 🚀
     title: Phase 1 — Bootstrap
-    details: Nine steps from raw idea to a working app foundation. The AI conducts market research, sketches a prototype, designs the look, maps the features, picks the tech stack, and sets up the codebase. You approve the big decisions along the way.
+    details: Eight steps from raw idea to a working app foundation. The AI conducts market research, sketches a prototype, designs the look, maps the features, picks the tech stack, and sets up the codebase. You approve the big decisions along the way.
     link: /phases/phase-1
     linkText: Walk through Phase 1
   - icon: 🔄
@@ -34,14 +34,14 @@ features:
     details: Three steps — diagnose, fix, verify. The AI must confirm the root cause before writing a single line of fix. It cannot mark the bug resolved until the original problem is gone and nothing new is broken.
     link: /phases/bug-fix
     linkText: Bug fix workflow
-  - icon: 🤖
-    title: Works with Your AI
-    details: Share the phase file with ChatGPT, Claude, or any capable AI assistant. The kit tells the AI exactly what to do — you don't need to prompt-engineer anything yourself.
+  - icon: 📦
+    title: One Command to Install
+    details: Run `npx github:KhoaTonyRay/product-development-kit` in your project folder. It copies all the phase files, templates, and guides into a `kit/` directory — ready to share with ChatGPT, Claude, or any capable AI.
     link: /getting-started
-    linkText: How to start
+    linkText: Get started
   - icon: 📋
     title: Templates Included
-    details: Every planning step has a structured template. You fill in a short kickoff form once; the AI fills everything else — research notes, feature list, tech choice, design guide. All saved as readable text files alongside your project.
+    details: Every planning step has a structured template. Copy the kickoff form once and fill it in; the AI fills everything else — research notes, feature list, tech choice, design guide. All saved as readable text files alongside your project.
     link: /reference/templates
     linkText: View templates
 ---
@@ -93,16 +93,24 @@ Phase 2 has two tracks chosen at the Roadmap gate:
 
 ## How to Use This Kit
 
-Share the relevant phase file with your AI assistant, then send a short message to begin. The AI reads the file and follows the workflow — creating documents, making decisions, and pausing to get your input at key moments. You don't run anything manually.
+**Step 1 — Install the kit** in your project folder:
+
+```bash
+npx github:KhoaTonyRay/product-development-kit
+```
+
+This creates a `kit/` folder with all the phase files and templates. Run once per project; use `--force` to update an existing install.
+
+**Step 2 — Share the relevant phase file** with your AI assistant and send a short message to begin. The AI reads the file and follows the workflow — creating documents, making decisions, and pausing to get your input at key moments. You don't run anything manually.
 
 **Your role:**
-1. Fill in the kickoff form once (a short description of your idea)
+1. Copy `kit/templates/phase-1-kickoff.md` to `docs/phase-1-kickoff.md` and fill it in
 2. Read the brief summary the AI sends at each decision point
 3. Say yes to continue — or give feedback before it moves on
 
-**Phrases to start with** — share the matching phase file first, then send one of these:
+**Phrases to start** — share the matching phase file first, then send one of these:
 
-:::: code-group
+::::: code-group
 
 ```text [New project]
 Start Phase 1 using the kickoff form I've shared.
@@ -120,9 +128,9 @@ Run Phase 2 single-pass for all Must features in the roadmap.
 Run the bug fix workflow for: [describe what's wrong and where it appears].
 ```
 
-::::
+:::::
 
-Everything the AI produces (documents, plans, code) lands in your **project folder**. The kit files are a guide the AI reads — you never edit them.
+Everything the AI produces (documents, plans, code) lands in your **project folder**. The `kit/` folder is a guide the AI reads — you never edit it.
 
 ---
 
@@ -130,7 +138,7 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 
 <div class="grid-3">
 
-[**Phase 1 — Bootstrap**<br>Nine steps from raw idea to a working app foundation](/phases/phase-1)
+[**Phase 1 — Bootstrap**<br>Eight steps from raw idea to a working app foundation](/phases/phase-1)
 
 [**Phase 2 — Standard Loop**<br>One feature at a time, with planning, building, review, and a hands-on check](/phases/phase-2-standard)
 

@@ -14,7 +14,8 @@ For issue detail, kit file changes, open issues, and lessons: see `testing/testi
 | 01 | reading-list | React + Vite + TS + Tailwind + localStorage | single-pass | **PASS** | not tracked | not tracked | 13 / 13 / 0 |
 | 02 | meal-planner | Vanilla HTML + CSS + JS *(agent-chosen)* | single-pass | **FAIL** | not tracked | not tracked | 6 / 4 / 2 |
 | 03 | chore-splitter | React 18 + Vite + TS + Supabase (Postgres + Realtime + Edge Functions) | single-pass | **PASS** | ~4h 30m | not tracked | 8 / 8 / 1 |
-| 04 | court-booking | Next.js 14 App Router + TS strict + Supabase Postgres (Drizzle) + NextAuth.js v5 + Tailwind CSS | single-pass | **PASS** | ~8h+ | not tracked | 3 / 1 / 2 |
+| 04 | court-booking | Next.js 14 + TS + Supabase Postgres (Drizzle) + NextAuth.js v5 + Tailwind CSS | single-pass | **PASS** | ~8h+ | not tracked | 3 / 1 / 2 |
+| 05 | leave-request | React + Vite + TS + Supabase (Postgres + Auth + RLS) | single-pass | **PASS** | ~2h 30m | not tracked | 1 / 1 / 0 |
 
 ---
 
@@ -308,4 +309,60 @@ Outcome
                     design-taste-frontend added to task-agent-rubric.md
   New pattern:      Redesign cycle as clean post-Phase-2 step — own branch, own session log, own code review
   Detail:           testing-log.md Round 04 section (Issues 27–29 + Round 04 Close)
+```
+
+---
+
+## Round 05 — leave-request
+
+```
+Result:          PASS
+Date:            2026-09-08 → 2026-09-09
+Sessions:        1   (continuous single session)
+
+Project
+  Domain:        leave request management (HR/compliance)
+  Stack:         React 18 + Vite · TypeScript · Supabase (Postgres + Auth) · Role-Level Security (RLS)
+  Phase 2 track: single-pass
+
+Complexity
+  Must features:   13   (F01–F12, F15)
+  Should features: 1   (F13 — deferred)
+  Could features:  1   (F14 — deferred)
+  Feature sizes:   S (11), M (2)
+
+Kit state going in
+  Issues fixed before this round: 29   (Issues 1–29 from Rounds 01–04 + refactor)
+  Known open issues carried in:   3   (Open Issues 1, 30, 31)
+
+Phase 1
+  Steps run:      n/a   (Phase 1 completed in prior session; kit validation only tests Phase 2)
+
+Phase 2
+  Steps run:      7 of 7   (all steps including new Step 5a gate)
+  Wall-clock:     ~2h 30m   (8:10 PM → 8:37 PM)
+  Credits:        not tracked
+  Slowest step:   Step 5 — Code Review + E2E (95 min; comprehensive review + 84 E2E tests)
+  Costliest step: Step 5 — Code Review + E2E
+
+Total
+  Wall-clock:     ~2h 30m
+  Credits:        not tracked
+  USD estimate:   n/a
+
+Quality
+  Hard gates triggered:    4   (Step 1 spec, Step 2 plan, Step 5a E2E testing plan, Step 6 manual check — all explicit user approval gates)
+  Write failures recovered: 0
+  E2E tests:               84 / 84 passing   (all acceptance criteria covered; zero skipped)
+  Spec coverage gaps:      0   (Converge analysis: 84/84 ACs covered)
+
+Outcome
+  What was built:   Leave request MVP — Employee submit/cancel requests with balances, Manager approve/reject/queue,
+                    HR balances view + history + filters + CSV export. State machine enforcement via Postgres ENUM.
+                    Role-Level Security (RLS) for access control. All 13 Must features shipped.
+  Failure reason:   n/a
+  Issues found / fixed / open: 1 / 1 / 0
+  Kit improvements: Step 5a (E2E Testing Plan) gate added (hard gate before E2E testing); generic `kit/guides/e2e-testing-plan.md`
+                    provisioning workflow created; `kit/phase-2-single-pass.md` + `kit/phase-2-checklist.md` updated
+  Detail:           testing-log.md Issue 32 (E2E provisioning requirement) + Round 05 Close
 ```

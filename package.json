@@ -1,0 +1,35 @@
+{
+  "name": "product-dev-kit",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "node --test tests/cli.test.mjs"
+  },
+  "description": "AI-agent workflow kit for building software products — Phase 1 bootstrap, Phase 2 feature dev, bug fix workflow, templates, and step guides.",
+  "author": "Khoa Ly",
+  "license": "MIT",
+  "bin": {
+    "product-dev-kit": "./bin/cli.js"
+  },
+  "files": [
+    "kit/",
+    "bin/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "workflow",
+    "product-development",
+    "kit",
+    "llm",
+    "claude",
+    "chatgpt"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KhoaTonyRay/product-development-kit.git"
+  },
+  "homepage": "https://khoatonyray.github.io/product-development-kit"
+}

@@ -2,6 +2,16 @@
 
 Skip Phase 1. The kit reads four files on every Phase 2 run — if those files exist, Phase 2 works regardless of how the project was started.
 
+## Install the Kit
+
+If you haven't already, install the kit in your project folder:
+
+```bash
+npx github:KhoaTonyRay/product-development-kit
+```
+
+This creates a `kit/` folder alongside your existing project. The templates referenced below are inside it.
+
 ---
 
 ## The Four Files Phase 2 Needs
@@ -12,10 +22,10 @@ Create a `docs/` folder at your project root and produce these four files:
 |---|---|---|
 | `docs/constitution.md` | `kit/templates/08-constitution.md` | **Start here.** Phase 2 cannot run without it. |
 | `docs/architecture.md` | `kit/templates/07-architecture.md` | Documents your existing stack for plan validation. |
-| `docs/design-system.md` | `kit/templates/05-design-system.md` | Required for projects with UI. |
+| `docs/DESIGN.md` | `kit/templates/05-design-system.md` | Required for projects with UI. |
 | `docs/roadmap.md` | `kit/templates/06-roadmap.md` | Lists features in MoSCoW priority with build order. |
 
-Also create `specs/` at your project root — Phase 2 writes per-feature specs and plans there.
+Phase 2 writes per-feature specs and plans into `docs/specs/` — no separate root-level `specs/` directory is needed.
 
 ---
 
@@ -101,4 +111,4 @@ You don't need:
 - `docs/tech-options.md` — Phase 2 never reads it
 - `docs/prototype/` — Phase 2 never reads it
 
-Phase 2 reads exactly: `docs/constitution.md`, `docs/architecture.md`, `docs/roadmap.md`, and `docs/design-system.md` (for UI features). Nothing else from `docs/`.
+Phase 2 reads exactly: `docs/constitution.md`, `docs/architecture.md`, `docs/roadmap.md`, and `docs/DESIGN.md` (for UI features). Nothing else from `docs/`.

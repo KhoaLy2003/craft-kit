@@ -16,6 +16,7 @@
 - [ ] Record `budget.spent()` at step start
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch
 - [ ] After every subagent write: verify file exists on disk; recover from `agent://` if absent
+- [ ] After every file write: read back the first 20 lines; confirm no missing table separator rows (`|---|`), no truncation, no placeholder text — see `kit/orchestrator-conventions.md` item 7
 - [ ] Include **fail-fast write instruction** (see `kit/orchestrator-conventions.md` item 6) in every subagent dispatch that writes files
 - [ ] Update `docs/phase-2-session.md` with duration and credit delta at step end
 - [ ] **Do NOT commit after individual tasks** — all changes accumulate on the feature branch until Manual Check / Step 6 approval
@@ -70,9 +71,22 @@
 - **[BLOCK]** Do not advance to Step 5 until the gap list is empty
 - [ ] Note "Converged" in session log before advancing
 
+
+### Step 5a — E2E Testing Plan Documentation
+
+- [ ] Create `docs/E2E-TESTS.md` documenting all test cases
+- [ ] Map each test to its acceptance criterion ID
+- [ ] For projects with external services (Supabase, Auth0, etc.): document provisioning workflow
+- [ ] Include test data requirements and seed scripts
+- [ ] Include troubleshooting guide for common test failures
+- **[HARD GATE]** User reviews and approves E2E testing plan before proceeding to E2E testing
+  Gate Summary: *"E2E testing plan is ready. Review the coverage and provisioning requirements — once approved, E2E testing begins."*
+- [ ] For Supabase projects: provide link to `kit/guides/e2e-testing-plan.md` for provisioning workflow
+
 ---
 
-### Step 5 — Code Review + E2E
+
+### Step 5b — Code Review + E2E
 
 - [ ] `code-reviewer` first — reviews entire branch diff against spec and constitution in one pass
 - **[BLOCK]** All code-review findings fixed before E2E begins — do not run E2E with known open findings

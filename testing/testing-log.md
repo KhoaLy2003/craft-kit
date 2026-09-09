@@ -15,9 +15,11 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | Open 1 | No way to skip per-task review in `subagent-driven-development` — results in 3 review layers when kit intent is 1 | Round 01 | Medium — cost/overhead | Open |
 | Open 2 | Agent write failures add wall-clock overhead | Round 02 | Low (non-blocking) | **Fixed Round 03** — Issue 18 fail-fast write instruction eliminates retry spiral |
 | 26 | Step 3 (Tech Research) removed; research absorbed into Step 7 (now Step 6 Architecture); Steps 4–9 renumbered to 3–8 | Refactor | Medium — structural workflow change | Fixed |
-| 28 | Step 1 idea-brief written before clarifying questions were answered | Round 04 | Medium — rework + session log error | Open |
-| 29 | No file-content preview before marking a step complete; syntax errors go unnoticed | Round 04 | Low — cosmetic in this case; potentially higher risk | Open |
-
+| 28 | Step 1 idea-brief written before clarifying questions were answered | Round 04 | Medium — rework + session log error | **Fixed** — `kit/steps/p1-01-ideation.md` + `kit/phase-1-checklist.md` Step 1: [BLOCK] added; Q&A-before-artifact rule explicit |
+| 29 | No file-content preview before marking a step complete; syntax errors go unnoticed | Round 04 | Low — cosmetic in this case; potentially higher risk | **Fixed** — `kit/orchestrator-conventions.md` item 7 + Universal section in both `phase-1-checklist.md` and `phase-2-checklist.md` |
+| 30 | Step 4 DESIGN.md auto-skip only checks `PROJECT_ROOT` and `docs/` — a file placed one directory up (round staging level) is not detected; tester must manually copy or place at project root | Round 05 | Low — causes confusion; check fails silently | Open |
+| 31 | Todo system auto-promotes next step past a blocked step even when the next step has an undeclared dependency on the blocked step's output; reminder fires spuriously | Round 05 | Low — workflow confusion, no artifact harm | Open |
+| 32 | E2E testing requires Supabase provisioning (migration + users + seed data) before tests can run. Kit workflow did not make this explicit or enforced. First E2E run failed on 42 skipped tests (no auth, no tables). | Round 05 | High — E2E proves nothing without provisioning | **Fixed Round 05** — Added Step 5a (E2E Testing Plan documentation) as required gate before Step 5b E2E testing; created `kit/guides/e2e-testing-plan.md` provisioning workflow; updated `kit/phase-2-single-pass.md`, `kit/phase-2-checklist.md`, flow diagram |
 ---
 
 ## Kit Files Changed (cumulative)
@@ -25,8 +27,9 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | File | Rounds | Nature of changes |
 |---|---|---|
 | `kit/phase-1-bootstrap.md` | 01, 02, 03, refactor | Orchestrator convention; step scope; Step 4 richer process + CSS rule; Step 5 output renamed to `docs/DESIGN.md` + path descriptions; Steps 6/7/8 inputs; Phase 1 Output Checklist; Step 7 hard gate; Step 9 pre-flight; Phase Handoff; item 6 fail-fast; Step 3 catalog-first; **Issue 26**: step table renumbered (8 steps), output checklist removes `docs/tech-options.md`, flow diagram updated |
-| `kit/phase-2-single-pass.md` | 01, 02, 03 | Created Round 01; Step 2 hard gate; Step 3 branch creation; checklist reference; Step 1 input renamed to `docs/DESIGN.md` |
-| `kit/phase-2-feature-dev.md` | 01, 03 | Orchestrator convention; session log schema; soft gate tightening; checklist reference; Step 1 input renamed to `docs/DESIGN.md` |
+| `kit/phase-2-single-pass.md` | 01, 02, 03, **Round 05** | Created Round 01; Step 2 hard gate; Step 3 branch creation; checklist reference; Step 1 input renamed to `docs/DESIGN.md`; **Issue 32 Fix**: Added Step 5a (E2E Testing Plan Documentation) as hard gate before E2E testing; split old Step 5 into 5a + 5b; updated flow diagram to show new gate |
+| `kit/phase-2-checklist.md` | 03, post-04, **Round 05** | Created; Step 5 updated — batch E2E approach (Issue 25); **Issue 29**: Universal item 7 content-preview added; **Issue 32 Fix**: Added Step 5a checklist for E2E Testing Plan documentation hard gate; renamed Step 5 to Step 5b |
+| `kit/guides/e2e-testing-plan.md` | **Round 05** | Created — Comprehensive E2E provisioning workflow for Supabase projects; prerequisite checklist, step-by-step provisioning, troubleshooting, CI/CD automation template; **Issue 32 Fix** |
 | `kit/README.md` | 01, 02, 03, refactor | Phase 2 track table; doc path updates; `design-system.md` → `DESIGN.md` throughout; **Issue 26**: step groupings renumbered, Step 3 description removed, Architecture step updated, hard gates table updated, end-state artifact list removes `docs/tech-options.md` |
 | `kit/templates/04b-prototype-brief.md` | 03 | Full rewrite — State Coverage, Mock Data, Feedback Log, DoD 11 items; CSS clarity item |
 | `kit/templates/05-design-system.md` | 03 | Title and output reference updated to `docs/DESIGN.md` |
@@ -36,8 +39,10 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | `kit/templates/09-scaffold-checklist.md` | 01, 03, refactor | Phase 1 Closeout section; `design-system.md` → `DESIGN.md` in artifact list; **Issue 26**: `docs/tech-options.md` removed from artifact list; title updated to Step 8 |
 | `kit/templates/phase-1-kickoff.md` | 03 | Removed "run all 9 steps" framing; gate-bypass warning; DESIGN.md path guidance |
 | `kit/stack-catalog.md` | 03 | Created — 6 stack entries; `Requires` field; fail-fast write note |
-| `kit/phase-1-checklist.md` | 03, 04 | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance; **Round 04**: Step 5 expanded to check project root `DESIGN.md` and auto-proceed without user confirmation (Issue 27) |
-| `kit/phase-2-checklist.md` | 03 | Created; Step 5 updated — batch E2E approach (Issue 25) |
+| `kit/phase-1-checklist.md` | 03, 04, post-04 | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance; **Round 04**: Step 5 expanded to check project root `DESIGN.md` and auto-proceed without user confirmation (Issue 27); **Issues 28–29**: Step 1 [BLOCK] Q&A-before-artifact; Universal item 7 content-preview |
+| `kit/phase-2-checklist.md` | 03, post-04 | Created; Step 5 updated — batch E2E approach (Issue 25); **Issue 29**: Universal item 7 content-preview added |
+| `kit/orchestrator-conventions.md` | post-04 | **Issue 29**: item 7 added — preview first 20 lines of every written file |
+| `kit/steps/p1-01-ideation.md` | post-04 | **Issue 28**: Q&A-before-artifact rule added as explicit note with sequencing contract |
 | `kit/CHANGELOG.md` | 02, 03 | Created Round 02; Round 03 entries added (Issues 17–25) |
 | `kit/phase-1-checklist.md` | 03, refactor | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance; **Issue 26**: full rewrite — Step 3 (Tech Research) section removed, all steps renumbered, Step 6 gains three-stage research checklist |
 | `kit/steps/p1-03-tech-research.md` | refactor | **Issue 26**: deleted — step removed; research absorbed into architecture step |
@@ -608,3 +613,25 @@ Phase 2 completed 2026-09-05. All 7 single-pass steps finished; F01–F06 shippe
   - Updated `kit/templates/07-architecture.md`: "Based on" updated; tech-options references removed from Sections 1, 3, and the header note
   - Updated `kit/templates/09-scaffold-checklist.md`: `docs/tech-options.md` removed from Phase 1 Closeout artifact list
 - **Status:** Fixed
+
+---
+
+## Round 05 — leave-request
+
+### Issue 30 — Step 4 DESIGN.md auto-skip only checks PROJECT_ROOT; round-level placement not detected
+
+- **Discovered at:** Round 05, Step 4
+- **Problem:** The Step 4 checklist auto-skips when `DESIGN.md` exists at `PROJECT_ROOT` or `PROJECT_ROOT/docs/`. In Round 05 the tester placed `DESIGN.md` at the round staging level (`testing/round-05/DESIGN.md`), one directory above the project root. The checklist rule did not detect it; the kickoff form also had the checkbox unchecked. Orchestrator had to manually decide intent and copy the file.
+- **Impact:** Low — caused ambiguity requiring a judgment call; no artifact harm.
+- **Root cause:** Checklist Step 4 check is path-specific (`PROJECT_ROOT` and `docs/`); no fallback to check parent directories.
+- **Fix applied:** None yet. Recommended fix: add a note to the Step 4 checklist to also check the parent directory of `PROJECT_ROOT` and any path mentioned in the kickoff form even if the checkbox is unchecked.
+- **Status:** Open
+
+### Issue 31 — Todo system auto-promotes past a blocked step with undeclared downstream dependencies
+
+- **Discovered at:** Round 05, Step 6 hard gate
+- **Problem:** When Step 6 was marked `blocked` (awaiting stack confirmation at a hard gate), the todo system auto-promoted Step 7 to `in_progress`. Steps 7 and 8 both depend on `docs/architecture.md` which Step 6 produces. Three "continue working" reminders fired against Step 7, all inapplicable.
+- **Impact:** Low — no incorrect artifact produced; workflow confusion and spurious reminder noise.
+- **Root cause:** Todo system has no dependency graph; blocking one task does not propagate to dependents.
+- **Fix applied:** None (harness behavior). Orchestrator-level mitigation: when blocking a hard-gate step, also block all subsequent steps that depend on its output artifact.
+- **Status:** Open
