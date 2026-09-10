@@ -18,16 +18,16 @@ Read `kit/session-logging.md` for the Phase 1 session log schema and starter tem
 Before executing each step, read its step file. The step file is the authoritative source for that step's inputs, outputs, notes, and review instructions. Read `kit/phase-1-checklist.md` for the pre-step checklist (checklist section for the current step + Universal section at the top).
 
 
-| #   | Name                          | Gate   | Step File                            |
-| --- | ----------------------------- | ------ | ------------------------------------ |
-| 1   | Product Ideation              | `none` | `kit/steps/p1-01-ideation.md`        |
-| 2   | Market Research *(optional)*  | `hard` | `kit/steps/p1-02-market-research.md` |
-| 3   | Interactive Prototype         | `hard` | `kit/steps/p1-03-prototype.md`       |
-| 4   | Product Design                | `hard` | `kit/steps/p1-04-design.md`          |
-| 5   | Roadmap Generation            | `hard` | `kit/steps/p1-05-roadmap.md`         |
-| 6   | Tech Stack &amp; Architecture | `hard` | `kit/steps/p1-06-architecture.md`    |
-| 7   | Constitution                  | `hard` | `kit/steps/p1-07-constitution.md`    |
-| 8   | Scaffold                      | `none` | `kit/steps/p1-08-scaffold.md`        |
+| #   | Name                          | Description | Gate   | Step File                            |
+| --- | ----------------------------- | ----------- | ------ | ------------------------------------ |
+| 1   | Product Ideation              | Clarify the problem, target user, and solution hypothesis. Define what you're building. | `none` | `kit/steps/phase-1/p1-01-ideation.md`        |
+| 2   | Market Research *(optional)*  | Validate market demand and identify competitive risks before committing to development. | `hard` | `kit/steps/phase-1/p1-02-market-research.md` |
+| 3   | Interactive Prototype         | Build a working prototype to test UX assumptions and validate core user interactions. | `hard` | `kit/steps/phase-1/p1-03-prototype.md`       |
+| 4   | Product Design                | Create a design system with visual language, components, and UI patterns for the product. | `hard` | `kit/steps/phase-1/p1-04-design.md`          |
+| 5   | Roadmap Generation            | Prioritize features into Must/Should/Nice-to-Have and determine the development build order. | `hard` | `kit/steps/phase-1/p1-05-roadmap.md`         |
+| 6   | Tech Stack &amp; Architecture | Evaluate technology options and document the system architecture for Phase 2 implementation. | `hard` | `kit/steps/phase-1/p1-06-architecture.md`    |
+| 7   | Constitution                  | Establish coding standards, architectural rules, and non-negotiable principles for the project. | `hard` | `kit/steps/phase-1/p1-07-constitution.md`    |
+| 8   | Scaffold                      | Generate initial project structure, build setup, and verify the development environment works. | `none` | `kit/steps/phase-1/p1-08-scaffold.md`        |
 
 
 ---

@@ -20,9 +20,9 @@ Skills are instruction sets that teach your AI platform how to do a specific tas
 |---|---|
 | `brainstorming` | Phase 1 Step 1 — product ideation; Phase 2 Step 1 — feature spec |
 | `writing-plans` | Phase 2 Step 2 — implementation planning |
-| `subagent-driven-development` | Phase 2 Step 3 — building features |
-| `dispatching-parallel-agents` | Phase 2 Step 3 — parallel build tasks |
-| `design-taste-frontend` | Phase 2 Step 3 — UI quality; invoked inside `frontend-developer` dispatches for new UI work |
+| `subagent-driven-development` | Phase 2 Step 4 — building features |
+| `dispatching-parallel-agents` | Phase 2 Step 4 — parallel build tasks |
+| `design-taste-frontend` | Phase 2 Step 4 — UI quality; invoked inside `frontend-developer` dispatches for new UI work |
 | `requesting-code-review` | Phase 2 Step 6 — code quality check |
 | `finishing-a-development-branch` | Phase 2 Step 9 — shipping a feature (standard loop) |
 | `using-git-worktrees` | Phase 2 — keeping features isolated during build |

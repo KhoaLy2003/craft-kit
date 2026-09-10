@@ -13,10 +13,13 @@ Works with any multi-agent AI coding harness. Designed to be dropped into any pr
 | `phase-2-feature-dev.md` | Standard Phase 2: one feature per cycle, repeated — for M/L features or complex codebases |
 | `phase-2-single-pass.md` | Single-pass Phase 2: all features in one cycle — for small apps with S/M features |
 | `phase-bug-fix.md` | Bug fix workflow: Assess → Fix → Verify — for bugs against shipped features |
+| `steps/phase-1/` | Step detail files for Phase 1 (`p1-01` through `p1-08`) — authoritative source for each step's inputs, rules, and completion criteria |
+| `steps/phase-2/` | Step detail files for Phase 2 Standard Loop (`p2-01` through `p2-09`) and Single-Pass (`p2sp-01` through `p2sp-07`) |
 | `task-agent-rubric.md` | Reference table for matching plan tasks to specialist agents |
 | `templates/phase-1-kickoff.md` | **Start here for new projects** — copy to `docs/phase-1-kickoff.md` in your project root and fill it in before starting Phase 1 |
 | `templates/` | Output templates for every Phase 1 artifact (filled by the agent, not you) |
-| `samples/` | Reference examples — e.g. `DESIGN.md` (Airbnb-style design system) for Step 5 import path |
+| `resource/DESIGN.md` | Airbnb-style design system reference — use as the Step 4 import path source or format guide |
+| `resource/step-specification-template.md` | Canonical template for all step files |
 | `guides/evolving-specs.md` | How to handle spec and artifact changes after a feature ships |
 | `CHANGELOG.md` | History of all kit changes |
 
@@ -85,7 +88,7 @@ Step 2 dispatches the `market-researcher` agent and delivers a research report c
 Step 3 dispatches your general-purpose agent to produce a journey map and prototype brief, then `frontend-developer` to wire them into a clickable HTML prototype in `prototype/`. No real backend — faked data is explicitly documented.
 
 Step 4 is the design system session. Two paths:
-- **Import path** — if you already have a `DESIGN.md`, provide the path; the agent reads it and normalizes it into `docs/DESIGN.md`. The AI design session is skipped. See `samples/DESIGN.md` for the expected format.
+- **Import path** — if you already have a `DESIGN.md`, provide the path; the agent reads it and normalizes it into `docs/DESIGN.md`. The AI design session is skipped. See `resource/DESIGN.md` for the expected format.
 - **AI path** — no existing design file; your general-purpose agent runs a design session from the prototype and produces tokens, components, and finalized mock screens.
 
 Step 4 is a hard gate — design direction is locked here. Changing it after this point is expensive.

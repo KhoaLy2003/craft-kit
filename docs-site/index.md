@@ -54,7 +54,7 @@ The kit has a hard split between *starting* a project and *building* it. Phase 1
 
 ### Phase 1 — Bootstrap <span class="VPBadge tip" style="vertical-align:middle">once per project</span>
 
-Takes a raw idea through nine sequential steps: market research, interactive prototype, visual design, feature roadmap, tech choice, and codebase setup. Each step produces a planning document that feeds the next. Four decision points require your explicit approval before the next step runs.
+Takes a raw idea through eight sequential steps: market research, interactive prototype, visual design, feature roadmap, tech choice, and codebase setup. Each step produces a planning document that feeds the next. Four decision points require your explicit approval before the next step runs.
 
 **End state:** a runnable app with zero features yet, plus eight approved planning documents in your project's `docs/` folder — everything Phase 2 needs to start building.
 
@@ -71,7 +71,7 @@ Phase 2 has two tracks chosen at the Roadmap gate:
 | Track | Best for | Steps |
 |---|---|---|
 | **Standard loop** | Larger or more complex features; projects spanning frontend and backend | 9 steps per feature |
-| **Single pass** | Small apps with 15 or fewer simple-to-medium features; solo builders | 7 steps total |
+| **Single pass** | Small apps with 15 or fewer simple-to-medium features; solo builders | 8 steps total |
 
 [Compare the tracks →](/phases/phase-2-standard)
 

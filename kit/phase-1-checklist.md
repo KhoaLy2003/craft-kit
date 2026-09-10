@@ -52,7 +52,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - **[BLOCK]** Verify `docs/prototype/journey-map.md` and `docs/prototype/prototype-brief.md` exist on disk before dispatching `frontend-developer`
 - [ ] HTML prototype: CSS **required** for structural clarity (layout, grouping, hierarchy, state visibility) — no brand colors, no visual polish
 - **[BLOCK]** Verify all HTML files exist on disk after `frontend-developer` completes
-- [ ] Walk review questions before advancing: requirements, user flow, states, edge cases (see `kit/steps/p1-03-prototype.md`)
+- [ ] Walk review questions before advancing: requirements, user flow, states, edge cases (see `kit/steps/phase-1/p1-03-prototype.md`)
 - **[BLOCK]** `prototype-brief.md` Definition of Done checklist: **all 11 items** must be checked before advancing
 
 ---
