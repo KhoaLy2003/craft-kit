@@ -4,6 +4,7 @@
 
 - **Purpose**: Generate the initial project structure, configure the build setup, and verify that the development environment runs correctly end-to-end.
 - **Agent/Skill**: `general-purpose agent`; or `frontend-developer` if the stack is primarily frontend
+- **Model**: `sonnet`
 - **Trigger**: Step 7 gate approved (`docs/constitution.md` has `Status: approved`).
 - **Inputs**:
   - `docs/architecture.md`

@@ -4,6 +4,7 @@
 
 - **Purpose**: Create an ordered implementation plan for all features with dependency-driven task sequencing and a dominant specialist identified.
 - **Skill/Agent**: `writing-plans` skill
+- **Model**: `opus`
 - **Trigger**: `docs/specs/spec.md` approved (Step 1 gate passed)
 - **Inputs**:
   - `docs/specs/spec.md`

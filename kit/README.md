@@ -1,6 +1,6 @@
-# Product Development Kit
+# CraftKit
 
-A reusable, agent-friendly workflow kit for building software products with AI coding agents.
+A reusable, agent-friendly workflow kit for crafting software products with AI coding agents.
 Works with any multi-agent AI coding harness. Designed to be dropped into any project and used immediately.
 
 ---
@@ -48,13 +48,13 @@ Run this cycle for every feature — including the first MVP feature.
 **Install the kit** in your project folder (requires Node.js 18+):
 
 ```bash
-npx github:KhoaTonyRay/product-development-kit
+npx craft-kit
 ```
 
 This creates a `kit/` directory with all the phase files, templates, guides, and step detail files. To update an existing install:
 
 ```bash
-npx github:KhoaTonyRay/product-development-kit --force
+npx craft-kit --force
 ```
 
 The phase files are orchestration scripts for the main orchestrating agent — you do not execute steps manually. You start a session, reference the phase file, and participate at the gates. The agent handles dispatching, artifact creation, and advancing between steps.
@@ -130,6 +130,8 @@ Phase 2 has two tracks. The track is decided at the **Step 6 (Roadmap) gate** �
 ---
 
 ### Standard loop — feature by feature
+> **Beta note:** The standard loop has not yet been end-to-end validated. All five internal test rounds used the single-pass track. The step files are complete and the gate logic is correct, but the per-feature cycle has not been run. **Recommend single-pass for first-time users** unless the project clearly requires the standard loop (L-sized features, multiple domains, growing feature set).
+
 
 Run this cycle once per feature, starting from the first pending feature in build order. Repeat until all features are shipped.
 

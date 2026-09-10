@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "Product Development Kit"
+  name: "CraftKit"
   text: "Turn your idea into a real product."
   tagline: "Describe what you want to build. AI agents handle the research, design, planning, and code — pausing at key decisions so you stay in control."
   actions:
@@ -36,7 +36,7 @@ features:
     linkText: Bug fix workflow
   - icon: 📦
     title: One Command to Install
-    details: Run `npx github:KhoaTonyRay/product-development-kit` in your project folder. It copies all the phase files, templates, and guides into a `kit/` directory — ready to share with ChatGPT, Claude, or any capable AI.
+    details: Run `npx github:KhoaLy2003/craft-kit` in your project folder. It copies all the phase files, templates, and guides into a `kit/` directory — ready to share with ChatGPT, Claude, or any capable AI.
     link: /getting-started
     linkText: Get started
   - icon: 📋
@@ -96,7 +96,7 @@ Phase 2 has two tracks chosen at the Roadmap gate:
 **Step 1 — Install the kit** in your project folder:
 
 ```bash
-npx github:KhoaTonyRay/product-development-kit
+npx github:KhoaLy2003/craft-kit
 ```
 
 This creates a `kit/` folder with all the phase files and templates. Run once per project; use `--force` to update an existing install.

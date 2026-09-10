@@ -4,6 +4,7 @@
 
 - **Purpose**: Break the feature into ordered implementation tasks with exact files, interfaces, and test steps.
 - **Skill/Agent**: `writing-plans` skill
+- **Model**: `sonnet`
 - **Trigger**: `docs/specs/<feature-slug>/spec.md` exists and is approved (Step 1 gate passed)
 - **Inputs**:
   - `docs/specs/<feature-slug>/spec.md`

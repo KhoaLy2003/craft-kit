@@ -8,9 +8,9 @@ import { defineConfig } from 'vitepress'
 const nodeModules = resolve(__dirname, '../node_modules')
 
 export default defineConfig({
-  title: 'Product Development Kit',
+  title: 'CraftKit',
   description:
-    'A reusable, agent-friendly workflow kit for building software products with AI coding agents.',
+    'A reusable, agent-friendly workflow kit for crafting software products with AI coding agents.',
   head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
 
   // Serve from playround root — kit files are the single source of truth.
@@ -254,7 +254,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/KhoaTonyRay/product-development-kit' },
+      { icon: 'github', link: 'https://github.com/KhoaLy2003/craft-kit' },
     ],
 
     footer: {

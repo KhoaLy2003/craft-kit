@@ -4,6 +4,7 @@
 
 - **Purpose**: Write code to implement all tasks; dispatch specialist agents for each domain.
 - **Skill/Agent**: `subagent-driven-development` skill (sequential chains) or `dispatching-parallel-agents` skill (parallel groups identified in Step 3)
+- **Model**: `sonnet`
 - **Trigger**: `plan.md` exists with `Specialist:` annotations (Step 3 complete)
 - **Inputs**:
   - `docs/specs/<feature-slug>/plan.md` with specialist annotations

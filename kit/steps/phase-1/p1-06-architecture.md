@@ -4,6 +4,7 @@
 
 - **Purpose**: Evaluate technology options against the approved roadmap and document the confirmed system architecture for Phase 2 implementation.
 - **Agent/Skill**: `research-analyst` agent (research, analysis, and recommendation); human makes the final stack decision.
+- **Model**: `opus`
 - **Trigger**: Step 5 gate approved.
 - **Inputs**:
   - `docs/idea-brief.md`

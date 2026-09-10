@@ -4,6 +4,7 @@
 
 - **Purpose**: Build a working prototype to test UX assumptions and validate core user interactions before significant development effort is committed.
 - **Agent/Skill**: General-purpose agent (journey-map.md + prototype-brief.md); `frontend-developer` agent (interactive HTML)
+- **Model**: `sonnet`
 - **Trigger**: Step 2 complete or skipped.
 - **Inputs**:
   - `docs/idea-brief.md`

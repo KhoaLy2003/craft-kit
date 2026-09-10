@@ -4,6 +4,7 @@
 
 - **Purpose**: Document test cases and provisioning requirements for external services before E2E testing begins.
 - **Skill/Agent**: General-purpose agent
+- **Model**: `sonnet`
 - **Trigger**: Step 4 (Converge) complete; zero gaps
 - **Inputs**:
   - `docs/specs/spec.md`

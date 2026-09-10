@@ -1,14 +1,14 @@
 {
-  "name": "product-dev-kit",
+  "name": "craft-kit",
   "version": "0.1.0",
   "scripts": {
     "test": "node --test tests/cli.test.mjs"
   },
-  "description": "AI-agent workflow kit for building software products — Phase 1 bootstrap, Phase 2 feature dev, bug fix workflow, templates, and step guides.",
+  "description": "AI-agent workflow kit for crafting software products — Phase 1 bootstrap, Phase 2 feature dev, bug fix workflow, templates, and step guides.",
   "author": "Khoa Ly",
   "license": "MIT",
   "bin": {
-    "product-dev-kit": "./bin/cli.js"
+    "craft-kit": "./bin/cli.js"
   },
   "files": [
     "kit/",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/KhoaTonyRay/product-development-kit.git"
+    "url": "https://github.com/KhoaLy2003/craft-kit.git"
   },
-  "homepage": "https://khoatonyray.github.io/product-development-kit"
+  "homepage": "https://khoaly2003.github.io/craft-kit"
 }

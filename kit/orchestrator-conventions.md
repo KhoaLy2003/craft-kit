@@ -12,7 +12,7 @@ Emit this before doing any work in the step:
 ```
 ---
 [Phase label] · Step N — [Step Name]
-Skill / Agent: [name]  |  Gate: [none / soft / hard]
+Skill / Agent: [name]  |  Model: [opus / sonnet / haiku]  |  Gate: [none / soft / hard]
 Started: HH:MM  |  Credits at start: NNNN
 ---
 ```

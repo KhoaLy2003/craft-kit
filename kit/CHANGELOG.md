@@ -4,6 +4,34 @@ All notable changes to this kit are recorded here. Newest entry first.
 Each entry notes what changed, which file(s), and what round or discussion prompted it.
 
 ---
+## 2026-09-10 — Renamed to CraftKit + Pre-Beta Fixes
+
+### Changed
+- **Kit renamed** from "Product Development Kit" to **CraftKit** (`craft-kit` npm package name).
+  - `package.json` — `name`, `description`, `bin` key updated.
+  - `bin/cli.js` — all user-facing strings and User-Agent updated.
+  - `kit/README.md` — title and `npx` install commands updated.
+- **`kit/orchestrator-conventions.md`** — step banner format updated to include `Model: [opus / sonnet / haiku]` alongside Skill/Agent and Gate.
+- **`kit/README.md`** — beta validation note added to Standard Loop section: all five internal rounds used single-pass; standard loop step files are complete but not yet end-to-end validated.
+
+### Fixed
+- **`kit/session-logging.md`** Phase 1 template corrected to 8 steps; stale "Tech Research" row removed (step was eliminated in the Issue 26 refactor).
+- **`kit/steps/phase-2/p2-07-e2e-testing.md`** and **`p2sp-05b-code-review-e2e.md`** — Issue 25 batch-fix E2E protocol applied: run all criteria first → mark PASS/FAIL/BLOCKED → batch FAILs to implementer → re-run complete suite. Was documented since Round 03 as "kit file update pending."
+
+---
+
+## 2026-09-10 — Model Metadata Added to All Step Files
+
+### Added
+- **`Model` field** in the Overview section of every step file — positioned after `Agent/Skill`, before `Trigger`. Values: `opus`, `sonnet`, or `haiku` (short names only); `none` for human-only steps.
+  - `opus`: p1-01 (Ideation), p1-06 (Architecture), p2-01 (Spec), p2sp-01 (Full-App Spec), p2sp-02 (Plan) — irreversible hard-gate decisions.
+  - `sonnet`: all implementation, planning, analysis, and review steps.
+  - `haiku`: p2-03 (Assign Specialists), p2-09 (Ship), p2sp-07 (Ship) — mechanical routing and git/PR steps.
+  - `none`: p2-08 and p2sp-06 (Manual Check) — human walkthrough; no agent dispatched.
+- **`kit/resource/step-specification-template.md`** — `Model` field added after `Agent/Skill` with placeholder `{{MODEL_NAME}}`.
+
+---
+
 
 ## 2026-09-10 — Step Template Refactor + Phase 2 Step File Extraction
 

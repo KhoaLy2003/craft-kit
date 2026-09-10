@@ -1,6 +1,6 @@
 # Getting Started
 
-**Product Development Kit** is a structured guide you share with your AI assistant. Describe what you want to build, and the AI works through research, design, planning, and building — checking in with you at each important decision.
+**CraftKit** is a structured guide you share with your AI assistant. Describe what you want to build, and the AI works through research, design, planning, and building — checking in with you at each important decision.
 
 You don't need any technical knowledge. Your job is to describe your idea and give feedback at the right moments.
 
@@ -22,13 +22,13 @@ That's it. The kit tells the AI what to do; you don't need to figure out how to 
 Run this in your project folder (or any empty folder):
 
 ```bash
-npx github:KhoaTonyRay/product-development-kit
+npx github:KhoaLy2003/craft-kit
 ```
 
 This creates a `kit/` folder with all the phase files, templates, and guides. You only need to do this once per project. To update to the latest version later:
 
 ```bash
-npx github:KhoaTonyRay/product-development-kit --force
+npx github:KhoaLy2003/craft-kit --force
 ```
 
 ### Step 2 — Describe your idea
@@ -82,7 +82,7 @@ Phase 2 builds your features one at a time. Before each feature ships, you walk 
 
 ## Already Have a Project?
 
-Skip Phase 1. Install the kit (`npx github:KhoaTonyRay/product-development-kit`), then create four planning documents in a `docs/` folder. See [Existing Projects](/guides/existing-projects) for what to include in each one.
+Skip Phase 1. Install the kit (`npx github:KhoaLy2003/craft-kit`), then create four planning documents in a `docs/` folder. See [Existing Projects](/guides/existing-projects) for what to include in each one.
 
 ---
 

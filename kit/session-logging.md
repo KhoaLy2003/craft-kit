@@ -38,13 +38,12 @@ Create as `docs/phase-1-session.md` at Step 1 start. Update after every step.
 |---|---|---|---|---|---|---|---|
 | 1 | Product Ideation | `brainstorming` (Architectural) | pending | — | — | — | — |
 | 2 | Market Research | `market-researcher` | pending | — | — | — | — |
-| 3 | Tech Research | `research-analyst` + general-purpose agent | pending | — | — | — | — |
-| 4 | Interactive Prototype | general-purpose agent + `frontend-developer` | pending | — | — | — | — |
-| 5 | Product Design | general-purpose agent | pending | — | — | — | — |
-| 6 | Roadmap Generation | general-purpose agent | pending | — | — | — | — |
-| 7 | Tech Stack & Architecture | `research-analyst` | pending | — | — | — | — |
-| 8 | Constitution | general-purpose agent | pending | — | — | — | — |
-| 9 | Scaffold | general-purpose agent / `frontend-developer` | pending | — | — | — | — |
+| 3 | Interactive Prototype | general-purpose agent + `frontend-developer` | pending | — | — | — | — |
+| 4 | Product Design | general-purpose agent | pending | — | — | — | — |
+| 5 | Roadmap Generation | general-purpose agent | pending | — | — | — | — |
+| 6 | Tech Stack & Architecture | `research-analyst` | pending | — | — | — | — |
+| 7 | Constitution | general-purpose agent | pending | — | — | — | — |
+| 8 | Scaffold | general-purpose agent / `frontend-developer` | pending | — | — | — | — |
 ```
 
 ### Phase 2 — Standard Loop

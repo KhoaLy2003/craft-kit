@@ -4,6 +4,7 @@
 
 - **Purpose**: Review code quality, security, and compliance with architecture and constitutional rules.
 - **Skill/Agent**: `code-reviewer` agent
+- **Model**: `sonnet`
 - **Trigger**: Step 5 converged (gap list empty); feature branch ready
 - **Inputs**:
   - Full diff of the feature branch against base

@@ -4,6 +4,7 @@
 
 - **Purpose**: Human walkthrough of the complete product to verify all features work together as an integrated system.
 - **Skill/Agent**: Human only — no agent or skill
+- **Model**: none — human walkthrough only
 - **Trigger**: Step 5b passes with no unresolved findings or failures
 - **Inputs**:
   - Running application with all features live

@@ -4,6 +4,7 @@
 
 - **Purpose**: {{ONE_SENTENCE_PURPOSE}}
 - **Agent/Skill**: `{{AGENT_OR_SKILL}}`
+- **Model**: `{{MODEL_NAME}}`
 - **Trigger**: {{WHEN_THIS_STEP_STARTS}}
 - **Inputs**:
   - `{{INPUT_1}}`

@@ -85,7 +85,7 @@ function prompt (rl, question) {
 
 function httpsGet (url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'product-dev-kit-installer' } }, res => {
+      https.get(url, { headers: { 'User-Agent': 'craft-kit-installer' } }, res => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         return httpsGet(res.headers.location).then(resolve).catch(reject)
       }
@@ -178,10 +178,10 @@ const skipSetup = args.includes('--skip-setup')
 
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`
-  product-dev-kit v${PKG.version}
+  craft-kit v${PKG.version}
 
   Usage
-    npx product-dev-kit [target-dir] [flags]
+    npx craft-kit [target-dir] [flags]
 
   Arguments
     target-dir    Directory to install the kit into  (default: ./kit)
@@ -193,10 +193,10 @@ if (args.includes('--help') || args.includes('-h')) {
     --help          Show this message
 
   Examples
-    npx product-dev-kit                      install to ./kit/
-    npx product-dev-kit ./my-project/kit     install to a custom path
-    npx product-dev-kit --force              update an existing install
-    npx product-dev-kit --skip-setup         kit files only, no setup prompt
+    npx craft-kit                      install to ./kit/
+    npx craft-kit ./my-project/kit     install to a custom path
+    npx craft-kit --force              update an existing install
+    npx craft-kit --skip-setup         kit files only, no setup prompt
 `)
   process.exit(0)
 }
@@ -230,7 +230,7 @@ if (fs.existsSync(target)) {
     ${target}
 
   To update an existing install:
-    npx product-dev-kit --force
+    npx craft-kit --force
 `)
     process.exit(1)
   }

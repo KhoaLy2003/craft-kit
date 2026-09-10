@@ -4,6 +4,7 @@
 
 - **Purpose**: Verify the implementation covers every acceptance criterion; identify gaps and implement them.
 - **Skill/Agent**: general-purpose agent
+- **Model**: `sonnet`
 - **Trigger**: All tasks in `plan.md` complete; feature branch ready
 - **Inputs**:
   - `docs/specs/<feature-slug>/spec.md` (acceptance criteria list)

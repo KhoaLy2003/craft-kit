@@ -4,6 +4,7 @@
 
 - **Purpose**: Validate market demand and identify competitive risks before committing to development.
 - **Agent/Skill**: `market-researcher` agent
+- **Model**: `sonnet`
 - **Trigger**: User chooses to run this step after Step 1 completes.
 - **Inputs**:
   - `docs/idea-brief.md`

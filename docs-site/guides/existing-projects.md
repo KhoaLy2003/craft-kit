@@ -7,7 +7,7 @@ Skip Phase 1. The kit reads four files on every Phase 2 run — if those files e
 If you haven't already, install the kit in your project folder:
 
 ```bash
-npx github:KhoaTonyRay/product-development-kit
+npx github:KhoaLy2003/craft-kit
 ```
 
 This creates a `kit/` folder alongside your existing project. The templates referenced below are inside it.

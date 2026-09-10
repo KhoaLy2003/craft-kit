@@ -4,6 +4,7 @@
 
 - **Purpose**: Establish the visual language, component tokens, and UI patterns for the product by either importing an existing design system file or generating one from the prototype.
 - **Agent/Skill**: General-purpose agent (AI path only — skipped entirely if `docs/DESIGN.md` already exists or is downloaded by the user)
+- **Model**: `sonnet`
 - **Trigger**: `docs/prototype/` folder exists and prototype is walkable.
 - **Inputs**:
   - Always: `docs/prototype/`, `docs/idea-brief.md`

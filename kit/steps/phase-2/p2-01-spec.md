@@ -4,6 +4,7 @@
 
 - **Purpose**: Write detailed acceptance criteria and edge cases for the feature; resolve ambiguity before implementation begins.
 - **Skill/Agent**: `brainstorming` skill
+- **Model**: `opus`
 - **Trigger**: Orchestrator selects the next `pending` feature from `docs/roadmap.md`
 - **Inputs**:
   - `docs/roadmap.md` (feature entry)

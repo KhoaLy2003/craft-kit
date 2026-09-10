@@ -4,6 +4,7 @@
 
 - **Purpose**: Human walkthrough of the feature to catch anything automated tests may have missed.
 - **Skill/Agent**: Human only — no agent is dispatched
+- **Model**: none — human walkthrough only
 - **Trigger**: Step 7 passes with no unresolved failures
 - **Inputs**:
   - Running application
