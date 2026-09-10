@@ -72,7 +72,41 @@ Brief explanation (one sentence)
 - [ ] Connection verified (example query/call)
 
 **Troubleshooting:**
-- If X error, do Y
+
+### CRITICAL: Supabase Test User Creation
+
+For Supabase projects, test users **cannot be created programmatically** — they must be manually created in the Supabase Auth dashboard:
+
+1. Go to **Supabase Dashboard** → **Authentication** → **Users**
+2. Click **"Add user"** and create each test user manually
+3. Use **exact email and password** as documented in your E2E Testing Plan
+4. Database profiles must match Auth user IDs (UUIDs auto-generated in Auth)
+5. After profiles are created, seed test data (pending requests, balances, etc.)
+
+**Failure mode:** "Invalid login credentials" error means test users don't exist in Auth yet. This is the most common E2E blocker for Supabase projects.
+
+**Prevention:** Include a separate `PROVISIONING.md` file in your project docs that walks through manual test user creation step-by-step. Example template:
+```markdown
+# Provisioning Guide
+
+## Step 1: Create Test Users in Supabase Auth Dashboard
+- Email: test-user-1@example.com / Password: SecureTest123!
+- Email: test-user-2@example.com / Password: SecureTest123!
+
+## Step 2: Get User UUIDs
+- Copy each user's ID from the Auth dashboard
+
+## Step 3: Insert Database Profiles
+- Run: INSERT INTO profiles (id, name, role) VALUES ('{uuid1}', '...', '...')
+
+## Step 4: Seed Test Data
+- Run provisioning script: node seed.mjs
+
+## Step 5: Verify
+- Sign in with test credentials
+- Confirm data is visible
+```
+
 - If Z error, do W
 ```
 
