@@ -5,6 +5,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 <!-- insert new changelog below this comment -->
+
+## [0.0.1] — 2026-09-10
+
+### Changed
+
+- No changes recorded.
 ## 2026-09-10 — Renamed to CraftKit + Pre-Beta Fixes
 
 ### Changed
