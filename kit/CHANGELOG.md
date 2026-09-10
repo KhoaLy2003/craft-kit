@@ -5,6 +5,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 <!-- insert new changelog below this comment -->
+
+## [0.0.2] — 2026-09-10
+
+### Changed
+
+- fix: release.yml pipefail grep on first release + install command
 ## 2026-09-10 — Renamed to CraftKit + Pre-Beta Fixes
 
 ### Changed
