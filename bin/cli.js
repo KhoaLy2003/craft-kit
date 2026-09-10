@@ -165,7 +165,7 @@ function printQuickStart (rel) {
     Share  ${rel}/phase-2-feature-dev.md  or  ${rel}/phase-2-single-pass.md
     and say: "Pick the next pending feature and run the Phase 2 cycle."
 
-  Full docs: https://github.com/obra/superpowers  (skills source)
+  Full docs:  https://khoaly2003.github.io/craft-kit
   ─────────────────────────────────────────────────────
 `)
 }
