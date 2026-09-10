@@ -181,7 +181,7 @@ if (args.includes('--help') || args.includes('-h')) {
   craft-kit v${PKG.version}
 
   Usage
-    npx craft-kit [target-dir] [flags]
+    npx github:KhoaLy2003/craft-kit [target-dir] [flags]
 
   Arguments
     target-dir    Directory to install the kit into  (default: ./kit)
@@ -193,10 +193,10 @@ if (args.includes('--help') || args.includes('-h')) {
     --help          Show this message
 
   Examples
-    npx craft-kit                      install to ./kit/
-    npx craft-kit ./my-project/kit     install to a custom path
-    npx craft-kit --force              update an existing install
-    npx craft-kit --skip-setup         kit files only, no setup prompt
+    npx github:KhoaLy2003/craft-kit                      install to ./kit/
+    npx github:KhoaLy2003/craft-kit ./my-project/kit     install to a custom path
+    npx github:KhoaLy2003/craft-kit --force              update an existing install
+    npx github:KhoaLy2003/craft-kit --skip-setup         kit files only, no setup prompt
 `)
   process.exit(0)
 }
@@ -230,7 +230,7 @@ if (fs.existsSync(target)) {
     ${target}
 
   To update an existing install:
-    npx craft-kit --force
+    npx github:KhoaLy2003/craft-kit --force
 `)
     process.exit(1)
   }

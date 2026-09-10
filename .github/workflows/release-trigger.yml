@@ -1,0 +1,148 @@
+name: Release Trigger
+
+# Bump version, update CHANGELOG, push tag, open PR.
+# Triggers release.yml via the pushed tag.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 1.2.3 or v1.2.3). Leave empty to auto-increment patch.'
+        required: false
+        type: string
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_PAT }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.2.0
+        with:
+          node-version: "22"
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Determine version
+        id: version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          set -euo pipefail
+
+          if [[ -n "$INPUT_VERSION" ]]; then
+            # Strip optional v prefix
+            VERSION="${INPUT_VERSION#v}"
+            # Validate strict semver X.Y.Z
+            if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Error: '$VERSION' is not valid semver (expected X.Y.Z)"
+              exit 1
+            fi
+          else
+            # Auto-increment patch from latest v* tag
+            LATEST_TAG=$(git tag -l 'v*' --sort=-version:refname | head -n 1)
+            if [[ -z "$LATEST_TAG" ]]; then
+              LATEST_TAG="v0.0.0"
+            fi
+            echo "Latest tag: $LATEST_TAG"
+            RAW="${LATEST_TAG#v}"
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$RAW"
+            PATCH=$((PATCH + 1))
+            VERSION="$MAJOR.$MINOR.$PATCH"
+            echo "Auto-incremented version: $VERSION"
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check tag does not already exist
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Error: tag $TAG already exists."
+            exit 1
+          fi
+
+      - name: Create release branch
+        id: branch
+        run: |
+          BRANCH="chore/release-${{ steps.version.outputs.tag }}"
+          git checkout -b "$BRANCH"
+          echo "name=$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Update package.json version
+        run: |
+          npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
+          echo "Updated package.json to ${{ steps.version.outputs.version }}"
+
+      - name: Update kit/CHANGELOG.md
+        run: |
+          set -euo pipefail
+          DATE=$(date +%Y-%m-%d)
+          VERSION="${{ steps.version.outputs.version }}"
+          PREVIOUS_TAG=$(git tag -l 'v*' --sort=-version:refname | head -n 1)
+
+          if [[ -n "$PREVIOUS_TAG" ]]; then
+            COMMITS=$(git log --no-merges --pretty=format:"- %s" "$PREVIOUS_TAG"..HEAD 2>/dev/null || true)
+          else
+            COMMITS=""
+          fi
+
+          if [[ -z "$COMMITS" ]]; then
+            COMMITS="- No changes recorded."
+          fi
+
+          NEW_ENTRY=$(printf '\n## [%s] — %s\n\n### Changed\n\n%s\n' "$VERSION" "$DATE" "$COMMITS")
+
+          awk -v entry="$NEW_ENTRY" \
+            '/<!-- insert new changelog below this comment -->/ { print; print entry; next } { print }' \
+            kit/CHANGELOG.md > kit/CHANGELOG.md.tmp
+          mv kit/CHANGELOG.md.tmp kit/CHANGELOG.md
+          echo "CHANGELOG updated with entries since ${PREVIOUS_TAG:-<initial>}"
+
+      - name: Commit version bump
+        run: |
+          git add package.json kit/CHANGELOG.md
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
+          fi
+
+      - name: Push branch and tag
+        run: |
+          git tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.branch.outputs.name }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+          echo "Pushed branch ${{ steps.branch.outputs.name }} and tag ${{ steps.version.outputs.tag }}"
+
+      - name: Open pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
+        run: |
+          gh pr create \
+            --base main \
+            --head "${{ steps.branch.outputs.name }}" \
+            --title "chore: release ${{ steps.version.outputs.version }}" \
+            --body "Automated release of \`${{ steps.version.outputs.version }}\`.
+
+          The git tag \`${{ steps.version.outputs.tag }}\` has been pushed and \`release.yml\` is building the GitHub Release.
+
+          Merge this PR after the release is published to keep \`main\` in sync."
+
+      - name: Summary
+        run: |
+          echo "Version bumped to ${{ steps.version.outputs.version }}"
+          echo "Tag ${{ steps.version.outputs.tag }} pushed"
+          echo "PR opened from ${{ steps.branch.outputs.name }} → main"

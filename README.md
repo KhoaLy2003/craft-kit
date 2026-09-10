@@ -48,13 +48,13 @@ Run this cycle for every feature — including the first MVP feature.
 **Install the kit** in your project folder (requires Node.js 18+):
 
 ```bash
-npx craft-kit
+npx github:KhoaLy2003/craft-kit
 ```
 
 This creates a `kit/` directory with all the phase files, templates, guides, and step detail files. To update an existing install:
 
 ```bash
-npx craft-kit --force
+npx github:KhoaLy2003/craft-kit --force
 ```
 
 The phase files are orchestration scripts for the main orchestrating agent — you do not execute steps manually. You start a session, reference the phase file, and participate at the gates. The agent handles dispatching, artifact creation, and advancing between steps.
