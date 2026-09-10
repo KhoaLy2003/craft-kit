@@ -4,6 +4,7 @@ All notable changes to this kit are recorded here. Newest entry first.
 Each entry notes what changed, which file(s), and what round or discussion prompted it.
 
 ---
+<!-- insert new changelog below this comment -->
 ## 2026-09-10 — Renamed to CraftKit + Pre-Beta Fixes
 
 ### Changed

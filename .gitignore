@@ -11,3 +11,6 @@ Thumbs.db
 # Development
 WATCHDOG.yml
 supabase
+
+# Test rounds
+testing/
