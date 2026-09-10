@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**craft-kit** is an AI-agent orchestration workflow kit for building software products. It ships as an npx-installable CLI (`npx craft-kit`) that copies a structured set of workflow scripts and templates into a target project directory, then guides an AI orchestrator through a repeatable phase-based development process.
+**craft-kit** is an AI-agent orchestration workflow kit for building software products. It ships as an npx-installable CLI (`npx github:KhoaLy2003/craft-kit`) that copies a structured set of workflow scripts and templates into a target project directory, then guides an AI orchestrator through a repeatable phase-based development process.
 
 The repo is the development and testing harness for that kit — not an application. It contains:
 - `bin/cli.js` — the CLI installer
