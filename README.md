@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/KhoaLy2003/craft-kit/actions/workflows/test.yml/badge.svg)](https://github.com/KhoaLy2003/craft-kit/actions/workflows/test.yml)
 [![Lint](https://github.com/KhoaLy2003/craft-kit/actions/workflows/lint.yml/badge.svg)](https://github.com/KhoaLy2003/craft-kit/actions/workflows/lint.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/KhoaLy2003/craft-kit/blob/main/LICENSE)
 [![Node ≥18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 
 CraftKit is a structured workflow kit you share with your AI agent. Describe what you want to build — the agent handles research, design, planning, and implementation while pausing at key decisions so you stay in control.
@@ -34,23 +34,23 @@ CraftKit is two phases. Phase 1 runs once to take a raw idea to a working scaffo
 
 ```mermaid
 flowchart LR
-    A([💡 Idea]) --> P1
+    A([Idea]) --> P1
 
-    subgraph P1["Phase 1 — Bootstrap  (run once)"]
+    subgraph P1[Phase 1 - Bootstrap - run once]
         direction TB
         B1[Ideation] --> B2[Market Research]
-        B2 --> B3[Prototype + Design]
-        B3 --> B4[Roadmap + Architecture]
-        B4 --> B5[Constitution + Scaffold]
+        B2 --> B3[Prototype and Design]
+        B3 --> B4[Roadmap and Architecture]
+        B4 --> B5[Constitution and Scaffold]
     end
 
-    P1 -->|"docs/ foundation ready"| P2
+    P1 -->|docs/ foundation ready| P2
 
-    subgraph P2["Phase 2 — Feature Dev  (repeat per feature)"]
+    subgraph P2[Phase 2 - Feature Dev - repeat per feature]
         direction TB
         C1[Spec] --> C2[Plan]
         C2 --> C3[Implement]
-        C3 --> C4[Review + Test]
+        C3 --> C4[Review and Test]
         C4 --> C5[Ship]
     end
 
