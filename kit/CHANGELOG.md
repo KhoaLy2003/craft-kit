@@ -8,6 +8,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.3] - 2026-09-11
+
 ### Added
 
 - **`bin/cli.js`** — figlet "Standard" ASCII art banner for `CRAFT-KIT` on installer start (bold cyan, generated offline with `npx figlet-cli`).
@@ -19,6 +23,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`bin/cli.js`** — `shell: true` → `shell: process.platform === 'win32'` in `installTasteSkill()`, eliminating the DEP0190 deprecation warning on Unix.
 - **`kit/CHANGELOG.md`** — restructured to Keep a Changelog v2 format: version-based `## [X.Y.Z] - YYYY-MM-DD` sections with `**Summary:**` lines; `## [Unreleased]` at top; existing date-title entries migrated into `[0.0.1]` and `[0.0.2]` blocks.
 - **`.github/workflows/release-trigger.yml`** — added `summary` input (one-line release summary); CHANGELOG step now promotes `[Unreleased]` → versioned block with summary line and resets a fresh `[Unreleased]`, replacing the previous commit-message-scraping approach.
+
+---
 
 ---
 
