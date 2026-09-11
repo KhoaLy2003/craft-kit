@@ -70,6 +70,11 @@ All roadmap Must features known + single-pass declared in docs/roadmap.md
 [7] Ship — one commit, one PR, all Must features → shipped
 ```
 
+<div style="margin:24px 0;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.12);">
+  <iframe src="/diagrams/phase-2-single-pass.html?embed=1" width="100%" style="border:none;display:block;height:60vh;min-height:480px;" title="Phase 2 Single Pass — interactive flow diagram"></iframe>
+</div>
+<p style="margin-top:8px;font-size:0.85em;color:var(--vp-c-text-2);">Pan and zoom to explore. <a href="/diagrams/phase-2-single-pass.html" target="_blank" rel="noopener">Open full screen ↗</a></p>
+
 ---
 
 ## Mid-Cycle Escape to Standard Loop

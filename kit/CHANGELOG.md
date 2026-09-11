@@ -12,7 +12,20 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [0.0.4] - 2026-09-11
 
----
+**Summary:** Docs-site visual redesign — brand identity, wider content, and diagram embed fixes.
+
+### Added
+
+- **`docs-site/public/favicon.svg`** — CK monogram favicon in copper brand color.
+- **`docs-site/public/icons/`** — six hand-drawn SVG icons (phase-1, phase-2-standard, phase-2-single-pass, bug-fix, install, templates) replacing emoji in the homepage features section.
+- **`docs-site/public/diagrams/`** — archify diagram HTML files promoted to static assets so they survive VitePress rebuilds and are served in dev mode.
+
+### Changed
+
+- **`docs-site/.vitepress/config.ts`** — `head[]` extended with Google Fonts preconnect + Outfit stylesheet, OG type/title/description meta, and Twitter card meta. `vite.publicDir` pinned to `docs-site/public/` so static assets resolve correctly when `srcDir: '..'`.
+- **`docs-site/.vitepress/theme/custom.css`** — full rewrite: Outfit replaces Inter (`--vp-font-family-base`); copper brand palette for light (`#c26a17`) and dark (`#e8924a`) modes replacing VitePress default indigo; `scroll-behavior: smooth`; `.VPDoc .content-container { max-width: none }` lifts the 688 px content cap on all doc pages; `.VPDoc:not(.has-sidebar)` container and content caps also removed; `.grid-3` hover upgraded with tinted shadow and `translateY` lift.
+- **`docs-site/index.md`** — six emoji feature icons replaced with `{ src: /icons/*.svg }` image objects; inline `<style>` block removed (styles live in `custom.css`).
+- **`kit/phase-1-bootstrap.md`, `kit/phase-2-feature-dev.md`, `kit/phase-2-single-pass.md`, `kit/phase-bug-fix.md`** — diagram iframes updated with `?embed=1` (hides toolbar, removes internal scroll, maximises canvas) and viewport-relative height (`60vh`, `min-height: 480px`); caption updated to reflect embed-mode interaction.
 
 ---
 

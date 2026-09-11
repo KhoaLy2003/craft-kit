@@ -11,7 +11,18 @@ export default defineConfig({
   title: 'CraftKit',
   description:
     'A reusable, agent-friendly workflow kit for crafting software products with AI coding agents.',
-  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:title', content: 'CraftKit' }],
+    ['meta', { property: 'og:description', content: 'A reusable, agent-friendly workflow kit for crafting software products with AI coding agents.' }],
+    ['meta', { name: 'twitter:card', content: 'summary' }],
+    ['meta', { name: 'twitter:title', content: 'CraftKit' }],
+    ['meta', { name: 'twitter:description', content: 'A reusable, agent-friendly workflow kit for crafting software products with AI coding agents.' }],
+  ],
 
   // Serve from playround root — kit files are the single source of truth.
   srcDir: '..',
@@ -90,6 +101,7 @@ export default defineConfig({
   // Fix SSR build: alias Vue packages to absolute paths so Rollup can find them
   // when compiling pages from kit/ paths outside docs-site/.
   vite: {
+    publicDir: resolve(__dirname, '../public'),
     resolve: {
       alias: [
         // vue/server-renderer and vue itself: resolves from kit/ paths which have

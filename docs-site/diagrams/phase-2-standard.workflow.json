@@ -1,0 +1,63 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Phase 2 — Standard Feature Loop",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "loop", "label": "Feature Loop" },
+    { "id": "human", "label": "You (Human)", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "define", "label": "Define", "fromCol": 0, "toCol": 1 },
+    { "id": "build", "label": "Build", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "verify_ship", "label": "Verify & Ship", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": ["spec", "planning", "implement", "quality", "testing", "ship"],
+  "nodes": [
+    { "id": "spec", "lane": "loop", "col": 0, "type": "backend", "label": "Brainstorm & Spec", "sublabel": "acceptance criteria", "tag": "Step 1", "width": 132 },
+    { "id": "gate_spec", "lane": "human", "col": 0, "type": "security", "label": "Spec Gate", "sublabel": "approve before build", "width": 132 },
+    { "id": "planning", "lane": "loop", "col": 1, "type": "backend", "label": "Plan + Assign", "sublabel": "tasks + specialist agents", "tag": "Steps 2–3", "width": 132 },
+    { "id": "implement", "lane": "loop", "col": 2, "type": "backend", "label": "Implement", "sublabel": "specialist agents code", "tag": "Step 4", "width": 132 },
+    { "id": "quality", "lane": "loop", "col": 3, "type": "backend", "label": "Converge + Review", "sublabel": "spec coverage + security", "tag": "Steps 5–6", "width": 132 },
+    { "id": "testing", "lane": "loop", "col": 4, "type": "frontend", "label": "E2E Testing", "sublabel": "real app, real data", "tag": "Step 7", "width": 132 },
+    { "id": "gate_manual", "lane": "human", "col": 4, "type": "security", "label": "Manual Check", "sublabel": "walk through the app", "width": 132 },
+    { "id": "ship", "lane": "loop", "col": 5, "type": "messagebus", "label": "Ship", "sublabel": "commit + push + PR", "tag": "Step 9", "width": 132 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "spec", "to": "planning", "variant": "default" },
+    { "id": "e2", "from": "planning", "to": "implement", "variant": "default" },
+    { "id": "e3", "from": "implement", "to": "quality", "variant": "default" },
+    { "id": "e4", "from": "quality", "to": "testing", "variant": "default" },
+    { "id": "e5", "from": "testing", "to": "ship", "variant": "default" },
+    { "id": "g1", "from": "spec", "to": "gate_spec", "label": "await approval", "variant": "security", "role": "branch" },
+    { "id": "g2", "from": "testing", "to": "gate_manual", "label": "await walkthrough", "variant": "security", "role": "branch" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Hard Gates",
+      "items": [
+        "Spec Gate: you approve acceptance criteria before a single line of code is written",
+        "Manual Check: you walk through the running app before it ships"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "One Feature at a Time",
+      "items": [
+        "Never batch multiple features into one cycle",
+        "After Ship, pull the next pending feature from roadmap.md and repeat the loop"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Best For",
+      "items": [
+        "Larger or more complex features",
+        "Projects spanning frontend and backend domains"
+      ]
+    }
+  ]
+}

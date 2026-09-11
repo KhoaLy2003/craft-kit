@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Phase 2 — Single Pass",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "work", "label": "Single Pass Steps" },
+    { "id": "human", "label": "You (Human)", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "define", "label": "Define All Features", "fromCol": 0, "toCol": 1, "variant": "emphasis" },
+    { "id": "execute", "label": "Build & Verify", "fromCol": 2, "toCol": 4 }
+  ],
+  "mainPath": ["spec", "plan", "build", "review", "ship"],
+  "nodes": [
+    { "id": "spec", "lane": "work", "col": 0, "type": "backend", "label": "Full App Spec", "sublabel": "all Must features", "tag": "Step 1", "width": 132 },
+    { "id": "gate_spec", "lane": "human", "col": 0, "type": "security", "label": "Spec Gate", "sublabel": "approve all features", "width": 132 },
+    { "id": "plan", "lane": "work", "col": 1, "type": "backend", "label": "Plan", "sublabel": "ordered tasks + files", "tag": "Step 2", "width": 132 },
+    { "id": "gate_plan", "lane": "human", "col": 1, "type": "security", "label": "Plan Gate", "sublabel": "approve build plan", "width": 132 },
+    { "id": "build", "lane": "work", "col": 2, "type": "backend", "label": "Implement + Converge", "sublabel": "all features in one run", "tag": "Steps 3–4", "width": 132 },
+    { "id": "review", "lane": "work", "col": 3, "type": "frontend", "label": "E2E Plan + Review", "sublabel": "test plan + code quality", "tag": "Steps 5a–5b", "width": 132 },
+    { "id": "gate_review", "lane": "human", "col": 3, "type": "security", "label": "E2E Gate", "sublabel": "approve test plan", "width": 132 },
+    { "id": "ship", "lane": "work", "col": 4, "type": "messagebus", "label": "Manual Check + Ship", "sublabel": "walkthrough, then ship", "tag": "Steps 6–7", "width": 132 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "spec", "to": "plan", "variant": "default" },
+    { "id": "e2", "from": "plan", "to": "build", "variant": "default" },
+    { "id": "e3", "from": "build", "to": "review", "variant": "default" },
+    { "id": "e4", "from": "review", "to": "ship", "variant": "default" },
+    { "id": "g1", "from": "spec", "to": "gate_spec", "label": "await approval", "variant": "security", "role": "branch" },
+    { "id": "g2", "from": "plan", "to": "gate_plan", "label": "await approval", "variant": "security", "role": "branch" },
+    { "id": "g3", "from": "review", "to": "gate_review", "label": "await approval", "variant": "security", "role": "branch" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Hard Gates",
+      "items": [
+        "Spec Gate: all Must features approved before any code is written",
+        "Plan Gate: build order and tasks approved",
+        "E2E Gate: test plan approved before verification runs"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Best For",
+      "items": [
+        "Small apps with 15 or fewer simple-to-medium features",
+        "Solo builders who want the lowest overhead path to a shipped app"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Phase 1 — Bootstrap",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    { "id": "work", "label": "Phase Steps" },
+    { "id": "gate", "label": "Hard Gates (You decide)", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "discovery", "label": "Discovery", "fromCol": 0, "toCol": 1 },
+    { "id": "design_phase", "label": "Design & Planning", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "foundation", "label": "Technical Foundation", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": ["ideation", "market", "prototype", "design", "planning", "scaffold"],
+  "nodes": [
+    { "id": "ideation", "lane": "work", "col": 0, "type": "backend", "label": "Product Ideation", "sublabel": "problem + solution", "tag": "Step 1", "width": 132 },
+    { "id": "market", "lane": "work", "col": 1, "type": "backend", "label": "Market Research", "sublabel": "validate demand", "tag": "Step 2 · optional", "width": 132 },
+    { "id": "gate_market", "lane": "gate", "col": 1, "type": "security", "label": "Market Gate", "sublabel": "approve or skip", "width": 132 },
+    { "id": "prototype", "lane": "work", "col": 2, "type": "frontend", "label": "Prototype", "sublabel": "test UX assumptions", "tag": "Step 3", "width": 132 },
+    { "id": "gate_proto", "lane": "gate", "col": 2, "type": "security", "label": "Prototype Gate", "sublabel": "review and approve", "width": 132 },
+    { "id": "design", "lane": "work", "col": 3, "type": "frontend", "label": "Product Design", "sublabel": "visual language + UI", "tag": "Step 4", "width": 132 },
+    { "id": "gate_design", "lane": "gate", "col": 3, "type": "security", "label": "Design Gate", "sublabel": "approve design system", "width": 132 },
+    { "id": "planning", "lane": "work", "col": 4, "type": "cloud", "label": "Roadmap + Architecture", "sublabel": "features + tech stack", "tag": "Steps 5–6", "width": 160 },
+    { "id": "gate_planning", "lane": "gate", "col": 4, "type": "security", "label": "Architecture Gate", "sublabel": "confirm stack choice", "width": 132 },
+    { "id": "scaffold", "lane": "work", "col": 5, "type": "messagebus", "label": "Constitution + Scaffold", "sublabel": "rules + project setup", "tag": "Steps 7–8", "width": 164 },
+    { "id": "gate_const", "lane": "gate", "col": 5, "type": "security", "label": "Constitution Gate", "sublabel": "approve coding rules", "width": 132 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "ideation", "to": "market", "variant": "default" },
+    { "id": "e2", "from": "market", "to": "prototype", "variant": "default" },
+    { "id": "e3", "from": "prototype", "to": "design", "variant": "default" },
+    { "id": "e4", "from": "design", "to": "planning", "variant": "default" },
+    { "id": "e5", "from": "planning", "to": "scaffold", "variant": "default" },
+    { "id": "g1", "from": "market", "to": "gate_market", "label": "await approval", "variant": "security", "role": "branch" },
+    { "id": "g2", "from": "prototype", "to": "gate_proto", "label": "await approval", "variant": "security", "role": "branch" },
+    { "id": "g3", "from": "design", "to": "gate_design", "label": "await approval", "variant": "security", "role": "branch" },
+    { "id": "g4", "from": "planning", "to": "gate_planning", "label": "await approval", "variant": "security", "role": "branch" },
+    { "id": "g5", "from": "scaffold", "to": "gate_const", "label": "await approval", "variant": "security", "role": "branch" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Hard Gates",
+      "items": [
+        "AI stops and waits for your explicit approval before advancing",
+        "You can reject and give feedback — the AI revises and re-presents"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Optional Step",
+      "items": [
+        "Market Research (Step 2) can be skipped at your discretion",
+        "Gate still triggers and requires confirmation if the step runs"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Phase Handoff",
+      "items": [
+        "After Scaffold, close this session — Phase 1 context is no longer needed",
+        "Open a new session for Phase 2 with docs/architecture.md + roadmap.md"
+      ]
+    }
+  ]
+}

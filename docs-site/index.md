@@ -14,32 +14,44 @@ hero:
       link: /phases/phase-1
 
 features:
-  - icon: 🚀
+  - icon:
+      src: /icons/phase-1.svg
+      alt: Phase 1 Bootstrap
     title: Phase 1 — Bootstrap
     details: Eight steps from raw idea to a working app foundation. The AI conducts market research, sketches a prototype, designs the look, maps the features, picks the tech stack, and sets up the codebase. You approve the big decisions along the way.
     link: /phases/phase-1
     linkText: Walk through Phase 1
-  - icon: 🔄
+  - icon:
+      src: /icons/phase-2-standard.svg
+      alt: Phase 2 Standard Loop
     title: Phase 2 — Standard Loop
     details: One feature at a time, from idea to shipped code. Each feature goes through planning, building, review, and a hands-on check before it goes live. Best for larger features or complex projects with multiple areas (frontend + backend).
     link: /phases/phase-2-standard
     linkText: Standard loop
-  - icon: ⚡
+  - icon:
+      src: /icons/phase-2-single-pass.svg
+      alt: Phase 2 Single Pass
     title: Phase 2 — Single Pass
     details: All features built in one run. Best for small apps with 15 or fewer features that are all simple to medium in scope. Faster to complete; lower overhead for solo builders.
     link: /phases/phase-2-single-pass
     linkText: Single-pass track
-  - icon: 🐛
+  - icon:
+      src: /icons/bug-fix.svg
+      alt: Bug Fix Workflow
     title: Bug Fix Workflow
     details: Three steps — diagnose, fix, verify. The AI must confirm the root cause before writing a single line of fix. It cannot mark the bug resolved until the original problem is gone and nothing new is broken.
     link: /phases/bug-fix
     linkText: Bug fix workflow
-  - icon: 📦
+  - icon:
+      src: /icons/install.svg
+      alt: One Command to Install
     title: One Command to Install
     details: Run `npx github:KhoaLy2003/craft-kit` in your project folder. It copies all the phase files, templates, and guides into a `kit/` directory — ready to share with ChatGPT, Claude, or any capable AI.
     link: /getting-started
     linkText: Get started
-  - icon: 📋
+  - icon:
+      src: /icons/templates.svg
+      alt: Templates Included
     title: Templates Included
     details: Every planning step has a structured template. Copy the kickoff form once and fill it in; the AI fills everything else — research notes, feature list, tech choice, design guide. All saved as readable text files alongside your project.
     link: /reference/templates
@@ -156,24 +168,3 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 
 </div>
 
-<style>
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
-  margin-top: 24px;
-}
-.grid-3 a {
-  display: block;
-  padding: 16px 20px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  text-decoration: none;
-  color: var(--vp-c-text-1);
-  transition: border-color 0.2s, background 0.2s;
-}
-.grid-3 a:hover {
-  border-color: var(--vp-c-brand-1);
-  background: var(--vp-c-bg-soft);
-}
-</style>
