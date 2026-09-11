@@ -72,10 +72,20 @@ jobs:
           NOTES_EOF
 
           if [[ -n "$CHANGELOG_SECTION" ]]; then
+            SUMMARY=$(echo "$CHANGELOG_SECTION" | grep '^\*\*Summary:' || true)
+            BULLETS=$(echo "$CHANGELOG_SECTION" | grep '^- '          || true)
             echo "" >> release_notes.md
-            echo "## Release notes" >> release_notes.md
+            if [[ -n "$SUMMARY" ]]; then
+              echo "$SUMMARY" >> release_notes.md
+              echo "" >> release_notes.md
+            fi
+            echo "## What's Changed" >> release_notes.md
             echo "" >> release_notes.md
-            echo "$CHANGELOG_SECTION" >> release_notes.md
+            if [[ -n "$BULLETS" ]]; then
+              echo "$BULLETS" >> release_notes.md
+            else
+              echo "$COMMITS" >> release_notes.md
+            fi
           else
             echo "" >> release_notes.md
             echo "## What's Changed" >> release_notes.md
