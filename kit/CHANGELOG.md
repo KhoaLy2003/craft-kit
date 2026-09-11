@@ -8,6 +8,11 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+### Changed
+
+- **`bin/cli.js`** — `kit/resource/` excluded from user install; directory contains internal development files (`DESIGN.md`, `step-specification-template.md`, `interactive-prototype-process.md`) not needed by kit users.
+- **`bin/cli.js`** — agent install path changed from `.claude/agents/` to `.agents/agents/`, co-locating agents alongside skills under a single provider-agnostic `.agents/` tree. Claude Code gate removed — all providers are prompted to download agents.
+
 ---
 
 ## [0.0.4] - 2026-09-11

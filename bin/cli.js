@@ -148,7 +148,7 @@ function printAgentManualInstructions () {
     ${dim('curl -sO https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main/install-agents.sh')}
     ${dim('chmod +x install-agents.sh && ./install-agents.sh')}
 
-  Option C — Manual copy to ${dim('.claude/agents/')} or ${dim('~/.claude/agents/')}:
+  Option C — Manual copy to ${dim('.agents/agents/')}:
     Copy the relevant .md files from the VoltAgent repo into your agents directory.
 `)
 }
@@ -261,7 +261,15 @@ printBanner()
 
 try {
   fs.mkdirSync(target, { recursive: true })
-  fs.cpSync(src, target, { recursive: true, force: true })
+  fs.cpSync(src, target, {
+    recursive: true,
+    force: true,
+    filter: (srcPath) => {
+      // Exclude resource/ — internal development files not needed by kit users
+      const rel = path.relative(src, srcPath)
+      return !rel.startsWith('resource')
+    },
+  })
 } catch (err) {
   console.error(`\n  ${SYM.cross}  Copy failed: ${err.message}\n`)
   process.exit(1)
@@ -364,21 +372,17 @@ const rl = readline.createInterface({ input: process.stdin, output: process.stdo
   console.log(`  ${bold('Step 3 of 3')}  ${SYM.dot}  ${bCyan('Specialist agents')}`)
   console.log(`  ${HR}\n`)
 
-  if (harness === 'claude-code') {
-    const agentsDir = path.join(process.cwd(), '.claude', 'agents')
-    const agentsRel = path.relative(process.cwd(), agentsDir)
+  const agentsDir = path.join(process.cwd(), '.agents', 'agents')
+  const agentsRel = path.relative(process.cwd(), agentsDir)
 
-    const ans3 = await prompt(rl, `  ${bYellow('?')}  Download agents to ${bold(agentsRel + '/')}? ${dim('[Y/n]')} `)
-    if (ans3.trim().toLowerCase() !== 'n') {
-      console.log('')
-      const ok = await installAgents(agentsDir)
-      if (ok) {
-        console.log(`\n  ${SYM.check}  All agents installed to ${bold(agentsRel + '/')}\n`)
-      } else {
-        console.log(`\n  ${SYM.cross}  Some agents failed. Install the rest manually:\n`)
-        printAgentManualInstructions()
-      }
+  const ans3 = await prompt(rl, `  ${bYellow('?')}  Download agents to ${bold(agentsRel + '/')}? ${dim('[Y/n]')} `)
+  if (ans3.trim().toLowerCase() !== 'n') {
+    console.log('')
+    const ok = await installAgents(agentsDir)
+    if (ok) {
+      console.log(`\n  ${SYM.check}  All agents installed to ${bold(agentsRel + '/')}\n`)
     } else {
+      console.log(`\n  ${SYM.cross}  Some agents failed. Install the rest manually:\n`)
       printAgentManualInstructions()
     }
   } else {

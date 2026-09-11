@@ -24,7 +24,7 @@ Single command, no subcommands. Execution order:
 4. If `--skip-setup`: print quick-start path and exit
 5. Detect AI harness from homedir dotfiles: `.claude` → Claude Code, `.cursor` → Cursor, `.gemini` → Gemini CLI, `.config/hermes` → Hermes, `.github/copilot` → Copilot
 6. **Non-TTY** (CI / pipe): print Superpowers install instructions + agent download instructions + quick-start, then exit
-7. **TTY interactive**: prompt through (a) Superpowers `/plugin install`, (b) optional `npx skills add design-taste-frontend`, (c) optional download of 5 VoltAgent `.md` files to `.claude/agents/` (project-scoped)
+7. **TTY interactive**: prompt through (a) Superpowers `/plugin install`, (b) optional `npx skills add design-taste-frontend` → installs to `.agents/skills/`, (c) optional download of 5 VoltAgent `.md` files to `.agents/agents/` (provider-agnostic; all harnesses prompted)
 8. Print quick-start prompt with relative kit path
 
 ### Kit Workflow Phases
