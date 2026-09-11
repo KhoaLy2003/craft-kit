@@ -9,6 +9,10 @@ on:
         description: 'Version to release (e.g. 1.2.3 or v1.2.3). Leave empty to auto-increment patch.'
         required: false
         type: string
+      summary:
+        description: 'One-line release summary (e.g. "Stack catalog · Bug fix workflow hardening"). Appears at the top of the release notes.'
+        required: false
+        type: string
 
 jobs:
   bump-version:
@@ -87,29 +91,60 @@ jobs:
           echo "Updated package.json to ${{ steps.version.outputs.version }}"
 
       - name: Update kit/CHANGELOG.md
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          SUMMARY: ${{ github.event.inputs.summary }}
         run: |
           set -euo pipefail
-          DATE=$(date +%Y-%m-%d)
-          VERSION="${{ steps.version.outputs.version }}"
-          PREVIOUS_TAG=$(git tag -l 'v*' --sort=-version:refname | head -n 1)
+          export DATE=$(date +%Y-%m-%d)
 
-          if [[ -n "$PREVIOUS_TAG" ]]; then
-            COMMITS=$(git log --no-merges --pretty=format:"- %s" "$PREVIOUS_TAG"..HEAD 2>/dev/null || true)
-          else
-            COMMITS=""
-          fi
+          node - << 'EOF'
+          const fs = require('fs');
+          const { execSync } = require('child_process');
+          const content = fs.readFileSync('kit/CHANGELOG.md', 'utf8');
 
-          if [[ -z "$COMMITS" ]]; then
-            COMMITS="- No changes recorded."
-          fi
+          const version = process.env.VERSION;
+          const date = process.env.DATE;
+          const summary = (process.env.SUMMARY || '').trim();
 
-          NEW_ENTRY=$(printf '\n## [%s] — %s\n\n### Changed\n\n%s\n' "$VERSION" "$DATE" "$COMMITS")
+          // Extract body of [Unreleased] (between its header and the next ## [ block)
+          const unreleasedMatch = content.match(/^## \[Unreleased\]\n([\s\S]*?)(?=^## \[)/m);
+          let unreleasedBody = '';
+          if (unreleasedMatch) {
+            // Strip the leading --- separator and surrounding whitespace
+            unreleasedBody = unreleasedMatch[1].replace(/^[ \t]*---[ \t]*\n/, '').trim();
+          }
 
-          awk -v entry="$NEW_ENTRY" \
-            '/<!-- insert new changelog below this comment -->/ { print; print entry; next } { print }' \
-            kit/CHANGELOG.md > kit/CHANGELOG.md.tmp
-          mv kit/CHANGELOG.md.tmp kit/CHANGELOG.md
-          echo "CHANGELOG updated with entries since ${PREVIOUS_TAG:-<initial>}"
+          // Build versioned entry
+          let versionBlock = `## [${version}] - ${date}\n`;
+          if (summary) versionBlock += `\n**Summary:** ${summary}\n`;
+          if (unreleasedBody) versionBlock += `\n${unreleasedBody}\n`;
+
+          // Replace the [Unreleased] block with: fresh [Unreleased] + new version block
+          const replacement = `## [Unreleased]\n\n---\n\n${versionBlock}\n---\n\n`;
+          const updated = content.replace(
+            /^## \[Unreleased\][\s\S]*?(?=^## \[)/m,
+            replacement
+          );
+
+          if (updated === content) {
+            console.error('ERROR: [Unreleased] section not found in kit/CHANGELOG.md');
+            process.exit(1);
+          }
+
+          fs.writeFileSync('kit/CHANGELOG.md', updated);
+          console.log(`CHANGELOG: promoted [Unreleased] → [${version}] - ${date}`);
+
+          // Verify extraction matches what release.yml awk expects
+          const out = execSync(
+            `awk "/^## \\\\[${version}\\\\]/{found=1; next} found && /^## /{exit} found{print}" kit/CHANGELOG.md`
+          ).toString().trim();
+          if (!out) {
+            console.error(`ERROR: awk extraction for [${version}] produced empty output — release.yml would fall back to commits.`);
+            process.exit(1);
+          }
+          console.log(`Extraction check passed (${out.split('\n').length} lines).`);
+          EOF
 
       - name: Commit version bump
         run: |

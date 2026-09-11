@@ -2,34 +2,56 @@
 
 'use strict'
 
-const fs       = require('fs')
-const path     = require('path')
-const os       = require('os')
-const https    = require('https')
-const readline = require('readline')
+const fs        = require('fs')
+const path      = require('path')
+const os        = require('os')
+const https     = require('https')
+const readline  = require('readline')
 const { spawnSync } = require('child_process')
 
 const PKG = require('../package.json')
+
+// ─── ANSI helpers (stripped automatically when stdout is not a TTY) ───────────
+
+const TTY = Boolean(process.stdout.isTTY)
+const esc = TTY ? (c, s) => `\x1b[${c}m${s}\x1b[0m` : (_, s) => s
+
+const bold   = s => esc('1',    s)
+const dim    = s => esc('2',    s)
+const green  = s => esc('32',   s)
+const cyan   = s => esc('36',   s)
+const yellow = s => esc('33',   s)
+const red    = s => esc('31',   s)
+const bCyan  = s => esc('1;36', s)
+const bGreen = s => esc('1;32', s)
+const bYellow = s => esc('1;33', s)
+
+const SYM = {
+  check : bGreen('✔'),
+  cross : red('✖'),
+  arrow : cyan('›'),
+  down  : cyan('↓'),
+  dot   : dim('·'),
+}
+
+const HR = dim('─'.repeat(52))
 
 // ─── Dependency sources ───────────────────────────────────────────────────────
 //
 // Skills (8 of 9):  https://github.com/obra/superpowers
 //   → installed as a plugin inside your AI harness; not a shell command.
-//   → see SUPERPOWERS_INSTALL_INSTRUCTIONS below for per-harness commands.
 //
 // Skill (1 of 9):   https://github.com/Leonxlnx/taste-skill
 //   → design-taste-frontend — installed via `npx skills add` (cross-harness).
 //
 // Agents (5):       https://github.com/VoltAgent/awesome-claude-code-subagents
-//   → downloaded as .md files; installed to ~/.claude/agents/ (Claude Code)
-//     or equivalent location for other harnesses.
+//   → downloaded as .md files; installed to .claude/agents/ (project-scoped)
+//     or ~./claude/agents/ for global access.
 
 const TASTE_SKILL_REPO = 'https://github.com/Leonxlnx/taste-skill'
 const TASTE_SKILL_NAME = 'design-taste-frontend'
+const VOLTAGENT_RAW    = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
 
-const VOLTAGENT_RAW = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
-
-// Verified paths inside the VoltAgent repo
 const REQUIRED_AGENTS = [
   { name: 'market-researcher',  path: 'categories/10-research-analysis/market-researcher.md' },
   { name: 'research-analyst',   path: 'categories/10-research-analysis/research-analyst.md' },
@@ -38,43 +60,25 @@ const REQUIRED_AGENTS = [
   { name: 'ui-ux-tester',       path: 'categories/04-quality-security/ui-ux-tester.md' },
 ]
 
-// Install command varies by harness — some are in-session slash commands,
-// others are shell commands. See the full list below.
-const SUPERPOWERS_INSTALL_INSTRUCTIONS = `
-  Superpowers — https://github.com/obra/superpowers
-  Install from INSIDE your AI coding session (command varies by harness):
-
-    Claude Code  →  /plugin install superpowers@claude-plugins-official
-    Cursor       →  /add-plugin superpowers
-    Codex CLI    →  /plugins  then search "superpowers"
-    Kimi Code    →  /plugins  then Marketplace > Superpowers
-    OpenCode     →  Ask your agent to fetch and follow:
-                    https://raw.githubusercontent.com/obra/superpowers/main/.opencode/INSTALL.md
-
-  Some harnesses support a shell command instead:
-    Gemini CLI   →  gemini extensions install https://github.com/obra/superpowers
-    Hermes       →  hermes plugins install obra/superpowers --enable
-    Pi           →  pi install git:github.com/obra/superpowers
-    Antigravity  →  agy plugin install https://github.com/obra/superpowers
-    Devin CLI    →  devin plugins install obra/superpowers
-    Copilot CLI  →  copilot plugin marketplace add obra/superpowers-marketplace
-                    copilot plugin install superpowers@superpowers-marketplace
-    Grok         →  grok plugin install superpowers@xai-official --trust
-
-  Full install guide: https://github.com/obra/superpowers#installation
-`
-
 // ─── Harness detection ────────────────────────────────────────────────────────
 
 function detectHarness () {
   const home = os.homedir()
   const cwd  = process.cwd()
-  if (fs.existsSync(path.join(home, '.claude')))                    return 'claude-code'
-  if (fs.existsSync(path.join(home, '.cursor')))                    return 'cursor'
-  if (fs.existsSync(path.join(home, '.gemini')))                    return 'gemini'
-  if (fs.existsSync(path.join(home, '.config', 'hermes')))          return 'hermes'
-  if (fs.existsSync(path.join(cwd,  '.github', 'copilot')))         return 'copilot'
+  if (fs.existsSync(path.join(home, '.claude')))            return 'claude-code'
+  if (fs.existsSync(path.join(home, '.cursor')))            return 'cursor'
+  if (fs.existsSync(path.join(home, '.gemini')))            return 'gemini'
+  if (fs.existsSync(path.join(home, '.config', 'hermes'))) return 'hermes'
+  if (fs.existsSync(path.join(cwd,  '.github', 'copilot'))) return 'copilot'
   return null
+}
+
+const HARNESS_LABELS = {
+  'claude-code': 'Claude Code',
+  cursor:        'Cursor',
+  gemini:        'Gemini CLI',
+  hermes:        'Hermes',
+  copilot:       'GitHub Copilot',
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -85,7 +89,7 @@ function prompt (rl, question) {
 
 function httpsGet (url) {
   return new Promise((resolve, reject) => {
-      https.get(url, { headers: { 'User-Agent': 'craft-kit-installer' } }, res => {
+    https.get(url, { headers: { 'User-Agent': 'craft-kit-installer' } }, res => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         return httpsGet(res.headers.location).then(resolve).catch(reject)
       }
@@ -101,29 +105,29 @@ function httpsGet (url) {
 }
 
 function installTasteSkill () {
+  // shell: true is required on Windows (npx resolves to npx.cmd).
+  // On Unix it triggers DEP0190 because args are concatenated, not escaped.
   const result = spawnSync(
     'npx',
     ['skills', 'add', TASTE_SKILL_REPO, '--skill', TASTE_SKILL_NAME, '--yes'],
-    { stdio: 'inherit', shell: true }
+    { stdio: 'inherit', shell: process.platform === 'win32' }
   )
   return result.status === 0
 }
 
-async function installAgentsForClaudeCode () {
-  const agentsDir = path.join(os.homedir(), '.claude', 'agents')
+async function installAgents (agentsDir) {
   fs.mkdirSync(agentsDir, { recursive: true })
-
   let ok = true
   for (const agent of REQUIRED_AGENTS) {
-    const url    = `${VOLTAGENT_RAW}/${agent.path}`
-    const dest   = path.join(agentsDir, `${agent.name}.md`)
-    process.stdout.write(`    ${agent.name} ... `)
+    const url  = `${VOLTAGENT_RAW}/${agent.path}`
+    const dest = path.join(agentsDir, `${agent.name}.md`)
+    process.stdout.write(`    ${SYM.down} ${agent.name.padEnd(22)}`)
     try {
       const content = await httpsGet(url)
       fs.writeFileSync(dest, content, 'utf8')
-      console.log('installed')
+      console.log(SYM.check)
     } catch (err) {
-      console.log(`FAILED (${err.message})`)
+      console.log(`${SYM.cross}  ${dim(err.message)}`)
       ok = false
     }
   }
@@ -131,42 +135,57 @@ async function installAgentsForClaudeCode () {
 }
 
 function printAgentManualInstructions () {
-  const agentNames = REQUIRED_AGENTS.map(a => a.name).join(', ')
+  const names = REQUIRED_AGENTS.map(a => a.name).join(', ')
   console.log(`
-  Agents — https://github.com/VoltAgent/awesome-claude-code-subagents
+  ${bold('Agents')} — https://github.com/VoltAgent/awesome-claude-code-subagents
 
-  Required: ${agentNames}
+  Required: ${dim(names)}
 
   Option A — Claude Code (recommended):
-    claude plugin marketplace add VoltAgent/awesome-claude-code-subagents
-    Then install the relevant category plugins, e.g.:
-      claude plugin install voltagent-core-dev    # frontend-developer
-      claude plugin install voltagent-qa-sec      # code-reviewer, ui-ux-tester
-      claude plugin install voltagent-research    # market-researcher, research-analyst
+    ${dim('claude plugin marketplace add VoltAgent/awesome-claude-code-subagents')}
 
   Option B — Interactive installer (no clone required):
-    curl -sO https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main/install-agents.sh
-    chmod +x install-agents.sh && ./install-agents.sh
+    ${dim('curl -sO https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main/install-agents.sh')}
+    ${dim('chmod +x install-agents.sh && ./install-agents.sh')}
 
-  Option C — Manual copy to ~/.claude/agents/ or .claude/agents/:
+  Option C — Manual copy to ${dim('.claude/agents/')} or ${dim('~/.claude/agents/')}:
     Copy the relevant .md files from the VoltAgent repo into your agents directory.
 `)
 }
 
+function printBanner () {
+  // Generated with: npx figlet-cli "CRAFT-KIT" (Standard font)
+  const art = [
+    '   ____ ____      _    _____ _____     _  _____ _____ ',
+    '  / ___|  _ \\    / \\  |  ___|_   _|   | |/ /_ _|_   _|',
+    ' | |   | |_) |  / _ \\ | |_    | |_____| \' / | |  | |  ',
+    ' | |___|  _ <  / ___ \\|  _|   | |_____| . \\ | |  | |  ',
+    '  \\____|_| \\_\\/_/   \\_\\_|     |_|     |_|\\_\\___| |_|  ',
+  ]
+  console.log()
+  art.forEach(row => console.log(bCyan(bold(row))))
+  console.log()
+  console.log(`  ${dim('AI-agent workflow kit')}  ${dim('·')}  ${dim('v' + PKG.version)}`)
+  console.log()
+}
+
 function printQuickStart (rel) {
   console.log(`
-  ─────────────────────────────────────────────────────
-  Quick start — new project:
-    1. Fill in  ${rel}/templates/phase-1-kickoff.md  with your idea.
-    2. Open your AI assistant with the project folder as working directory.
-    3. Say: "Start Phase 1 using ${rel}/phase-1-bootstrap.md."
+  ${HR}
+  ${bCyan('Quick start')}
+  ${HR}
 
-  Existing project (skip Phase 1):
-    Share  ${rel}/phase-2-feature-dev.md  or  ${rel}/phase-2-single-pass.md
-    and say: "Pick the next pending feature and run the Phase 2 cycle."
+  ${SYM.dot} ${bold('New project')}
+    ${cyan('1.')} Fill in    ${yellow(rel + '/templates/phase-1-kickoff.md')}   with your idea
+    ${cyan('2.')} Open your AI assistant with this folder as the working directory
+    ${cyan('3.')} Say:  ${yellow('"Start Phase 1 using ' + rel + '/phase-1-bootstrap.md."')}
 
-  Full docs:  https://khoaly2003.github.io/craft-kit
-  ─────────────────────────────────────────────────────
+  ${SYM.dot} ${bold('Existing project')}  ${dim('(skip Phase 1)')}
+    Share  ${yellow(rel + '/phase-2-feature-dev.md')}  or  ${yellow(rel + '/phase-2-single-pass.md')}
+    and say:  ${yellow('"Pick the next pending feature and run the Phase 2 cycle."')}
+
+  ${SYM.dot} ${bold('Docs')}  ${dim('https://khoaly2003.github.io/craft-kit')}
+  ${HR}
 `)
 }
 
@@ -178,21 +197,21 @@ const skipSetup = args.includes('--skip-setup')
 
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`
-  craft-kit v${PKG.version}
+  ${bold('craft-kit')} v${PKG.version}
 
-  Usage
+  ${bold('Usage')}
     npx github:KhoaLy2003/craft-kit [target-dir] [flags]
 
-  Arguments
+  ${bold('Arguments')}
     target-dir    Directory to install the kit into  (default: ./kit)
 
-  Flags
+  ${bold('Flags')}
     --force         Overwrite an existing install
     --skip-setup    Copy kit files only; skip skill/agent setup
     --version       Print version and exit
     --help          Show this message
 
-  Examples
+  ${bold('Examples')}
     npx github:KhoaLy2003/craft-kit                      install to ./kit/
     npx github:KhoaLy2003/craft-kit ./my-project/kit     install to a custom path
     npx github:KhoaLy2003/craft-kit --force              update an existing install
@@ -216,7 +235,7 @@ const target    = targetArg
 const src = path.join(__dirname, '..', 'kit')
 
 if (!fs.existsSync(src)) {
-  console.error('\n  Internal error: kit/ directory not found in this package.\n')
+  console.error(`\n  ${SYM.cross}  Internal error: kit/ directory not found in this package.\n`)
   process.exit(1)
 }
 
@@ -226,15 +245,17 @@ if (fs.existsSync(target)) {
   const entries = fs.readdirSync(target)
   if (entries.length > 0 && !force) {
     console.error(`
-  Target directory already exists and is not empty:
-    ${target}
+  ${SYM.cross}  Target directory already exists and is not empty:
+     ${yellow(target)}
 
   To update an existing install:
-    npx github:KhoaLy2003/craft-kit --force
+     npx github:KhoaLy2003/craft-kit --force
 `)
     process.exit(1)
   }
 }
+
+printBanner()
 
 // ─── Copy ─────────────────────────────────────────────────────────────────────
 
@@ -242,12 +263,12 @@ try {
   fs.mkdirSync(target, { recursive: true })
   fs.cpSync(src, target, { recursive: true, force: true })
 } catch (err) {
-  console.error(`\n  Copy failed: ${err.message}\n`)
+  console.error(`\n  ${SYM.cross}  Copy failed: ${err.message}\n`)
   process.exit(1)
 }
 
 const rel = path.relative(process.cwd(), target) || '.'
-console.log(`\n  Kit installed  →  ${rel}/\n`)
+console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
 
 if (skipSetup) {
   printQuickStart(rel)
@@ -258,17 +279,36 @@ if (skipSetup) {
 
 const harness = detectHarness()
 
-// Non-interactive (CI, piped stdin): print everything, run nothing interactive.
+// Non-interactive (CI / piped stdin): print everything, run nothing interactive.
 if (!process.stdin.isTTY) {
-  const harnessLabels = { 'claude-code': 'Claude Code', cursor: 'Cursor', gemini: 'Gemini CLI', hermes: 'Hermes', copilot: 'GitHub Copilot' }
   if (harness) {
-    console.log(`  Detected harness: ${harnessLabels[harness] || harness}\n`)
+    console.log(`  ${SYM.check}  Detected harness: ${HARNESS_LABELS[harness] || harness}\n`)
   } else {
-    console.log(`  No harness detected — see instructions below for your harness.\n`)
+    console.log(`  No harness detected — see instructions below.\n`)
   }
-  console.log(SUPERPOWERS_INSTALL_INSTRUCTIONS)
-  console.log(`  design-taste-frontend — run this in your terminal:`)
+
+  console.log(`  ${HR}`)
+  console.log(`  Step 1 of 3  ${SYM.dot}  Superpowers`)
+  console.log(`  ${HR}\n`)
+  console.log(`  Superpowers — https://github.com/obra/superpowers`)
+  console.log(`  Install from INSIDE your AI coding session:\n`)
+  console.log(`    Claude Code  →  /plugin install superpowers@claude-plugins-official`)
+  console.log(`    Cursor       →  /add-plugin superpowers`)
+  console.log(`    Codex CLI    →  /plugins  then search "superpowers"`)
+  console.log(`    Kimi Code    →  /plugins  then Marketplace > Superpowers`)
+  console.log(`    OpenCode     →  Ask your agent to fetch and follow:`)
+  console.log(`                    https://raw.githubusercontent.com/obra/superpowers/main/.opencode/INSTALL.md`)
+  console.log(`\n  Full guide: https://github.com/obra/superpowers#installation`)
+
+  console.log(`\n  ${HR}`)
+  console.log(`  Step 2 of 3  ${SYM.dot}  design-taste-frontend`)
+  console.log(`  ${HR}\n`)
+  console.log(`  Run in your terminal:`)
   console.log(`    npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes\n`)
+
+  console.log(`  ${HR}`)
+  console.log(`  Step 3 of 3  ${SYM.dot}  Specialist agents`)
+  console.log(`  ${HR}`)
   printAgentManualInstructions()
   printQuickStart(rel)
   process.exit(0)
@@ -279,41 +319,65 @@ if (!process.stdin.isTTY) {
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
 
 ;(async () => {
-  console.log(`  This kit needs skills and agents before Phase 1 can run.`)
   if (harness) {
-    const labels = { 'claude-code': 'Claude Code', cursor: 'Cursor', gemini: 'Gemini CLI', hermes: 'Hermes', copilot: 'GitHub Copilot' }
-    console.log(`  Detected harness: ${labels[harness] || harness}\n`)
+    console.log(`  ${SYM.check}  Detected: ${bold(HARNESS_LABELS[harness] || harness)}`)
   } else {
-    console.log(`  No harness detected — instructions will be printed.\n`)
+    console.log(`  ${dim('No harness detected')} — instructions will be printed below.\n`)
   }
+  console.log(`  ${dim('Three quick steps to unlock the full Phase 1–2 workflow.')}\n`)
 
-  // 1. Superpowers — always instructional; installed from inside the AI session
-  console.log(SUPERPOWERS_INSTALL_INSTRUCTIONS)
+  // ── Step 1: Superpowers ────────────────────────────────────────────────────
+  console.log(`  ${HR}`)
+  console.log(`  ${bold('Step 1 of 3')}  ${SYM.dot}  ${bCyan('Superpowers')}  ${dim('(installed inside your AI session)')}`)
+  console.log(`  ${HR}\n`)
+  console.log(`  Install command varies by harness:\n`)
+  console.log(`    Claude Code  ${SYM.arrow}  ${cyan('/plugin install superpowers@claude-plugins-official')}`)
+  console.log(`    Cursor       ${SYM.arrow}  ${cyan('/add-plugin superpowers')}`)
+  console.log(`    Codex CLI    ${SYM.arrow}  ${cyan('/plugins')}  then search "superpowers"`)
+  console.log(`    Kimi Code    ${SYM.arrow}  ${cyan('/plugins')}  then Marketplace > Superpowers`)
+  console.log(`    OpenCode     ${SYM.arrow}  Ask your agent to fetch and follow:`)
+  console.log(`                 ${dim('https://raw.githubusercontent.com/obra/superpowers/main/.opencode/INSTALL.md')}`)
+  console.log(`\n  Full guide: ${dim('https://github.com/obra/superpowers#installation')}`)
 
-  // 2. taste-skill — automatable via npx skills add
-  const ans2 = await prompt(rl, `  Install design-taste-frontend now via npx? [Y/n] `)
+  // ── Step 2: design-taste-frontend ─────────────────────────────────────────
+  console.log(`\n  ${HR}`)
+  console.log(`  ${bold('Step 2 of 3')}  ${SYM.dot}  ${bCyan('design-taste-frontend')}  ${dim('(installed via npx)')}`)
+  console.log(`  ${HR}\n`)
+
+  const ans2 = await prompt(rl, `  ${bYellow('?')}  Install design-taste-frontend now via npx? ${dim('[Y/n]')} `)
   if (ans2.trim().toLowerCase() !== 'n') {
     console.log('')
     const ok = installTasteSkill()
-    console.log(ok
-      ? `\n  design-taste-frontend installed.\n`
-      : `\n  Install failed. Run manually:\n    npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes\n`
-    )
+    if (ok) {
+      console.log(`\n  ${SYM.check}  ${bGreen('design-taste-frontend')} installed.\n`)
+    } else {
+      console.log(`\n  ${SYM.cross}  Install failed. Run manually:`)
+      console.log(`     ${dim('npx skills add ' + TASTE_SKILL_REPO + ' --skill "' + TASTE_SKILL_NAME + '" --yes')}\n`)
+    }
   } else {
-    console.log(`\n  Skipped. Run when ready:\n    npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes\n`)
+    console.log(`\n  Skipped. Run when ready:`)
+    console.log(`    ${dim('npx skills add ' + TASTE_SKILL_REPO + ' --skill "' + TASTE_SKILL_NAME + '" --yes')}\n`)
   }
 
-  // 3. Agents
+  // ── Step 3: Agents ─────────────────────────────────────────────────────────
+  console.log(`  ${HR}`)
+  console.log(`  ${bold('Step 3 of 3')}  ${SYM.dot}  ${bCyan('Specialist agents')}`)
+  console.log(`  ${HR}\n`)
+
   if (harness === 'claude-code') {
-    const ans3 = await prompt(rl, `  Download and install required agents to ~/.claude/agents/? [Y/n] `)
+    const agentsDir = path.join(process.cwd(), '.claude', 'agents')
+    const agentsRel = path.relative(process.cwd(), agentsDir)
+
+    const ans3 = await prompt(rl, `  ${bYellow('?')}  Download agents to ${bold(agentsRel + '/')}? ${dim('[Y/n]')} `)
     if (ans3.trim().toLowerCase() !== 'n') {
       console.log('')
-      const ok = await installAgentsForClaudeCode()
-      console.log(ok
-        ? `\n  Agents installed to ~/.claude/agents/\n`
-        : `\n  Some agents failed. Install the rest manually (see below).\n`
-      )
-      if (!ok) printAgentManualInstructions()
+      const ok = await installAgents(agentsDir)
+      if (ok) {
+        console.log(`\n  ${SYM.check}  All agents installed to ${bold(agentsRel + '/')}\n`)
+      } else {
+        console.log(`\n  ${SYM.cross}  Some agents failed. Install the rest manually:\n`)
+        printAgentManualInstructions()
+      }
     } else {
       printAgentManualInstructions()
     }
