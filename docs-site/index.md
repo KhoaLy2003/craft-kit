@@ -167,4 +167,3 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 [**Changelog**<br>History of all kit changes](/changelog)
 
 </div>
-
