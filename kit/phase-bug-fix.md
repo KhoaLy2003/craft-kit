@@ -325,6 +325,11 @@ Bug report received
 Commit + PR → main
 ```
 
+<div style="margin:24px 0;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.12);">
+  <iframe src="/diagrams/bug-fix.html?embed=1" width="100%" style="border:none;display:block;height:60vh;min-height:480px;" title="Bug Fix Workflow — interactive lifecycle diagram"></iframe>
+</div>
+<p style="margin-top:8px;font-size:0.85em;color:var(--vp-c-text-2);">Pan and zoom to explore. <a href="/diagrams/bug-fix.html" target="_blank" rel="noopener">Open full screen ↗</a></p>
+
 ---
 
 ## When the Assessment Is Wrong
