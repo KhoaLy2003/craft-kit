@@ -9,6 +9,7 @@ const nodeModules = resolve(__dirname, '../node_modules')
 
 export default defineConfig({
   title: 'CraftKit',
+  base: '/craft-kit/',
   description:
     'A reusable, agent-friendly workflow kit for crafting software products with AI coding agents.',
   head: [

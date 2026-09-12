@@ -32,30 +32,15 @@ Works with Claude Code, Cursor, Gemini CLI, and any harness that supports multi-
 
 CraftKit is two phases. Phase 1 runs once to take a raw idea to a working scaffold. Phase 2 repeats for every feature until the product ships.
 
-```mermaid
-flowchart LR
-    A([Idea]) --> P1
+**Phase 1 — Bootstrap** (runs once)
 
-    subgraph P1[Phase 1 - Bootstrap - run once]
-        direction TB
-        B1[Ideation] --> B2[Market Research]
-        B2 --> B3[Prototype and Design]
-        B3 --> B4[Roadmap and Architecture]
-        B4 --> B5[Constitution and Scaffold]
-    end
+[![Phase 1 — Bootstrap workflow diagram](docs-site/public/diagrams/phase-1-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/phase-1-bootstrap.html)
 
-    P1 -->|docs/ foundation ready| P2
+**Phase 2 — Single-Pass** (all features in one cycle)
 
-    subgraph P2[Phase 2 - Feature Dev - repeat per feature]
-        direction TB
-        C1[Spec] --> C2[Plan]
-        C2 --> C3[Implement]
-        C3 --> C4[Review and Test]
-        C4 --> C5[Ship]
-    end
+[![Phase 2 — Single-Pass workflow diagram](docs-site/public/diagrams/phase-2-single-pass-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/phase-2-single-pass.html)
 
-    C5 -->|next feature| C1
-```
+> [Interactive diagrams](https://khoaly2003.github.io/craft-kit/diagrams/) — pan, zoom, search, and export. Phase 2 Standard Loop diagram also available.
 
 **Hard gates** — marked steps that require your explicit approval before the agent continues — appear at Market Research, Design, Roadmap, Architecture, Constitution (Phase 1) and Spec, Manual Check (Phase 2). The agent stops and presents a summary; you decide.
 
