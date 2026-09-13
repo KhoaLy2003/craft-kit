@@ -6,6 +6,31 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ---
 <!-- insert new changelog below this comment -->
 
+## [0.0.6] - 2026-09-13
+
+**Summary:** User-feedback round — git workflow, language enforcement, file-first review, market research inspiration, backend-developer agent, and stack catalog expansion.
+
+### Added
+
+- **`kit/guides/interactive-prototype-process.md`** — moved from `kit/resource/` into the `guides/` folder so it is included in user installs. `kit/resource/` retains dev-only files (`DESIGN.md`, `step-specification-template.md`).
+- **`kit/stack-catalog.md`** — new "Third-Party Services" section with full entries for Clerk (auth), NextAuth.js / Auth.js v5 (auth), Cloudinary (media storage + transforms), Cloudflare R2 (object storage), and AWS S3 (object storage). Quick Reference table extended with a second sub-table.
+- **`bin/cli.js`** — `backend-developer` added to `REQUIRED_AGENTS` alongside `frontend-developer` (path: `categories/01-core-development/backend-developer.md`). Appears in manual install instructions and interactive download automatically.
+
+### Changed
+
+- **`kit/orchestrator-conventions.md`** — Rule 8: all AI-generated output must be in English regardless of user's language; exception for product-targeted UI copy only. Rule 9: write every artifact to disk first, then share the file path for review — never print document content in the terminal. During clarifying Q&A, print only the questions, not any draft content.
+- **`kit/steps/phase-1/p1-01-ideation.md`** — git init added as the first action of Phase 1; kickoff input path changed to `phase-1-kickoff.md` (project root); Rule to move kickoff into `docs/` after `docs/idea-brief.md` is written; Q&A contract updated to "questions → answers → write file → user opens and reviews → approval"; Rule 4 explicitly states to print only questions during Q&A, no draft content alongside them.
+- **`kit/steps/phase-1/p1-02-market-research.md`** — purpose expanded from "validate demand and identify risks" to "discover inspiration and validate demand"; model downgraded from `sonnet` to `haiku`; Scope and Execution Rules extended to require Section 5 (Feature Inspirations) populated with at least 2-3 concrete entries; gate summary now surfaces top inspirations alongside the proceed/pivot/stop decision.
+- **`kit/steps/phase-1/p1-03-prototype.md`** and **`kit/phase-1-checklist.md`** — all references to `kit/resource/interactive-prototype-process.md` updated to `kit/guides/interactive-prototype-process.md`; checklist BLOCK instruction updated to file-first review contract.
+- **`kit/steps/phase-1/p1-05-roadmap.md`** — Scope and Execution Rules updated: feature inspirations from `market-notes.md` Section 5 must be explicitly evaluated and placed in a MoSCoW tier or rejected with a one-line reason; cannot be silently ignored.
+- **`kit/steps/phase-1/p1-08-scaffold.md`** — Phase 1 closeout sequence added: run `/init` to generate `AGENTS.md` (same command across all AI providers), then single `git add -A && git commit` capturing all Phase 1 output. Git repo check simplified — Step 1 now owns `git init`.
+- **`kit/phase-1-bootstrap.md`** — output checklist extended with `docs/phase-1-kickoff.md`, `AGENTS.md`, and single-commit verification.
+- **`kit/steps/phase-2/p2sp-01-full-app-spec.md`** — Execution Rule updated: write spec to disk first, then ask user to open and review each section before approving.
+- **`kit/templates/02-market-notes.md`** — Section 5 (Feature Inspirations) added; existing sections renumbered (Reasons This Might Not Work → 6, Conclusions → 7); gate checklist updated to require inspirations populated.
+- **`kit/task-agent-rubric.md`** — `backend-developer` added to Quick Reference table; routing rows for API endpoints, database schema, business logic, and auth now point to `backend-developer` unconditionally. Split-task example updated.
+
+---
+
 ## [Unreleased]
 
 ---

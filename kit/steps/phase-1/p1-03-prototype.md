@@ -9,7 +9,7 @@
 - **Inputs**:
   - `docs/idea-brief.md`
   - `docs/market-notes.md` *(if Step 2 was run)*
-  - `kit/resource/interactive-prototype-process.md` *(reference — agents must read this before building)*
+  - `kit/guides/interactive-prototype-process.md` *(reference — agents must read this before building)*
 - **Outputs**:
   - `docs/prototype/journey-map.md` — one persona, one scenario, end-to-end journey
   - `docs/prototype/prototype-brief.md` — screens, interactions, mock data, state coverage, faked parts
@@ -48,7 +48,7 @@
 - **Dispatch order:**
   1. Dispatch your general-purpose agent for `journey-map.md` and `prototype-brief.md`. Include the fail-fast write instruction (see `kit/orchestrator-conventions.md` item 6).
   2. After both files are verified on disk, dispatch `frontend-developer` for the HTML prototype, passing `prototype-brief.md` as its spec. Include the fail-fast write instruction in this dispatch as well.
-- Agents must read `kit/resource/interactive-prototype-process.md` before building.
+- Agents must read `kit/guides/interactive-prototype-process.md` before building.
 
 ## Artifact Rules
 
@@ -61,7 +61,7 @@
 
 ### CSS Fidelity Rules
 
-CSS is **required** for structural clarity — a prototype with no CSS is often harder to use than the final product and fails the "sufficient visual consistency to avoid confusion" criterion (see `kit/resource/interactive-prototype-process.md` Section 6).
+CSS is **required** for structural clarity — a prototype with no CSS is often harder to use than the final product and fails the "sufficient visual consistency to avoid confusion" criterion (see `kit/guides/interactive-prototype-process.md` Section 6).
 
 **Use CSS for:**
 - Basic layout: readable max-width, margin, padding so content isn't wall-to-wall.
@@ -118,7 +118,7 @@ The step is considered complete when:
 
 ## References
 
-- `kit/resource/interactive-prototype-process.md`
+- `kit/guides/interactive-prototype-process.md`
 - `templates/04a-journey-map.md`
 - `templates/04b-prototype-brief.md`
 - `kit/orchestrator-conventions.md` (item 6 — fail-fast write instruction)

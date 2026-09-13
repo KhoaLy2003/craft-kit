@@ -44,7 +44,22 @@
 
 ---
 
-## 5. Reasons This Might Not Work
+## 5. Feature Inspirations
+
+<!-- Features, patterns, or interactions from the comparable products above that this project does not have in its current idea scope but should consider adding.
+     Focus on features that genuinely add user value — not ones that just copy what competitors do.
+     Each entry answers: what does it do, which product has it, and why would it matter for this project's target user?
+     These are candidates only — the roadmap step decides which ones make the cut. -->
+
+| Feature / Pattern | Seen in | What it does | Why relevant to this project |
+|---|---|---|---|
+| | | | |
+| | | | |
+| | | | |
+
+---
+
+## 6. Reasons This Might Not Work
 
 <!-- Deliberately adversarial section. Argue against the idea: is the problem painful enough that people are already paying (money or time) to solve it? Is the market too small, too crowded, or already well served? -->
 
@@ -52,9 +67,18 @@
 
 ---
 
-## Gate Checklist (before proceeding to Step 3 — Technical Research)
+## 7. Conclusions
+
+<!-- One paragraph: the single most important finding, what it means for the proceed/pivot/stop decision, and the top 2-3 feature inspirations worth carrying into the roadmap. -->
+
+-
+
+---
+
+## Gate Checklist (before proceeding to Step 3 — Interactive Prototype)
 
 - [ ] At least 2-3 comparable products/alternatives researched, not zero
+- [ ] Feature Inspirations section populated — at least 2-3 candidates with clear relevance rationale
 - [ ] Differentiation angle is honest — not forced if it doesn't hold up
 - [ ] "Reasons this might not work" section is not skipped or token
 - [ ] Decision made: proceed, pivot, or stop

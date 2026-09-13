@@ -56,6 +56,7 @@ const REQUIRED_AGENTS = [
   { name: 'market-researcher',  path: 'categories/10-research-analysis/market-researcher.md' },
   { name: 'research-analyst',   path: 'categories/10-research-analysis/research-analyst.md' },
   { name: 'frontend-developer', path: 'categories/01-core-development/frontend-developer.md' },
+  { name: 'backend-developer',  path: 'categories/01-core-development/backend-developer.md' },
   { name: 'code-reviewer',      path: 'categories/04-quality-security/code-reviewer.md' },
   { name: 'ui-ux-tester',       path: 'categories/04-quality-security/ui-ux-tester.md' },
 ]

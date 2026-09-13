@@ -28,7 +28,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - [ ] Stop after clarifying questions — do **NOT** enter "propose approaches" or "present design" phases
 - [ ] Clarifying questions cover: problem today, who has it, existing alternatives, what's out of scope — stop there
 - [ ] `docs/idea-brief.md` written and `Status: approved` before advancing
-- **[BLOCK]** Do not write `docs/idea-brief.md` until all clarifying questions are answered and the user has reviewed the draft — questions → answers → draft → user review → write
+- **[BLOCK]** Do not write `docs/idea-brief.md` until all clarifying questions are answered — questions → answers → write file → user opens and reviews the file → approval. Never print the full content in the terminal for review.
 - **[HARD GATE]** After Step 1 completes, present the Step 2 choice in chat:
   *"Step 2 (Market Research) validates demand and finds competitive risks. Proceed or skip to Step 3 (Prototype)?"*
   Wait for the user's answer. **This is required even if the kickoff says "run all steps."**
@@ -47,7 +47,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ## Step 3 — Interactive Prototype
 
-- [ ] Read `kit/resource/interactive-prototype-process.md` before dispatching anything
+- [ ] Read `kit/guides/interactive-prototype-process.md` before dispatching anything
 - [ ] Dispatch **your general-purpose agent** for journey map and prototype brief — **NOT** a visual design agent
 - **[BLOCK]** Verify `docs/prototype/journey-map.md` and `docs/prototype/prototype-brief.md` exist on disk before dispatching `frontend-developer`
 - [ ] HTML prototype: CSS **required** for structural clarity (layout, grouping, hierarchy, state visibility) — no brand colors, no visual polish

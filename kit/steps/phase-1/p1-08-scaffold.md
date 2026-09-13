@@ -52,13 +52,23 @@
    4. **If any check fails:** stop. Output the exact install URL(s) and ask the user to install and confirm before proceeding. Do not dispatch the scaffold agent until all checks pass.
    5. **Account prerequisites (hosted stacks only):** If the chosen stack requires an account (Supabase, Convex, Neon, Firebase), confirm the user has already created the project on that platform and has the required keys/URLs. If not, pause and link them to the sign-up page. The scaffold agent needs these credentials to configure environment variables — it cannot retrieve them itself.
 
-2. **Git repo check:** After the pre-flight passes, confirm a git repository exists at the project root (`git rev-parse --git-dir` returns successfully). If not, run `git init` and make an initial empty commit (`git commit --allow-empty -m "chore: init"`) before dispatching the agent. Phase 2 branch creation depends on a git repo being present.
+2. **Git repo check:** Confirm a git repository exists at the project root (`git rev-parse --git-dir` returns successfully). If not, run `git init` — Step 1 (Ideation) should have already done this, so its absence indicates the step was skipped or the repo was deleted. Do not make any commits here; the Phase 1 commit runs at closeout below.
 
 3. Dispatch the scaffold agent with `docs/architecture.md` and `docs/constitution.md` as context. Provide the scaffold checklist (`templates/09-scaffold-checklist.md`) as the completion checklist — instruct the agent to check items off as it completes them.
 
 4. After the agent finishes, run the project's start command as documented in the generated `README.md`. Confirm the app launches with no errors and the smoke test passes.
 
-5. Select the agent based on stack: use `general-purpose agent` for full-stack or backend-heavy projects; use `frontend-developer` if the stack is primarily frontend.
+5. **Phase 1 closeout — AGENTS.md and commit:** Once the scaffold is confirmed running and the smoke test passes:
+   1. Run `/init` to generate `AGENTS.md` at the project root. This command works the same way across all AI providers.
+   2. Verify `AGENTS.md` exists and contains a meaningful project summary (not blank, not a stub).
+   3. Stage and commit all Phase 1 output in a single commit — this is the **only commit** for the entire Phase 1 run:
+      ```
+      git add -A
+      git commit -m "phase 1 complete: bootstrap docs, scaffold, and project conventions"
+      ```
+      This commit captures everything from `git init` to the completed scaffold: all `docs/` artifacts, the initialized codebase, and `AGENTS.md`. From this point forward, Phase 2 branches off of this single Phase 1 commit.
+
+6. Select the agent based on stack: use `general-purpose agent` for full-stack or backend-heavy projects; use `frontend-developer` if the stack is primarily frontend.
 
 ## Artifact Rules
 
@@ -72,12 +82,14 @@
 The step is considered complete when:
 
 - [ ] All pre-flight environment checks pass.
-- [ ] Git repository exists at the project root with at least one commit.
+- [ ] Git repository exists at the project root.
 - [ ] Account prerequisites confirmed for hosted stacks (if applicable).
 - [ ] Scaffold agent has run and all checklist items in `templates/09-scaffold-checklist.md` are checked.
 - [ ] The project's start command runs successfully with no errors.
 - [ ] The smoke test passes — browser opens to a working "hello world" state (dev server) or `index.html` opens correctly (static site).
 - [ ] Phase 1 Closeout section of the scaffold checklist is fully checked.
+- [ ] `AGENTS.md` generated at project root via harness `/init` command (or equivalent).
+- [ ] All Phase 1 files committed in a single commit (`git add -A && git commit`).
 
 ## Transition Rules
 
@@ -86,6 +98,8 @@ The step is considered complete when:
 - Every item in the scaffold checklist is checked, including the Phase 1 Closeout section.
 - The smoke test has been run and confirmed passing.
 - The project builds and runs with zero features and zero startup errors.
+- `AGENTS.md` exists at the project root and contains a meaningful project summary.
+- A single Phase 1 commit exists in `git log` — no partial commits during Phase 1 steps.
 
 ### Next Step
 

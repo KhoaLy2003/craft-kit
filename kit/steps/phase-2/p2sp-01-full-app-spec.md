@@ -39,7 +39,7 @@
 - Organize output as one document with one `##` section per feature in build order
 - Each section must contain: acceptance criteria, edge cases, non-goals for that feature, and how it connects to the features immediately before it
 - Cross-feature interactions must be made explicit in the relevant sections — not left implicit
-- Do not write `docs/specs/spec.md` until user approves the spec content
+- Write `docs/specs/spec.md` to disk as the final step of generation — do not print spec content in the terminal for review. Once written, tell the user the file path and ask them to open and review each section before approving.
 
 ## Artifact Rules
 
