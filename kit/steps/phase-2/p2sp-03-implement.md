@@ -19,12 +19,13 @@
 
 ### In Scope
 
-- One agent implementing all tasks in plan order using `subagent-driven-development`
+- Dominant specialist implementing all their annotated tasks in plan order using `subagent-driven-development`
+- Minority tasks (out-of-domain, as listed in `plan.md`'s Minority Tasks section) dispatched to their designated specialist as targeted single-task subagents at the correct dependency position
 - All changes accumulating on the feature branch
 
 ### Out of Scope
 
-- Per-task specialist routing — no specialist switching during implementation
+- Per-task specialist routing for the dominant specialist's tasks — no switching mid-implementation for the main task stream
 - Per-task reviewer — code review happens in Step 5b
 - Commits during implementation — all changes accumulate until Step 6 approval
 
@@ -35,9 +36,9 @@
 ## Execution Rules
 
 - Before dispatching the agent: the orchestrator MUST create and switch to a feature branch (`git checkout -b feature/<project-slug>`) if it does not already exist; include the branch name in the step banner
-- Dispatch the dominant specialist using `subagent-driven-development` to implement all tasks in plan order
-- No per-task specialist routing; no per-task reviewer
-- No commits during implementation — all changes accumulate on the feature branch until Step 6 approval
+- Dispatch the dominant specialist using `subagent-driven-development` to implement all tasks annotated with that specialist in `plan.md`, in plan order
+- **Minority tasks** (tasks in `plan.md` annotated with a different specialist): dispatch each to its designated specialist as a targeted single-task subagent, sequenced at the dependency position noted in the Minority Tasks section of `plan.md`; do not batch them with the dominant specialist's work
+- No per-task reviewer; no commits during implementation — all changes accumulate on the feature branch until Step 6 approval
 - If a task reveals a spec gap or contradiction, pause and update `docs/specs/spec.md` before continuing — do not guess and proceed
 - If a foundational task fails or reveals blocking complexity that invalidates later tasks, stop and re-evaluate scope
 - After every completed task, check the work against `docs/constitution.md` before moving to the next — violations caught here are cheaper than at code review

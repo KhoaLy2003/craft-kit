@@ -21,6 +21,7 @@
 ### In Scope
 
 - MoSCoW prioritization of all identified features (Must / Should / Could / Won't).
+- Incorporating feature inspirations from `docs/market-notes.md` Section 5 as explicit candidates in the MoSCoW list — each inspiration is evaluated and placed in a tier or explicitly deferred/rejected with a one-line rationale.
 - Establishing a dependency-aware build order for Must features.
 - Capturing deferred features explicitly — they are not dropped.
 - Evaluating the Phase 2 execution track (single-pass vs. standard loop) against the five criteria and recording the recommendation in `docs/roadmap.md`.
@@ -38,7 +39,8 @@
 ## Execution Rules
 
 - The general-purpose agent drafts the roadmap based on all available input documents. The human decides all priority and cut/keep calls — this is a product decision, not a technical one.
-- All features start with `Status: pending`. The orchestrator updates status values as Phase 2 runs; do not set any feature to a non-pending status at this step.
+- **Feature Inspirations from market research must be evaluated explicitly.** For each entry in `docs/market-notes.md` Section 5, the agent places it into a MoSCoW tier or marks it `Won't (out of scope)` with a one-line reason. Inspirations must not be silently ignored — the human needs to see each one and make a deliberate call.
+- All features (original + inspirations) start with `Status: pending`. The orchestrator updates status values as Phase 2 runs; do not set any feature to a non-pending status at this step.
 - Build order must account for feature dependencies, not just MoSCoW tier. A lower-priority feature that is a dependency of a Must feature must be placed before it in the build order.
 - Deferred features must be listed explicitly in a Deferred section. They must not be silently dropped from the document.
 - **Phase 2 track decision** — evaluated once the roadmap draft is ready, before presenting to the human. Apply the five-criterion table:
@@ -92,7 +94,7 @@ The step is considered complete when:
 
 ## Exceptions / Special Cases
 
-- If Step 2 (Market Research) was skipped, the roadmap is drafted without `docs/market-notes.md`. The agent should note this in the roadmap and flag any assumptions made about user priorities.
+- If Step 2 (Market Research) was skipped, the roadmap is drafted without `docs/market-notes.md` and without feature inspirations. The agent should note this in the roadmap and flag any assumptions made about user priorities.
 - If the five criteria produce a split result (some point single-pass, some point standard loop), the standard loop always wins — any one standard-loop criterion overrides.
 - If the human wants to change scope after approving (e.g., mid-Step 6), return to this step and re-approve before proceeding.
 

@@ -3,7 +3,7 @@
 This reference is used in **Phase 2, Step 3 — Assign Specialists**.
 After `writing-plans` produces `plan.md`, read each task and annotate it with `Specialist: <agent-name>` using this table as a guide.
 
-> Update this file to match the agents actually configured in your project. If you have a `backend-developer` agent, add it. If you don't have `ui-ux-tester`, remove it.
+> Update this file to match the agents actually configured in your project.
 
 ---
 
@@ -14,10 +14,10 @@ After `writing-plans` produces `plan.md`, read each task and annotate it with `S
 | React/Vue/Angular components, CSS, HTML, UI layout | "component", "page", "form", "style", "layout", "UI", "frontend" | `frontend-developer` |
 | UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` + `design-taste-frontend` skill (**required** — include in every dispatch matching these signals; generic AI patterns are the default failure mode for UI tasks) |
 | Visual design, icons, mockup implementation, accessibility | "design", "icon", "color", "typography", "accessibility", "a11y" | your general-purpose agent (or a dedicated visual design agent if available) |
-| REST/GraphQL API endpoints, controllers, middleware | "endpoint", "route", "controller", "handler", "API" | your general-purpose agent *(or a backend-developer agent if configured)* |
-| Database schema, migrations, queries, ORM models | "schema", "migration", "model", "query", "table", "index" | your general-purpose agent |
-| Business logic, services, domain rules | "service", "logic", "rule", "calculation", "validation" | your general-purpose agent |
-| Authentication, authorization, sessions | "auth", "login", "JWT", "session", "permission", "role" | your general-purpose agent |
+| REST/GraphQL API endpoints, controllers, middleware | "endpoint", "route", "controller", "handler", "API" | `backend-developer` |
+| Database schema, migrations, queries, ORM models | "schema", "migration", "model", "query", "table", "index" | `backend-developer` |
+| Business logic, services, domain rules | "service", "logic", "rule", "calculation", "validation" | `backend-developer` |
+| Authentication, authorization, sessions | "auth", "login", "JWT", "session", "permission", "role" | `backend-developer` |
 | Infrastructure, CI/CD, environment config | "CI", "deploy", "env", "config", "Docker", "workflow" | your general-purpose agent |
 | Tests (unit, integration) | "test", "spec", "assertion", "mock" | same agent as the code being tested |
 | Multi-domain task crossing frontend + backend | task describes both UI and API work | **split the task first** |
@@ -36,13 +36,12 @@ Split before annotating. Example:
 ```
 
 **After split:**
-```markdown
 ### Task 4a: Build product listing API endpoint
-**Specialist:** task
+**Specialist:** `backend-developer`
 - Files: Create: src/api/products.ts
 
 ### Task 4b: Build product listing UI component
-**Specialist:** frontend-developer
+**Specialist:** `frontend-developer`
 - Files: Create: src/components/ProductList.tsx
 - Depends on: Task 4a (consumes GET /api/products)
 ```
@@ -78,6 +77,7 @@ Update this section to match the agents actually configured in your harness. Rep
 | Agent | Type | Good for |
 |---|---|---|
 | `frontend-developer` | Specialist | UI components, pages, CSS, state management; invoke the `design-taste-frontend` skill for premium new UI, `redesign-existing-projects` skill for existing UI upgrades |
+| `backend-developer` | Specialist | REST/GraphQL APIs, business logic, database schemas, auth, middleware |
 | `code-reviewer` | Review | Code review with spec and constitution compliance check |
 | `ui-ux-tester` | Testing | Browser-driven UI/UX flow testing |
 | `market-researcher` | Research | Market landscape, competitor analysis |

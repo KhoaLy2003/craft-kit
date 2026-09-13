@@ -50,5 +50,11 @@ At the start of every step, the orchestrating agent MUST:
 
 7. **Preview every written file** — after every file write (by subagent or directly), read back the first 20 lines and confirm: no missing markdown table separator rows (`|---|`), no truncation mid-sentence, no placeholder text left unfilled. A file that exists on disk but is structurally broken causes silent failures in downstream steps that read it.
 
+8. **Language: English only** — all AI-generated output (artifacts, documents, plans, comments, code comments, and in-session summaries) must be in English, regardless of the user's spoken language or the language used in the kickoff file. If a user writes the kickoff in Vietnamese, translate and respond in English. The only exception is user-facing UI copy that the product explicitly targets at a non-English audience — that copy follows the product's target language, but the surrounding documentation remains English.
+
+9. **Write the file first, then ask for review** — never print a document's full content in the terminal and ask the user to review it there. The correct sequence is: write the file to disk → tell the user the file path → ask them to open and review it → wait for approval. Terminal output is for summaries, key decisions, and gate prompts — not full document content. This applies to every artifact: idea brief, market notes, spec, plan, design doc, architecture doc, constitution, and any other generated file.
+
+   **During clarifying Q&A:** if questions must be asked before the file can be written, print only the questions — not a draft of the document content. The user answers the questions; the agent writes the file; the user then reviews the file on disk. Never mix document content into a Q&A message.
+
 At the **end of every step**, update the session log with duration and credit delta before advancing. See `kit/session-logging.md` for the log schema and phase-specific starter templates.
 

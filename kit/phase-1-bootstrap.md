@@ -34,6 +34,7 @@ Before executing each step, read its step file. The step file is the authoritati
 
 Before Phase 2 starts, verify all of these exist and are marked `approved`:
 
+- [ ] `docs/phase-1-kickoff.md` *(moved from project root after docs/ was created in Step 1)*
 - [ ] `docs/idea-brief.md`
 - [ ] `docs/market-notes.md` *(skip this check if Step 2 was skipped)*
 - [ ] `docs/prototype/` (journey-map.md + prototype-brief.md + walkable HTML)
@@ -42,7 +43,8 @@ Before Phase 2 starts, verify all of these exist and are marked `approved`:
 - [ ] `docs/architecture.md`
 - [ ] `docs/constitution.md`
 - [ ] Scaffold: project builds and runs, smoke test passes
-
+- [ ] `AGENTS.md` at project root
+- [ ] Single Phase 1 commit in `git log` — all of the above captured in one commit
 ---
 
 ## Phase Handoff — Starting Phase 2 in a New Session

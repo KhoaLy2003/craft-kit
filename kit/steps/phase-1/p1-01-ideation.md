@@ -7,7 +7,7 @@
 - **Model**: `opus`
 - **Trigger**: Starting a new project with no existing codebase.
 - **Inputs**:
-  - `docs/phase-1-kickoff.md` — user-filled project context (idea, target user, constraints, existing assets, steps to skip); fall back to conversational clarification if the file is absent or thin.
+  - `phase-1-kickoff.md` — user-filled project context at the project root (idea, target user, constraints, existing assets, steps to skip); fall back to conversational clarification if the file is absent or thin.
 - **Outputs**:
   - `docs/idea-brief.md`
 - **Template**: `templates/01-idea-brief.md`
@@ -36,11 +36,13 @@
 
 ## Execution Rules
 
-1. Always use the Architectural path — there is no existing codebase, so this step is never Bounded.
-2. Draw inputs from `docs/phase-1-kickoff.md` when present; fall back to conversational Q&A if the file is absent or thin.
-3. Ask clarifying questions covering: what problem exists today, who experiences it, what existing alternatives people use, and what is explicitly out of scope. Stop there — do not continue into tech stack or architecture territory.
-4. **Q&A must complete before writing the artifact.** The contract is: questions → answers → draft → user review → write. Do not write `docs/idea-brief.md` until all clarifying questions are answered and the user has reviewed the draft. Writing before Q&A completes produces an idea-brief that reflects assumptions, not answers — and requires rework.
-5. Do not invoke `writing-plans` at any point during this step.
+1. **Git repository initialization (first action in all of Phase 1):** Before any Q&A or file writes, confirm a git repository exists at the project root (`git rev-parse --git-dir`). If not, run `git init` immediately — this creates the baseline commit point for the single Phase 1 commit at closeout. Do not make any commits yet; the full Phase 1 commit happens at Phase 1 closeout (see `p1-08-scaffold.md`).
+2. Always use the Architectural path — there is no existing codebase, so this step is never Bounded.
+3. Draw inputs from `phase-1-kickoff.md` (project root) when present; fall back to conversational Q&A if the file is absent or thin.
+4. Ask clarifying questions covering: what problem exists today, who experiences it, what existing alternatives people use, and what is explicitly out of scope. Stop there — do not continue into tech stack or architecture territory. **Print only the questions — do not include any draft document content alongside them.**
+5. **Q&A must complete before writing the artifact.** The contract is: questions → answers → write file → user opens and reviews the file → approval. Do not print the idea-brief content in the terminal for review — write `docs/idea-brief.md` to disk first, then tell the user to open it and confirm. Writing before Q&A completes produces an idea-brief that reflects assumptions, not answers — and requires rework.
+6. **After `docs/idea-brief.md` is written** (which creates the `docs/` folder), move `phase-1-kickoff.md` from the project root to `docs/phase-1-kickoff.md`. All Phase 1 documents, including the kickoff, live under `docs/`.
+7. Do not invoke `writing-plans` at any point during this step.
 
 ## Artifact Rules
 
@@ -50,12 +52,13 @@
 - **Status / approval condition**: Set `Status: approved` only after the user confirms the draft.
 
 ## Completion Criteria
-
 The step is considered complete when:
 
+- [ ] Git repository initialized at the project root.
 - [ ] All clarifying questions have been answered by the user.
 - [ ] The user has reviewed the draft idea brief.
 - [ ] `docs/idea-brief.md` is written and marked `Status: approved`.
+- [ ] `phase-1-kickoff.md` has been moved from project root to `docs/phase-1-kickoff.md`.
 - [ ] The user has been presented with the Step 2 skip/proceed choice and a decision has been recorded in the session log.
 
 ## Transition Rules
@@ -63,7 +66,7 @@ The step is considered complete when:
 ### Before Advancing
 
 - `docs/idea-brief.md` must exist and be marked `Status: approved`.
-- The Step 2 skip/proceed choice must be surfaced and recorded — **this choice is required even if the kickoff says "run all steps."** The kickoff controls which steps are skippable; it does not replace per-step gate conversations.
+- `docs/phase-1-kickoff.md` must exist (moved from root).
 - Present the user with: *"Step 2 (Market Research) validates demand and finds competitive risks. Recommended if you haven't externally validated this idea yet. Skip it only if you already have evidence or are building for yourself. Proceed with Step 2 or skip to Step 3?"*
 
 ### Next Step

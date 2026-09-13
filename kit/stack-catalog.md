@@ -23,6 +23,16 @@ The orchestrator reads this file and uses matching entries directly, only web-se
 | Next.js + Vercel + Neon | None native (add Pusher/Ably) | Relational (Postgres serverless) | Server-side session or API-route token | 0.5 GB, 190 compute hrs/mo `[volatile]` | Node ≥18, npm, git | 2026-09-04 |
 | React + Vite + Convex | WebSockets (reactive queries) | Document + relations (TypeScript-first) | Custom tokens or anonymous auth | Generous free tier; check dashboard `[volatile]` | Node ≥18, npm, git | 2026-09-04 |
 
+
+### Third-Party Services Quick Reference
+
+| Service | Category | Free tier | Account required | Last verified |
+|---|---|---|---|---|
+| Clerk | Auth (hosted) | 10K MAU free `[volatile]` | Yes — publishable + secret key | 2026-09-13 |
+| NextAuth.js / Auth.js v5 | Auth (self-hosted) | Free OSS | No (DB required) | 2026-09-13 |
+| Cloudinary | Media storage + transforms | 25 GB storage, 25 GB BW `[volatile]` | Yes — cloud_name + api_key | 2026-09-13 |
+| Cloudflare R2 | Object storage | 10 GB free, zero egress `[volatile]` | Yes — account + R2 token | 2026-09-13 |
+| AWS S3 | Object storage | 5 GB / 12 months free `[volatile]` | Yes — access key + secret | 2026-09-13 |
 ---
 
 ## Full Entries
@@ -254,3 +264,122 @@ When a project's Step 3 requires a stack not listed above, the research-analyst 
 Entries must include a `**Requires:**` field immediately after `**Last verified:**`. State the minimum local toolchain (Node version, package manager, git) and any account prerequisites (hosted services that require sign-up before scaffold runs).
 
 Entries should be updated (not replaced) when spot-checks find changed facts — update the specific volatile fact and bump `Last verified`.
+
+---
+
+## Third-Party Services
+
+These are not full stacks — they are standalone services that integrate into any of the stacks above. List them in `docs/architecture.md` under "Third-Party Services" and confirm accounts exist before scaffold runs.
+
+---
+
+### Auth: Clerk
+
+**Last verified:** 2026-09-13 (live docs)
+**Requires:** Node ≥18, npm. A Clerk account and application are required before scaffold runs — get publishable key + secret key from the Clerk dashboard.
+
+**Summary:** Hosted authentication and user management. Provides pre-built UI components (sign-in, sign-up, user profile), session management, and organization/multi-tenancy support. Works with Next.js (App Router first-class), React, and any Node backend. Handles JWTs, refresh, and device sessions automatically.
+
+**Integration model** `[stable]`
+- Next.js: `@clerk/nextjs` middleware wraps the app; `auth()` / `currentUser()` available in Server Components and API routes
+- React (Vite): `@clerk/react` provider + hooks (`useAuth`, `useUser`)
+- Backend-only: `@clerk/backend` for token verification in standalone APIs
+
+**Key features** `[stable]`
+- Passwordless (magic link, OTP), OAuth (Google, GitHub, etc.), passkeys — all built-in, no extra config
+- Webhooks for user lifecycle events (user.created, session.ended)
+- Organizations: multi-tenant with roles and permissions out of the box
+- MFA, bot protection, and email deliverability handled by Clerk
+
+**Free tier** `[volatile — spot-check if >3 months old]`
+- 10,000 monthly active users free; unlimited seats on free plan
+- All auth methods included on free tier; advanced org features on paid
+- No self-hosting option on free; fully managed
+
+**Best fit if:** the project needs real user accounts with social login, passwordless, or org-level multi-tenancy, and the team wants zero auth boilerplate. Particularly strong for Next.js App Router projects.
+
+**Watch out for:** vendor lock-in (session model is Clerk-specific); self-hosting not available on free tier; at high MAU Clerk is significantly more expensive than rolling auth with NextAuth/Lucia.
+
+---
+
+### Auth: NextAuth.js (Auth.js v5)
+
+**Last verified:** 2026-09-13 (knowledge-based)
+**Requires:** Node ≥18, npm. A database (Postgres, SQLite, etc.) is required for the database adapter; JWTs only for the stateless variant.
+
+**Summary:** Open-source auth library for Next.js (and now any framework via Auth.js v5). Handles OAuth providers, credentials, magic links. Self-hosted — no vendor account required. Session stored in JWT (stateless) or database (stateful via an adapter).
+
+**Integration model** `[stable]`
+- Next.js App Router: `auth()` helper in Server Components; `middleware.ts` for route protection
+- Adapters for Prisma, Drizzle, Supabase, and others — connect to whichever DB the stack already uses
+- Credentials provider for username/password (requires manual password hashing with bcrypt)
+
+**Key features** `[stable]`
+- OAuth: Google, GitHub, Discord, and 60+ providers with 3 lines of config
+- JWT or database sessions — swap without changing application code
+- No usage-based pricing; entirely self-hosted
+
+**Free tier** `[stable]`
+- Free and open-source; cost is only the database that backs the session store
+
+**Best fit if:** the project needs OAuth login, the team wants zero vendor lock-in, and a database is already part of the stack (Supabase, Neon, PocketBase).
+
+**Watch out for:** more configuration than Clerk for the same outcome; Auth.js v5 (App Router) is stable but the migration path from v4 is manual; credentials provider requires careful password-hashing implementation.
+
+---
+
+### Storage: Cloudinary
+
+**Last verified:** 2026-09-13 (live docs)
+**Requires:** Node ≥18, npm. A Cloudinary account is required before scaffold runs — get `cloud_name`, `api_key`, and `api_secret` from the Cloudinary dashboard.
+
+**Summary:** Hosted media management platform. Handles image and video upload, storage, on-the-fly transformation (resize, crop, format conversion, compression), and global CDN delivery. Exposes an upload API and an SDK for Node, React, and Next.js.
+
+**Integration model** `[stable]`
+- Server-side upload: `cloudinary.uploader.upload(filePath)` — upload from a Next.js API route or Server Action; client never receives credentials
+- Client-side upload: unsigned upload preset + direct browser-to-Cloudinary upload; no server round-trip for the file bytes
+- Next.js Image: use `next-cloudinary` (`<CldImage>` component) for automatic format + size optimization via URL transforms
+- Transformation URL API: append parameters (`/w_400,h_300,c_fill/`) to the delivery URL — no re-upload needed
+
+**Key features** `[stable]`
+- Auto-format (`f_auto`) and auto-quality (`q_auto`) deliver WebP/AVIF to supported browsers
+- Eager transformations pre-generate variants at upload time; lazy transforms happen on first request and are cached at CDN edge
+- AI-powered background removal, generative fill, and smart cropping available on paid plans
+- Video transcoding, thumbnail generation, and adaptive streaming (HLS) available
+
+**Free tier** `[volatile — spot-check if >3 months old]`
+- 25 monthly credits free (1 credit ≈ 1 transformation or 1 MB storage/bandwidth unit)
+- 25 GB storage, 25 GB bandwidth/month
+- Sufficient for prototypes and small apps; production workloads typically require paid
+
+**Best fit if:** the project handles user-uploaded images or videos and needs on-the-fly resizing/optimization without provisioning a separate storage bucket and image CDN.
+
+**Watch out for:** credit model is non-obvious — each transformation variant counts; cost can escalate quickly on image-heavy apps without eager pre-generation; vendor lock-in on URL-based transform syntax.
+
+---
+
+### Storage: AWS S3 / Cloudflare R2
+
+**Last verified:** 2026-09-13 (knowledge-based)
+**Requires:** Node ≥18, npm, `@aws-sdk/client-s3` (S3) or `aws4fetch` / same SDK pointed at R2 endpoint (R2). An AWS account (S3) or Cloudflare account (R2) is required before scaffold runs.
+
+**Summary:** Object storage for files, images, videos, and other binary assets. S3 is the AWS standard; Cloudflare R2 is S3-compatible with zero egress fees. Both use presigned URLs to let browsers upload directly without proxying bytes through the app server.
+
+**Integration model** `[stable]`
+- Presigned PUT: server generates a time-limited signed URL → client uploads file bytes directly to S3/R2 → server records the resulting object key in the database
+- Presigned GET: server generates signed download URL for private objects; public buckets skip this step
+- `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner` — same SDK works for both S3 and R2 (set custom endpoint for R2)
+
+**Key features** `[stable]`
+- No built-in image transformation — pair with Cloudflare Images, imgproxy, or Cloudinary for on-the-fly resizing
+- Lifecycle rules: auto-delete or move to cold storage after N days
+- Versioning: keep object history for overwrite protection
+- R2 advantage: zero egress fees make it significantly cheaper than S3 for read-heavy workloads
+
+**Free tier** `[volatile — spot-check if >3 months old]`
+- S3: 5 GB storage, 20K GET, 2K PUT requests/month for 12 months (then paid); egress fees apply
+- R2: 10 GB storage, 1M Class-A ops, 10M Class-B ops/month free forever; zero egress fees
+
+**Best fit if:** the project stores arbitrary files (PDFs, exports, backups) or large media that does not need server-side transformation, and cost at scale matters.
+
+**Watch out for:** S3 egress fees accumulate fast on read-heavy apps — prefer R2 if Cloudflare is acceptable; neither provides image transformation (add a separate service); presigned URL flows require careful CORS configuration on the bucket.

@@ -56,6 +56,7 @@ const REQUIRED_AGENTS = [
   { name: 'market-researcher',  path: 'categories/10-research-analysis/market-researcher.md' },
   { name: 'research-analyst',   path: 'categories/10-research-analysis/research-analyst.md' },
   { name: 'frontend-developer', path: 'categories/01-core-development/frontend-developer.md' },
+  { name: 'backend-developer',  path: 'categories/01-core-development/backend-developer.md' },
   { name: 'code-reviewer',      path: 'categories/04-quality-security/code-reviewer.md' },
   { name: 'ui-ux-tester',       path: 'categories/04-quality-security/ui-ux-tester.md' },
 ]
@@ -239,16 +240,29 @@ if (!fs.existsSync(src)) {
   process.exit(1)
 }
 
+// ─── Version stamp ────────────────────────────────────────────────────────────
+
+const versionFile = path.join(target, '.craft-kit-version')
+const prevVersion = fs.existsSync(versionFile)
+  ? fs.readFileSync(versionFile, 'utf8').trim()
+  : null
+const rel = path.relative(process.cwd(), target) || '.'
+
 // ─── Preflight ────────────────────────────────────────────────────────────────
 
 if (fs.existsSync(target)) {
   const entries = fs.readdirSync(target)
   if (entries.length > 0 && !force) {
+    const versionLine = prevVersion
+      ? prevVersion === PKG.version
+        ? `  ${dim('Installed:')}  v${prevVersion}  ${dim('(already up to date)')}`
+        : `  ${dim('Installed:')}  ${yellow('v' + prevVersion)}  ${SYM.arrow}  ${bold('v' + PKG.version)}  ${dim('(update available)')}`
+      : `  ${dim('Installed:')}  ${dim('unknown version')}`
     console.error(`
-  ${SYM.cross}  Target directory already exists and is not empty:
-     ${yellow(target)}
+  ${SYM.cross}  ${bold(rel + '/')} already exists.
+${versionLine}
 
-  To update an existing install:
+  To upgrade:
      npx github:KhoaLy2003/craft-kit --force
 `)
     process.exit(1)
@@ -276,8 +290,14 @@ try {
   process.exit(1)
 }
 
-const rel = path.relative(process.cwd(), target) || '.'
-console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
+fs.writeFileSync(versionFile, PKG.version + '\n', 'utf8')
+
+if (force && prevVersion && prevVersion !== PKG.version) {
+  console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + PKG.version)}  ${dim('(' + rel + '/')}\n`)
+  console.log(`  ${dim('What changed:')}  ${cyan('https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md')}\n`)
+} else {
+  console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
+}
 
 if (skipSetup) {
   printQuickStart(rel)
