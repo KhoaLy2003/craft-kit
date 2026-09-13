@@ -8,13 +8,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [0.0.6] - 2026-09-13
 
-**Summary:** User-feedback round — git workflow, language enforcement, file-first review, market research inspiration, backend-developer agent, and stack catalog expansion.
+**Summary:** User-feedback round — git workflow, language enforcement, file-first review, market research inspiration, backend-developer agent, stack catalog expansion, and single-pass specialist gap fix.
 
 ### Added
 
 - **`kit/guides/interactive-prototype-process.md`** — moved from `kit/resource/` into the `guides/` folder so it is included in user installs. `kit/resource/` retains dev-only files (`DESIGN.md`, `step-specification-template.md`).
 - **`kit/stack-catalog.md`** — new "Third-Party Services" section with full entries for Clerk (auth), NextAuth.js / Auth.js v5 (auth), Cloudinary (media storage + transforms), Cloudflare R2 (object storage), and AWS S3 (object storage). Quick Reference table extended with a second sub-table.
 - **`bin/cli.js`** — `backend-developer` added to `REQUIRED_AGENTS` alongside `frontend-developer` (path: `categories/01-core-development/backend-developer.md`). Appears in manual install instructions and interactive download automatically.
+- **`bin/cli.js`** — version stamp written to `<kit-dir>/.craft-kit-version` after every successful install. On `--force` re-install the CLI reads the previous stamp and, when the version differs, emits an upgrade summary (`v0.0.5 › v0.0.6`) plus a direct link to the CHANGELOG instead of the plain "Kit installed" message.
 
 ### Changed
 
@@ -28,6 +29,9 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit/steps/phase-2/p2sp-01-full-app-spec.md`** — Execution Rule updated: write spec to disk first, then ask user to open and review each section before approving.
 - **`kit/templates/02-market-notes.md`** — Section 5 (Feature Inspirations) added; existing sections renumbered (Reasons This Might Not Work → 6, Conclusions → 7); gate checklist updated to require inspirations populated.
 - **`kit/task-agent-rubric.md`** — `backend-developer` added to Quick Reference table; routing rows for API endpoints, database schema, business logic, and auth now point to `backend-developer` unconditionally. Split-task example updated.
+- **`kit/phase-2-single-pass.md`** — "When NOT to use" condition tightened: disqualifier is now a roughly equal domain split (≥30% each), not the presence of any cross-domain task. A small number of out-of-domain tasks (config, migrations, one API route) does not disqualify the single-pass track.
+- **`kit/steps/phase-2/p2sp-02-plan.md`** — Plan step now annotates every task with a `Specialist:` field using `kit/task-agent-rubric.md`. Dominant specialist defined as the agent on ≥80% of tasks. Minority tasks (those assigned to a different specialist) collected into a **Minority Tasks** section in `plan.md` with task number, specialist, and dependency position. If minority tasks exceed ~20% of total, the hard gate raises a track-switch recommendation. `kit/task-agent-rubric.md` added to Inputs and References.
+- **`kit/steps/phase-2/p2sp-03-implement.md`** — Implement step now dispatches minority tasks to their designated specialist as targeted single-task subagents at the dependency position recorded in `plan.md`; dominant specialist stream is unchanged. In Scope and Execution Rules updated to reflect both dispatch paths.
 
 ---
 

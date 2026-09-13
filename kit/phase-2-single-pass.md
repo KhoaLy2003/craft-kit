@@ -11,7 +11,7 @@
 > **When NOT to use this track — use `phase-2-feature-dev.md` instead:**
 > - Any feature is L-sized or its complexity is unknown upfront
 > - The codebase is shared with multiple developers
-> - Features span multiple domains (e.g. frontend + backend) requiring different specialist agents
+> - The implementation is split roughly equally across multiple domains — if frontend and backend each account for ≥30% of tasks, use `phase-2-feature-dev.md`. A small number of out-of-domain tasks (config, migrations, one API route) does not disqualify single-pass.
 > - The feature set is likely to grow significantly after Phase 2 begins
 > - More than ~15 Must features in the roadmap
 
