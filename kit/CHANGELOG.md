@@ -39,6 +39,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+## [0.0.6] - 2026-09-13
+
+---
+
+---
+
 ## [0.0.5] - 2026-09-11
 
 ### Changed
