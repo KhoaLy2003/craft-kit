@@ -246,17 +246,23 @@ const versionFile = path.join(target, '.craft-kit-version')
 const prevVersion = fs.existsSync(versionFile)
   ? fs.readFileSync(versionFile, 'utf8').trim()
   : null
+const rel = path.relative(process.cwd(), target) || '.'
 
 // ─── Preflight ────────────────────────────────────────────────────────────────
 
 if (fs.existsSync(target)) {
   const entries = fs.readdirSync(target)
   if (entries.length > 0 && !force) {
+    const versionLine = prevVersion
+      ? prevVersion === PKG.version
+        ? `  ${dim('Installed:')}  v${prevVersion}  ${dim('(already up to date)')}`
+        : `  ${dim('Installed:')}  ${yellow('v' + prevVersion)}  ${SYM.arrow}  ${bold('v' + PKG.version)}  ${dim('(update available)')}`
+      : `  ${dim('Installed:')}  ${dim('unknown version')}`
     console.error(`
-  ${SYM.cross}  Target directory already exists and is not empty:
-     ${yellow(target)}
+  ${SYM.cross}  ${bold(rel + '/')} already exists.
+${versionLine}
 
-  To update an existing install:
+  To upgrade:
      npx github:KhoaLy2003/craft-kit --force
 `)
     process.exit(1)
@@ -286,7 +292,6 @@ try {
 
 fs.writeFileSync(versionFile, PKG.version + '\n', 'utf8')
 
-const rel = path.relative(process.cwd(), target) || '.'
 if (force && prevVersion && prevVersion !== PKG.version) {
   console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + PKG.version)}  ${dim('(' + rel + '/')}\n`)
   console.log(`  ${dim('What changed:')}  ${cyan('https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md')}\n`)

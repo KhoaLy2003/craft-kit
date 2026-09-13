@@ -31,6 +31,8 @@ This creates a `kit/` folder with all the phase files, templates, and guides. Yo
 npx github:KhoaLy2003/craft-kit --force
 ```
 
+When the version changes, the installer prints an upgrade summary (`v0.0.5 › v0.0.6`) and a direct link to the changelog so you can review what changed before continuing.
+
 ### Step 2 — Describe your idea
 
 Copy the kickoff form into your project's `docs/` folder:
