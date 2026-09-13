@@ -240,6 +240,13 @@ if (!fs.existsSync(src)) {
   process.exit(1)
 }
 
+// ─── Version stamp ────────────────────────────────────────────────────────────
+
+const versionFile = path.join(target, '.craft-kit-version')
+const prevVersion = fs.existsSync(versionFile)
+  ? fs.readFileSync(versionFile, 'utf8').trim()
+  : null
+
 // ─── Preflight ────────────────────────────────────────────────────────────────
 
 if (fs.existsSync(target)) {
@@ -277,8 +284,15 @@ try {
   process.exit(1)
 }
 
+fs.writeFileSync(versionFile, PKG.version + '\n', 'utf8')
+
 const rel = path.relative(process.cwd(), target) || '.'
-console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
+if (force && prevVersion && prevVersion !== PKG.version) {
+  console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + PKG.version)}  ${dim('(' + rel + '/')}\n`)
+  console.log(`  ${dim('What changed:')}  ${cyan('https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md')}\n`)
+} else {
+  console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
+}
 
 if (skipSetup) {
   printQuickStart(rel)
