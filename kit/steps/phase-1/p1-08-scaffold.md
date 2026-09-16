@@ -102,7 +102,7 @@
       ```
       This commit captures everything from `git init` to the completed scaffold: all `docs/` artifacts, the initialized codebase, and `AGENTS.md`. From this point forward, Phase 2 branches off of this single Phase 1 commit.
 
-6. Select the agent based on stack: use `general-purpose agent` for full-stack or backend-heavy projects; use `frontend-developer` if the stack is primarily frontend.
+7. Select the agent based on stack: use `general-purpose agent` for full-stack or backend-heavy projects; use `frontend-developer` if the stack is primarily frontend.
 
 ## Artifact Rules
 
