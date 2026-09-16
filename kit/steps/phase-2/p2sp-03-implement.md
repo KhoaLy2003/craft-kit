@@ -71,6 +71,7 @@ The step is considered complete when:
 - **Default**: Step 4 — Converge
 - **Optional skip**: No
 - **User decision required**: No (soft gate only if unfamiliar pattern)
+- **Context window**: After this step, context load may be high. See the Context Window Management section in `kit/phase-2-single-pass.md` for the trigger, handoff checklist, and resume prompt before advancing to Step 4.
 
 ### Transition Record
 

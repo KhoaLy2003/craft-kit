@@ -1,51 +1,34 @@
-# DESIGN.md — Output Template for Step 5: Product Design
+# DESIGN.md — Output Template for Step 4: Product Design
 
-> **Step 5 has two paths — choose based on what you already have:**
->
-> | Path | When to use | What runs |
-> |---|---|---|
-> | **Import** | You have an existing `DESIGN.md` | Agent extracts + normalizes it into this template; AI design session is skipped |
-> | **AI** | No `DESIGN.md` yet | Your general-purpose agent (or a dedicated visual design agent) runs the full design session from the prototype |
->
-> Both paths produce the same `docs/DESIGN.md` output and must pass the same gate before Step 6.
+This file is filled in by the user. The orchestrator validates it against the quality checklist in `kit/steps/phase-1/p1-04-design.md` Phase B before dispatching the UI preview build. Fill in every section; leave none blank.
 
 ## Metadata
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
-- **Source**: `imported` | `ai-generated`
-- **Based on**: <!-- `prototype/`, `idea-brief.md` (AI path) — or — name of imported file (import path) -->
-
+- **Source**: <!-- name of the design system file downloaded (e.g. "Linear design system from getdesign.md") -->
+- **Based on**: <!-- file origin and date downloaded -->
 ---
 
-## Import Path — Extraction Checklist
+## Validation Checklist
 
-<!-- Skip this section entirely if using the AI path. -->
-<!--
-When a DESIGN.md is imported:
-1. Read the imported file in full.
-2. Use it as the source of truth for all sections below — do not invent or supplement from the prototype unless a section is genuinely absent.
-3. Work through this checklist before marking Status as `approved`.
--->
+Work through this checklist before notifying the orchestrator that the file is ready. The orchestrator will re-check these same criteria automatically.
 
 - [ ] **Overview** — one-paragraph framing exists (canvas, accent color, shape language, type personality)
-- [ ] **Color tokens** — extracted and renamed semantically if needed (e.g. `color-primary`, not `#ff385c` or `rausch`)
-- [ ] **Typography scale** — sizes, weights, line-heights, and usage roles captured
-- [ ] **Spacing system** — base unit and full token scale documented
+- [ ] **Color tokens** — at least 5 semantic tokens (e.g. `color-primary`, `color-background`, `color-text-primary`) with hex/rgb values filled in; names are semantic, not raw values or brand names
+- [ ] **Typography scale** — at least 3 levels defined with font size, weight, and line-height; font family named
+- [ ] **Spacing system** — base unit stated AND/OR at least 4 spacing token values
 - [ ] **Elevation** — shadow tiers (or explicit "no elevation" decision) documented
-- [ ] **Core components** — listed with tokens they consume; any component not traceable to the prototype removed
-- [ ] **Responsive breakpoints** — breakpoint names, widths, and key layout changes captured
-- [ ] **Known gaps** — undocumented or unreliable sections from the imported file flagged explicitly
-- [ ] **Reconcile against prototype** — every component kept here must map to something visible in `prototype/`
+- [ ] **Core components** — at least 3 components listed with tokens they consume and their interactive states; every component must map to something visible in `docs/prototype/`
+- [ ] **Responsive breakpoints** — at least 2 breakpoints named with pixel widths
+- [ ] **Known gaps** — undocumented or unreliable sections flagged explicitly (section must not be empty)
+- [ ] **File length** — at least 300 words (not a stub)
 
 ---
 
 ## 1. Design Overview
 
-<!-- One paragraph: the visual personality of the product. Cover the canvas approach (light/dark/neutral), how the primary accent is used (everywhere vs. sparingly), the shape language (sharp / soft / pill), and the typographic tone (loud / quiet / editorial). This section is the "north star" — implementation decisions that feel ambiguous should check back against it.
-
-Import path: pull from the Overview / Key Characteristics section of the imported file.
-AI path: write after the designer finalizes direction. -->
+<!-- One paragraph: the visual personality of the product. Cover the canvas approach (light/dark/neutral), how the primary accent is used (everywhere vs. sparingly), the shape language (sharp / soft / pill), and the typographic tone (loud / quiet / editorial). This section is the "north star" — implementation decisions that feel ambiguous should check back against it. Pull from the Overview / Key Characteristics section of your source file. -->
 
 ---
 
@@ -193,17 +176,17 @@ AI path: write after the designer finalizes direction. -->
 
 ## 8. Finalized Mock Reference
 
-<!-- Pointer to the actual mock files/screens produced in this step. Import path: mocks may come from the prototype unchanged; note that here. -->
+<!-- Pointer to the UI preview built by `frontend-developer` in Step 4 Phase C, and the prototype screens it was based on. -->
 
 - **Mock location**: <!-- e.g. `prototype/screens/` or link to design tool -->
 - **Screens covered**: <!-- list screen names or flows -->
 
 ---
 
-## Gate Checklist (before proceeding to Step 6 — Roadmap Generation)
+## Gate Checklist (before proceeding to Step 5 — Roadmap Generation)
 
 - [ ] Tokens are named semantically, not by raw value or brand name
-- [ ] Every core component maps back to something used in the prototype
-- [ ] Mock reflects the finalized direction — no unresolved open questions carried over from Step 4
+- [ ] Every core component maps back to something visible in `docs/prototype/`
 - [ ] Known gaps section is honest and complete (not empty)
-- [ ] Import path only: reconciliation against prototype is complete; no orphaned components remain
+- [ ] Reconciliation against prototype is complete; no orphaned components remain
+- [ ] UI preview (`docs/preview/`) reflects this design system; user has reviewed and approved it

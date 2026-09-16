@@ -6,6 +6,35 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ---
 <!-- insert new changelog below this comment -->
 
+## [0.0.8] - 2026-09-16
+
+**Summary:** Step 4 (Product Design) refactored — AI generation path removed; user now provides DESIGN.md; quality validation gate added; orchestrator builds HTML + CDN Tailwind UI preview directly (no subagent dispatch, opens as `file://`); design-taste-frontend skill applied at build time; hard gate on all paths.
+
+### Changed
+
+- **`kit/steps/phase-1/p1-04-design.md`** — complete rewrite. AI generation path removed. Step now has five sequential phases: (A) guide user to provide `docs/DESIGN.md` from getdesign.md or freedesignmd.com with a hard stop until confirmed; (B) orchestrator-run quality validation against 7 criteria (overview, color tokens, typography scale, spacing, core components, responsive breakpoints, minimum file length) with specific failure reporting and re-validation loop; (C) orchestrator builds `docs/preview/` directly as HTML + CDN Tailwind (no subagent dispatch; design-taste-frontend skill pre-flight check applied before writing; mock data from prototype-brief.md; opens as `file://`); (D) review and feedback loop — DESIGN.md changes trigger re-validation and rebuild, preview-only fixes are applied directly, no iteration cap; (E) hard gate always. Overview Agent/Skill line updated to "Orchestrator (direct)".
+- **`kit/phase-1-checklist.md`** — Step 4 section replaced. Removed old skip-entirely logic and AI chosen branch. New section has four BLOCK checkpoints: file-present check, 7-criterion quality validation checklist, UI preview artifact verification (`index.html` + CDN Tailwind tag), and feedback loop instructions. Hard gate summary updated.
+- **`kit/templates/05-design-system.md`** — AI path language removed throughout. Title updated to Step 4. Introductory callout table (Import / AI paths) removed. Metadata `Source` field rewritten as a plain file-origin note. "Import Path — Extraction Checklist" section rewritten as a standalone "Validation Checklist" (no conditionals, no path references). Section 1 Design Overview comment simplified (AI path instruction removed). Section 8 Finalized Mock Reference comment updated to reference `docs/preview/`. Gate Checklist updated: "Mock reflects finalized direction" item updated to reference `docs/preview/`; AI path orphan-component item replaced with a `docs/preview/` approval item.
+- **`kit/phase-1-bootstrap.md`** — Step 4 row description updated from "Create a design system with visual language, components, and UI patterns for the product" to "User provides a DESIGN.md file; orchestrator validates it, then builds a live UI preview with mock data for review" to match the refactored step.
+
+## [0.0.7] - 2026-09-14
+
+**Summary:** Environment variable gate at Phase 1 close, context window management for single-pass, and E2E test plan template.
+
+### Added
+
+- **`kit/templates/e2e-tests.md`** — new fill-in template for `docs/E2E-TESTS.md`. Seven sections with fixed structure: Overview (totals), Prerequisites Checklist (credentials table, per-service rows), Test Coverage Map (one AC-ID table per feature), External Service Setup (provisioning checklist + verification command + troubleshooting per service), Test Data Requirements, Running the Tests (exact commands + expected output), and Troubleshooting (populated during Step 5b). Gate Checklist at the bottom. Replaces free-form generation from the guide.
+
+### Changed
+
+- **`kit/phase-2-single-pass.md`** — added "Context Window Management" section between Conventions and Steps. Includes a concrete trigger (estimated remaining credits below 20%, or session noticeably slower), a handoff checklist (session log, branch name, three key files on disk), and a copy-paste resume prompt for the new session. Positioned before Steps so the orchestrator sees it before beginning, not after Step 3 is already done.
+- **`kit/steps/phase-2/p2sp-03-implement.md`** — added `Context window` entry to Transition Rules → Next Step, pointing to the Context Window Management section in `phase-2-single-pass.md`.
+- **`kit/steps/phase-1/p1-08-scaffold.md`** — added Environment Variables Gate as execution rule 4 (between scaffold agent dispatch and smoke test). Gate: (1) reads `.env.example` for required keys; (2) writes `ENV_SETUP.md` to project root with one `### KEY_NAME` section per variable (what it is, where to get it, expected format) — guidance goes to a file, not the terminal; (3) directs user to open `ENV_SETUP.md` and fill `.env`, waits for confirmation; (4) validates every key is present and non-placeholder; blocks until valid. Added to Completion Criteria and Transition Rules / Before Advancing. Prior rules 4–5 renumbered to 5–6.
+- **`kit/templates/09-scaffold-checklist.md`** — added Section 7 (Environment Variables) with five checkboxes: `ENV_SETUP.md` written, `.env.example` generated, user confirmation received, no placeholder values, app starts without env errors. Gate / Phase 1 Closeout updated to note Section 7 may be skipped for projects with no external services.
+- **`kit/phase-1-bootstrap.md`** — Phase 1 Output Checklist: env item updated to name `ENV_SETUP.md` explicitly. Added hard gate callout after the checklist: Phase 2 session must not open if `.env` is missing, contains placeholder values, or causes startup errors; names the consequence (costly reruns of the full implementation phase).
+- **`kit/steps/phase-2/p2sp-05a-e2e-plan.md`** — `Template` field changed from `none` to `kit/templates/e2e-tests.md`. Execution Rules rewritten: orchestrator copies the template to `docs/E2E-TESTS.md` first, then dispatches the agent to fill it — structure is no longer generated from scratch each run. Agent must map every AC ID from the spec; omissions require an explicit reason. Gate Checklist in the template verified before presenting to user. `kit/guides/e2e-testing-plan.md` retained as reference for Supabase-specific provisioning detail.
+
+
 ## [0.0.6] - 2026-09-13
 
 **Summary:** User-feedback round — git workflow, language enforcement, file-first review, market research inspiration, backend-developer agent, stack catalog expansion, and single-pass specialist gap fix.

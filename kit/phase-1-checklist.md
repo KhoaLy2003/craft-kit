@@ -59,24 +59,36 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ## Step 4 — Product Design
 
-- **[MUST DO FIRST]** Check for an existing design file — in order:
-  1. `docs/DESIGN.md` at `PROJECT_ROOT`
-  2. `DESIGN.md` at `PROJECT_ROOT` (project root, not in docs/)
-  3. Any path explicitly listed in the kickoff form under "Design file"
+- **[MUST DO FIRST]** Check whether `docs/DESIGN.md` already exists and has content.
+  - If found: skip the user prompt below; go directly to quality validation.
+  - If not found: present sources and wait for user to place the file. Do not proceed without confirmation.
 
-- **If ANY of the above is found and has content:**
-  - **Skip Step 4 entirely — no user confirmation needed.** Copy the file to `docs/DESIGN.md` if it is not already there. Mark `complete` in session log. Advance to Step 5 immediately. No agent runs, no gate.
-  - Rationale: the user already has a design file; asking them to confirm is redundant friction.
+- **Sources to present when file is missing:**
+  - **getdesign.md** — https://getdesign.md/design-md (73+ free design system analyses)
+  - **freedesignmd.com** — https://freedesignmd.com (121+ free design systems)
+  - Instruction: *"Pick a design system whose visual personality fits your product, download it, rename it `DESIGN.md`, and save it to `docs/DESIGN.md` in the project folder. Reply 'ready' when done."*
 
-- **If no design file is found anywhere:**
-  - Present sources: **getdesign.md** (https://getdesign.md/design-md) · **freedesignmd.com** (https://freedesignmd.com)
-  - Tell user: *"Save the downloaded file to `docs/DESIGN.md` in the project folder, then say 'downloaded'."*
-  - After user confirms download: check `docs/DESIGN.md` exists and has content automatically — do not ask for path
-    - Found → mark Step 4 complete, advance to Step 5. No agent runs.
-    - Not found → tell user; wait for them to confirm placement before checking again
-  - AI chosen → dispatch your general-purpose agent (or a dedicated visual design agent if available); write output to `docs/DESIGN.md`
-    - **[HARD GATE]** Gate Summary: *"The design direction is set — colors, typography, and components are locked. Does this match what you want?"*
----
+- **[BLOCK — Quality Validation]** After user confirms file is ready, validate all criteria before dispatching any agent:
+  - [ ] Overview paragraph exists (canvas, accent, shape language, type personality)
+  - [ ] At least 5 semantic color tokens with hex/rgb values filled in
+  - [ ] At least 3 typography scale levels with size/weight/line-height; font family named
+  - [ ] Spacing base unit stated AND/OR at least 4 spacing token values
+  - [ ] At least 3 core components with tokens and states
+  - [ ] At least 2 responsive breakpoints named with pixel widths
+  - [ ] File is at least 300 words
+  - If any criterion fails: report exactly which criteria failed; wait for user to fix or replace file; re-validate before continuing.
+
+- **[BLOCK — UI Preview Build]** After quality validation passes, read `docs/DESIGN.md` + `docs/prototype/prototype-brief.md` + `docs/idea-brief.md` and build `docs/preview/` directly (HTML + CDN Tailwind, no build step, opens as `file://`); apply design-taste-frontend skill pre-flight check before writing files:
+  - [ ] `docs/preview/index.html` exists on disk
+  - [ ] First 20 lines of `index.html` contain `<script src="https://cdn.tailwindcss.com">` — not a placeholder or stub
+  - Report to user: screens built, tokens applied, how to open (`open docs/preview/index.html` or double-click)
+
+- **[BLOCK — Feedback Loop]** Present preview and collect feedback:
+  - DESIGN.md feedback (colors, fonts, etc.): ask user to update file; re-run quality validation and rebuild preview
+  - Preview-only feedback (layout, nav order, etc.): dispatch `frontend-developer` with a targeted patch brief; re-present
+  - Repeat until the user explicitly approves — no maximum iteration count
+
+- **[HARD GATE]** Gate Summary: *"The design direction is locked. The UI preview reflects your product's visual language, components, and flows. Changing direction after this point means updating DESIGN.md, rebuilding the preview, and potentially revisiting the architecture. Ready to advance to Step 5?"*
 
 ## Step 5 — Roadmap Generation
 

@@ -11,7 +11,7 @@
   - Project architecture documentation (database, auth, external services)
 - **Outputs**:
   - `docs/E2E-TESTS.md` — comprehensive test documentation mapping all acceptance criteria to test cases
-- **Template**: `none`
+- **Template**: `kit/templates/e2e-tests.md`
 - **Gate**: `hard` — user must review and approve the E2E testing plan before E2E testing begins
 
 ## Scope
@@ -32,10 +32,12 @@
 
 ## Execution Rules
 
-- Dispatch general-purpose agent to create `docs/E2E-TESTS.md`
-- Map all acceptance criteria from `docs/specs/spec.md` to test cases
-- For projects with external services, document provisioning requirements explicitly
-- Reference `kit/guides/e2e-testing-plan.md` for Supabase provisioning workflow
+- Copy `kit/templates/e2e-tests.md` to `docs/E2E-TESTS.md` before dispatching the agent — the agent fills in the template, it does not generate the structure from scratch
+- Dispatch general-purpose agent to fill every placeholder in `docs/E2E-TESTS.md` using `docs/specs/spec.md` as the source of acceptance criteria and feature names
+- Map every AC ID from the spec to a row in Section 3; no AC may be silently omitted — if an AC is intentionally excluded, it must appear with a reason
+- For projects with external services, complete Section 4 fully — provisioning checklist, verification command, and at least one troubleshooting entry per service
+- Reference `kit/guides/e2e-testing-plan.md` for Supabase-specific provisioning details (manual test user creation, UUID seeding)
+- After the agent finishes, verify the Gate Checklist at the bottom of `docs/E2E-TESTS.md` before presenting to the user
 - Present the completed plan to the user and wait for explicit approval before proceeding to Step 5b
 
 ## Artifact Rules

@@ -68,13 +68,26 @@
 - [ ] Project builds/runs with zero features implemented
 - [ ] A trivial "hello world" level check passes (proves the scaffold is genuinely wired up, not just files sitting unconnected)
 
+
+---
+
+## 7. Environment Variables
+
+<!-- Skip this section entirely if the project has no environment variables (e.g. a static site with no external services). -->
+
+- [ ] `ENV_SETUP.md` written to project root — one `### KEY_NAME` section per variable with what it is, where to get it, and expected format
+- [ ] `.env.example` generated at project root — one line per required key with a descriptive placeholder (e.g. `SUPABASE_URL=https://<project-ref>.supabase.co`)
+- [ ] User provided a value for every key in `.env.example` (confirmed by user, not assumed)
+- [ ] `.env` exists at project root and is listed in `.gitignore`
+- [ ] Every key in `.env` is set to a non-empty, non-placeholder value (no `<...>`, `your-key-here`, `TODO`, or empty strings)
+- [ ] Application starts without any missing-env-var error in the startup log
 ---
 
 ## Gate: Phase 1 Closeout
 
 <!-- This is the final checkpoint before Phase 2 begins. Unlike other gates, this one confirms the ENTIRE Bootstrap phase, not just this step. -->
 
-- [ ] All sections above are checked
+- [ ] All sections above are checked (Section 7 may be skipped for projects with no env vars)
 - [ ] `docs/idea-brief.md`, `docs/market-notes.md`, `docs/prototype/`, `docs/DESIGN.md`, `docs/roadmap.md`, `docs/architecture.md`, `docs/constitution.md` all exist and are `approved`
 - [ ] `docs/roadmap.md` Status column shows all features as `pending` (none started yet)
 - [ ] `docs/specs/` directory created (Phase 2 will write `docs/specs/<feature-slug>/spec.md` and `plan.md` here; single-pass writes `docs/specs/spec.md` and `plan.md` directly)
