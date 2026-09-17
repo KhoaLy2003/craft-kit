@@ -4,7 +4,7 @@
 
 - **Purpose**: Review all code for quality and compliance, then test complete cross-feature user flows in the running application.
 - **Skill/Agent**: `code-reviewer` agent; `ui-ux-tester` (UI flows); general-purpose agent (non-UI flows)
-- **Model**: `sonnet`
+- **Model**: `haiku`
 - **Trigger**: Step 5a (E2E Testing Plan) approved by user
 - **Inputs**:
   - Full branch diff
@@ -44,7 +44,7 @@
 - Pay particular attention to cross-feature interactions — features that work in isolation but break when combined; these are the failure mode most specific to single-pass development
 - Run every acceptance criterion first — mark each PASS, FAIL, or BLOCKED. Do not fix inline. A BLOCKED criterion (blocked by a prior failure, not independently failing) is not a separate failure.
 - After the complete run, batch all FAILs to the implementer in one dispatch. Inline fixes mid-run mean later criteria may regress undetected.
-- After all fixes are applied, re-run the entire suite from the beginning. The re-run is the regression guarantee.
+- After all fixes are applied, re-run only the test cases within the scope of what was changed. Determine scope from the files the fix touched: if the fix is isolated to one feature's files, re-run that feature's test cases only; if the fix touches shared code (utilities, middleware, state, routing, DB schema), re-run all test cases that depend on that code. Do not re-run the full suite when the fix scope does not warrant it.
 - Use `ui-ux-tester` for browser-driven UI verification; use general-purpose agent for storage, data integrity, and non-UI flows (e.g. export file format, localStorage error handling)
 - `ui-ux-tester` is performing UI interaction verification, not implementation judgment — a lighter/faster model is appropriate
 

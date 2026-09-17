@@ -23,7 +23,7 @@ Before executing each step, read its step file. The step file is the authoritati
 | 1   | Product Ideation              | Clarify the problem, target user, and solution hypothesis. Define what you're building. | `none` | `kit/steps/phase-1/p1-01-ideation.md`        |
 | 2   | Market Research *(optional)*  | Validate market demand and identify competitive risks before committing to development. | `hard` | `kit/steps/phase-1/p1-02-market-research.md` |
 | 3   | Interactive Prototype         | Build a working prototype to test UX assumptions and validate core user interactions. | `hard` | `kit/steps/phase-1/p1-03-prototype.md`       |
-| 4   | Product Design                | Create a design system with visual language, components, and UI patterns for the product. | `hard` | `kit/steps/phase-1/p1-04-design.md`          |
+| 4   | Product Design                | User provides a DESIGN.md file; orchestrator validates it, then builds a live UI preview with mock data for review. | `hard` | `kit/steps/phase-1/p1-04-design.md`          |
 | 5   | Roadmap Generation            | Prioritize features into Must/Should/Nice-to-Have and determine the development build order. | `hard` | `kit/steps/phase-1/p1-05-roadmap.md`         |
 | 6   | Tech Stack &amp; Architecture | Evaluate technology options and document the system architecture for Phase 2 implementation. | `hard` | `kit/steps/phase-1/p1-06-architecture.md`    |
 | 7   | Constitution                  | Establish coding standards, architectural rules, and non-negotiable principles for the project. | `hard` | `kit/steps/phase-1/p1-07-constitution.md`    |
@@ -43,8 +43,11 @@ Before Phase 2 starts, verify all of these exist and are marked `approved`:
 - [ ] `docs/architecture.md`
 - [ ] `docs/constitution.md`
 - [ ] Scaffold: project builds and runs, smoke test passes
+- [ ] `ENV_SETUP.md` at project root and `.env` verified: all required keys present and valid, app starts without env errors *(skip if no environment variables required)*
 - [ ] `AGENTS.md` at project root
 - [ ] Single Phase 1 commit in `git log` — all of the above captured in one commit
+
+> **Hard gate — environment variables:** Do not open the Phase 2 session if `.env` is missing, contains any placeholder values (`<...>`, `your-key-here`, `TODO`, empty string), or causes env-related startup errors. Credentials discovered to be wrong during E2E testing require costly reruns of the entire implementation phase. Resolve the `.env` before the Phase 1 commit — it is the cheapest moment to fix it. *(Skip if the project has no external services or secrets.)*
 ---
 
 ## Phase Handoff — Starting Phase 2 in a New Session

@@ -10,6 +10,8 @@
   - `docs/specs/plan.md`
   - `docs/specs/spec.md`
   - `docs/constitution.md`
+  - `docs/DESIGN.md` — approved design system (color tokens, typography, spacing, components)
+  - `docs/preview/` — approved UI preview; frontend implementation must match this visual reference
 - **Outputs**:
   - All feature code on a single branch (`feature/<project-slug>`)
 - **Template**: `none`
@@ -42,6 +44,7 @@
 - If a task reveals a spec gap or contradiction, pause and update `docs/specs/spec.md` before continuing — do not guess and proceed
 - If a foundational task fails or reveals blocking complexity that invalidates later tasks, stop and re-evaluate scope
 - After every completed task, check the work against `docs/constitution.md` before moving to the next — violations caught here are cheaper than at code review
+- **Design system contract — required for every frontend dispatch:** include `docs/DESIGN.md` and `docs/preview/` in every `frontend-developer` subagent dispatch brief (dominant specialist or minority task). The agent must read both before writing any UI code. The implementation must match the tokens, component patterns, and visual language that the user approved in Phase 1 Step 4.
 
 ## Artifact Rules
 
@@ -71,6 +74,7 @@ The step is considered complete when:
 - **Default**: Step 4 — Converge
 - **Optional skip**: No
 - **User decision required**: No (soft gate only if unfamiliar pattern)
+- **Context window**: After this step, context load may be high. See the Context Window Management section in `kit/phase-2-single-pass.md` for the trigger, handoff checklist, and resume prompt before advancing to Step 4.
 
 ### Transition Record
 
