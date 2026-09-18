@@ -162,6 +162,19 @@ jobs:
           git push origin "${{ steps.version.outputs.tag }}"
           echo "Pushed branch ${{ steps.branch.outputs.name }} and tag ${{ steps.version.outputs.tag }}"
 
+      - name: Reset RELEASE_NOTES.md for next release
+        run: |
+          cat > RELEASE_NOTES.md << 'RESET_EOF'
+          <!-- Write user-facing release notes here before triggering release-trigger.yml.
+               This file becomes the GitHub release body. Keep it concise and user-focused —
+               what improved for kit users, not which files changed (kit/CHANGELOG.md tracks that).
+               After the release workflow runs and the PR merges, this file resets automatically. -->
+          RESET_EOF
+          git add RELEASE_NOTES.md
+          git commit -m "chore: reset RELEASE_NOTES.md after ${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.branch.outputs.name }}"
+
+
       - name: Open pull request
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}

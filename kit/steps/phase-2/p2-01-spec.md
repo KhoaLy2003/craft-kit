@@ -13,7 +13,7 @@
   - `docs/DESIGN.md`
 - **Outputs**:
   - `docs/specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior, non-goals, open questions resolved
-- **Gate**: `hard` — the `brainstorming` skill has a built-in user approval gate on the written spec; the orchestrator does not advance until the user explicitly approves
+- **Template**: none
 
 ## Scope
 
@@ -50,8 +50,6 @@
 
 ## Completion Criteria
 
-The step is considered complete when:
-
 - [ ] `docs/specs/<feature-slug>/spec.md` exists and contains acceptance criteria, edge cases, UI behavior, non-goals, and resolved open questions
 - [ ] The spec is scoped to a single feature
 - [ ] The spec has been checked against `docs/constitution.md`
@@ -85,3 +83,4 @@ The step is considered complete when:
 - `docs/constitution.md`
 - `docs/architecture.md`
 - `docs/DESIGN.md`
+- `templates/spec-screen.md` — use to document individual screens when a feature has 2+ non-trivial screens; save filled copies as `docs/specs/<feature-slug>/screens/<screen-name>.md` before Step 2 (Plan)

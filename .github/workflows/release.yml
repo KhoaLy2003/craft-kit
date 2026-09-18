@@ -44,23 +44,6 @@ jobs:
         run: |
           set -euo pipefail
           TAG="${{ steps.version.outputs.tag }}"
-          VERSION="${TAG#v}"
-
-          # Previous tag for commit range
-          PREVIOUS_TAG=$(git tag -l 'v*' --sort=-version:refname | grep -v "^${TAG}$" | head -n 1 || true)
-
-          # Commits since previous tag (fall back to last 20 if first release)
-          if [[ -n "$PREVIOUS_TAG" ]]; then
-            COMMITS=$(git log --no-merges --pretty=format:"- %s" "$PREVIOUS_TAG"..HEAD)
-          else
-            COMMITS=$(git log --no-merges --pretty=format:"- %s" HEAD~20..HEAD 2>/dev/null \
-                      || git log --no-merges --pretty=format:"- %s" HEAD)
-          fi
-
-          # Extract matching CHANGELOG section (between this version header and the next)
-          CHANGELOG_SECTION=$(awk \
-            "/^## \[${VERSION}\]/{found=1; next} found && /^## /{exit} found{print}" \
-            kit/CHANGELOG.md || true)
 
           cat > release_notes.md << 'NOTES_EOF'
           ## Install
@@ -71,27 +54,24 @@ jobs:
 
           NOTES_EOF
 
-          if [[ -n "$CHANGELOG_SECTION" ]]; then
-            SUMMARY=$(echo "$CHANGELOG_SECTION" | grep '^\*\*Summary:' || true)
-            BULLETS=$(echo "$CHANGELOG_SECTION" | grep '^- '          || true)
+          if [[ -s RELEASE_NOTES.md ]]; then
             echo "" >> release_notes.md
-            if [[ -n "$SUMMARY" ]]; then
-              echo "$SUMMARY" >> release_notes.md
-              echo "" >> release_notes.md
-            fi
-            echo "## What's Changed" >> release_notes.md
-            echo "" >> release_notes.md
-            if [[ -n "$BULLETS" ]]; then
-              echo "$BULLETS" >> release_notes.md
-            else
-              echo "$COMMITS" >> release_notes.md
-            fi
+            cat RELEASE_NOTES.md >> release_notes.md
           else
+            # Fallback: commit messages since previous tag
+            PREVIOUS_TAG=$(git tag -l 'v*' --sort=-version:refname | grep -v "^${TAG}$" | head -n 1 || true)
+            if [[ -n "$PREVIOUS_TAG" ]]; then
+              COMMITS=$(git log --no-merges --pretty=format:"- %s" "$PREVIOUS_TAG"..HEAD)
+            else
+              COMMITS=$(git log --no-merges --pretty=format:"- %s" HEAD~20..HEAD 2>/dev/null \
+                        || git log --no-merges --pretty=format:"- %s" HEAD)
+            fi
             echo "" >> release_notes.md
             echo "## What's Changed" >> release_notes.md
             echo "" >> release_notes.md
             echo "$COMMITS" >> release_notes.md
           fi
+
 
       - name: Create GitHub Release
         if: steps.check.outputs.exists == 'false'

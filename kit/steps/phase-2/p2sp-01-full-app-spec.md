@@ -13,7 +13,7 @@
   - `docs/constitution.md`
 - **Outputs**:
   - `docs/specs/spec.md` — one document, one `##` section per feature in roadmap build order
-- **Template**: `none`
+- **Template**: none
 - **Gate**: `hard` — you review the complete spec and approve once before implementation starts
 
 ## Scope
@@ -84,3 +84,4 @@ The step is considered complete when:
 
 - `brainstorming` skill (Architectural path)
 - `kit/gate-management.md`
+- `templates/spec-screen.md` — use to document individual screens when a feature has 2+ non-trivial screens; save filled copies as `docs/specs/screens/<screen-name>.md` before Step 2 (Plan)

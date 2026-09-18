@@ -17,7 +17,7 @@
 - [ ] `src/` (or `app/`, `lib/` — per architecture.md's convention) created
 - [ ] `test/` (or `tests/`, `spec/`) created
 - [ ] `docs/` created
-- [ ] `.gitignore` configured for the chosen stack
+- [ ] `.gitignore` configured for the chosen stack; `kit/` entry present (added in Step 1 — must not be removed)
 - [ ] `LICENSE` added <!-- required if this project may be open-sourced -->
 - [ ] Folder structure matches the component breakdown in `architecture.md` § System Overview
 
