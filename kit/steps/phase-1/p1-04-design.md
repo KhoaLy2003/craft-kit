@@ -23,7 +23,7 @@
 
 - Guiding the user to obtain and name a `DESIGN.md` file.
 - Validating the quality of the user-provided `docs/DESIGN.md` against the checklist below.
-- Dispatching `frontend-developer` to build a real, runnable UI preview with mock data.
+- Building a real, runnable UI preview with mock data directly, applying the `design-taste-frontend` skill.
 - Presenting the preview to the user and collecting feedback.
 - Running the feedback loop (update DESIGN.md and rebuild preview) until the user approves.
 
@@ -37,7 +37,7 @@
 
 ### Scope Boundary
 
-> Step 4 has one path: the user provides `docs/DESIGN.md`, the orchestrator validates it, and the `frontend-developer` agent builds a UI preview. There is no AI-generation path. The step does not advance until the user explicitly approves the preview at the hard gate.
+> Step 4 has one path: the user provides `docs/DESIGN.md`, the orchestrator validates it, then builds the UI preview directly applying the `design-taste-frontend` skill. There is no AI-generation path. The step does not advance until the user explicitly approves the preview at the hard gate.
 
 ## Execution Rules
 
@@ -147,7 +147,7 @@ Present the preview results to the user and ask:
 **If the user gives feedback:**
 - Assess whether the feedback requires a DESIGN.md change (e.g. "the colors feel too cold — I want a warmer palette") or a preview-only fix (e.g. "the nav is in the wrong order").
 - For DESIGN.md changes: ask the user to update `docs/DESIGN.md` and reply "ready". Re-run Phase B (quality check) and Phase C (UI preview rebuild) with the updated file.
-- For preview-only fixes: dispatch `frontend-developer` again with a targeted patch brief describing only the changes. Re-present the updated preview.
+- For preview-only fixes: apply the `design-taste-frontend` skill and rebuild `docs/preview/` directly — same path as Phase C. Run the pre-flight check, apply only the described changes, re-verify `index.html` exists on disk, then re-present the updated preview.
 - Repeat until the user approves. There is no maximum iteration count — continue until explicitly approved.
 
 ---
@@ -186,7 +186,7 @@ The step is considered complete when:
 ### Before Advancing
 
 - Confirm `docs/DESIGN.md` exists, has content, and passed Phase B validation.
-- Confirm `docs/preview/` exists with `package.json`, `src/`, and `README.md`.
+- Confirm `docs/preview/index.html` exists on disk and contains the CDN Tailwind script tag.
 - Present the Gate Summary (Phase E) and wait for explicit user approval.
 
 ### Next Step
@@ -205,7 +205,7 @@ The step is considered complete when:
 - If the user confirms the file is placed but `docs/DESIGN.md` is not found on disk, tell the user and wait. Do not assume a different path or proceed without confirmation.
 - If the user wants to use their own custom `DESIGN.md` (not from the listed sources), that is allowed. Run Phase B validation on it the same way.
 - If Phase C (UI preview build) fails due to a missing dependency or build error, report the exact error to the user and retry with a targeted fix. Do not advance past Phase C with a broken preview.
-- If a screen from `prototype-brief.md` is ambiguous or has conflicting information, the `frontend-developer` agent should implement the most conservative interpretation and note the ambiguity in a comment — not guess silently.
+- If a screen from `prototype-brief.md` is ambiguous or has conflicting information, implement the most conservative interpretation and note the ambiguity in a comment — not guess silently.
 - The feedback loop in Phase D has no hard iteration limit. Iterate until the user explicitly approves.
 
 ## References
@@ -214,6 +214,6 @@ The step is considered complete when:
 - `docs/prototype/prototype-brief.md` (screens, flows, mock data for the preview)
 - `docs/prototype/journey-map.md` (persona and scenario)
 - `kit/orchestrator-conventions.md` (item 6 — fail-fast write instruction)
-- `frontend-developer` agent
+- `design-taste-frontend` skill
 - https://getdesign.md/design-md (getdesign.md — 73+ free design system analyses)
 - https://freedesignmd.com (freedesignmd.com — 121+ free design systems)

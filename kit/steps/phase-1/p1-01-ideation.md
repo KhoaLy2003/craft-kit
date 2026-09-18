@@ -36,7 +36,7 @@
 
 ## Execution Rules
 
-1. **Git repository initialization (first action in all of Phase 1):** Before any Q&A or file writes, confirm a git repository exists at the project root (`git rev-parse --git-dir`). If not, run `git init` immediately — this creates the baseline commit point for the single Phase 1 commit at closeout. Do not make any commits yet; the full Phase 1 commit happens at Phase 1 closeout (see `p1-08-scaffold.md`).
+1. **Git repository initialization (first action in all of Phase 1):** Before any Q&A or file writes, confirm a git repository exists at the project root (`git rev-parse --git-dir`). If not, run `git init` immediately — this creates the baseline commit point for the single Phase 1 commit at closeout. Do not make any commits yet; the full Phase 1 commit happens at Phase 1 closeout (see `p1-08-scaffold.md`). Immediately after `git init` (or if a repo already exists but no `.gitignore` yet), create `.gitignore` at the project root and add `kit/` as the first entry — the kit folder is a development tool, not part of the application and must not be committed. If `.gitignore` already exists, append `kit/` only if it is not already present.
 2. Always use the Architectural path — there is no existing codebase, so this step is never Bounded.
 3. Draw inputs from `phase-1-kickoff.md` (project root) when present; fall back to conversational Q&A if the file is absent or thin.
 4. Ask clarifying questions covering: what problem exists today, who experiences it, what existing alternatives people use, and what is explicitly out of scope. Stop there — do not continue into tech stack or architecture territory. **Print only the questions — do not include any draft document content alongside them.**

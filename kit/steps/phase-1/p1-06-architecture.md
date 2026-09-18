@@ -21,9 +21,8 @@
 
 ### In Scope
 
-- Catalog-first research: reading `kit/stack-catalog.md` and identifying applicable stacks before any web search.
-- Surfacing 2–3 viable stack options with pros/cons informed by the roadmap's actual feature count, sizes, and domains.
-- Producing a ranked recommendation summary in chat (not a document).
+- Catalog-first research: reading `kit/stack-catalog.md` — starting from the Canonical Baseline, applying Deviation Triggers against roadmap requirements, then walking the Additions Catalog domain by domain.
+- Producing a full stack recommendation (baseline + any deviations + applicable additions) with rationale in chat (not a document).
 - Writing `docs/architecture.md` only after the human explicitly names the confirmed stack.
 - Documenting why the roadmap scope justifies the chosen stack, including what was deliberately not adopted for MVP.
 
@@ -45,15 +44,18 @@ This step follows a strict three-stage process. Do not collapse the stages into 
 ### Stage 1 — Research (catalog-first)
 
 1. Read `kit/stack-catalog.md` before opening any web search or external source.
-2. Map the project's requirements (from `docs/roadmap.md` feature count, sizes, and domains) to catalog entries. Use catalog entries directly for stacks that match — do not re-research what the catalog already covers.
-3. Web-search only in these two cases: (a) the needed stack is not in the catalog, or (b) the catalog entry's `Last verified` date is more than 3 months old and the fact being checked is volatile (pricing, free-tier limits).
+2. Apply the catalog's three-step analysis protocol:
+   - **Baseline**: start from the Canonical Baseline Stack (Section 1).
+   - **Deviations**: check each Deviation Trigger (Section 3) against the project's requirements from `docs/roadmap.md`. Apply only the triggers that match — do not apply deviations speculatively.
+   - **Additions**: walk the Additions Catalog (Section 4) domain by domain. Add only what the roadmap explicitly requires.
+3. Web-search only in these two cases: (a) a required service or library is not listed in the catalog, or (b) the catalog entry's `Last verified` date is more than 3 months old and the fact being checked is volatile (pricing, free-tier limits).
 4. Use a dedicated `librarian` agent only if a specific library needs source-verified capability confirmation. The `research-analyst` handles most cases without delegation.
-5. Surface 2–3 viable options with pros/cons. Use a lighter/faster model for this stage.
+5. Use a lighter/faster model for this research stage.
 6. Include the fail-fast write instruction from `kit/orchestrator-conventions.md` item 6 verbatim in any subagent dispatch for this step.
 
 ### Stage 2 — Analysis (chat only)
 
-1. The `research-analyst` produces a **recommendation summary in chat** — two or three candidate stacks ranked with tradeoffs, one clearly recommended.
+1. The `research-analyst` produces a **recommendation summary in chat**: the full proposed stack (baseline layer, any deviations applied, additions included) with a one-line rationale for each non-baseline choice.
 2. This output is a chat message, not a document. Do not write `docs/architecture.md` at this stage. Do not set `Status: approved` on anything.
 3. Use the full model for this stage and for the recommendation message.
 
@@ -80,8 +82,9 @@ This step follows a strict three-stage process. Do not collapse the stages into 
 The step is considered complete when:
 
 - [ ] `kit/stack-catalog.md` was read before any web search was performed.
-- [ ] 2–3 viable stack options with pros/cons were surfaced in chat.
-- [ ] A ranked recommendation with one clearly preferred option was delivered in chat.
+- [ ] The Canonical Baseline was the starting point; Deviation Triggers were checked against roadmap requirements.
+- [ ] Additions Catalog was walked domain by domain; only roadmap-required additions were included.
+- [ ] The full proposed stack (baseline + deviations + additions) with rationale was surfaced in chat.
 - [ ] The human explicitly named (or confirmed by name) the chosen stack.
 - [ ] `docs/architecture.md` exists, was written from the template, and carries `Status: approved`.
 - [ ] The document references the roadmap's complexity as justification and includes the "Complexity deliberately avoided for MVP scope" section.
@@ -107,7 +110,7 @@ The step is considered complete when:
 
 ## Exceptions / Special Cases
 
-- If the human rejects all surfaced options and names a stack not in the catalog, the agent must research that stack using web search before writing `docs/architecture.md`. The three-stage process still applies — confirmation must precede the document write.
+- If the human rejects the proposed stack and names a different technology not in the catalog, the agent must research that technology using web search before writing `docs/architecture.md`. The three-stage process still applies — confirmation must precede the document write.
 - If Step 2 (Market Research) was skipped, the research stage proceeds without `docs/market-notes.md`; the agent should flag any competitive assumptions made.
 - The gate is `hard`. If the human is undecided, the step must not advance. The orchestrator should re-surface the recommendation and ask again rather than defaulting or proceeding on silence.
 - Model allocation: lighter/faster model for Stage 1 research; full model for Stage 2 analysis and the recommendation message.

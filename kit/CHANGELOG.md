@@ -6,20 +6,34 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ---
 <!-- insert new changelog below this comment -->
 
-## [0.0.8] - 2026-09-16
+## [Unreleased]
 
-**Summary:** Step 4 (Product Design) refactored — AI generation path removed; user now provides DESIGN.md; quality validation gate added; orchestrator builds HTML + CDN Tailwind UI preview directly (no subagent dispatch, opens as `file://`); design-taste-frontend skill applied at build time; hard gate on all paths.
+### Added
+
+- **`kit/templates/spec-screen.md`** — new template for per-screen product documentation. Code-agnostic design brief covering Identity, Purpose, Access Control, Entry Points, Content & Data (displayed content / user actions / computed values), Layout & Structure (page structure / key UI elements / responsive behavior), Interactions, States (loading / empty / error / edge cases), Navigation Out, Design Notes, Acceptance Criteria, and Open Questions. Intended for features with 2+ non-trivial screens; filled copies live at `docs/specs/<feature-slug>/screens/<screen-name>.md`. Replaces the raw `TEMPLATE.md` that was ported from another project.
+- **`RELEASE_NOTES.md`** — new file at repo root. User-facing release notes written here before triggering `release-trigger.yml`; becomes the GitHub release body. Automatically reset to a template comment after the release PR merges. Separates user-facing "what's new" from the technical file-level CHANGELOG.
+- **`.github/workflows/release.yml`** — "Generate release notes" step rewritten: reads `RELEASE_NOTES.md` directly instead of awk-extracting from `kit/CHANGELOG.md`; commit-message fallback retained for when the file is empty.
+- **`.github/workflows/release-trigger.yml`** — new "Reset RELEASE_NOTES.md for next release" step added after tag push; writes the template comment back to `RELEASE_NOTES.md`, commits, and pushes on the release branch so the reset lands via PR merge while the tag commit retains the release content.
 
 ### Changed
 
 - **`kit/steps/phase-1/p1-04-design.md`** — complete rewrite. AI generation path removed. Step now has five sequential phases: (A) guide user to provide `docs/DESIGN.md` from getdesign.md or freedesignmd.com with a hard stop until confirmed; (B) orchestrator-run quality validation against 7 criteria (overview, color tokens, typography scale, spacing, core components, responsive breakpoints, minimum file length) with specific failure reporting and re-validation loop; (C) orchestrator builds `docs/preview/` directly as HTML + CDN Tailwind (no subagent dispatch; design-taste-frontend skill pre-flight check applied before writing; mock data from prototype-brief.md; opens as `file://`); (D) review and feedback loop — DESIGN.md changes trigger re-validation and rebuild, preview-only fixes are applied directly, no iteration cap; (E) hard gate always. Overview Agent/Skill line updated to "Orchestrator (direct)".
-- **`kit/phase-1-checklist.md`** — Step 4 section replaced. Removed old skip-entirely logic and AI chosen branch. New section has four BLOCK checkpoints: file-present check, 7-criterion quality validation checklist, UI preview artifact verification (`index.html` + CDN Tailwind tag), and feedback loop instructions. Hard gate summary updated.
-- **`kit/templates/05-design-system.md`** — AI path language removed throughout. Title updated to Step 4. Introductory callout table (Import / AI paths) removed. Metadata `Source` field rewritten as a plain file-origin note. "Import Path — Extraction Checklist" section rewritten as a standalone "Validation Checklist" (no conditionals, no path references). Section 1 Design Overview comment simplified (AI path instruction removed). Section 8 Finalized Mock Reference comment updated to reference `docs/preview/`. Gate Checklist updated: "Mock reflects finalized direction" item updated to reference `docs/preview/`; AI path orphan-component item replaced with a `docs/preview/` approval item.
-- **`kit/phase-1-bootstrap.md`** — Step 4 row description updated from "Create a design system with visual language, components, and UI patterns for the product" to "User provides a DESIGN.md file; orchestrator validates it, then builds a live UI preview with mock data for review" to match the refactored step.
+- **`kit/phase-1-checklist.md`** — (1) Step 4 section replaced: removed old skip-entirely logic and AI chosen branch; new section has four BLOCK checkpoints: file-present check, 7-criterion quality validation checklist, UI preview artifact verification (`index.html` + CDN Tailwind tag), and feedback loop instructions; hard gate summary updated. (2) Step 6 Stage 1 checklist item updated from "surface 2–3 options" to "apply Deviation Triggers and walk Additions Catalog"; Stage 2 item updated to reflect "full proposed stack with per-deviation rationale"; Step 8 Requires lookup item updated to reference Section 1 baseline toolchain and per-addition `Requires:` fields.
+- **`kit/templates/05-design-system.md`** — AI path language removed throughout. Title updated to Step 4. Introductory callout table (Import / AI paths) removed. Metadata `Source` field rewritten as a plain file-origin note. "Import Path — Extraction Checklist" section rewritten as a standalone "Validation Checklist" (no conditionals, no path references). Section 1 Design Overview comment simplified. Section 8 Finalized Mock Reference comment updated to reference `docs/preview/`. Gate Checklist updated: "Mock reflects finalized direction" item references `docs/preview/`; AI path orphan-component item replaced with a `docs/preview/` approval item.
+- **`kit/phase-1-bootstrap.md`** — Step 4 row description updated from "Create a design system with visual language, components, and UI patterns for the product" to "User provides a DESIGN.md file; orchestrator validates it, then builds a live UI preview with mock data for review".
 - **`kit/orchestrator-conventions.md`** — Rule 10 added: any `frontend-developer` subagent dispatch MUST include `docs/DESIGN.md` and `docs/preview/` as explicit inputs; explains consequence of omission (agent invents its own visual language).
 - **`kit/task-agent-rubric.md`** — frontend-developer rows updated: both UI-layout and UI-quality rows now note that `docs/DESIGN.md` + `docs/preview/` must be included in every dispatch brief.
 - **`kit/steps/phase-2/p2-04-implement.md`** — `docs/DESIGN.md` and `docs/preview/` added to Inputs; new Execution Rule: design system contract required for every frontend dispatch, not conditional on visual-quality signals.
 - **`kit/steps/phase-2/p2sp-03-implement.md`** — same: `docs/DESIGN.md` and `docs/preview/` added to Inputs; design system contract execution rule added for both dominant and minority frontend dispatches.
+- **`kit/stack-catalog.md`** — complete rewrite. Replaced the six-stack horizontal comparison model with a four-section structure: (1) Canonical Baseline Stack (Next.js App Router + TypeScript + Tailwind CSS + shadcn/ui + Drizzle ORM + Supabase PostgreSQL + NextAuth.js v5 + Vercel); (2) Analysis Protocol — how Step 6 uses the file; (3) Deviation Triggers — six named triggers (D1 self-hosted, D2 heavy realtime, D3 pure SPA, D4 content-heavy/static, D5 document schema, D6 mobile-first) each naming exactly what to swap and what to keep; (4) Additions Catalog — ten problem domains (Auth upgrade, Realtime, Storage, Payments, Email, Search, Background Jobs, Analytics, CMS, AI/LLM) with recommended entries per domain, stability tags, free-tier facts, and guidance on when to add. Orchestrator now defaults to the baseline and layers in additions only when the project roadmap explicitly requires the capability.
+- **`kit/steps/phase-2/p2-01-spec.md`** — Outputs section updated to list per-screen docs as an optional second artifact; `Template` field added pointing to `templates/spec-screen.md`; Completion Criteria gains a screen-docs checkbox; References gains `templates/spec-screen.md`.
+- **`kit/steps/phase-2/p2sp-01-full-app-spec.md`** — same: Outputs, Template, Completion Criteria, and References updated to reflect optional per-screen companion documents.
+- **`kit/steps/phase-1/p1-06-architecture.md`** — Stage 1 Execution Rules rewritten to follow the three-step catalog protocol (Baseline → Deviation Triggers → Additions Catalog); Scope updated from "surfacing 2–3 viable stack options" to "full stack recommendation (baseline + deviations + additions) with rationale"; Completion Criteria updated to match; Exceptions updated to reflect the new model.
+- **`kit/steps/phase-1/p1-08-scaffold.md`** — pre-flight rule 2 updated to reference Section 1 baseline toolchain and each addition's `Requires:` field; stale PocketBase-specific row removed from the toolchain check table.
+- **`kit/steps/phase-1/p1-01-ideation.md`** — Rule 1 (git init) extended: immediately after `git init`, create `.gitignore` at the project root with `kit/` as the first entry; if `.gitignore` already exists, append `kit/` only if not already present.
+- **`kit/templates/09-scaffold-checklist.md`** — Section 1 `.gitignore` checklist item updated to require `kit/` entry present and note it must not be removed by the scaffold agent.
+
+---
 
 ## [0.0.7] - 2026-09-14
 
@@ -38,6 +52,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit/phase-1-bootstrap.md`** — Phase 1 Output Checklist: env item updated to name `ENV_SETUP.md` explicitly. Added hard gate callout after the checklist: Phase 2 session must not open if `.env` is missing, contains placeholder values, or causes startup errors; names the consequence (costly reruns of the full implementation phase).
 - **`kit/steps/phase-2/p2sp-05a-e2e-plan.md`** — `Template` field changed from `none` to `kit/templates/e2e-tests.md`. Execution Rules rewritten: orchestrator copies the template to `docs/E2E-TESTS.md` first, then dispatches the agent to fill it — structure is no longer generated from scratch each run. Agent must map every AC ID from the spec; omissions require an explicit reason. Gate Checklist in the template verified before presenting to user. `kit/guides/e2e-testing-plan.md` retained as reference for Supabase-specific provisioning detail.
 
+---
 
 ## [0.0.6] - 2026-09-13
 
@@ -68,21 +83,6 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
-## [Unreleased]
-
----
-
-## [0.0.7] - 2026-09-17
-
----
-
----
-
-## [0.0.6] - 2026-09-13
-
----
-
----
 
 ## [0.0.5] - 2026-09-11
 
@@ -90,8 +90,6 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 - **`bin/cli.js`** — `kit/resource/` excluded from user install; directory contains internal development files (`DESIGN.md`, `step-specification-template.md`, `interactive-prototype-process.md`) not needed by kit users.
 - **`bin/cli.js`** — agent install path changed from `.claude/agents/` to `.agents/agents/`, co-locating agents alongside skills under a single provider-agnostic `.agents/` tree. Claude Code gate removed — all providers are prompted to download agents.
-
----
 
 ---
 
@@ -127,8 +125,6 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`bin/cli.js`** — `shell: true` → `shell: process.platform === 'win32'` in `installTasteSkill()`, eliminating the DEP0190 deprecation warning on Unix.
 - **`kit/CHANGELOG.md`** — restructured to Keep a Changelog v2 format: version-based `## [X.Y.Z] - YYYY-MM-DD` sections with `**Summary:**` lines; `## [Unreleased]` at top; existing date-title entries migrated into `[0.0.1]` and `[0.0.2]` blocks.
 - **`.github/workflows/release-trigger.yml`** — added `summary` input (one-line release summary); CHANGELOG step now promotes `[Unreleased]` → versioned block with summary line and resets a fresh `[Unreleased]`, replacing the previous commit-message-scraping approach.
-
----
 
 ---
 

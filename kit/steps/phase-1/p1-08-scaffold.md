@@ -39,7 +39,7 @@
 1. **Run the pre-flight environment check BEFORE dispatching the scaffold agent.** A scaffold started with missing tooling will fail mid-run and leave the project in a partial state. Check once; fix before proceeding.
 
    1. Read the stack from `docs/architecture.md` (Section: Stack Choice or equivalent).
-   2. Look up `Requires` for that stack in `kit/stack-catalog.md`. If the stack is not in the catalog, identify its toolchain from the architecture doc.
+   2. Look up toolchain requirements in `kit/stack-catalog.md` — Section 1 (baseline toolchain and account prerequisites) and each addition's `**Requires:**` field for any additions included in the architecture. If a stack or service is not in the catalog, identify its toolchain from `docs/architecture.md`.
    3. Run each check via `bash`:
 
       | Tool | Check command | Pass condition | Install URL if missing |
@@ -47,7 +47,6 @@
       | Node.js | `node --version` | Output starts with `v18`, `v20`, `v22`, or higher | https://nodejs.org |
       | npm | `npm --version` | Any output (comes with Node) | (reinstall Node) |
       | git | `git --version` | Any output | https://git-scm.com |
-      | PocketBase *(SvelteKit+PocketBase only)* | `ls backend/pocketbase` or equivalent | Binary present | https://pocketbase.io/docs/#installation — download the binary for the target OS and place it at `backend/pocketbase` |
 
    4. **If any check fails:** stop. Output the exact install URL(s) and ask the user to install and confirm before proceeding. Do not dispatch the scaffold agent until all checks pass.
    5. **Account prerequisites (hosted stacks only):** If the chosen stack requires an account (Supabase, Convex, Neon, Firebase), confirm the user has already created the project on that platform and has the required keys/URLs. If not, pause and link them to the sign-up page. The scaffold agent needs these credentials to configure environment variables — it cannot retrieve them itself.

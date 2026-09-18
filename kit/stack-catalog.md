@@ -1,9 +1,13 @@
-# Stack Catalog — Pre-Researched Web Stack Reference
+# Stack Catalog — Canonical Baseline and Additions Reference
 
-Used by Step 3 (Technical Research) as the first lookup before any web searches.
-The orchestrator reads this file and uses matching entries directly, only web-searching for:
-- Stacks not listed here
-- Volatile facts (pricing, limits) when `Last verified` is more than 3 months old
+Used by Step 6 (Architecture) as the primary reference before any web search.
+The `research-analyst` reads this file to derive the recommended stack for the project.
+
+**How to use this file:**
+1. Start from the Canonical Baseline — it is the default for every project.
+2. Run the Deviation Triggers checklist against the project's requirements. Apply only the deviations that match.
+3. Walk the Additions Catalog domain by domain. Add only what the project's roadmap explicitly requires.
+4. Web-search only for: stacks not listed here, or volatile facts with `Last verified` older than 3 months.
 
 **Fact stability guide:**
 - `[stable]` — architectural capability; rarely changes; trust without re-checking
@@ -12,374 +16,407 @@ The orchestrator reads this file and uses matching entries directly, only web-se
 
 ---
 
-## Quick Reference Table
+## Section 1 — Canonical Baseline Stack
 
-| Stack | Realtime | Data model | Anonymous tenant access | Free tier | Requires | Last verified |
-|---|---|---|---|---|---|---|
-| React + Vite + Supabase | WebSockets (Postgres CDC) | Relational (Postgres) | RLS on `anon` role + household token | 500 MB DB; pauses after 7 idle days `[volatile]` | Node ≥18, npm, git | 2026-09-04 |
-| Next.js + Vercel + Upstash Redis | Polling or SSE (not native) | Key-value (JSON blobs) | API route enforces household key prefix | 256 MB, 500K cmds/mo; no pause `[volatile]` | Node ≥18, npm, git | 2026-09-04 |
-| SvelteKit + PocketBase | SSE (base collections only) | SQLite (relational) | Collection filter rule by query param | Self-hosted; ~$4–6/mo VPS | Node ≥18, npm, git, PocketBase binary | 2026-09-04 |
-| React/Next.js + Firebase | WebSockets (Firestore listeners) | Document (NoSQL) | Security rules + anonymous UID or custom claim | Spark: 1 GB, 50K reads/day `[volatile]` | Node ≥18, npm, git | 2026-09-04 |
-| Next.js + Vercel + Neon | None native (add Pusher/Ably) | Relational (Postgres serverless) | Server-side session or API-route token | 0.5 GB, 190 compute hrs/mo `[volatile]` | Node ≥18, npm, git | 2026-09-04 |
-| React + Vite + Convex | WebSockets (reactive queries) | Document + relations (TypeScript-first) | Custom tokens or anonymous auth | Generous free tier; check dashboard `[volatile]` | Node ≥18, npm, git | 2026-09-04 |
+This stack handles roughly 75% of modern web projects. It is the default choice unless a Deviation Trigger applies.
 
+**Last verified:** 2026-09-18 (live docs)
 
-### Third-Party Services Quick Reference
+| Layer | Choice | Version |
+|---|---|---|
+| Language | TypeScript | ≥5.x |
+| Framework | Next.js (App Router) | ≥15 |
+| Styling | Tailwind CSS + shadcn/ui | Tailwind v4, shadcn latest |
+| ORM | Drizzle ORM | latest |
+| Database | Supabase (PostgreSQL) | hosted |
+| Auth | NextAuth.js (Auth.js v5) | v5 |
+| Deployment | Vercel | hosted |
 
-| Service | Category | Free tier | Account required | Last verified |
-|---|---|---|---|---|
-| Clerk | Auth (hosted) | 10K MAU free `[volatile]` | Yes — publishable + secret key | 2026-09-13 |
-| NextAuth.js / Auth.js v5 | Auth (self-hosted) | Free OSS | No (DB required) | 2026-09-13 |
-| Cloudinary | Media storage + transforms | 25 GB storage, 25 GB BW `[volatile]` | Yes — cloud_name + api_key | 2026-09-13 |
-| Cloudflare R2 | Object storage | 10 GB free, zero egress `[volatile]` | Yes — account + R2 token | 2026-09-13 |
-| AWS S3 | Object storage | 5 GB / 12 months free `[volatile]` | Yes — access key + secret | 2026-09-13 |
----
+**Minimum local toolchain:** Node.js ≥18, npm ≥9, git.
 
-## Full Entries
-
-### React + Vite + Supabase (Postgres + Realtime + Row-Level Security)
-
-**Last verified:** 2026-09-04 (live docs)
-**Requires:** Node.js ≥18, npm ≥9, git. No other local tooling — Supabase runs fully hosted; the CLI (`npx supabase`) is optional and downloaded on demand.
-
-**Summary:** Single-page React app built with Vite, backed by Supabase's hosted Postgres. Supabase Realtime uses Postgres logical replication to deliver WebSocket change events to the browser. Row Level Security scopes reads/writes to a tenant (household, org, etc.) without requiring user accounts.
-
-**Realtime model** `[stable]`
-- Protocol: WebSockets
-- Mechanism: Postgres change data capture (logical replication) → Supabase Realtime server → browser WebSocket
-- SDK: `supabase.channel().on('postgres_changes', ...).subscribe()`
-- Free tier: 200 concurrent peak connections, 2M messages/month `[volatile]`
-
-**Data model** `[stable]`
-- Relational (Postgres): tables, foreign keys, constraints, joins, SQL aggregations
-- Excellent for: normalized entities with history, fairness/audit queries, week-boundary joins
-- Poor for: unstructured or schema-less data
-
-**Anonymous tenant access (no per-user accounts)** `[stable]`
-- Pattern 1 (simpler): Household token in URL → server/Edge Function validates → uses `service_role` key server-side, bypassing RLS. Adds one server layer but avoids RLS complexity.
-- Pattern 2 (elegant): Edge Function mints a custom JWT with `tenant_id` claim → client uses it directly against Supabase RLS policies on the `anon` role. No server layer, but requires careful RLS policy design.
-- Risk: RLS misconfiguration on the `anon` role can silently expose all tenants' data. Needs a focused spike before committing.
-
-**Hosting / free tier** `[volatile — spot-check if >3 months old]`
-- Database: 500 MB (entire small-app data will be kilobytes)
-- API requests: unlimited
-- Egress: 5 GB/month
-- Realtime: 200 concurrent connections, 2M messages/month
-- **Inactivity pause: projects suspend after 7 idle days; ~30s cold-start to resume**
-- Mitigation: free external cron ping (cron-job.org) weekly to keep alive
-- Paid: Pro at $25/month; same schema, no pause, more limits
-
-**Rotation/scheduling logic** `[stable]`
-- Lives in application code (client-side trigger or Edge Function)
-- Edge Function free tier: 500K invocations/month — sufficient for weekly rotation trigger
-- Postgres stored functions possible for atomic rotation computation
-
-**Best fit if:** relational data model needed, first-class realtime required, zero-ops hosting preferred, willing to spike RLS anonymous-access pattern.
-
-**Watch out for:** free-tier inactivity pause; RLS anon-role complexity.
+**Account prerequisites (must exist before scaffold runs):**
+- Supabase account (free) — connection string from project settings
+- Vercel account (free) — connect GitHub repo during scaffold
 
 ---
 
-### Next.js + Vercel + Upstash Redis
+### Why this baseline `[stable]`
 
-**Last verified:** 2026-09-04 (live docs)
-**Requires:** Node.js ≥18, npm ≥9, git. No other local tooling — Vercel and Upstash are fully hosted; the Vercel CLI is optional (`npm i -g vercel`).
+**Next.js (App Router)** covers the full range of rendering strategies — SSR, SSG, ISR, and pure client components — in a single project. API routes and Server Actions replace a separate backend layer for most apps. It is the dominant full-stack React framework with first-class Vercel deployment.
 
-> **Note:** Vercel KV was deprecated December 2024 and migrated to Upstash. New projects connect directly to Upstash via the Vercel Marketplace integration. Do not reference Vercel KV in new projects.
+**Supabase (PostgreSQL)** gives a hosted, fully managed relational database with a direct connection string for Drizzle. The SQL model handles normalized data, foreign keys, aggregations, and history queries that document stores cannot. Supabase also offers opt-in Realtime, Storage, and Auth as additions (see Section 3).
 
-**Summary:** Next.js app on Vercel, using Upstash Redis as the data store. All data operations go through Next.js API routes or Server Actions, which enforce tenant access. Redis stores state as JSON blobs keyed by tenant ID. Realtime requires client-side polling or SSE — not natively provided by Upstash serverless.
+**Drizzle ORM** is TypeScript-native, schema-as-code, generates zero-overhead SQL, and works with any Postgres connection string. Migrations are plain SQL files — no magic, no lock-in.
 
-**Realtime model** `[stable]`
-- No native realtime from Upstash serverless Redis (no persistent pub/sub)
-- Option A: Client-side polling every 5s → ~36K commands/day → within free 500K/month `[volatile]` limit; up to 5s lag
-- Option B: SSE from a Vercel Edge route → persistent connection, no polling lag; conflicts with serverless model; more complex
-- Choose polling unless instant push is a hard requirement
+**NextAuth.js v5 (Auth.js)** is self-hosted, provider-agnostic OAuth (Google, GitHub, Discord, and 60+ others), credentials, and magic links. Uses the Drizzle adapter against the same Supabase Postgres — no extra service. Upgrade to Clerk when org-level multi-tenancy or pre-built user management UI is required.
 
-**Data model** `[stable]`
-- Key-value: JSON blobs keyed by tenant + entity (e.g., `household:{id}:week:{date}`)
-- Poor fit for: relational queries, cross-entity aggregations, 4-week history fairness summaries
-- Acceptable if: data stays simple (one blob per week, no cross-week joins needed)
-- Race condition risk: concurrent writes to same blob → must use atomic Redis ops (SETNX, Lua transactions) or per-item key design
+**Vercel** deploys Next.js with zero configuration. Edge Functions, Image Optimization, and Analytics are available on the free tier.
 
-**Anonymous tenant access** `[stable]`
-- Simple: API route checks incoming household code → enforces key-prefix scoping server-side
-- No RLS or JWT design needed — server holds all enforcement
-- Simplest access model of all options
-
-**Hosting / free tier** `[volatile — spot-check if >3 months old]`
-- Upstash: 256 MB data, 500K commands/month, 10 GB bandwidth; no inactivity pause
-- Vercel: 100 GB bandwidth, serverless function invocations (fair-use); no pause
-- No backup/restore on Upstash free tier — data loss on accidental key deletion
-
-**Best fit if:** team is deeply Next.js-native, zero-ops hosting required, data model is simple enough for JSON blobs, polling latency ≤5s is acceptable.
-
-**Watch out for:** Redis is a genuinely poor fit for relational rotation logic; any cross-week aggregation (fairness summaries) becomes painful; no native realtime.
+**Tailwind CSS + shadcn/ui** — utility-first styling with copy-in accessible components. No design system from scratch; components are owned code, not a dependency.
 
 ---
 
-### SvelteKit + PocketBase (Self-Hosted, SQLite Backend)
+### Baseline free tiers `[volatile — spot-check if >3 months old]`
 
-**Last verified:** 2026-09-04 (live docs — PocketBase v0.40.x)
-**Requires (frontend):** Node.js ≥18, npm ≥9, git.
-**Requires (backend):** PocketBase pre-compiled binary for the target OS — download from [pocketbase.io](https://pocketbase.io/docs/#installation). No Go runtime or build toolchain needed; it is a single self-contained executable. The scaffold step downloads it automatically or the developer places it at `backend/pocketbase`.
+| Service | Free tier limits |
+|---|---|
+| Supabase | 500 MB DB; 5 GB egress; 2 active projects; pauses after 7 idle days |
+| Vercel | 100 GB bandwidth; serverless function fair use; no pause |
+| NextAuth.js | Free OSS — cost is only the Supabase DB that backs sessions |
 
-**Summary:** SvelteKit frontend + PocketBase single-binary Go backend embedding SQLite. PocketBase provides REST API, built-in SSE realtime, collection rules for access control, and an admin dashboard — all in one executable. Self-hosted on a VPS or Fly.io.
-
-**Realtime model** `[stable]`
-- Protocol: Server-Sent Events (SSE)
-- SDK: `pb.collection('assignments').subscribe('*', callback)`
-- **Limitation:** SSE events only fire for Base collections; View collections (SQL SELECT aggregations) do not emit events — fetch history on demand via REST
-
-**Data model** `[stable]`
-- SQLite (relational): Relation fields for FK-like links between collections, joins via View collections
-- Good fit for: structured entities with relationships; history via SQL aggregations
-- Limitation: SQLite serializes writes — safe under low concurrency (2–5 household members) but blocking under high concurrent load
-
-**Anonymous tenant access** `[stable]`
-- Option A: Collection API rule filters by query param: `@request.query.householdId = household_id` — no auth needed
-- Option B: Single shared PocketBase auth record (username + PIN) as the household "account" — uses built-in session without per-user accounts
-- Both patterns are documented and supported
-
-**Hosting / cost** `[volatile — spot-check if >3 months old]`
-- No managed free tier with always-on hosting
-- Fly.io hobby: free but **pauses when idle** (same failure mode as Supabase free)
-- Paid VPS: ~$4–6/month Hetzner/DigitalOcean; always-on, developer owns ops (backups, upgrades)
-- PocketBase Cloud: beta as of 2026; limited availability
-
-**Stability** `[current]`
-- PocketBase is pre-v1.0 (v0.40.x). Project docs warn backward compatibility not guaranteed before v1.0. Manual migration steps between versions may be required. Monitor changelog.
-
-**Best fit if:** developer prefers self-hosted control, willing to pay ~$4–6/month and do light ops, wants to avoid vendor lock-in, comfortable with Svelte.
-
-**Watch out for:** self-hosting ops burden for solo dev; pre-v1.0 stability; Fly.io hobby pause if going free.
+**Supabase inactivity pause:** projects suspend after 7 idle days on the free tier (~30s cold-start to resume). Mitigation: free external cron ping (cron-job.org) weekly to keep alive. Pro plan ($25/month) removes the pause.
 
 ---
 
-### React / Next.js + Firebase (Firestore + Realtime)
+## Section 2 — Deviation Triggers
 
-**Last verified:** 2026-09-04 (knowledge-based; spot-check Spark tier limits before use)
-**Requires:** Node.js ≥18, npm ≥9, git. Firebase CLI optional for deployment (`npm i -g firebase-tools`); not needed for local development. A Google account is required to create the Firebase project.
-
-**Summary:** Google Firebase provides Firestore (document database with real-time listeners) and Firebase Realtime Database (JSON tree with WebSocket sync). Works with React (Vite) or Next.js. Authentication supports anonymous users, which can be used to scope tenant data without per-user accounts.
-
-**Realtime model** `[stable]`
-- Firestore: real-time listeners via `onSnapshot()` — WebSocket-based, instant push
-- Realtime Database: WebSocket sync on a JSON tree — lower latency but simpler data model
-- Both work on free Spark plan
-
-**Data model** `[stable]`
-- Firestore: Document (NoSQL) — nested collections, flexible schema
-  - Reasonable fit for chore assignments stored as documents per week
-  - Cross-collection aggregations (fairness history) require client-side computation or Cloud Functions — no SQL joins
-- Realtime Database: flat JSON tree — simpler but harder to query
-
-**Anonymous tenant access** `[stable]`
-- Firebase Anonymous Auth gives each browser session an anonymous UID
-- Firestore Security Rules can scope reads/writes to documents matching a `householdId` field, where the household ID is stored in a custom claim or passed as a verified token
-- Pattern: household creator mints a shared "join token" → stored in Firestore → members present it → server-side function adds `householdId` claim to their anonymous token
-- More moving parts than Supabase RLS or PocketBase rules for the same outcome
-
-**Hosting / free tier (Spark plan)** `[volatile — spot-check before use]`
-- Firestore: 1 GB storage, 50K reads/day, 20K writes/day, 20K deletes/day
-- No inactivity pause
-- Requires a Google account; no credit card for Spark
-- Blaze (pay-as-you-go) required for Cloud Functions beyond the free invocation limit
-
-**Best fit if:** team is already in the Google ecosystem, wants real-time without backend setup, acceptable with document data model and client-side aggregation.
-
-**Watch out for:** document model requires more client-side logic for relational queries; anonymous auth + household scoping has more steps than simpler options; Spark daily read/write limits may surprise on busy days.
+Check these against the project's requirements. Each trigger names exactly what to swap and what to keep. Apply only the triggers that match — do not stack deviations unnecessarily.
 
 ---
 
-### Next.js + Vercel + Neon (Serverless Postgres)
+### D1 — Self-hosted / zero vendor lock-in
 
-**Last verified:** 2026-09-04 (knowledge-based; spot-check free tier limits before use)
-**Requires:** Node.js ≥18, npm ≥9, git. Neon and Vercel are fully hosted; no local database process needed. A Neon account (free) is required before scaffold runs.
+**Signal:** project requirements explicitly name self-hosting, on-prem, or "no third-party services."
 
-**Summary:** Next.js on Vercel, backed by Neon — a serverless Postgres provider. Full Postgres with scale-to-zero. No native realtime; a separate pub/sub layer (Pusher, Ably, or Supabase Realtime used standalone) would be needed for live updates. Best for projects that need relational data but can tolerate polling for realtime.
+**Swap:**
+- Vercel → Railway or Fly.io (always-on container hosting)
+- Supabase → Neon (raw serverless Postgres, same Drizzle connection) or keep Supabase as DB-only
 
-**Realtime model** `[stable]`
-- None native from Neon — it's a database, not a realtime platform
-- Options: client-side polling (simplest), Pusher/Ably (managed WebSockets, paid after low threshold), or SSE from a Next.js Edge route
-- Adding a realtime layer is a real integration cost
+**Keep:** Next.js, TypeScript, Tailwind, shadcn/ui, Drizzle, NextAuth.js.
 
-**Data model** `[stable]`
-- Full Postgres: normalized tables, foreign keys, SQL aggregations, joins
-- Best relational fit of all the serverless options
-- Schema migrations via Drizzle ORM or Prisma
-
-**Anonymous tenant access** `[stable]`
-- Server-side enforcement via Next.js API routes / Server Actions
-- Household token in URL → validated server-side → queries scoped to `WHERE household_id = $1`
-- No RLS required (application layer enforces scoping)
-
-**Hosting / free tier** `[volatile — spot-check before use]`
-- Neon: 0.5 GB storage, 190 compute hours/month on free tier; no inactivity pause (scale-to-zero is fast, not a 30s pause)
-- Vercel: free tier as above
-- No realtime included — Pusher Sandbox: 200 concurrent connections, 200K messages/day free
-
-**Best fit if:** relational data model is a priority, team is Next.js-native, realtime is a "nice to have" not a hard requirement (polling acceptable), zero VPS ops required.
-
-**Watch out for:** realtime requires a separate paid service at production scale; two integrations (Neon + Vercel + realtime provider) adds surface area.
+**Note:** Supabase used purely as a Postgres connection string (no Realtime, no Auth SDK) is not vendor lock-in in any meaningful sense — the connection string is a standard Postgres DSN and the database can be migrated. Flag this to the user if they raise it.
 
 ---
 
-### React + Vite + Convex
+### D2 — Heavy native realtime
 
-**Last verified:** 2026-09-04 (knowledge-based; spot-check free tier limits before use)
-**Requires:** Node.js ≥18, npm ≥9, git. Convex is fully hosted; the CLI is installed as a dev dependency (`npm i convex`). A Convex account (free) is required before scaffold runs.
+**Signal:** project requires live push to multiple clients simultaneously — collaborative editing, live cursors, presence indicators, chat, multiplayer state, or dashboards that must update within 1–2 seconds without user action.
 
-**Summary:** Convex is a TypeScript-first reactive backend. Queries are functions that automatically re-run when their data changes and push results to subscribed clients — no manual WebSocket management. Schema defined in TypeScript. Hosted, fully managed.
+**Add:** Supabase Realtime (Postgres CDC via WebSockets) — see Additions Catalog, Realtime section.
 
-**Realtime model** `[stable]`
-- Reactive queries: define a `query` function → Convex re-runs it automatically on data change → pushes results to subscribed React components via WebSocket
-- No explicit subscription code needed — React hook (`useQuery`) handles subscription lifecycle
-- Instant push, no polling
+**Alternative swap:** if the realtime requirement is the primary constraint and relational data is not critical, consider Convex (TypeScript-first reactive backend; see D5).
 
-**Data model** `[stable]`
-- Document-like with a typed schema (TypeScript); supports indexes and relations
-- Less SQL-like than Postgres; cross-document aggregations done in query functions
-- Mutation functions (server-side transactions) handle concurrent writes safely — optimistic concurrency built in
-
-**Anonymous tenant access** `[stable]`
-- Convex supports anonymous authentication (generates a session token per browser)
-- Household scoping: query/mutation functions receive identity → check or store `householdId` association
-- Simpler than Firebase anonymous auth for the same outcome
-
-**Hosting / free tier** `[volatile — spot-check before use]`
-- Generous free tier (check convex.dev/pricing for current limits)
-- No inactivity pause
-- No self-hosting option — fully managed only
-
-**Best fit if:** developer wants reactive realtime with zero WebSocket boilerplate, TypeScript-first schema appeals, comfortable with a newer/smaller ecosystem.
-
-**Watch out for:** Convex is a smaller ecosystem than Firebase or Supabase; vendor lock-in (no self-hosting); document model with typed schema may feel unfamiliar if team is Postgres-native.
+**Keep everything else in the baseline.**
 
 ---
 
-## Adding New Entries
+### D3 — Pure SPA / no SSR
 
-When a project's Step 3 requires a stack not listed above, the research-analyst should web-search for it and append an entry here after the run. Format: follow the structure of an existing entry. Mark all facts with stability tags. Set `Last verified` to today's date.
+**Signal:** internal dashboard, admin tool, or heavily client-interactive app where SSR provides no SEO or performance benefit, and the team prefers a clean client-only build.
 
-Entries must include a `**Requires:**` field immediately after `**Last verified:**`. State the minimum local toolchain (Node version, package manager, git) and any account prerequisites (hosted services that require sign-up before scaffold runs).
+**Swap:**
+- Next.js → React + Vite
+- Vercel → Vercel (still works) or any static host (Cloudflare Pages, Netlify)
 
-Entries should be updated (not replaced) when spot-checks find changed facts — update the specific volatile fact and bump `Last verified`.
+**Keep:** TypeScript, Tailwind, shadcn/ui, Drizzle, Supabase, NextAuth.js.
 
----
-
-## Third-Party Services
-
-These are not full stacks — they are standalone services that integrate into any of the stacks above. List them in `docs/architecture.md` under "Third-Party Services" and confirm accounts exist before scaffold runs.
+**Note:** React + Vite loses API routes and Server Actions — all backend logic must go through a separate API (can be Next.js API-routes-only deployment, or a standalone Express/Hono server).
 
 ---
 
-### Auth: Clerk
+### D4 — Content-heavy / marketing site / blog
 
-**Last verified:** 2026-09-13 (live docs)
-**Requires:** Node ≥18, npm. A Clerk account and application are required before scaffold runs — get publishable key + secret key from the Clerk dashboard.
+**Signal:** majority of pages are editorial content, marketing copy, or documentation. SEO and build-time generation are primary concerns. Little to no per-user state.
 
-**Summary:** Hosted authentication and user management. Provides pre-built UI components (sign-in, sign-up, user profile), session management, and organization/multi-tenancy support. Works with Next.js (App Router first-class), React, and any Node backend. Handles JWTs, refresh, and device sessions automatically.
+**Swap:**
+- Next.js → Astro (island architecture; ships zero JS by default; Tailwind + shadcn/ui work unchanged)
 
-**Integration model** `[stable]`
-- Next.js: `@clerk/nextjs` middleware wraps the app; `auth()` / `currentUser()` available in Server Components and API routes
-- React (Vite): `@clerk/react` provider + hooks (`useAuth`, `useUser`)
-- Backend-only: `@clerk/backend` for token verification in standalone APIs
+**Keep:** TypeScript, Tailwind, shadcn/ui, Vercel.
 
-**Key features** `[stable]`
-- Passwordless (magic link, OTP), OAuth (Google, GitHub, etc.), passkeys — all built-in, no extra config
-- Webhooks for user lifecycle events (user.created, session.ended)
-- Organizations: multi-tenant with roles and permissions out of the box
-- MFA, bot protection, and email deliverability handled by Clerk
+**Drop:** Drizzle, Supabase, NextAuth.js (unless the site has a logged-in section — add them back scoped to that section).
 
-**Free tier** `[volatile — spot-check if >3 months old]`
-- 10,000 monthly active users free; unlimited seats on free plan
-- All auth methods included on free tier; advanced org features on paid
-- No self-hosting option on free; fully managed
-
-**Best fit if:** the project needs real user accounts with social login, passwordless, or org-level multi-tenancy, and the team wants zero auth boilerplate. Particularly strong for Next.js App Router projects.
-
-**Watch out for:** vendor lock-in (session model is Clerk-specific); self-hosting not available on free tier; at high MAU Clerk is significantly more expensive than rolling auth with NextAuth/Lucia.
+**Add:** a CMS if editorial workflow is needed (see Additions Catalog, CMS section).
 
 ---
 
-### Auth: NextAuth.js (Auth.js v5)
+### D5 — Document / schema-flexible data
 
-**Last verified:** 2026-09-13 (knowledge-based)
-**Requires:** Node ≥18, npm. A database (Postgres, SQLite, etc.) is required for the database adapter; JWTs only for the stateless variant.
+**Signal:** data schema evolves rapidly and unpredictably; hierarchical or nested documents are the natural representation; SQL joins would be artificial; no relational history or aggregation queries.
 
-**Summary:** Open-source auth library for Next.js (and now any framework via Auth.js v5). Handles OAuth providers, credentials, magic links. Self-hosted — no vendor account required. Session stored in JWT (stateless) or database (stateful via an adapter).
+**Swap:**
+- Supabase + Drizzle → Firebase Firestore (document NoSQL, native realtime listeners, anonymous auth built in)
 
-**Integration model** `[stable]`
-- Next.js App Router: `auth()` helper in Server Components; `middleware.ts` for route protection
-- Adapters for Prisma, Drizzle, Supabase, and others — connect to whichever DB the stack already uses
-- Credentials provider for username/password (requires manual password hashing with bcrypt)
+**Keep:** Next.js or React + Vite (Firebase works with both), TypeScript, Tailwind, shadcn/ui, Vercel.
 
-**Key features** `[stable]`
-- OAuth: Google, GitHub, Discord, and 60+ providers with 3 lines of config
-- JWT or database sessions — swap without changing application code
-- No usage-based pricing; entirely self-hosted
-
-**Free tier** `[stable]`
-- Free and open-source; cost is only the database that backs the session store
-
-**Best fit if:** the project needs OAuth login, the team wants zero vendor lock-in, and a database is already part of the stack (Supabase, Neon, PocketBase).
-
-**Watch out for:** more configuration than Clerk for the same outcome; Auth.js v5 (App Router) is stable but the migration path from v4 is manual; credentials provider requires careful password-hashing implementation.
+**Drop:** Drizzle (no ORM needed for Firestore), NextAuth.js (Firebase Auth replaces it).
 
 ---
 
-### Storage: Cloudinary
+### D6 — Mobile-first / cross-platform
 
-**Last verified:** 2026-09-13 (live docs)
-**Requires:** Node ≥18, npm. A Cloudinary account is required before scaffold runs — get `cloud_name`, `api_key`, and `api_secret` from the Cloudinary dashboard.
+**Signal:** project is a native mobile app, or requires native mobile alongside a web app.
 
-**Summary:** Hosted media management platform. Handles image and video upload, storage, on-the-fly transformation (resize, crop, format conversion, compression), and global CDN delivery. Exposes an upload API and an SDK for Node, React, and Next.js.
+**Swap (mobile layer):**
+- Next.js → Expo (React Native) for the mobile app
+- Keep Next.js as the API backend if a web surface is also needed
 
-**Integration model** `[stable]`
-- Server-side upload: `cloudinary.uploader.upload(filePath)` — upload from a Next.js API route or Server Action; client never receives credentials
-- Client-side upload: unsigned upload preset + direct browser-to-Cloudinary upload; no server round-trip for the file bytes
-- Next.js Image: use `next-cloudinary` (`<CldImage>` component) for automatic format + size optimization via URL transforms
-- Transformation URL API: append parameters (`/w_400,h_300,c_fill/`) to the delivery URL — no re-upload needed
+**Keep:** TypeScript, Supabase (excellent React Native SDK), Drizzle (server-side only).
 
-**Key features** `[stable]`
-- Auto-format (`f_auto`) and auto-quality (`q_auto`) deliver WebP/AVIF to supported browsers
-- Eager transformations pre-generate variants at upload time; lazy transforms happen on first request and are cached at CDN edge
-- AI-powered background removal, generative fill, and smart cropping available on paid plans
-- Video transcoding, thumbnail generation, and adaptive streaming (HLS) available
-
-**Free tier** `[volatile — spot-check if >3 months old]`
-- 25 monthly credits free (1 credit ≈ 1 transformation or 1 MB storage/bandwidth unit)
-- 25 GB storage, 25 GB bandwidth/month
-- Sufficient for prototypes and small apps; production workloads typically require paid
-
-**Best fit if:** the project handles user-uploaded images or videos and needs on-the-fly resizing/optimization without provisioning a separate storage bucket and image CDN.
-
-**Watch out for:** credit model is non-obvious — each transformation variant counts; cost can escalate quickly on image-heavy apps without eager pre-generation; vendor lock-in on URL-based transform syntax.
+**Note:** this is an additive deviation — Expo is added, not a replacement of the entire baseline. Tailwind does not apply to React Native (use NativeWind or StyleSheet).
 
 ---
 
-### Storage: AWS S3 / Cloudflare R2
+## Section 3 — Additions Catalog
 
-**Last verified:** 2026-09-13 (knowledge-based)
-**Requires:** Node ≥18, npm, `@aws-sdk/client-s3` (S3) or `aws4fetch` / same SDK pointed at R2 endpoint (R2). An AWS account (S3) or Cloudflare account (R2) is required before scaffold runs.
+These are problem-specific additions layered onto the baseline (or a deviated baseline). Each addition is off by default. Add only when the project's roadmap explicitly requires the capability.
 
-**Summary:** Object storage for files, images, videos, and other binary assets. S3 is the AWS standard; Cloudflare R2 is S3-compatible with zero egress fees. Both use presigned URLs to let browsers upload directly without proxying bytes through the app server.
+For each domain, the orchestrator should ask: *"Does the project's roadmap include a feature that requires this?"* If yes, add the recommended entry and note it in `docs/architecture.md`.
 
-**Integration model** `[stable]`
-- Presigned PUT: server generates a time-limited signed URL → client uploads file bytes directly to S3/R2 → server records the resulting object key in the database
-- Presigned GET: server generates signed download URL for private objects; public buckets skip this step
-- `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner` — same SDK works for both S3 and R2 (set custom endpoint for R2)
+---
 
-**Key features** `[stable]`
-- No built-in image transformation — pair with Cloudflare Images, imgproxy, or Cloudinary for on-the-fly resizing
-- Lifecycle rules: auto-delete or move to cold storage after N days
-- Versioning: keep object history for overwrite protection
-- R2 advantage: zero egress fees make it significantly cheaper than S3 for read-heavy workloads
+### Auth — Upgrade from NextAuth.js
 
-**Free tier** `[volatile — spot-check if >3 months old]`
-- S3: 5 GB storage, 20K GET, 2K PUT requests/month for 12 months (then paid); egress fees apply
-- R2: 10 GB storage, 1M Class-A ops, 10M Class-B ops/month free forever; zero egress fees
+Add when: the project needs org/team multi-tenancy, B2B SaaS with seat management, pre-built user management UI, or the team wants zero auth configuration overhead.
 
-**Best fit if:** the project stores arbitrary files (PDFs, exports, backups) or large media that does not need server-side transformation, and cost at scale matters.
+#### Clerk
 
-**Watch out for:** S3 egress fees accumulate fast on read-heavy apps — prefer R2 if Cloudflare is acceptable; neither provides image transformation (add a separate service); presigned URL flows require careful CORS configuration on the bucket.
+**Last verified:** 2026-09-18 (live docs)
+**Add alongside:** replace NextAuth.js entirely; remove Drizzle auth tables.
+**Requires:** Clerk account — publishable key + secret key before scaffold runs.
+
+Hosted auth with pre-built sign-in/sign-up/user-profile components. First-class Next.js App Router support (`@clerk/nextjs` middleware). Organizations, roles, and permissions built in. Handles OAuth, passwordless, passkeys, MFA, and device sessions automatically.
+
+**Free tier** `[volatile]`: 10,000 MAU free; all auth methods included; advanced org features on paid.
+
+**When Clerk over NextAuth:** org-level multi-tenancy, B2B seat management, or the team wants zero auth configuration. At high MAU, Clerk is significantly more expensive than NextAuth — size the decision against growth projections.
+
+---
+
+### Realtime
+
+Add when: the project requires live push updates to connected clients without polling.
+
+#### Supabase Realtime (recommended if already on baseline)
+
+**Last verified:** 2026-09-18 (live docs)
+**Add alongside:** baseline — no new service account needed; same Supabase project.
+
+Postgres CDC (logical replication) via WebSockets. SDK: `supabase.channel().on('postgres_changes', ...).subscribe()`. Changes to any table row push instantly to subscribed clients.
+
+**Free tier** `[volatile]`: 200 concurrent connections, 2M messages/month.
+
+**Limitation** `[stable]`: requires the Supabase JS client in the browser; not suitable for server-only environments. Row-level security on the `anon` role must be correctly configured or all-tenant data is exposed.
+
+#### Pusher / Ably (when not using Supabase)
+
+**Last verified:** 2026-09-18 (knowledge-based)
+
+Managed WebSocket pub/sub. Drop-in for any stack — not tied to the database. Use when the project uses D1 (self-hosted Neon) or D3 (React+Vite) and still needs push.
+
+**Free tiers** `[volatile]`: Pusher Sandbox — 200 concurrent connections, 200K messages/day. Ably — 200 concurrent connections, 6M messages/month.
+
+---
+
+### Storage
+
+Add when: the project stores user-uploaded files, images, videos, or binary assets.
+
+#### Cloudflare R2 (recommended default)
+
+**Last verified:** 2026-09-18 (live docs)
+**Requires:** Cloudflare account + R2 token before scaffold runs.
+
+S3-compatible object storage with zero egress fees. Use the `@aws-sdk/client-s3` pointed at the R2 endpoint — same SDK as S3, no re-learning. Presigned PUT/GET for direct browser uploads without proxying bytes through the app server.
+
+**Free tier** `[volatile]`: 10 GB storage, 1M Class-A ops, 10M Class-B ops/month; zero egress fees forever.
+
+**No image transformation built in** — pair with Cloudinary (below) if transformation is needed.
+
+#### AWS S3
+
+**Last verified:** 2026-09-18 (knowledge-based)
+**Requires:** AWS account + access key + secret before scaffold runs.
+
+Industry standard. Same presigned URL pattern as R2. Prefer R2 unless the project is already in the AWS ecosystem — S3 egress fees accumulate fast on read-heavy apps.
+
+**Free tier** `[volatile]`: 5 GB storage, 20K GET, 2K PUT/month for 12 months only; egress fees apply after.
+
+#### Cloudinary (image/video transformation)
+
+**Last verified:** 2026-09-18 (live docs)
+**Requires:** Cloudinary account — `cloud_name`, `api_key`, `api_secret` before scaffold runs.
+
+Add when: project needs server-side image/video transformation (resize, crop, format conversion, compression, AI background removal). Delivers via global CDN. `f_auto` + `q_auto` serve WebP/AVIF automatically.
+
+**Free tier** `[volatile]`: 25 GB storage, 25 GB bandwidth/month, 25 monthly credits (1 credit ≈ 1 transformation unit).
+
+**Watch out for:** credit model is non-obvious — each transformation variant counts separately; eager pre-generation required for image-heavy apps to avoid credit runaway.
+
+#### Supabase Storage
+
+**Last verified:** 2026-09-18 (live docs)
+**Add alongside:** baseline only — no new service account; same Supabase project.
+
+Simple file/object storage with Row Level Security tied to the same Postgres auth model. Good for small files where single-vendor simplicity matters. No image transformation built in.
+
+**Free tier** `[volatile]`: 1 GB storage on free plan.
+
+---
+
+### Payments
+
+Add when: the project charges users — subscriptions, one-time purchases, or metered billing.
+
+#### Stripe
+
+**Last verified:** 2026-09-18 (live docs)
+**Requires:** Stripe account + publishable key + secret key + webhook secret before scaffold runs.
+
+De facto standard for web payments. Handles subscriptions, one-time charges, metered billing, trials, coupons, and invoices. Next.js integration via API routes or Server Actions for webhook handling.
+
+**Pricing** `[volatile]`: 2.9% + $0.30 per transaction; no monthly fee; no free tier on transactions.
+
+**Key integration points** `[stable]`: `stripe.checkout.sessions.create()` for hosted checkout; `stripe.webhooks.constructEvent()` for webhook verification; `stripe/stripe-node` + `@stripe/stripe-js` (client).
+
+---
+
+### Email
+
+Add when: the project sends transactional emails (confirmations, password resets, notifications) or marketing emails.
+
+#### Resend (recommended)
+
+**Last verified:** 2026-09-18 (live docs)
+**Requires:** Resend account + API key; domain DNS records for sending before go-live.
+
+Modern developer-first email API. Uses React Email for template authoring (JSX components). First-class Next.js integration. Excellent deliverability.
+
+**Free tier** `[volatile]`: 3,000 emails/month, 100/day.
+
+#### SendGrid
+
+**Last verified:** 2026-09-18 (knowledge-based)
+**Requires:** SendGrid account + API key; domain authentication before go-live.
+
+Established high-volume platform. Use when Resend's limits are insufficient or the team is already on the Twilio ecosystem.
+
+**Free tier** `[volatile]`: 100 emails/day free forever.
+
+---
+
+### Search
+
+Add when: the project needs full-text search across user-generated or catalog content — keyword search, facets, filters, typo tolerance.
+
+> **Note:** Postgres full-text search (`tsvector` / `to_tsquery`) covers simple keyword search with no additions. Only add a dedicated search service when advanced relevance ranking, faceted filters, or high-query-volume is required.
+
+#### Typesense (recommended for most projects)
+
+**Last verified:** 2026-09-18 (live docs)
+
+Open-source, self-hostable, or managed (Typesense Cloud). Typo-tolerant, sub-50ms queries, TypeScript SDK. Good for datasets up to tens of millions of records.
+
+**Managed free tier** `[volatile]`: 3 nodes × 1 vCPU on Typesense Cloud — check current dashboard limits.
+
+**Self-hosted:** single binary; ~256 MB RAM for small datasets; deploy on Railway or Fly.io.
+
+#### Algolia
+
+**Last verified:** 2026-09-18 (knowledge-based)
+
+Fully managed hosted search. Rich feature set (geo-search, personalization, AI ranking). Use when Typesense self-hosting is not acceptable or enterprise SLA is required.
+
+**Free tier** `[volatile]`: 10K records, 10K search ops/month.
+
+---
+
+### Background Jobs
+
+Add when: the project needs work that runs outside the HTTP request/response cycle — delayed tasks, recurring jobs, long-running processes, event-driven pipelines.
+
+#### Inngest (recommended for Next.js)
+
+**Last verified:** 2026-09-18 (live docs)
+**Requires:** Inngest account + event key; Inngest Dev Server for local development.
+
+Event-driven serverless functions that live inside the Next.js app. Handles retries, fan-out, delays, and step functions natively. Triggered by events sent from application code. No separate worker process.
+
+**Free tier** `[volatile]`: 50K function runs/month; check dashboard for current limits.
+
+#### Trigger.dev
+
+**Last verified:** 2026-09-18 (knowledge-based)
+
+Durable background job execution with long-running task support. Use when tasks exceed serverless function timeouts (>60s) or need fine-grained progress reporting.
+
+---
+
+### Analytics
+
+Add when: the project needs product analytics (user behavior, funnels, retention) or privacy-respecting page-view tracking.
+
+#### PostHog (recommended)
+
+**Last verified:** 2026-09-18 (live docs)
+**Requires:** PostHog account (cloud) or self-hosted instance.
+
+Open-source product analytics with session replay, feature flags, A/B testing, and funnel analysis. Self-hostable on a VPS (Docker). Cloud hosted with generous free tier.
+
+**Cloud free tier** `[volatile]`: 1M events/month, 5K session recordings/month.
+
+#### Plausible
+
+**Last verified:** 2026-09-18 (knowledge-based)
+
+Lightweight, privacy-first, GDPR-compliant page-view analytics. Script is <1 KB. No cookies, no consent banner needed in most jurisdictions. Use when product analytics depth is not needed and privacy compliance is a priority.
+
+**Pricing** `[volatile]`: no free tier on cloud; self-hostable OSS for free.
+
+---
+
+### CMS
+
+Add when: the project has editorial content (blog, knowledge base, marketing pages) that non-technical users must be able to update without code deploys.
+
+#### Sanity (recommended)
+
+**Last verified:** 2026-09-18 (live docs)
+**Requires:** Sanity account + project ID + dataset name before scaffold runs.
+
+Structured content with a real-time collaborative editing studio. GROQ query language. Excellent Next.js integration via `next-sanity`. Schema defined in code.
+
+**Free tier** `[volatile]`: 3 users, 2 datasets, 500K API CDN requests/month.
+
+#### Contentful
+
+**Last verified:** 2026-09-18 (knowledge-based)
+
+Enterprise CMS with REST and GraphQL delivery APIs. Use when the client already has a Contentful subscription or needs enterprise SLA and locale management.
+
+**Free tier** `[volatile]`: 5 users, 2 locales, 25K API calls/month.
+
+---
+
+### AI / LLM
+
+Add when: the project includes AI-generated content, chat, embeddings, or any LLM-powered feature.
+
+#### Vercel AI SDK (required when adding any LLM)
+
+**Last verified:** 2026-09-18 (live docs)
+
+TypeScript SDK for streaming AI responses, tool use (function calling), and multi-provider support. First-class Next.js integration — streaming via Server Actions and Route Handlers. Abstracts OpenAI, Anthropic, Google, and others behind a unified API.
+
+**Cost:** free OSS library; pay only for the underlying model API.
+
+#### OpenAI
+
+**Last verified:** 2026-09-18 (knowledge-based)
+**Requires:** OpenAI account + API key before scaffold runs.
+
+GPT-4o and GPT-4o-mini for text; text-embedding-3-small/large for embeddings; DALL-E 3 for image generation. Pay-per-token.
+
+#### Anthropic
+
+**Last verified:** 2026-09-18 (knowledge-based)
+**Requires:** Anthropic account + API key before scaffold runs.
+
+Claude models (claude-sonnet-4-5, claude-haiku-4-5) for text. Preferred for long-context reasoning, instruction-following, and structured output. Pay-per-token.
+
+---
+
+## Section 4 — Adding New Entries
+
+When Step 6 requires a service not listed above, the `research-analyst` should web-search for it and append an entry to the relevant section after the run. Format: follow the structure of an existing entry. Mark all facts with stability tags. Set `Last verified` to today's date.
+
+Volatile facts (pricing, limits, tier names) must be spot-checked before use if `Last verified` is older than 3 months. Update the specific fact in place and bump `Last verified` — do not replace the whole entry.

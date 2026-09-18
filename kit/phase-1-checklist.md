@@ -109,9 +109,9 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 - **Stage 1 — Research (catalog-first):**
   - [ ] Read `kit/stack-catalog.md` **first** — before any web searches
   - [ ] Web-search only for stacks not in the catalog, or for volatile facts (pricing/limits) with `Last verified` >3 months old
-  - [ ] Surface 2–3 viable options with pros/cons, informed by roadmap scope
+  - [ ] Apply Deviation Triggers against roadmap requirements; walk Additions Catalog domain by domain
 - **Stage 2 — Analysis (chat only):**
-  - [ ] `research-analyst` produces a ranked recommendation **in chat** — two or three stacks with tradeoffs, one clearly recommended
+  - [ ] `research-analyst` produces the full proposed stack (baseline + deviations + additions) with per-deviation rationale **in chat**
   - [ ] **No document written yet** — `docs/architecture.md` must not exist at this stage
   - [ ] Stack name explicitly stated in the chat recommendation
 - **[HARD GATE — Stage 3 — Confirmation]:**
@@ -138,7 +138,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 **Pre-flight checks — run ALL of these before dispatching the scaffold agent:**
 
 - **[BLOCK]** Read stack from `docs/architecture.md`
-- **[BLOCK]** Look up `Requires` in `kit/stack-catalog.md` for that stack
+- **[BLOCK]** Look up toolchain requirements in `kit/stack-catalog.md` — Section 1 for the baseline toolchain; each addition's `**Requires:**` field for any additions included in the architecture
 - **[BLOCK]** Run bash checks:
   - `node --version` — must start with v18, v20, v22 or higher
   - `npm --version` — any output
