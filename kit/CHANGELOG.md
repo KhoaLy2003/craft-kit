@@ -8,6 +8,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.8] - 2026-09-18
+
+**Summary:** Stack catalog rewrite, release notes separation, per-screen design brief template, kit/ gitignore
+
 ### Added
 
 - **`kit/templates/spec-screen.md`** — new template for per-screen product documentation. Code-agnostic design brief covering Identity, Purpose, Access Control, Entry Points, Content & Data (displayed content / user actions / computed values), Layout & Structure (page structure / key UI elements / responsive behavior), Interactions, States (loading / empty / error / edge cases), Navigation Out, Design Notes, Acceptance Criteria, and Open Questions. Intended for features with 2+ non-trivial screens; filled copies live at `docs/specs/<feature-slug>/screens/<screen-name>.md`. Replaces the raw `TEMPLATE.md` that was ported from another project.
@@ -32,6 +38,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit/steps/phase-1/p1-08-scaffold.md`** — pre-flight rule 2 updated to reference Section 1 baseline toolchain and each addition's `Requires:` field; stale PocketBase-specific row removed from the toolchain check table.
 - **`kit/steps/phase-1/p1-01-ideation.md`** — Rule 1 (git init) extended: immediately after `git init`, create `.gitignore` at the project root with `kit/` as the first entry; if `.gitignore` already exists, append `kit/` only if not already present.
 - **`kit/templates/09-scaffold-checklist.md`** — Section 1 `.gitignore` checklist item updated to require `kit/` entry present and note it must not be removed by the scaffold agent.
+
+---
 
 ---
 
