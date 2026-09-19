@@ -4,7 +4,7 @@
 
 - **Purpose**: Clarify the problem, target user, and solution hypothesis to define what you're building.
 - **Agent/Skill**: `brainstorming` skill (Architectural path)
-- **Model**: `opus`
+- **Model**: `capable`
 - **Trigger**: Starting a new project with no existing codebase.
 - **Inputs**:
   - `phase-1-kickoff.md` — user-filled project context at the project root (idea, target user, constraints, existing assets, steps to skip); fall back to conversational clarification if the file is absent or thin.

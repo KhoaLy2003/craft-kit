@@ -9,7 +9,7 @@
 
 CraftKit is a structured workflow kit you share with your AI agent. Describe what you want to build — the agent handles research, design, planning, and implementation while pausing at key decisions so you stay in control.
 
-Works with Claude Code, Cursor, Gemini CLI, and any harness that supports multi-agent dispatch.
+Works with any AI coding assistant. Run `kit/setup-models.md` once to configure which of your available models maps to each capability tier — the kit adapts to your provider from there.
 
 **[Full documentation →](https://khoaly2003.github.io/craft-kit)**
 
@@ -131,21 +131,23 @@ Once those files exist, start Phase 2 with the prompt above.
 
 ## Required Skills & Agents
 
-Install these before starting Phase 1. Missing items surface as errors mid-run — not upfront.
+Install these before starting Phase 1. The CLI installer (`npx github:KhoaLy2003/craft-kit`) will prompt you through setup interactively.
 
-**Skills** (install via your harness's skill manager):
+**Skills** — loaded via your harness's skill manager (e.g. Superpowers on Claude Code, Cursor, and others):
 
-| Skill | Used in |
-|---|---|
-| `brainstorming` | Phase 2 Step 1 |
-| `writing-plans` | Phase 2 Step 2 |
-| `subagent-driven-development` | Phase 2 Step 4 |
-| `dispatching-parallel-agents` | Phase 2 Step 4 |
-| `requesting-code-review` | Phase 2 Step 6 |
-| `finishing-a-development-branch` | Phase 2 Step 9 |
-| `using-git-worktrees` | Phase 2 Step 4 |
-| `verification-before-completion` | Phase 2 Step 5 |
-| `design-taste-frontend` | Phase 2 Step 4 (UI work) |
+| Skill | Tier it runs on | Used in |
+|---|---|---|
+| `brainstorming` | capable | Phase 1 Step 1, Phase 2 Step 1 |
+| `writing-plans` | balanced | Phase 2 Step 2 |
+| `subagent-driven-development` | balanced | Phase 2 Step 4 |
+| `dispatching-parallel-agents` | balanced | Phase 2 Step 4 |
+| `requesting-code-review` | balanced | Phase 2 Step 6 |
+| `finishing-a-development-branch` | fast | Phase 2 Step 9 |
+| `using-git-worktrees` | balanced | Phase 2 Step 4 |
+| `verification-before-completion` | balanced | Phase 2 Step 5 |
+| `design-taste-frontend` | balanced | Phase 2 Step 4 (UI work) |
+
+> Skills enhance specific steps with pre-tuned behaviour. Without them, your AI handles the same work from general capability — skills improve consistency, not possibility.
 
 **Agents** (download as `.md` files to your harness's agents folder):
 

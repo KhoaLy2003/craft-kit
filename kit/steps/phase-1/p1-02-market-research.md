@@ -4,7 +4,7 @@
 
 - **Purpose**: Discover inspiration from comparable products and validate market demand before committing to development.
 - **Agent/Skill**: `market-researcher` agent
-- **Model**: `haiku`
+- **Model**: `fast`
 - **Trigger**: User chooses to run this step after Step 1 completes.
 - **Inputs**:
   - `docs/idea-brief.md`

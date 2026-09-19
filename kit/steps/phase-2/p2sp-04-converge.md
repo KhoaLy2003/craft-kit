@@ -4,7 +4,7 @@
 
 - **Purpose**: Verify the implementation covers all acceptance criteria across all features. Identify gaps and implement them.
 - **Skill/Agent**: General-purpose agent (spec-coverage analysis)
-- **Model**: `sonnet`
+- **Model**: `balanced`
 - **Trigger**: All implementation tasks complete; feature branch ready (Step 3 complete)
 - **Inputs**:
   - `docs/specs/spec.md` — all features' acceptance criteria

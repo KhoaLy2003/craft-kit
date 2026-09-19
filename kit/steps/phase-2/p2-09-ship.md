@@ -4,7 +4,7 @@
 
 - **Purpose**: Commit, push the feature branch, and open a pull request; mark the feature as shipped.
 - **Skill/Agent**: `finishing-a-development-branch` skill + general-purpose agent
-- **Model**: `haiku`
+- **Model**: `fast`
 - **Trigger**: Step 8 gate approved
 - **Inputs**:
   - Feature branch (all changes uncommitted)

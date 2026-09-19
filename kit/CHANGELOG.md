@@ -8,7 +8,23 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+**Summary:** Provider-agnostic model configuration — capability tiers replace hardcoded Anthropic model names; AI-driven setup writes `docs/MODELS.md` for any provider.
+
+### Added
+
+- **`kit/setup-models.md`** — new file. Orchestrator-internal instructions, not a user-facing prompt. When `docs/MODELS.md` is absent, the orchestrator reads this file and runs the setup conversation automatically — the user never references it directly. The AI identifies its own provider and available models, maps them to the three capability tiers (`capable` / `balanced` / `fast`), writes `docs/MODELS.md`, and waits for user confirmation. No hardcoded model names in the kit; the AI running the session is the authority on what it has access to.
+- **`kit/templates/MODELS.md`** — new blank schema template. Fields: provider, setup date, one model per tier, optional per-step override table. Copied to `docs/MODELS.md` by setup; editable at any time.
+
+### Changed
+
+- **All 23 step files** (`kit/steps/phase-1/p1-01` through `p1-08`; `kit/steps/phase-2/p2-01` through `p2-09` and `p2sp-01` through `p2sp-07`) — `Model:` field renamed from provider-specific values (`opus`, `sonnet`, `haiku`) to capability tiers (`capable`, `balanced`, `fast`). `none` retained for human-only steps (manual check). Tier definitions: `capable` = complex reasoning and irreversible decisions; `balanced` = implementation, planning, analysis; `fast` = mechanical tasks, routing, git operations.
+- **`kit/orchestrator-conventions.md`** — new Rule 0 added before the existing numbered rules: before emitting the step banner, read `docs/MODELS.md`, resolve the step's tier to a model name (checking per-step overrides), and include it in the banner as `[tier → model-name]`. If `docs/MODELS.md` is absent, stop and run `kit/setup-models.md` first. Step banner format updated: `Model: [opus / sonnet / haiku]` → `Model: [tier → model-name]`.
+- **`kit/phase-1-bootstrap.md`** — new "Model Setup" section added before Step 1. If `docs/MODELS.md` is absent, the orchestrator reads `kit/setup-models.md` and runs setup inline before doing any other work. User experience: say "Start Phase 1" — model setup happens automatically if needed, then Step 1 begins.
+- **`kit/phase-1-checklist.md`** and **`kit/phase-2-checklist.md`** — new first item in Universal section: read `docs/MODELS.md` and resolve this step's tier to a model name before emitting the step banner. Step banner checklist item updated to include `[tier → model-name]` format.
+- **`README.md`** — line 12 updated: removed "Works with Claude Code, Cursor, Gemini CLI, and any harness that supports multi-agent dispatch" (misleading); replaced with accurate provider-agnostic statement and reference to model setup. Required Skills table updated: added "Tier it runs on" column; skills note updated to clarify skills enhance consistency but are not hard requirements.
+
 ---
+
 
 ## [0.0.8] - 2026-09-18
 

@@ -11,7 +11,8 @@
 
 ## Universal — Every Step (Both Tracks)
 
-- [ ] Emit step banner (step number, name, skill/agent, gate type, feature slug if standard loop)
+- [ ] Read `docs/MODELS.md` — resolve this step's tier (`capable` / `balanced` / `fast`) to a model name; check for a per-step override for this step file
+- [ ] Emit step banner (step number, name, skill/agent, model as `[tier → model-name]`, gate type, feature slug if standard loop)
 - [ ] Record start time: run `new Date().toLocaleTimeString()` via `eval(js)`
 - [ ] Record `budget.spent()` at step start
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch

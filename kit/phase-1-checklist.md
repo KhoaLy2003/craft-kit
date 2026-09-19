@@ -11,7 +11,8 @@
 
 Run these at the start of **every** Phase 1 step, before doing anything else:
 
-- [ ] Emit step banner (step number, name, skill/agent, gate type)
+- [ ] Read `docs/MODELS.md` — resolve this step's tier (`capable` / `balanced` / `fast`) to a model name; check for a per-step override for this step file
+- [ ] Emit step banner (step number, name, skill/agent, model as `[tier → model-name]`, gate type)
 - [ ] Record start time: run `new Date().toLocaleTimeString()` via `eval(js)` — do not estimate or leave as `—`
 - [ ] Record `budget.spent()` at step start
 - [ ] Include `PROJECT_ROOT: <absolute path>` in every subagent dispatch

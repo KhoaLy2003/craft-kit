@@ -4,7 +4,7 @@
 
 - **Purpose**: Establish coding standards, architectural rules, and non-negotiable principles that every AI agent and contributor must follow throughout the project.
 - **Agent/Skill**: `general-purpose agent`
-- **Model**: `sonnet`
+- **Model**: `fast`
 - **Trigger**: `docs/architecture.md` exists and is `approved`.
 - **Inputs**:
   - `docs/architecture.md`

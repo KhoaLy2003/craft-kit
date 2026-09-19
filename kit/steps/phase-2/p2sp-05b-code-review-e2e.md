@@ -4,7 +4,7 @@
 
 - **Purpose**: Review all code for quality and compliance, then test complete cross-feature user flows in the running application.
 - **Skill/Agent**: `code-reviewer` agent; `ui-ux-tester` (UI flows); general-purpose agent (non-UI flows)
-- **Model**: `haiku`
+- **Model**: `balanced`
 - **Trigger**: Step 5a (E2E Testing Plan) approved by user
 - **Inputs**:
   - Full branch diff

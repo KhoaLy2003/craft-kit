@@ -4,7 +4,7 @@
 
 - **Purpose**: Match each task to the appropriate specialist agent based on domain and task type.
 - **Skill/Agent**: you (the orchestrating agent), or general-purpose agent
-- **Model**: `haiku`
+- **Model**: `fast`
 - **Trigger**: `plan.md` finalized (Step 2 complete)
 - **Inputs**:
   - `docs/specs/<feature-slug>/plan.md`
