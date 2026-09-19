@@ -12,6 +12,14 @@ Read `kit/orchestrator-conventions.md` before starting any step — step banner 
 Read `kit/session-logging.md` for the Phase 1 session log schema and starter template.
 
 ---
+## Model Setup (run once before Step 1)
+
+Before starting Step 1, check whether `docs/MODELS.md` exists and is `Status: approved`.
+
+If absent: read `kit/setup-models.md` and run the setup conversation now — before emitting the Step 1 banner or doing any other work. The setup identifies available models, maps them to the three capability tiers, writes `docs/MODELS.md`, and waits for user confirmation. Once approved, proceed to Step 1.
+
+If `docs/MODELS.md` already exists and is approved, skip this entirely.
+
 
 ## Steps
 

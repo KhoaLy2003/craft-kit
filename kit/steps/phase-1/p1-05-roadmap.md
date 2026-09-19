@@ -4,7 +4,7 @@
 
 - **Purpose**: Prioritize features into Must/Should/Nice-to-Have tiers, establish the development build order, and select the Phase 2 execution track.
 - **Agent/Skill**: General-purpose agent (drafts); human provides final product-scope decisions.
-- **Model**: `sonnet`
+- **Model**: `balanced`
 - **Trigger**: Step 4 gate approved.
 - **Inputs**:
   - `docs/idea-brief.md`

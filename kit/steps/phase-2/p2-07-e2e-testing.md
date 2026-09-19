@@ -4,7 +4,7 @@
 
 - **Purpose**: Test the complete user flow in a running application with real data and real scenarios.
 - **Skill/Agent**: `ui-ux-tester` (browser-driven UI verification) + general-purpose agent (backend/API/data-flow testing)
-- **Model**: `haiku`
+- **Model**: `balanced`
 - **Trigger**: Step 6 complete with all issues resolved
 - **Inputs**:
   - Running application (started fresh for this test run)

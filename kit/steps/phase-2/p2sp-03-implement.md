@@ -4,7 +4,7 @@
 
 - **Purpose**: Code all features in one pass using a single dominant specialist agent.
 - **Skill/Agent**: Dominant specialist identified in Step 2
-- **Model**: `sonnet`
+- **Model**: `balanced`
 - **Trigger**: `docs/specs/plan.md` finalised (Step 2 gate passed)
 - **Inputs**:
   - `docs/specs/plan.md`

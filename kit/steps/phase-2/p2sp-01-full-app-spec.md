@@ -4,7 +4,7 @@
 
 - **Purpose**: Write acceptance criteria for all features in one comprehensive spec document, organized by feature.
 - **Skill/Agent**: `brainstorming` skill (Architectural path)
-- **Model**: `opus`
+- **Model**: `capable`
 - **Trigger**: `docs/roadmap.md` exists with all features `pending`; Phase 2 approach is `single-pass`
 - **Inputs**:
   - `docs/roadmap.md` — all Must features

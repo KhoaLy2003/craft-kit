@@ -4,7 +4,7 @@
 
 - **Purpose**: Lock the visual language for the product. The user prepares a `DESIGN.md` file (their own or downloaded from a curated source), the orchestrator validates its quality, then builds a real HTML UI preview with mock data directly so the user can see and react to how their product will look before a line of production code is written.
 - **Agent/Skill**: Orchestrator (direct — no subagent dispatch; applies `design-taste-frontend` skill for the UI preview)
-- **Model**: `sonnet`
+- **Model**: `balanced`
 - **Trigger**: Step 3 hard gate passed — `docs/prototype/` exists and is walkable.
 - **Inputs**:
   - `docs/prototype/prototype-brief.md` — screens, flows, mock data
