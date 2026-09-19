@@ -8,6 +8,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.9] - 2026-09-19
+
 **Summary:** Provider-agnostic model configuration — capability tiers replace hardcoded Anthropic model names; AI-driven setup writes `docs/MODELS.md` for any provider.
 
 ### Added
@@ -25,6 +29,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+---
 
 ## [0.0.8] - 2026-09-18
 
