@@ -30,7 +30,7 @@ Phase-specific label variants:
 
 ## Universal Rules
 
-0. **Resolve model before each step** — before emitting the step banner, read `docs/MODELS.md`. Find the tier specified in the step file's Overview (`capable`, `balanced`, or `fast`), check for a per-step override matching this step file name, and resolve to a model name. Use that model for all AI work in this step. Include it in the banner as `[tier → model-name]`. If `docs/MODELS.md` is absent, stop and run `kit/setup-models.md` before proceeding.
+Before emitting the step banner for any step, read `docs/MODELS.md`. Find the tier specified in the step file's Overview (`capable`, `balanced`, or `fast`), check for a per-step override matching this step file name, and resolve to a model name. Use that model for all AI work in this step. Include it in the banner as `[tier → model-name]`. If `docs/MODELS.md` is absent, stop and run `kit/setup-models.md` before proceeding.
 
 At the start of every step, the orchestrating agent MUST:
 
