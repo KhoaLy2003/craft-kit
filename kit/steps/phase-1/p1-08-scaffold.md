@@ -39,17 +39,15 @@
 1. **Run the pre-flight environment check BEFORE dispatching the scaffold agent.** A scaffold started with missing tooling will fail mid-run and leave the project in a partial state. Check once; fix before proceeding.
 
    1. Read the stack from `docs/architecture.md` (Section: Stack Choice or equivalent).
-   2. Look up toolchain requirements in `kit/stack-catalog.md` — Section 1 (baseline toolchain and account prerequisites) and each addition's `**Requires:**` field for any additions included in the architecture. If a stack or service is not in the catalog, identify its toolchain from `docs/architecture.md`.
-   3. Run each check via `bash`:
+   2. From `docs/architecture.md`, identify every runtime the project depends on — language, CLI tools, platform SDKs, and any service that requires local credentials. Cross-reference the `**Minimum local toolchain**` and `**Requires:**` fields in `kit/stack-catalog.md` for the chosen stack and any additions.
+   3. For each tool identified, run `<tool> --version` (or the canonical check command from the catalog entry) via `bash`. The check passes when the command exits successfully and the version meets the minimum stated in the catalog or architecture doc. If a tool has no version requirement, any output is sufficient.
 
-      | Tool | Check command | Pass condition | Install URL if missing |
-      |---|---|---|---|
-      | Node.js | `node --version` | Output starts with `v18`, `v20`, `v22`, or higher | https://nodejs.org |
-      | npm | `npm --version` | Any output (comes with Node) | (reinstall Node) |
-      | git | `git --version` | Any output | https://git-scm.com |
+      For every failing check: output the tool name, the install URL, and a one-line install instruction. Do not proceed until the user confirms the tool is installed and the check passes.
+
+      `git` is always required regardless of stack. Check it first.
 
    4. **If any check fails:** stop. Output the exact install URL(s) and ask the user to install and confirm before proceeding. Do not dispatch the scaffold agent until all checks pass.
-   5. **Account prerequisites (hosted stacks only):** If the chosen stack requires an account (Supabase, Convex, Neon, Firebase), confirm the user has already created the project on that platform and has the required keys/URLs. If not, pause and link them to the sign-up page. The scaffold agent needs these credentials to configure environment variables — it cannot retrieve them itself.
+   5. **Account prerequisites (hosted stacks only):** If the chosen stack requires an account (Supabase, Convex, Neon, Firebase, Expo EAS), confirm the user has already created the project on that platform and has the required keys/URLs. If not, pause and link them to the sign-up page. The scaffold agent needs these credentials to configure environment variables — it cannot retrieve them itself.
 
 2. **Git repo check:** Confirm a git repository exists at the project root (`git rev-parse --git-dir` returns successfully). If not, run `git init` — Step 1 (Ideation) should have already done this, so its absence indicates the step was skipped or the repo was deleted. Do not make any commits here; the Phase 1 commit runs at closeout below.
 
@@ -153,6 +151,8 @@ The step is considered complete when:
 - **Static sites**: If the stack produces a static site with no dev server, open `index.html` directly in a browser to verify the smoke test rather than launching a dev server.
 - **Hosted stack accounts**: If the user does not yet have an account on a required platform (Supabase, Convex, Neon, Firebase), stop and link them to the sign-up page before dispatching the agent. The scaffold agent cannot retrieve credentials on its own — it will fail silently or produce an incomplete environment configuration.
 - **Partial scaffold state**: If the scaffold agent fails mid-run due to a missing tool or credential discovered after dispatch, do not attempt to continue from the partial state. Fix the root cause, clean the partial output, and re-run the agent from scratch.
+- **Mobile — iOS requires macOS:** iOS Simulator and Xcode are macOS-only. Users on Windows or Linux who need to target iOS must use EAS Build (Expo cloud compilation) or a remote Mac service — they cannot run a local iOS build. Document this in the pre-flight output and proceed with Android-only local testing if the user is on Windows or Linux.
+- **Mobile — Android emulator not started:** `adb --version` passing means ADB is on `PATH`, not that an emulator is running. If `adb devices` returns an empty device list when the smoke test runs, prompt the user to open Android Studio, create a virtual device (AVD Manager), start it, and then re-run the start command.
 
 ## References
 

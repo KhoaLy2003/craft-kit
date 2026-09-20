@@ -146,13 +146,54 @@ Check these against the project's requirements. Each trigger names exactly what 
 
 **Signal:** project is a native mobile app, or requires native mobile alongside a web app.
 
+---
+
+#### Option A — Expo (React Native) `[recommended for teams with existing React/TypeScript experience]`
+
+**Last verified:** 2026-09-20 (live docs)
+
 **Swap (mobile layer):**
 - Next.js → Expo (React Native) for the mobile app
-- Keep Next.js as the API backend if a web surface is also needed
+- Keep Next.js (API routes only) as the backend if a web surface is also needed
 
-**Keep:** TypeScript, Supabase (excellent React Native SDK), Drizzle (server-side only).
+**Keep:** TypeScript, Supabase (`supabase-js` React Native SDK has full feature parity), Drizzle (server-side only; use Supabase JS client directly on mobile).
 
-**Note:** this is an additive deviation — Expo is added, not a replacement of the entire baseline. Tailwind does not apply to React Native (use NativeWind or StyleSheet).
+**Drop (mobile surface only):** Tailwind CSS, shadcn/ui, NextAuth.js — none of these work with React Native. Replace with:
+- **Styling**: NativeWind (Tailwind-like utility classes for React Native) or React Native `StyleSheet`
+- **Components**: React Native Paper, Tamagui, or bare React Native primitives
+- **Auth**: Supabase Auth JS SDK directly (no NextAuth needed; use `supabase.auth.signInWithOAuth()` / `signInWithPassword()`)
+
+**Minimum local toolchain:** Node.js ≥18, npm ≥9, git, Expo CLI (`npx expo --version` to verify).
+
+**Platform toolchain (only for the target platform):** Android — Android Studio with Android SDK and a running emulator or physical device (`adb` on `PATH`). iOS — Xcode ≥15 with CLI tools (`xcodebuild` on `PATH`); macOS only.
+
+> **iOS requires macOS.** Windows and Linux developers targeting iOS must use EAS Build (Expo cloud compilation) — local iOS Simulator is macOS-only. Physical device testing via EAS is possible on any host OS.
+
+**Account prerequisites:** Expo account (free) required for EAS Build / EAS Submit / EAS Update. Not required for local Expo Go development.
+
+**Expo Go vs EAS Build** `[stable]`: Expo Go (free app on a physical device) covers most development. EAS Build is required when the project uses native modules outside the Expo SDK (Bluetooth, background sensors, custom camera hardware).
+
+---
+
+#### Option B — Flutter `[recommended for Android + iOS + Web from one codebase, or Dart-familiar teams]`
+
+**Last verified:** 2026-09-20 (live docs)
+
+**Full platform swap:** Flutter replaces the entire web baseline. Dart replaces TypeScript; Flutter widgets replace React components. Choose this path only when the project has no existing React investment and the team is comfortable with Dart, or when targeting Android + iOS + Web from a single codebase is the primary constraint.
+
+**Keep:** Supabase — use the `supabase_flutter` package (first-party Dart SDK with full feature parity including Auth, Realtime, and Storage).
+
+**Drop:** Next.js, TypeScript, Tailwind CSS, shadcn/ui, Drizzle ORM, NextAuth.js — none apply to the Flutter/Dart ecosystem.
+
+**Backend:** Flutter is UI-only. It calls an API. Pair with a Next.js API-routes deployment, Express/Hono, or FastAPI as the backend. Supabase can also be used directly from the client with Row Level Security.
+
+**Minimum local toolchain:** Flutter SDK ≥3.x (includes Dart), git. Verify with `flutter doctor` — it checks the full toolchain and reports any missing components in one pass.
+
+**Platform toolchain (only for the target platform):** Android — Android Studio with Android SDK and a running emulator or physical device (`adb` on `PATH`). iOS — Xcode ≥15 (`xcodebuild` on `PATH`); macOS only.
+
+> **iOS requires macOS.** Same constraint as Expo Option A.
+
+**Free tier:** Flutter SDK is fully open source. Supabase free tier applies as in the baseline. No additional account required beyond Supabase.
 
 ---
 
@@ -414,6 +455,46 @@ GPT-4o and GPT-4o-mini for text; text-embedding-3-small/large for embeddings; DA
 Claude models (claude-sonnet-4-5, claude-haiku-4-5) for text. Preferred for long-context reasoning, instruction-following, and structured output. Pay-per-token.
 
 ---
+
+### Push Notifications
+
+Add when: the project is a mobile app that needs to send notifications to iOS or Android devices.
+
+#### Expo Push Notifications (recommended for Expo projects)
+
+**Last verified:** 2026-09-20 (live docs)
+**Requires:** Expo account. For production delivery: Apple Developer account (APNs) + Google Firebase project (FCM) — credentials uploaded to EAS via `eas credentials`. Not required for local Expo Go testing.
+
+Expo routes push tokens through its managed delivery service to APNs (Apple) and FCM (Google). In the Expo managed workflow, credential management is handled by EAS — no direct APNs/FCM setup needed during development. SDK: `expo-notifications`. `ExpoPushToken` is the address; `expo-server-sdk-node` sends from the backend.
+
+**Free tier** `[volatile]`: push delivery is free via Expo servers; EAS subscription tiers may limit monthly volume — check https://expo.dev/pricing.
+
+**Limitation** `[stable]`: Expo-managed push requires the Expo push gateway. For bare React Native or apps that must route push directly through APNs/FCM without the Expo gateway, use Firebase Cloud Messaging below.
+
+#### Firebase Cloud Messaging (FCM) / APNs direct
+
+**Last verified:** 2026-09-20 (knowledge-based)
+**Requires:** Firebase project + `google-services.json` (Android) + `GoogleService-Info.plist` (iOS); Apple Developer account ($99/year, required for APNs certificate or key).
+
+Direct integration for Flutter (via `firebase_messaging` package) or bare React Native (via `@react-native-firebase/messaging`). Required when fine-grained delivery control, analytics, or guaranteed bypassing of the Expo gateway is needed. FCM delivery to Android is free; APNs requires the active Apple Developer subscription.
+
+---
+
+### Over-the-Air (OTA) Updates
+
+Add when: the project is an Expo-managed mobile app that needs to push JavaScript bundle fixes to installed devices without going through App Store / Play Store review cycles.
+
+#### Expo EAS Update
+
+**Last verified:** 2026-09-20 (live docs)
+**Requires:** EAS subscription (free tier available); app must be built with EAS Build (not Expo Go).
+
+Delivers updated JS bundles directly to installed apps. Critical path: ship a bug fix in minutes without a full store submission and review cycle. Native code changes — new native modules, SDK version upgrades, changes to `android/` or `ios/` — still require a full EAS Build + store submission.
+
+**Free tier** `[volatile]`: limited monthly update recipients on free plan — check https://expo.dev/pricing for current limits.
+
+**Limitation** `[stable]`: OTA updates only apply to JavaScript changes. Any native code change invalidates existing builds and requires a new store release.
+
 
 ## Section 4 — Adding New Entries
 
