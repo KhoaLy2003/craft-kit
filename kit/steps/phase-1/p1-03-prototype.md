@@ -43,6 +43,15 @@
 
 ## Execution Rules
 
+- **Platform acknowledgment (first action):** Read `docs/idea-brief.md` Section 5 (Known Constraints) and identify any platform declarations. Then apply the first matching case:
+  - **No platform declared:** proceed without comment.
+  - **Single non-web platform (e.g., "mobile app", "iOS", "Android", "desktop"):** emit — *"Your idea brief notes [platform]. This prototype will be built as HTML to validate user flows — that is intentional and does not commit you to a web product. Platform is formally confirmed at Step 6 (Architecture)."* Build for that platform's viewport (see viewport rules below).
+  - **Multiple platforms declared (e.g., "web + mobile"):** ask the user which is the primary platform if not explicit. Once confirmed, emit — *"This app targets [platforms]. The prototype will cover [primary platform] only — secondary platforms share the same flows and are deferred to Step 6. Building two prototypes at this stage doubles work for no additional learning."* Build for the primary platform's viewport. Include a note in `prototype-brief.md` under a **"Deferred Platforms"** heading that names the secondary platform(s) and states they are out of scope for this prototype.
+  - **Web only:** proceed without comment.
+- **Viewport rules (applied after platform identification):**
+  - Primary platform is **mobile** → set `max-width: 390px`, centered, large touch targets (min 44px), no hover-only states.
+  - Primary platform is **desktop** → set `max-width: 1280px`.
+  - Primary platform is **web** (no mobile declared) → default browser width, no constraint.
 - **Priority hierarchy (in order):** Flow → Function → Usability → Data → Visual Polish. A prototype that shows the right flow with ugly styling is more valuable than a beautiful prototype that doesn't cover the real workflow.
 - **Agent routing:** Do NOT use a visual design agent for this step. Use your general-purpose agent for the journey map and prototype brief. Use `frontend-developer` for the HTML.
 - **Dispatch order:**

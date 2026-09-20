@@ -27,12 +27,15 @@
 
 - Tech stack selection — belongs to Step 6.
 - Architecture decisions — belongs to Step 6.
+- Platform selection (web / mobile / desktop) — belongs to Step 6. If the user mentions a platform preference, record it under Known Constraints in `idea-brief.md` as a preliminary signal only.
 - Component and UI design — belongs to Step 4.
 - Data models — belongs to Step 6.
 
 ### Scope Boundary
 
 > The brainstorming skill's Architectural path naturally drives toward tech stack options, data models, and component design. Stop the skill after the clarifying questions phase — as soon as the problem statement, target user, and solution hypothesis are clear enough to fill `idea-brief.md`. Entering those areas in Step 1 front-loads decisions that later steps exist to make deliberately, and makes those steps redundant.
+>
+> **Platform is not confirmed here.** If the user names a target platform (e.g., "mobile app", "desktop app"), record it verbatim in the Known Constraints section of `idea-brief.md` as a preliminary signal. Do not treat it as a decision — Step 6 (Architecture) is the gate where platform is evaluated, and the human explicitly confirms it.
 
 ## Execution Rules
 

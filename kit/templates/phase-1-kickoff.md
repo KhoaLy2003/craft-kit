@@ -1,78 +1,77 @@
 # Phase 1 Kickoff
 
-<!-- This is your starting context for Phase 1 — Bootstrap.
-     Fill it in before starting your session.
-     The orchestrating agent reads this file alongside kit/phase-1-bootstrap.md
-     to understand your project before beginning Step 1.
+<!-- How to use this template
+     ─────────────────────────────────────────────────────────────────────
+     Option A — AI-assisted (recommended):
+       Open a fresh AI chat. Paste this file, describe your idea, and ask
+       the AI to fill in each section from the conversation. Save the
+       result as `phase-1-kickoff.md` in your project root.
 
-     You do not need formal or structured writing. Rough notes, half-formed
-     sentences, and bullet points are fine. The agent asks clarifying questions
-     in Step 1 and will fill any gaps. -->
+     Option B — Self-fill:
+       Write rough notes in each section. Bullet points and half-formed
+       sentences are fine. The orchestrating agent asks clarifying
+       questions in Step 1 and fills any gaps.
+
+     Once filled, place the file at your project root. Start Phase 1 by
+     giving your orchestrating agent this file and kit/phase-1-bootstrap.md.
+     ─────────────────────────────────────────────────────────────────────
+-->
 
 ---
 
 ## The Idea
 
-<!-- What you want to build, in your own words.
-     Focus on the problem and who has it — not the solution.
-
-     Example:
-     "Freelancers who invoice clients spend too much time following up on
-     unpaid invoices manually. I want a simple tool where they can send
-     invoices and get automated reminders without needing a full accounting
-     system." -->
+<!-- The problem and who has it — not the solution.
+     What does the user struggle with today?
+     Why do current alternatives fall short? -->
 
 
 ---
 
 ## Target User
 
-<!-- Who experiences this problem. One or two sentences is enough.
-     Specific beats broad — name the role, context, or situation rather than
-     a wide demographic.
+<!-- Who experiences this problem.
+     Specific beats broad: name the role, context, or situation
+     rather than a wide demographic. -->
 
-     Example:
-     "Independent designers and developers who invoice 3–10 clients a month
-     and are currently doing it in spreadsheets or Word documents." -->
-
-
----
-
-## What You Already Have
-
-<!-- Check anything that applies and fill in the details.
-     Leave unchecked if it doesn't apply — the full Phase 1 flow will run for
-     everything left unchecked. -->
-
-- [ ] **Design file** — I have an existing `DESIGN.md` or equivalent design document.
-      Path or location: ___
-      *(Save the file to `docs/DESIGN.md` inside your project folder. Step 5 will use the import path and skip the AI design session.)*
-
-- [ ] **Tech preference** — I already know the stack or framework I want to use.
-      Preference: ___
-      *(Step 3 will still research options but this preference should be weighted heavily.)*
-
-- [ ] **Prior research** — I have notes, competitor analysis, or domain knowledge
-      that should inform Step 2 (Market Research).
-      Notes or file location: ___
-
-- [ ] **Other existing assets** — anything else the agent should know about before starting.
-      Details: ___
 
 ---
 
 ## Hard Constraints
 
 <!-- Anything non-negotiable that research and planning must work within.
-     Leave blank if there are no hard constraints.
+     Leave blank if there are none.
 
      Examples:
      - Must be a mobile app (iOS + Android)
      - Must integrate with Stripe for payments
      - Must run entirely offline / no cloud dependency
-     - Must use our existing PostgreSQL database
-     - Must be shipped within 8 weeks
+     - Must ship within 8 weeks
      - Solo developer, no team -->
 
 
+---
+
+## Market Research — Step 2
+
+<!-- Step 2 validates demand and surfaces competitive risks. It is optional.
+
+     Run it if:  you haven't validated this idea externally yet.
+     Skip it if: you already have market evidence, or you're building for yourself.
+
+     Decision: run / skip
+     Reason (one sentence): ___ -->
+
+
+---
+
+## Existing Context
+
+<!-- Anything already in place that Phase 1 should know about.
+     Leave blank if starting from scratch.
+
+     Examples:
+     - Prior research notes or competitor analysis
+     - Domain expertise the agent should factor in
+     - Anything else relevant to the idea or target user -->
 
