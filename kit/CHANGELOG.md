@@ -6,6 +6,20 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ---
 <!-- insert new changelog below this comment -->
 
+## [0.0.12] - 2026-09-20
+
+**Summary:** Mobile stack coverage — D6 expanded with Expo and Flutter options, Push Notifications and OTA Updates additions, and principle-driven pre-flight toolchain check.
+
+### Added
+
+- **`kit/stack-catalog.md`** — D6 (Mobile-first / cross-platform) expanded from a brief note into a full two-option entry. Option A covers Expo / React Native: swap/keep/drop decisions (NativeWind replaces Tailwind, Supabase Auth JS replaces NextAuth), minimum local toolchain (Node ≥18, npm, git, Expo CLI), platform toolchain per target (Android Studio + ADB / Xcode ≥15), iOS-requires-macOS constraint, EAS Build vs Expo Go decision guidance, and account prerequisites. Option B covers Flutter: full-platform-swap warning (Dart replaces TypeScript entirely), keep/drop list, toolchain (`flutter doctor` covers the full check in one pass), platform toolchain per target, and backend pairing guidance.
+- **`kit/stack-catalog.md` — Push Notifications section** (Section 3 addition). Expo Push Notifications (recommended for Expo; EAS-managed delivery to APNs + FCM; `expo-notifications` SDK) and Firebase Cloud Messaging / APNs direct (for Flutter via `firebase_messaging`, or bare React Native needing full delivery control).
+- **`kit/stack-catalog.md` — Over-the-Air Updates section** (Section 3 addition). Expo EAS Update: ships JS bundle fixes to installed apps without App Store / Play Store review; stable limitation note that native code changes require a full store release.
+
+### Changed
+
+- **`kit/steps/phase-1/p1-08-scaffold.md`** — pre-flight toolchain check (Execution Rule 1) rewritten from three hardcoded stack-specific tables to a principle-driven approach: read the chosen stack from `docs/architecture.md`, cross-reference the `Minimum local toolchain` and `Requires:` fields in `kit/stack-catalog.md` (Section 1 for baseline, D6 for mobile), and run `<tool> --version` for each identified tool. `git` is always checked first regardless of stack. Eliminates the need to maintain per-stack check tables in the step file as new stacks are added. Rule 1.5 updated to include Expo EAS in the account prerequisites list. Two new Exceptions added: iOS-requires-macOS (Windows/Linux users must use EAS Build or a remote Mac; proceed Android-only locally), and Android emulator not started (`adb --version` passing ≠ emulator running; prompt user to create and start an AVD if `adb devices` is empty at smoke-test time).
+
 ## [Unreleased]
 
 ---
