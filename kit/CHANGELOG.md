@@ -8,7 +8,16 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+**Summary:** Platform handling — gap fix for platform constraint across Step 1, Step 3, and kickoff template; multi-platform prototype scoping.
+
+### Changed
+
+- **`kit/steps/phase-1/p1-01-ideation.md`** — "Platform selection (web / mobile / desktop)" added to Out of Scope list. Scope Boundary extended: if the user names a platform, record it verbatim in Known Constraints as a preliminary signal only; Step 6 is the gate where platform is evaluated and the human explicitly confirms it.
+- **`kit/steps/phase-1/p1-03-prototype.md`** — new "Platform acknowledgment" Execution Rule (first action). Reads `docs/idea-brief.md` Known Constraints and applies four cases: (1) no platform declared — proceed silently; (2) web only — proceed silently; (3) single non-web platform — emit acknowledgment that HTML prototype does not commit to that platform; (4) multiple platforms declared — identify the primary, build prototype for primary only, note deferred platforms in `prototype-brief.md` under a "Deferred Platforms" heading. Viewport rules added: mobile → `max-width: 390px` + large touch targets; desktop → `max-width: 1280px`; web default — unconstrained.
+- **`kit/templates/phase-1-kickoff.md`** — refactored for clarity. Header comment rewritten as a two-option guide (Option A: AI-assisted fill; Option B: self-fill). "What You Already Have" checkbox section removed. "Hard Constraints" section retained (renamed from "Constraints"); examples tightened. New "Market Research — Step 2" section added with explicit run/skip decision field. "Existing Context" section added (replaces "Other existing assets"). Section comments trimmed throughout.
+
 ---
+
 
 ## [0.0.10] - 2026-09-19
 
