@@ -8,6 +8,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.11] - 2026-09-20
+
+**Summary:** Platform handling — Step 1 scope gate, Step 3 multi-platform prototype scoping, kickoff template refactor
+
 **Summary:** Platform handling — gap fix for platform constraint across Step 1, Step 3, and kickoff template; multi-platform prototype scoping.
 
 ### Changed
@@ -18,6 +24,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+---
 
 ## [0.0.10] - 2026-09-19
 
