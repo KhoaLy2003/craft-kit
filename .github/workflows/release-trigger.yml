@@ -171,8 +171,12 @@ jobs:
                After the release workflow runs and the PR merges, this file resets automatically. -->
           RESET_EOF
           git add RELEASE_NOTES.md
-          git commit -m "chore: reset RELEASE_NOTES.md after ${{ steps.version.outputs.tag }}"
-          git push origin "${{ steps.branch.outputs.name }}"
+          if git diff --cached --quiet; then
+            echo "RELEASE_NOTES.md already at template state — nothing to commit."
+          else
+            git commit -m "chore: reset RELEASE_NOTES.md after ${{ steps.version.outputs.tag }}"
+            git push origin "${{ steps.branch.outputs.name }}"
+          fi
 
 
       - name: Open pull request
