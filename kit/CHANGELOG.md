@@ -24,6 +24,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+## [0.0.12] - 2026-09-20
+
+**Summary:** Mobile stack coverage — Expo + Flutter in D6, Push Notifications, OTA Updates, and principle-driven pre-flight toolchain check
+
+---
+
+---
+
 ## [0.0.11] - 2026-09-20
 
 **Summary:** Platform handling — Step 1 scope gate, Step 3 multi-platform prototype scoping, kickoff template refactor
