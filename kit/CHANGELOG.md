@@ -6,6 +6,27 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ---
 <!-- insert new changelog below this comment -->
 
+## [0.0.13] - 2026-09-21
+
+**Summary:** User-provided screen design step (Step 1b) — Phase 2 now bridges spec to designer with a printed handoff message, accepts designs back via file exports or any MCP-connected design tool, validates coverage, and gives the frontend-developer agent a precise per-screen visual contract at implement time.
+
+### Added
+
+- **`kit/steps/phase-2/p2sp-01b-screen-design.md`** — new Single-Pass step inserted between Step 1 (Full-App Spec) and Step 2 (Plan). Four phases: (A) identify required screens from `docs/specs/spec.md` and any `docs/specs/*/screens/*.md` files; (B) print a designer handoff message to the terminal listing existing files to share (`docs/DESIGN.md` + screen files), required screen names, and artboard/file naming convention — no new document is created; (C) path selection — user replies "files" (Path A) or "mcp" (Path B); (D) hard gate after coverage passes. Path A: user places PNG/JPG/WebP/PDF/HTML in `docs/designs/<feature-slug>/`; orchestrator validates file per screen; DESIGN.md-fallback recorded in session log for any explicitly skipped screens. Path B: user provides design file URL and tool name (Figma, Sketch, Penpot, or any MCP-connected tool); orchestrator verifies MCP connection, checks each artboard is readable, resolves file-fallbacks for unreadable artboards, writes `docs/designs/<feature-slug>/design-manifest.json` (`design_url`, `design_tool`, per-screen `status: "mcp" | "file_fallback" | "design_md_fallback"`). MCP failure after one retry falls back to Path A. Skip condition: all features have one simple screen covered by `docs/preview/`. Session log records `design_path`, `design_url`, `design_tool`.
+- **`kit/steps/phase-2/p2-01b-screen-design.md`** — same step scoped to one feature (Standard Loop). Handoff message references `docs/specs/<feature-slug>/screens/*.md`. Path B offers to reuse the design file URL from a previous feature cycle. Manifest written at `docs/designs/<feature-slug>/design-manifest.json`. Each feature cycle runs this step independently.
+
+### Changed
+
+- **`kit/phase-2-single-pass.md`** — Step 1b row added to the steps table between Steps 1 and 2; flow diagram updated with `[1b] Screen Design — user provides design files, coverage validated [hard gate]`.
+- **`kit/phase-2-feature-dev.md`** — same additions.
+- **`kit/steps/phase-2/p2sp-01-full-app-spec.md`** — Transition Rules → Next Step updated: points to Step 1b when any feature has 2+ non-trivial screens, or Step 2 when the skip condition applies.
+- **`kit/steps/phase-2/p2-01-spec.md`** — same update for the single-feature case.
+- **`kit/steps/phase-2/p2sp-03-implement.md`** — `docs/designs/` added to Inputs. Design system contract execution rule rewritten: per-screen reference resolved from `design-manifest.json` if present (`status: "mcp"` → agent queries artboard via MCP; `status: "file_fallback"` → image file as input; `status: "design_md_fallback"` → DESIGN.md + preview/ only); no manifest → image file lookup with DESIGN.md fallback; step skipped → DESIGN.md + preview/ for all screens.
+- **`kit/steps/phase-2/p2-04-implement.md`** — `docs/designs/<feature-slug>/` added to Inputs; same manifest-based design contract rule applied.
+- **`kit/orchestrator-conventions.md`** — Rule 10 extended: screen-specific file from `docs/designs/` must be included in frontend dispatch brief when it exists, in addition to the mandatory `docs/DESIGN.md` + `docs/preview/`.
+- **`kit/task-agent-rubric.md`** — both `frontend-developer` routing rows updated to include the screen-specific `docs/designs/` file alongside `docs/DESIGN.md` and `docs/preview/`.
+
+
 ## [0.0.12] - 2026-09-20
 
 **Summary:** Mobile stack coverage — D6 expanded with Expo and Flutter options, Push Notifications and OTA Updates additions, and principle-driven pre-flight toolchain check.

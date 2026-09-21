@@ -12,6 +12,7 @@
   - `docs/constitution.md`
   - `docs/DESIGN.md` — approved design system (color tokens, typography, spacing, components)
   - `docs/preview/` — approved UI preview; frontend implementation must match this visual reference
+  - `docs/designs/<feature-slug>/` — user-provided screen design files (Step 1b; absent if step was skipped)
 - **Outputs**:
   - Code changes on a feature branch
 - **Gate**: `soft` — recommended: review the first 3–5 tasks before continuing unattended when working in an unfamiliar codebase pattern for the first time
@@ -39,7 +40,13 @@
 - Use `subagent-driven-development` for sequential task chains. It dispatches one implementer subagent per task, runs a task reviewer after each, and a final whole-branch review at the end. Use the `Specialist:` annotation from Step 3 to select the right agent for each task.
 - For groups marked `<!-- Parallel group -->` in `plan.md`, use `dispatching-parallel-agents` instead. Do not re-evaluate which tasks can parallelize here — that decision was made in Step 3.
 - Do not commit after individual tasks during implementation. Leave all changes uncommitted until the user has reviewed the complete feature and explicitly approves shipping.
-- **Design system contract — required for every frontend dispatch:** include `docs/DESIGN.md` and `docs/preview/` in every `frontend-developer` subagent dispatch brief. The agent must read both before writing any UI code. The implementation must match the tokens, component patterns, and visual language that the user approved in Phase 1 Step 4. This applies to all frontend tasks regardless of whether they carry "visual quality" signals — it is not optional.
+- **Design system contract — required for every frontend dispatch:** always include `docs/DESIGN.md` and `docs/preview/` in every `frontend-developer` dispatch brief. For the per-screen visual reference, resolve it per screen using `docs/designs/<feature-slug>/design-manifest.json` if it exists:
+  - `status: "mcp"` → pass the design file URL, tool name, and frame/artboard name; the agent queries the artboard via MCP at implementation time
+  - `status: "file_fallback"` → include the file at `docs/designs/<feature-slug>/<file>` as an image input
+  - `status: "design_md_fallback"` → use `docs/DESIGN.md` + `docs/preview/` only (no per-screen file)
+  - No manifest present (Step 1b was Path A) → include the matching image file from `docs/designs/<feature-slug>/` if one exists; otherwise use `docs/DESIGN.md` + `docs/preview/` only
+  - Step 1b was skipped → use `docs/DESIGN.md` + `docs/preview/` for all screens
+  This applies to all frontend tasks regardless of whether they carry "visual quality" signals — it is not optional.
 
 ## Artifact Rules
 

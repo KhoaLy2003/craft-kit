@@ -64,8 +64,7 @@
 
 ### Next Step
 
-- **Default**: Step 2 — Plan
-- **Optional skip**: No
+- **Default**: Step 1b — Screen Design (if feature has 2+ non-trivial screens); Step 2 — Plan (if skip condition applies: single simple screen covered by `docs/preview/`)
 - **User decision required**: Yes — explicit approval required at the hard gate
 
 ### Transition Record

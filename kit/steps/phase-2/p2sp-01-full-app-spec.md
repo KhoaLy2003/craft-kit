@@ -66,7 +66,7 @@ The step is considered complete when:
 
 ### Next Step
 
-- **Default**: Step 2 — Plan
+- **Default**: Step 1b — Screen Design (if any feature has 2+ non-trivial screens); Step 2 — Plan (if skip condition applies: all features have one simple screen covered by `docs/preview/`)
 - **Optional skip**: No
 - **User decision required**: Yes — hard gate approval required
 
