@@ -8,6 +8,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.13] - 2026-09-21
+
+**Summary:** Screen design step 1b — spec-to-designer bridge and per-screen visual contract for Phase 2
+
 **Summary:** User-provided screen design step (Step 1b) — Phase 2 now bridges spec to designer with a printed handoff message, accepts designs back via file exports or any MCP-connected design tool, validates coverage, and gives the frontend-developer agent a precise per-screen visual contract at implement time.
 
 ### Added
@@ -26,6 +32,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit/orchestrator-conventions.md`** — Rule 10 extended: screen-specific file from `docs/designs/` must be included in frontend dispatch brief when it exists, in addition to the mandatory `docs/DESIGN.md` + `docs/preview/`.
 - **`kit/task-agent-rubric.md`** — both `frontend-developer` routing rows updated to include the screen-specific `docs/designs/` file alongside `docs/DESIGN.md` and `docs/preview/`.
 
+---
 
 ## [0.0.12] - 2026-09-20
 
