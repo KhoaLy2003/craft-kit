@@ -12,6 +12,7 @@
   - `docs/constitution.md`
   - `docs/DESIGN.md` — approved design system (color tokens, typography, spacing, components)
   - `docs/preview/` — approved UI preview; frontend implementation must match this visual reference
+  - `docs/designs/` — user-provided screen design files per feature (Step 1b; absent if step was skipped)
 - **Outputs**:
   - All feature code on a single branch (`feature/<project-slug>`)
 - **Template**: `none`
@@ -44,7 +45,12 @@
 - If a task reveals a spec gap or contradiction, pause and update `docs/specs/spec.md` before continuing — do not guess and proceed
 - If a foundational task fails or reveals blocking complexity that invalidates later tasks, stop and re-evaluate scope
 - After every completed task, check the work against `docs/constitution.md` before moving to the next — violations caught here are cheaper than at code review
-- **Design system contract — required for every frontend dispatch:** include `docs/DESIGN.md` and `docs/preview/` in every `frontend-developer` subagent dispatch brief (dominant specialist or minority task). The agent must read both before writing any UI code. The implementation must match the tokens, component patterns, and visual language that the user approved in Phase 1 Step 4.
+- **Design system contract — required for every frontend dispatch:** always include `docs/DESIGN.md` and `docs/preview/` in every `frontend-developer` dispatch brief. For the per-screen visual reference, resolve it per screen using `docs/designs/<feature-slug>/design-manifest.json` if it exists:
+  - `status: "mcp"` → pass the design file URL, tool name, and frame/artboard name; the agent queries the artboard via MCP at implementation time
+  - `status: "file_fallback"` → include the file at `docs/designs/<feature-slug>/<file>` as an image input
+  - `status: "design_md_fallback"` → use `docs/DESIGN.md` + `docs/preview/` only (no per-screen file)
+  - No manifest present (Step 1b was Path A) → include the matching image file from `docs/designs/<feature-slug>/` if one exists; otherwise use `docs/DESIGN.md` + `docs/preview/` only
+  - Step 1b was skipped → use `docs/DESIGN.md` + `docs/preview/` for all screens
 
 ## Artifact Rules
 

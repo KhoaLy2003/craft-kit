@@ -11,8 +11,8 @@ After `writing-plans` produces `plan.md`, read each task and annotate it with `S
 
 | Task involves... | Signals in the task description | Use agent |
 |---|---|---|
-| React/Vue/Angular components, CSS, HTML, UI layout | "component", "page", "form", "style", "layout", "UI", "frontend" | `frontend-developer` — **always include `docs/DESIGN.md` + `docs/preview/` in the dispatch brief** (approved visual contract from Phase 1 Step 4) |
-| UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` + `design-taste-frontend` skill (**required** — include in every dispatch matching these signals; generic AI patterns are the default failure mode for UI tasks) — **also include `docs/DESIGN.md` + `docs/preview/`** |
+| React/Vue/Angular components, CSS, HTML, UI layout | "component", "page", "form", "style", "layout", "UI", "frontend" | `frontend-developer` — **always include `docs/DESIGN.md` + `docs/preview/` in the dispatch brief** (approved visual contract from Phase 1 Step 4); also include the screen-specific file from `docs/designs/` if one exists for the screen being implemented |
+| UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` + `design-taste-frontend` skill (**required** — include in every dispatch matching these signals; generic AI patterns are the default failure mode for UI tasks) — **also include `docs/DESIGN.md` + `docs/preview/`** and the screen-specific file from `docs/designs/` if available |
 | Visual design, icons, mockup implementation, accessibility | "design", "icon", "color", "typography", "accessibility", "a11y" | your general-purpose agent (or a dedicated visual design agent if available) |
 | REST/GraphQL API endpoints, controllers, middleware | "endpoint", "route", "controller", "handler", "API" | `backend-developer` |
 | Database schema, migrations, queries, ORM models | "schema", "migration", "model", "query", "table", "index" | `backend-developer` |

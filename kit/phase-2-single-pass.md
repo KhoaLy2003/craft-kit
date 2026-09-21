@@ -70,6 +70,7 @@ Steps 4–7 (Converge → E2E Plan → Code Review + E2E → Manual Check → Sh
 | # | Name | Description | Gate | Step File |
 |---|------|-------------|------|-----------|
 | 1 | Full-App Spec | Write acceptance criteria for all features in one comprehensive spec document, organized by feature. | `hard` | `kit/steps/phase-2/p2sp-01-full-app-spec.md` |
+| 1b | Screen Design | User provides design files for all required screens across all features; orchestrator validates coverage before planning begins. | `hard` | `kit/steps/phase-2/p2sp-01b-screen-design.md` |
 | 2 | Plan | Create an ordered implementation plan for all features with dependency-driven task sequencing and a dominant specialist identified. | `hard` | `kit/steps/phase-2/p2sp-02-plan.md` |
 | 3 | Implement | Code all features in one pass using a single dominant specialist agent. | `soft` | `kit/steps/phase-2/p2sp-03-implement.md` |
 | 4 | Converge | Verify the implementation covers all acceptance criteria across all features. Identify gaps and implement them. | `none` | `kit/steps/phase-2/p2sp-04-converge.md` |
@@ -86,6 +87,9 @@ All roadmap Must features known + single-pass declared in docs/roadmap.md
          │
          ▼
 [1] Full-App Spec — one document, one section per feature  [hard gate]
+         │
+         ▼
+[1b] Screen Design — user provides design files, coverage validated  [hard gate]
          │
          ▼
 [2] Plan — all tasks, dependency order, dominant specialist identified  [hard gate]

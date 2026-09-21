@@ -24,6 +24,7 @@ Before executing each step, read its step file — it is the authoritative sourc
 | # | Name | Description | Gate | Step File |
 |---|---|---|---|---|
 | 1 | Brainstorm & Spec | Write detailed acceptance criteria and edge cases for the feature; resolve ambiguity before implementation begins. | `hard` | `kit/steps/phase-2/p2-01-spec.md` |
+| 1b | Screen Design | User provides design files for all required screens in this feature; orchestrator validates coverage before planning begins. | `hard` | `kit/steps/phase-2/p2-01b-screen-design.md` |
 | 2 | Plan | Break the feature into ordered implementation tasks with exact files, interfaces, and test steps. | `soft` | `kit/steps/phase-2/p2-02-plan.md` |
 | 3 | Assign Specialists | Match each task to the appropriate specialist agent based on domain and task type. | `none` | `kit/steps/phase-2/p2-03-assign-specialists.md` |
 | 4 | Implement | Write code to implement all tasks; dispatch specialist agents for each domain. | `soft` | `kit/steps/phase-2/p2-04-implement.md` |
@@ -42,6 +43,9 @@ Pull next pending feature from docs/roadmap.md
          │
          ▼
 [1] Brainstorm & Spec [hard gate]
+         │
+         ▼
+[1b] Screen Design — user provides design files, coverage validated  [hard gate]
          │
          ▼
 [2] Plan
