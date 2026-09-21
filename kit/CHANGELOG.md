@@ -6,7 +6,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ---
 <!-- insert new changelog below this comment -->
 
-## [0.0.13] - 2026-09-21
+## [Unreleased]
 
 **Summary:** User-provided screen design step (Step 1b) — Phase 2 now bridges spec to designer with a printed handoff message, accepts designs back via file exports or any MCP-connected design tool, validates coverage, and gives the frontend-developer agent a precise per-screen visual contract at implement time.
 
@@ -41,15 +41,6 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 - **`kit/steps/phase-1/p1-08-scaffold.md`** — pre-flight toolchain check (Execution Rule 1) rewritten from three hardcoded stack-specific tables to a principle-driven approach: read the chosen stack from `docs/architecture.md`, cross-reference the `Minimum local toolchain` and `Requires:` fields in `kit/stack-catalog.md` (Section 1 for baseline, D6 for mobile), and run `<tool> --version` for each identified tool. `git` is always checked first regardless of stack. Eliminates the need to maintain per-stack check tables in the step file as new stacks are added. Rule 1.5 updated to include Expo EAS in the account prerequisites list. Two new Exceptions added: iOS-requires-macOS (Windows/Linux users must use EAS Build or a remote Mac; proceed Android-only locally), and Android emulator not started (`adb --version` passing ≠ emulator running; prompt user to create and start an AVD if `adb devices` is empty at smoke-test time).
 
-## [Unreleased]
-
----
-
-## [0.0.12] - 2026-09-20
-
-**Summary:** Mobile stack coverage — Expo + Flutter in D6, Push Notifications, OTA Updates, and principle-driven pre-flight toolchain check
-
----
 
 ---
 
