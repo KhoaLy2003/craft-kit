@@ -88,7 +88,7 @@ If the previous feature cycle used Path B and the same design file is likely to 
 
 ### Path A — File exports
 
-**A1 — Confirm paths**
+#### A1 — Confirm paths
 
 ```
 Place files at:
@@ -97,11 +97,11 @@ Place files at:
 Reply "ready" when done. To skip a screen (fall back to DESIGN.md + preview/), name it.
 ```
 
-**A2 — Wait for "ready"**
+#### A2 — Wait for "ready"
 
 Hard stop.
 
-**A3 — Coverage validation**
+#### A3 — Coverage validation
 
 For each required screen check `docs/designs/<feature-slug>/` for the file.
 - **Found** → covered
@@ -114,28 +114,28 @@ Repeat until all screens are covered or declared.
 
 ### Path B — Design tool via MCP
 
-**B1 — Get design file URL**
+#### B1 — Get design file URL
 
 Ask:
 > Provide the design file URL from your design tool (e.g. a Figma file link, a Penpot project URL, or the URL your MCP server uses to identify the file). Also name the tool (e.g. "figma", "sketch", "penpot"). Confirm your MCP connection is active.
 
-**B2 — Verify MCP connection**
+#### B2 — Verify MCP connection
 
 Attempt to read the design file via MCP.
 - Succeeds → B3
 - Fails → report the error; offer: fix and retry, or fall back to Path A. Wait.
 
-**B3 — Frame/artboard coverage check**
+#### B3 — Frame/artboard coverage check
 
 For each required screen, find the matching artboard or frame in the design file (case-insensitive; hyphens = spaces).
 - Found and readable → covered (mcp)
 - Not found or unreadable → add to file-fallback list
 
-**B4 — Resolve fallbacks**
+#### B4 — Resolve fallbacks
 
 For each file-fallback screen: user either fixes the artboard name/access in their design tool and retries, or exports and places the file at `docs/designs/<feature-slug>/<screen-name>.png`. Repeat until resolved.
 
-**B5 — Write manifest**
+#### B5 — Write manifest
 
 Write `docs/designs/<feature-slug>/design-manifest.json`:
 
