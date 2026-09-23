@@ -280,9 +280,8 @@ try {
     force: true,
     filter: (srcPath) => {
       // Exclude resource/ — internal development files not needed by kit users
-      // Exclude CHANGELOG.md — internal release history, not needed by kit users
       const rel = path.relative(src, srcPath)
-      return !rel.startsWith('resource') && rel !== 'CHANGELOG.md'
+      return !rel.startsWith('resource')
     },
   })
 } catch (err) {
