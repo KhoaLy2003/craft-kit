@@ -3,6 +3,10 @@
 > **Run this cycle for every feature in `roadmap.md`, including the very first MVP feature.**
 > Every feature goes through the full cycle independently — never batch multiple features together.
 >
+> **Coming from Design Sprint?** If you ran `kit/phase-2-design-sprint.md` first, Steps 1 and 1b
+> are already complete for every feature in the sprint. The orchestrator auto-skips them when it
+> detects the pre-built artifacts — start each feature at Step 2 (Plan).
+>
 > Prerequisites: Phase 1 complete, OR an existing project with `constitution.md` in place.
 
 ---
@@ -19,20 +23,37 @@ Before executing each step, read its step file — it is the authoritative sourc
 
 ---
 
+## Skip Detection
+
+Before running Step 1 or 1b for a feature, the orchestrator checks for pre-built artifacts:
+
+| Step | Skip condition | How to detect |
+|---|---|---|
+| 1 — Brainstorm & Spec | Spec already written (e.g. by Design Sprint DS-1) | `docs/specs/<feature-slug>/spec.md` exists |
+| 1b — Screen Design | Designs already validated (e.g. by Design Sprint DS-2) | `docs/designs/<feature-slug>/` contains at least one file **or** a `design-manifest.json` |
+
+When a skip condition is met: record `status: skipped, reason: artifact_exists` in the session
+log and advance directly to the next non-skipped step. Do not re-run the step or re-prompt the
+user for approval — the gate was already passed in the sprint.
+
+---
+
 ## Steps
 
-| # | Name | Description | Gate | Step File |
+| # | Name | Description | Gate | Skip if |
 |---|---|---|---|---|
-| 1 | Brainstorm & Spec | Write detailed acceptance criteria and edge cases for the feature; resolve ambiguity before implementation begins. | `hard` | `kit/steps/phase-2/p2-01-spec.md` |
-| 1b | Screen Design | User provides design files for all required screens in this feature; orchestrator validates coverage before planning begins. | `hard` | `kit/steps/phase-2/p2-01b-screen-design.md` |
-| 2 | Plan | Break the feature into ordered implementation tasks with exact files, interfaces, and test steps. | `soft` | `kit/steps/phase-2/p2-02-plan.md` |
-| 3 | Assign Specialists | Match each task to the appropriate specialist agent based on domain and task type. | `none` | `kit/steps/phase-2/p2-03-assign-specialists.md` |
-| 4 | Implement | Write code to implement all tasks; dispatch specialist agents for each domain. | `soft` | `kit/steps/phase-2/p2-04-implement.md` |
-| 5 | Converge | Verify the implementation covers every acceptance criterion; identify gaps and implement them. | `none` | `kit/steps/phase-2/p2-05-converge.md` |
-| 6 | Code Review | Review code quality, security, and compliance with architecture and constitutional rules. | `none` | `kit/steps/phase-2/p2-06-code-review.md` |
-| 7 | E2E Testing | Test the complete user flow in a running application with real data and real scenarios. | `soft` | `kit/steps/phase-2/p2-07-e2e-testing.md` |
-| 8 | Manual Double Check | Human walkthrough of the feature to catch anything automated tests may have missed. | `hard` | `kit/steps/phase-2/p2-08-manual-check.md` |
-| 9 | Ship | Commit, push the feature branch, and open a pull request; mark the feature as shipped. | `none` | `kit/steps/phase-2/p2-09-ship.md` |
+| 1 | Brainstorm & Spec | Write detailed acceptance criteria and edge cases for the feature; resolve ambiguity before implementation begins. | `hard` | `docs/specs/<slug>/spec.md` exists |
+| 1b | Screen Design | User provides design files for all required screens in this feature; orchestrator validates coverage before planning begins. | `hard` | `docs/designs/<slug>/` contains designs |
+| 2 | Plan | Break the feature into ordered implementation tasks with exact files, interfaces, and test steps. | `soft` | — |
+| 3 | Assign Specialists | Match each task to the appropriate specialist agent based on domain and task type. | `none` | — |
+| 4 | Implement | Write code to implement all tasks; dispatch specialist agents for each domain. | `soft` | — |
+| 5 | Converge | Verify the implementation covers every acceptance criterion; identify gaps and implement them. | `none` | — |
+| 6 | Code Review | Review code quality, security, and compliance with architecture and constitutional rules. | `none` | — |
+| 7 | E2E Testing | Test the complete user flow in a running application with real data and real scenarios. | `soft` | — |
+| 8 | Manual Double Check | Human walkthrough of the feature to catch anything automated tests may have missed. | `hard` | — |
+| 9 | Ship | Commit, push the feature branch, and open a pull request; mark the feature as shipped. | `none` | — |
+
+Step files: `kit/steps/phase-2/p2-01-spec.md` through `kit/steps/phase-2/p2-09-ship.md`; `kit/steps/phase-2/p2-01b-screen-design.md`.
 
 ---
 
@@ -42,10 +63,14 @@ Before executing each step, read its step file — it is the authoritative sourc
 Pull next pending feature from docs/roadmap.md
          │
          ▼
-[1] Brainstorm & Spec [hard gate]
+docs/specs/<slug>/spec.md exists?
+  Yes → skip Step 1 (log: artifact_exists)
+  No  → [1] Brainstorm & Spec [hard gate]
          │
          ▼
-[1b] Screen Design — user provides design files, coverage validated  [hard gate]
+docs/designs/<slug>/ has design files or manifest?
+  Yes → skip Step 1b (log: artifact_exists)
+  No  → [1b] Screen Design — user provides design files, coverage validated [hard gate]
          │
          ▼
 [2] Plan
