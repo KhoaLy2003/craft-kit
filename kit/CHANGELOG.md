@@ -10,6 +10,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+## [0.0.14] - 2026-09-23
+
+---
+
+---
+
 ## [0.0.13] - 2026-09-21
 
 **Summary:** Screen design step 1b — spec-to-designer bridge and per-screen visual contract for Phase 2
