@@ -8,6 +8,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.15] - 2026-09-23
+
+**Summary:** Design Sprint — batch all-feature spec and design pass to eliminate per-feature designer waits
+
 **Summary:** Design Sprint — batch all-feature spec and design pass before implementation; eliminates per-feature designer waits in multi-feature products.
 
 ### Added
@@ -18,6 +24,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ### Changed
 
 - **`kit/phase-2-feature-dev.md`** — added Design Sprint callout in the header prerequisites block. Added "Skip Detection" section before the steps table: if `docs/specs/<slug>/spec.md` exists, Step 1 is skipped (log: `artifact_exists`); if `docs/designs/<slug>/` contains at least one file or a `design-manifest.json`, Step 1b is skipped. Skip column added to the steps table. Flow diagram updated to show the conditional skip branches at Steps 1 and 1b.
+---
+
 ---
 
 ## [0.0.14] - 2026-09-23
