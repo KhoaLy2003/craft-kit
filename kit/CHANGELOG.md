@@ -8,6 +8,16 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+**Summary:** Design Sprint — batch all-feature spec and design pass before implementation; eliminates per-feature designer waits in multi-feature products.
+
+### Added
+
+- **`kit/phase-2-design-sprint.md`** — new top-level orchestration file. Run once, before any feature implementation, when 2+ features need designer-provided screens. Two steps: DS-1 loops every pending feature from `docs/roadmap.md` and runs Step 1 (Brainstorm & Spec) for each (hard gate per feature; features with an existing `docs/specs/<slug>/spec.md` are skipped); DS-2 (Batch Screen Design) reads all feature specs, emits one combined designer handoff message covering all features, accepts designs via file exports (Path A) or MCP-connected design tool (Path B), validates per-feature coverage, and closes a single hard gate once all features pass. After the sprint, implementation runs via `kit/phase-2-feature-dev.md` on any feature in any order.
+- **`kit/steps/phase-2/p2-ds-batch-design.md`** — step file for Design Sprint DS-2. Follows the eight-section template. Phase A builds a combined required-screen list across all features, skipping those already covered in `docs/designs/<slug>/`. Phase B prints one batch designer handoff message (no file created). Phase C selects Path A (file exports) or Path B (MCP). Path A/B execution and manifest logic match `p2-01b-screen-design.md` but operate across all features; manifests written per feature at `docs/designs/<feature-slug>/design-manifest.json`. Phase D hard gate covers all features together. Exception handling includes multi-file design sets, partial designer deliveries, and MCP failures with Path A fallback.
+
+### Changed
+
+- **`kit/phase-2-feature-dev.md`** — added Design Sprint callout in the header prerequisites block. Added "Skip Detection" section before the steps table: if `docs/specs/<slug>/spec.md` exists, Step 1 is skipped (log: `artifact_exists`); if `docs/designs/<slug>/` contains at least one file or a `design-manifest.json`, Step 1b is skipped. Skip column added to the steps table. Flow diagram updated to show the conditional skip branches at Steps 1 and 1b.
 ---
 
 ## [0.0.14] - 2026-09-23
