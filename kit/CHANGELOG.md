@@ -8,6 +8,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.16] - 2026-09-28
+
+**Summary:** Session handover — Phase 2 Standard Loop can checkpoint and hand over to a new session without losing state
+
 **Summary:** Session handover — Standard Loop orchestrator can checkpoint, hand over to a new session, and resume without losing state.
 
 ### Added
@@ -17,6 +23,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ### Changed
 
 - **`kit/phase-2-feature-dev.md`** — added "Session Health" section after "Notes on Skills". Defines the three trigger conditions with their distinct behaviors (natural seam and stress signal → offer format with blockquote and wait; user request → execute without offering). Names the three clean-seam steps (2, 4, 6) with rationale for each. Stress-signal heuristic: 3 or more steps completed on the current feature in the current session. References `kit/guides/session-handover.md` for execution.
+
+---
 
 ---
 
