@@ -122,3 +122,46 @@ This phase uses the following skills without modifying them. Each skill is invok
 | 7 | `ui-ux-tester` / general-purpose agent | Test results, failures fixed inline |
 | 8 | Human | Approval gate |
 | 9 | `finishing-a-development-branch` + general-purpose agent | Committed branch + PR |
+
+---
+
+## Session Health
+
+Phase 2 features can span multiple sessions. The orchestrator is responsible for recognizing
+when a handover is appropriate and executing it cleanly. Three triggers apply:
+
+### 1. Natural seam — proactive offer
+
+After any of the following steps complete, offer a handover **before starting the next step**:
+
+| After step | Why it's a clean cut |
+|---|---|
+| Step 2 — Plan | Spec and plan are on disk. No code written. Resumption is trivial. |
+| Step 4 — Implement | Code is committed to the feature branch. No partial writes. |
+| Step 6 — Code Review | All findings are fixed. Codebase is clean. |
+
+Offer format (emit as a blockquote, then wait for the user's reply before continuing):
+
+> **Session checkpoint.** This is a clean handover point — Step [N] is complete and nothing
+> is mid-flight. Say **"hand over"** to pause here and continue in a new session, or say
+> **"continue"** (or anything else) to proceed to Step [N+1].
+
+Do not offer at every step. Only offer at the three seams above.
+
+### 2. Stress signal — proactive offer
+
+If the orchestrator has completed **3 or more steps on the current feature within this
+session**, offer a handover at the next natural seam using the same offer format above.
+This heuristic catches long Step 4 / Step 5 cycles that accumulate context gradually.
+
+### 3. User request — execute immediately
+
+Any of: "hand over", "new session", "checkpoint", "continue in a new session",
+"session is getting big". Execute without offering — the user has already decided.
+
+### Execution
+
+When a handover is triggered (user accepts an offer, or user requests directly), follow
+`kit/guides/session-handover.md` in full. It covers: pre-write cleanup for mid-step
+handovers, the capture checklist, the `docs/handover.md` template, and the resumption
+prompt format with a concrete example.

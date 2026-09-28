@@ -8,6 +8,16 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+**Summary:** Session handover — Standard Loop orchestrator can checkpoint, hand over to a new session, and resume without losing state.
+
+### Added
+
+- **`kit/guides/session-handover.md`** — new guide for the Phase 2 Standard Loop orchestrator. Defines three trigger conditions: natural seam (proactive offer after Steps 2, 4, or 6), stress signal (offer at next seam after 3+ steps completed in the session), and user request (execute immediately). Covers pre-write cleanup for mid-step handovers (commit clean tasks, flag restarted ones, update session log status to `blocked`). Includes a capture checklist, a filled `docs/handover.md` template, and a concrete resumption prompt example (mid-Step 5 Converge on `user-authentication`). New-session bootstrap section specifies the three mandatory first actions: read `docs/handover.md` in full, verify every artifact path on disk, then emit the step banner and continue. Explicitly out of scope for Single-Pass users, who use the existing Context Window Management section in `kit/phase-2-single-pass.md`.
+
+### Changed
+
+- **`kit/phase-2-feature-dev.md`** — added "Session Health" section after "Notes on Skills". Defines the three trigger conditions with their distinct behaviors (natural seam and stress signal → offer format with blockquote and wait; user request → execute without offering). Names the three clean-seam steps (2, 4, 6) with rationale for each. Stress-signal heuristic: 3 or more steps completed on the current feature in the current session. References `kit/guides/session-handover.md` for execution.
+
 ---
 
 ## [0.0.15] - 2026-09-23
