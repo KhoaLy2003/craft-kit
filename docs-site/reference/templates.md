@@ -17,9 +17,10 @@ Every Phase 1 step has a corresponding fill-in-the-blank template in `kit/templa
 | `templates/04b-prototype-brief.md` | `docs/prototype/prototype-brief.md` | Agent | Step 3 |
 | `templates/05-design-system.md` | `docs/DESIGN.md` | Agent | Step 4 |
 | `templates/06-roadmap.md` | `docs/roadmap.md` | Agent | Step 5 |
-| `templates/07-architecture.md` | `docs/architecture.md` | Agent | Step 6 |
-| `templates/08-constitution.md` | `docs/constitution.md` | Agent | Step 7 |
-| `templates/09-scaffold-checklist.md` | Used as checklist in session | Agent | Step 8 |
+| `templates/spec-screen.md` | `docs/specs/<slug>/screens/<screen-name>.md` | Agent | Step 6 |
+| `templates/07-architecture.md` | `docs/architecture.md` | Agent | Step 7 |
+| `templates/08-constitution.md` | `docs/constitution.md` | Agent | Step 8 |
+| `templates/09-scaffold-checklist.md` | Used as checklist in session | Agent | Step 9 |
 
 ---
 

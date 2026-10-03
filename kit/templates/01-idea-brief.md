@@ -44,7 +44,7 @@
 
 ## 4. Rough Scope
 
-**In scope for MVP** (directional, not final — roadmap.md will formalize this in Step 6):
+**In scope for MVP** (directional, not final — roadmap.md will formalize this in Step 5):
 
 -
 

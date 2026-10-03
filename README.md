@@ -42,7 +42,7 @@ CraftKit is two phases. Phase 1 runs once to take a raw idea to a working scaffo
 
 > [Interactive diagrams](https://khoaly2003.github.io/craft-kit/diagrams/) — pan, zoom, search, and export. Phase 2 Standard Loop diagram also available.
 
-**Hard gates** — marked steps that require your explicit approval before the agent continues — appear at Market Research, Design, Roadmap, Architecture, Constitution (Phase 1) and Spec, Manual Check (Phase 2). The agent stops and presents a summary; you decide.
+**Hard gates** — marked steps that require your explicit approval before the agent continues — appear at Market Research, Design, Roadmap, Full Screen Design, Architecture, Constitution (Phase 1) and Spec, Manual Check (Phase 2). The agent stops and presents a summary; you decide.
 
 ---
 
@@ -74,7 +74,7 @@ This creates a `kit/` directory at your project root. Then:
 
 ## Phase 1 — Bootstrap
 
-Eight steps from raw idea to a running scaffold.
+Nine steps from raw idea to a running scaffold.
 
 | # | Step | Gate |
 |---|---|---|
@@ -83,11 +83,12 @@ Eight steps from raw idea to a running scaffold.
 | 3 | Prototype — journey map + clickable HTML prototype | — |
 | 4 | Product Design — design tokens, components, mock screens | **Hard** |
 | 5 | Roadmap — MoSCoW feature list with build order | **Hard** |
-| 6 | Architecture — stack selection + architecture document | **Hard** |
-| 7 | Constitution — coding principles for every AI agent on the project | **Hard** |
-| 8 | Scaffold — folder structure, CI, smoke test | — |
+| 6 | Full Screen Design — per-screen briefs and designer handoff; all designs approved before build | **Hard** |
+| 7 | Architecture — stack selection + architecture document | **Hard** |
+| 8 | Constitution — coding principles for every AI agent on the project | **Hard** |
+| 9 | Scaffold — folder structure, CI, smoke test | — |
 
-**End state:** a running scaffold at "hello world" level, plus up to seven approved artifacts in `docs/` that Phase 2 reads on every feature.
+**End state:** a running scaffold at "hello world" level, plus up to nine approved artifacts in `docs/` that Phase 2 reads on every feature.
 
 ---
 
@@ -154,7 +155,7 @@ Install these before starting Phase 1. The CLI installer (`npx github:KhoaLy2003
 | Agent | Role |
 |---|---|
 | `market-researcher` | Phase 1 Step 2 — market analysis |
-| `research-analyst` | Phase 1 Step 6 — stack research |
+| `research-analyst` | Phase 1 Step 7 — stack research |
 | `frontend-developer` | Phase 2 — frontend implementation |
 | `code-reviewer` | Phase 2 Step 6 — code review |
 | `ui-ux-tester` | Phase 2 Step 7 — browser-driven UI testing |
@@ -171,7 +172,7 @@ The installer will prompt you to set these up. Run `npx github:KhoaLy2003/craft-
 | `phase-2-feature-dev.md` | Phase 2 standard loop orchestration |
 | `phase-2-single-pass.md` | Phase 2 single-pass orchestration |
 | `phase-bug-fix.md` | Bug fix workflow: Assess → Fix → Verify |
-| `steps/phase-1/` | Step detail files `p1-01` through `p1-08` |
+| `steps/phase-1/` | Step detail files `p1-01` through `p1-09` |
 | `steps/phase-2/` | Step detail files for standard loop and single-pass |
 | `templates/` | Output templates for every Phase 1 artifact |
 | `task-agent-rubric.md` | Task type → specialist agent routing table |

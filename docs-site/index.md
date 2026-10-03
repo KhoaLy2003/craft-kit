@@ -18,7 +18,7 @@ features:
       src: /icons/phase-1.svg
       alt: Phase 1 Bootstrap
     title: Phase 1 — Bootstrap
-    details: Eight steps from raw idea to a working app foundation. The AI conducts market research, sketches a prototype, designs the look, maps the features, picks the tech stack, and sets up the codebase. You approve the big decisions along the way.
+    details: Nine steps from raw idea to a working app foundation. The AI conducts market research, sketches a prototype, designs the look, maps the features, delivers and gets approval on full screen designs, picks the tech stack, and sets up the codebase. You approve the big decisions along the way.
     link: /phases/phase-1
     linkText: Walk through Phase 1
   - icon:
@@ -66,9 +66,9 @@ The kit has a hard split between *starting* a project and *building* it. Phase 1
 
 ### Phase 1 — Bootstrap <span class="VPBadge tip" style="vertical-align:middle">once per project</span>
 
-Takes a raw idea through eight sequential steps: market research, interactive prototype, visual design, feature roadmap, tech choice, and codebase setup. Each step produces a planning document that feeds the next. Four decision points require your explicit approval before the next step runs.
+Takes a raw idea through nine sequential steps: market research, interactive prototype, visual design, feature roadmap, full screen design, tech choice, and codebase setup. Each step produces a planning document that feeds the next. Six decision points require your explicit approval before the next step runs.
 
-**End state:** a runnable app with zero features yet, plus eight approved planning documents in your project's `docs/` folder — everything Phase 2 needs to start building.
+**End state:** a runnable app with zero features yet, plus nine approved planning documents in your project's `docs/` folder — everything Phase 2 needs to start building.
 
 [Walk through Phase 1 →](/phases/phase-1)
 
@@ -150,7 +150,7 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 
 <div class="grid-3">
 
-[**Phase 1 — Bootstrap**<br>Eight steps from raw idea to a working app foundation](/phases/phase-1)
+[**Phase 1 — Bootstrap**<br>Nine steps from raw idea to a working app foundation](/phases/phase-1)
 
 [**Phase 2 — Standard Loop**<br>One feature at a time, with planning, building, review, and a hands-on check](/phases/phase-2-standard)
 

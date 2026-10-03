@@ -103,7 +103,18 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ---
 
-## Step 6 — Tech Stack Research and Architecture Decision
+## Step 6 — Full Screen Design
+
+- **[BLOCK]** Screen list built: every Must and Should feature has its required screens identified (pages, modals, drawers, named views, empty/error states with divergent layout)
+- **[BLOCK]** Per-screen briefs written to `docs/specs/<slug>/screens/<screen-name>.md` for every identified screen using `kit/templates/spec-screen.md`
+- **[BLOCK]** One combined designer handoff message printed to terminal; user has replied "files" or "mcp"
+- **[BLOCK]** Coverage validated per feature: every required screen accounted for (file, MCP artboard, file-fallback, or DESIGN.md-fallback declared)
+- **[BLOCK]** Path B only: `docs/designs/<slug>/design-manifest.json` exists and verified on disk (read first 5 lines) for each feature
+- **[HARD GATE]** Gate Summary: *"Full screen designs for N features are approved. Changing them after this point means re-opening this step before implementation."*
+
+---
+
+## Step 7 — Tech Stack Research and Architecture Decision
 
 > **Critical: three stages. Do not collapse into one.**
 
@@ -124,7 +135,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ---
 
-## Step 7 — Constitution / AI Working Guideline
+## Step 8 — Constitution / AI Working Guideline
 
 - [ ] Every principle concrete enough to change at least one downstream decision — reject any that wouldn't alter a diff
 - [ ] No personal workflow preferences — only rules that shape code and architecture output
@@ -134,7 +145,7 @@ Run these at the start of **every** Phase 1 step, before doing anything else:
 
 ---
 
-## Step 8 — Scaffold and Convention Setup
+## Step 9 — Scaffold and Convention Setup
 
 **Pre-flight checks — run ALL of these before dispatching the scaffold agent:**
 
@@ -166,6 +177,8 @@ Before closing the session:
   - [ ] `docs/prototype/` (journey-map.md + prototype-brief.md + walkable HTML)
   - [ ] `docs/DESIGN.md`
   - [ ] `docs/roadmap.md` (all features `pending`)
+  - [ ] `docs/designs/` (per-feature screen designs or manifest — skip if Step 6 skipped)
+  - [ ] `docs/specs/*/screens/` (per-screen briefs — skip if Step 6 skipped)
   - [ ] `docs/architecture.md`
   - [ ] `docs/constitution.md`
   - [ ] Scaffold: app builds and runs, smoke test passes

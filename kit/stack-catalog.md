@@ -1,6 +1,6 @@
 # Stack Catalog — Canonical Baseline and Additions Reference
 
-Used by Step 6 (Architecture) as the primary reference before any web search.
+Used by Step 7 (Architecture) as the primary reference before any web search.
 The `research-analyst` reads this file to derive the recommended stack for the project.
 
 **How to use this file:**
@@ -498,6 +498,6 @@ Delivers updated JS bundles directly to installed apps. Critical path: ship a bu
 
 ## Section 4 — Adding New Entries
 
-When Step 6 requires a service not listed above, the `research-analyst` should web-search for it and append an entry to the relevant section after the run. Format: follow the structure of an existing entry. Mark all facts with stability tags. Set `Last verified` to today's date.
+When Step 7 requires a service not listed above, the `research-analyst` should web-search for it and append an entry to the relevant section after the run. Format: follow the structure of an existing entry. Mark all facts with stability tags. Set `Last verified` to today's date.
 
 Volatile facts (pricing, limits, tier names) must be spot-checked before use if `Last verified` is older than 3 months. Update the specific fact in place and bump `Last verified` — do not replace the whole entry.

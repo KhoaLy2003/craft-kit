@@ -21,6 +21,7 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | 31 | Todo system auto-promotes next step past a blocked step even when the next step has an undeclared dependency on the blocked step's output; reminder fires spuriously | Round 05 | Low — workflow confusion, no artifact harm | Open |
 | 32 | E2E testing requires Supabase provisioning (migration + users + seed data) before tests can run. Kit workflow did not make this explicit or enforced. First E2E run failed on 42 skipped tests (no auth, no tables). | Round 05 | High — E2E proves nothing without provisioning | **Fixed Round 05** — Added Step 5a (E2E Testing Plan documentation) as required gate before Step 5b E2E testing; created `kit/guides/e2e-testing-plan.md` provisioning workflow; updated `kit/phase-2-single-pass.md`, `kit/phase-2-checklist.md`, flow diagram |
 | Open 4 | `kit/phase-3-iterate.md` (post-release iteration: Review → Discover → Prioritise → Impact & Handoff) added without a validation round; gates, no-ideas Path B, and roadmap append-only rule are untested | Post-Round 05 | Medium — unvalidated new workflow | Open — validate in Round 06 (run on a shipped round project) |
+| 33 | Phase 1 Step 6 Full Screen Design added; Phase 2 Step 1b removed from both tracks; architecture/constitution/scaffold renumbered 7/8/9; spec step delta-only when designs exist; Design Sprint repositioned to Phase 3/new features | Refactor | Medium — structural workflow change | Fixed |
 ---
 
 ## Kit Files Changed (cumulative)
@@ -54,6 +55,28 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | `kit/steps/p1-06-architecture.md` | refactor | **Issue 26**: renamed from p1-07; full rewrite — absorbs Step 3 catalog-first research as Stage 1; two-stage process becomes Stages 2–3; inputs updated |
 | `kit/steps/p1-07-constitution.md` | refactor | **Issue 26**: renamed from p1-08; step number updated |
 | `kit/steps/p1-08-scaffold.md` | refactor | **Issue 26**: renamed from p1-09; step number and trigger updated |
+| `kit/steps/phase-1/p1-06-screen-design.md` | refactor-2 | **#33**: created — new Phase 1 Step 6 (hard gate): per-screen briefs, designer handoff, Path A/B design intake, sign-off before implementation |
+| `kit/steps/phase-1/p1-07-architecture.md` | refactor-2 | **#33**: renamed from p1-06-architecture; step number updated to 7 |
+| `kit/steps/phase-1/p1-08-constitution.md` | refactor-2 | **#33**: renamed from p1-07-constitution; step number updated to 8 |
+| `kit/steps/phase-1/p1-09-scaffold.md` | refactor-2 | **#33**: renamed from p1-08-scaffold; step number updated to 9 |
+| `kit/steps/phase-2/p2-01b-screen-design.md` | refactor-2 | **#33**: deleted — screen design moved to Phase 1 Step 6 (initial build) or Design Sprint (Phase 3/new features) |
+| `kit/steps/phase-2/p2sp-01b-screen-design.md` | refactor-2 | **#33**: deleted — same rationale |
+| `kit/steps/phase-2/p2-01-spec.md` | refactor-2 | **#33**: new rule — add `docs/designs/<slug>/` + `docs/specs/<slug>/screens/*.md` to Inputs; spec delta-only when designs exist; undesigned screens listed explicitly |
+| `kit/steps/phase-2/p2sp-01-full-app-spec.md` | refactor-2 | **#33**: same spec delta-only rule; Next Step unconditionally Step 2 — Plan |
+| `kit/steps/phase-2/p2-04-implement.md` | refactor-2 | **#33**: "Step 1b" wording replaced with "Phase 1 Step 6 (or Design Sprint)" |
+| `kit/steps/phase-2/p2sp-03-implement.md` | refactor-2 | **#33**: "Step 1b" wording replaced with "Phase 1 Step 6 (or Design Sprint)" |
+| `kit/phase-2-feature-dev.md` | refactor-2 | **#33**: Step 1b row removed from steps table and skip-detection; flow diagram updated |
+| `kit/phase-2-single-pass.md` | refactor-2 | **#33**: Step 1b row removed; flow updated |
+| `kit/phase-2-design-sprint.md` | refactor-2 | **#33**: repositioned to Phase 3/new features; "Step 1b auto-skip" claims removed; after sprint, run phase-2-feature-dev from Step 2 |
+| `kit/steps/phase-2/p2-ds-batch-design.md` | refactor-2 | **#33**: updated to reflect Phase 3/new-feature scope |
+| `kit/phase-1-bootstrap.md` | refactor-2 | **#33**: steps table updated — Step 6 Full Screen Design added; steps 7/8/9 for architecture/constitution/scaffold |
+| `kit/phase-1-checklist.md` | refactor-2 | **#33**: Step 6 section added; steps 7/8/9 renumbered |
+| `kit/templates/07-architecture.md` | refactor-2 | **#33**: inner step label corrected to Step 7 |
+| `kit/templates/08-constitution.md` | refactor-2 | **#33**: inner step label corrected to Step 8 |
+| `kit/templates/09-scaffold-checklist.md` | refactor-2 | **#33**: title updated to Step 9 |
+| `docs-site/.vitepress/config.ts` | refactor-2 | **#33**: Phase 1 rewrites and sidebar updated — p1-06-screen-design added; p1-07/08/09 for architecture/constitution/scaffold |
+| `README.md` | refactor-2 | **#33**: Phase 1 table updated to 9 steps; Step 6 Full Screen Design added; research-analyst updated to Step 7 |
+| `docs-site/public/diagrams/phase-1-bootstrap.html` | refactor-2 | **#33**: "Roadmap + Architecture" node → "Roadmap + Screen Design" (Steps 5–6); "Constitution + Scaffold" → "Architecture + Scaffold" (Steps 7–9); gates renamed |
 
 ---
 

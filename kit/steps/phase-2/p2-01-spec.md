@@ -11,8 +11,10 @@
   - `docs/constitution.md`
   - `docs/architecture.md`
   - `docs/DESIGN.md`
+  - `docs/designs/<feature-slug>/` — screen designs from Phase 1 Step 6 or Design Sprint (if they exist for this feature)
+  - `docs/specs/<feature-slug>/screens/*.md` — per-screen briefs from Phase 1 Step 6 (if they exist)
 - **Outputs**:
-  - `docs/specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior, non-goals, open questions resolved
+  - `docs/specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior (or behavior delta when designs exist), non-goals, open questions resolved
 - **Template**: none
 
 ## Scope
@@ -38,6 +40,10 @@
 ## Execution Rules
 
 - Invoke the `brainstorming` skill. It handles the full loop: clarifying questions → proposed approaches → design sections → written spec → user review.
+- Feature slug: use the slug assigned in Phase 1 Step 6 (lowercase kebab-case of the roadmap feature name) so `docs/specs/<feature-slug>/` and `docs/designs/<feature-slug>/` line up. If Step 6 was skipped or the feature is new, derive it the same way.
+- If `docs/designs/<feature-slug>/` exists for this feature, it is the source of truth for the UI. The spec records only behavior not visible in the designs: acceptance criteria, validation rules, data constraints, auth flows, error scenarios, and edge cases. Do not re-describe the layout or visual content the designs already show.
+- If the spec discovers a screen that has no corresponding design file, list it under an "Undesigned screens" section at the end of the spec. Implementation uses `docs/DESIGN.md` + `docs/preview/` as the fallback for those screens; the user may run the Design Sprint if a designer must supply a design.
+- If no `docs/designs/<feature-slug>/` exists (e.g. the feature was added in Phase 3 without a Design Sprint), write the full spec including UI behavior as today.
 - The spec must check compliance against `docs/constitution.md` before it is presented to the user.
 - Do not invoke `writing-plans` from inside this skill — that is the next step.
 - The orchestrator does not advance until the user explicitly approves the spec.
@@ -50,7 +56,9 @@
 
 ## Completion Criteria
 
-- [ ] `docs/specs/<feature-slug>/spec.md` exists and contains acceptance criteria, edge cases, UI behavior, non-goals, and resolved open questions
+- [ ] `docs/specs/<feature-slug>/spec.md` exists and contains acceptance criteria, edge cases, non-goals, and resolved open questions
+- [ ] If `docs/designs/<feature-slug>/` exists: spec is behavior-delta only (no re-describing layout already shown in designs); any screens with no design listed under "Undesigned screens"
+- [ ] If no designs exist: spec includes full UI behavior description
 - [ ] The spec is scoped to a single feature
 - [ ] The spec has been checked against `docs/constitution.md`
 - [ ] The user has explicitly approved the spec
@@ -64,7 +72,7 @@
 
 ### Next Step
 
-- **Default**: Step 1b — Screen Design (if feature has 2+ non-trivial screens); Step 2 — Plan (if skip condition applies: single simple screen covered by `docs/preview/`)
+- **Default**: Step 2 — Plan
 - **User decision required**: Yes — explicit approval required at the hard gate
 
 ### Transition Record
@@ -82,4 +90,4 @@
 - `docs/constitution.md`
 - `docs/architecture.md`
 - `docs/DESIGN.md`
-- `templates/spec-screen.md` — use to document individual screens when a feature has 2+ non-trivial screens; save filled copies as `docs/specs/<feature-slug>/screens/<screen-name>.md` before Step 2 (Plan)
+- `templates/spec-screen.md` — per-screen briefs are produced in Phase 1 Step 6 and placed at `docs/specs/<feature-slug>/screens/<screen-name>.md`; use this template only if no Phase 1 Step 6 designs exist for this feature and screens need to be documented before Step 2 (Plan)

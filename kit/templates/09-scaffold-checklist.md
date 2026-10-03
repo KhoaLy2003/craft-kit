@@ -1,4 +1,4 @@
-# scaffold-checklist.md — Output Template for Step 8: Scaffold & Convention Setup
+# scaffold-checklist.md — Output Template for Step 9: Scaffold & Convention Setup
 
 ## Metadata
 

@@ -1,11 +1,11 @@
-# Phase 1 · Step 8 — Scaffold and Convention Setup
+# Phase 1 · Step 9 — Scaffold and Convention Setup
 
 ## Overview
 
 - **Purpose**: Generate the initial project structure, configure the build setup, and verify that the development environment runs correctly end-to-end.
 - **Agent/Skill**: `general-purpose agent`; or `frontend-developer` if the stack is primarily frontend
 - **Model**: `balanced`
-- **Trigger**: Step 7 gate approved (`docs/constitution.md` has `Status: approved`).
+- **Trigger**: Step 8 gate approved (`docs/constitution.md` has `Status: approved`).
 - **Inputs**:
   - `docs/architecture.md`
   - `docs/constitution.md`
@@ -82,7 +82,7 @@
       - Confirm `.env` exists at the project root
       - Confirm every key from `.env.example` is present in `.env` with a non-empty, non-placeholder value (reject `<...>`, `your-key-here`, `TODO`, `""`)
       - If any key is still missing or placeholder: name the key, restate where to obtain it, and wait for the user to fix it. Repeat until all keys are valid.
-   5. **Do not proceed to Step 5 until all required env vars are confirmed valid.** This gate exists to prevent mismatched credentials from surfacing as failures deep in E2E testing, where diagnosing them is expensive.
+   5. **Do not proceed to Phase 2 / the Phase 1 closeout until all required env vars are confirmed valid.** This gate exists to prevent mismatched credentials from surfacing as failures deep in E2E testing, where diagnosing them is expensive.
 
    If the project has no environment variables (static sites, no external services), skip this rule entirely.
 

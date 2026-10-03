@@ -12,7 +12,7 @@
   - `docs/constitution.md`
   - `docs/DESIGN.md` — approved design system (color tokens, typography, spacing, components)
   - `docs/preview/` — approved UI preview; frontend implementation must match this visual reference
-  - `docs/designs/<feature-slug>/` — user-provided screen design files (Step 1b; absent if step was skipped)
+  - `docs/designs/<feature-slug>/` — screen design files from Phase 1 Step 6 or Design Sprint (absent if no designs exist for this feature)
 - **Outputs**:
   - Code changes on a feature branch
 - **Gate**: `soft` — recommended: review the first 3–5 tasks before continuing unattended when working in an unfamiliar codebase pattern for the first time
@@ -44,8 +44,8 @@
   - `status: "mcp"` → pass the design file URL, tool name, and frame/artboard name; the agent queries the artboard via MCP at implementation time
   - `status: "file_fallback"` → include the file at `docs/designs/<feature-slug>/<file>` as an image input
   - `status: "design_md_fallback"` → use `docs/DESIGN.md` + `docs/preview/` only (no per-screen file)
-  - No manifest present (Step 1b was Path A) → include the matching image file from `docs/designs/<feature-slug>/` if one exists; otherwise use `docs/DESIGN.md` + `docs/preview/` only
-  - Step 1b was skipped → use `docs/DESIGN.md` + `docs/preview/` for all screens
+  - No manifest present (designs delivered as file exports) → include the matching image file from `docs/designs/<feature-slug>/` if one exists; otherwise use `docs/DESIGN.md` + `docs/preview/` only
+  - No `docs/designs/<slug>/` for this screen → use `docs/DESIGN.md` + `docs/preview/` only
   This applies to all frontend tasks regardless of whether they carry "visual quality" signals — it is not optional.
 
 ## Artifact Rules

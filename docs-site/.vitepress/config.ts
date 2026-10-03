@@ -56,9 +56,10 @@ export default defineConfig({
     'kit/steps/phase-1/p1-03-prototype.md':       'phases/steps/p1-03-prototype.md',
     'kit/steps/phase-1/p1-04-design.md':          'phases/steps/p1-04-design.md',
     'kit/steps/phase-1/p1-05-roadmap.md':         'phases/steps/p1-05-roadmap.md',
-    'kit/steps/phase-1/p1-06-architecture.md':    'phases/steps/p1-06-architecture.md',
-    'kit/steps/phase-1/p1-07-constitution.md':    'phases/steps/p1-07-constitution.md',
-    'kit/steps/phase-1/p1-08-scaffold.md':        'phases/steps/p1-08-scaffold.md',
+    'kit/steps/phase-1/p1-06-screen-design.md':   'phases/steps/p1-06-screen-design.md',
+    'kit/steps/phase-1/p1-07-architecture.md':    'phases/steps/p1-07-architecture.md',
+    'kit/steps/phase-1/p1-08-constitution.md':    'phases/steps/p1-08-constitution.md',
+    'kit/steps/phase-1/p1-09-scaffold.md':        'phases/steps/p1-09-scaffold.md',
 
     // Phase 2 — Standard Loop step detail files.
     'kit/steps/phase-2/p2-01-spec.md':                  'phases/steps/p2-01-spec.md',
@@ -176,9 +177,10 @@ export default defineConfig({
             { text: 'Step 3 — Interactive Prototype',     link: '/phases/steps/p1-03-prototype' },
             { text: 'Step 4 — Product Design',            link: '/phases/steps/p1-04-design' },
             { text: 'Step 5 — Roadmap Generation',        link: '/phases/steps/p1-05-roadmap' },
-            { text: 'Step 6 — Tech Stack & Architecture', link: '/phases/steps/p1-06-architecture' },
-            { text: 'Step 7 — Constitution',              link: '/phases/steps/p1-07-constitution' },
-            { text: 'Step 8 — Scaffold',                  link: '/phases/steps/p1-08-scaffold' },
+            { text: 'Step 6 — Full Screen Design',        link: '/phases/steps/p1-06-screen-design' },
+            { text: 'Step 7 — Tech Stack & Architecture', link: '/phases/steps/p1-07-architecture' },
+            { text: 'Step 8 — Constitution',              link: '/phases/steps/p1-08-constitution' },
+            { text: 'Step 9 — Scaffold',                  link: '/phases/steps/p1-09-scaffold' },
           ],
         },
         {

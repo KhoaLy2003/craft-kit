@@ -2,7 +2,7 @@
 
 ## Overview
 
-- **Purpose**: Identify all required screens across every specced feature in the current sprint; emit one combined designer handoff message; accept designs back via file exports (Path A) or an MCP-connected design tool (Path B); validate full coverage before implementation begins on any feature.
+- **Purpose**: Identify all required screens across every specced feature included in the current Design Sprint (Phase 3 releases or features added after Phase 1 that have no Phase 1 Step 6 designs); emit one combined designer handoff message; accept designs back via file exports (Path A) or an MCP-connected design tool (Path B); validate full coverage before implementation begins on any feature.
 - **Skill/Agent**: Orchestrator only — no agent dispatch; no AI generation
 - **Model**: none — screen identification, handoff message, coverage check, and manifest writing only
 - **Trigger**: Design Sprint DS-1 complete — every pending feature has `docs/specs/<slug>/spec.md`
@@ -207,7 +207,7 @@ Approve to begin implementation on any feature.
 
 ### Next Step
 
-- **Default**: implementation may begin on any feature via `kit/phase-2-feature-dev.md`, starting at Step 2 (Plan). Steps 1 and 1b auto-skip.
+- **Default**: implementation may begin on any feature via `kit/phase-2-feature-dev.md`, starting at Step 2 (Plan). Step 1 auto-skips when `docs/specs/<slug>/spec.md` exists.
 - **Optional skip**: Yes — all features have one simple screen covered by `docs/preview/`; requires user confirmation and session log entry
 - **User decision required**: Yes — hard gate approval required
 

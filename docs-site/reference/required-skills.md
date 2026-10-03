@@ -37,7 +37,7 @@ Agents are specialized AI workers. The kit routes tasks to the right one automat
 | Agent | Role | Used in |
 |---|---|---|
 | `market-researcher` | Competitive research | Phase 1 Step 2 |
-| `research-analyst` | Technology and domain research, synthesis | Phase 1 Step 6 |
+| `research-analyst` | Technology and domain research, synthesis | Phase 1 Step 7 |
 | `frontend-developer` | UI components, pages, CSS, state management | Phase 1 Step 3; Phase 2 UI tasks |
 | `code-reviewer` | Code review with spec and constitution compliance | Phase 2 Step 6 |
 | `ui-ux-tester` | Browser-driven UI/UX flow testing | Phase 2 Step 7 (UI features) |

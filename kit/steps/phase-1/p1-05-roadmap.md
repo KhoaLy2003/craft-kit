@@ -28,7 +28,7 @@
 
 ### Out of Scope
 
-- Technical implementation decisions (deferred to Step 6 Architecture).
+- Technical implementation decisions (deferred to Step 7 — Architecture).
 - Assigning features to specific sprints or milestones within Phase 2.
 - Applying the Phase 2 track recommendation automatically — human confirmation is required.
 
@@ -83,7 +83,7 @@ The step is considered complete when:
 
 ### Next Step
 
-- **Default**: Step 6 — Tech Stack Research and Architecture Decision
+- **Default**: Step 6 — Full Screen Design
 - **Optional skip**: No
 - **User decision required**: Yes — scope approval and Phase 2 track confirmation
 
@@ -96,12 +96,13 @@ The step is considered complete when:
 
 - If Step 2 (Market Research) was skipped, the roadmap is drafted without `docs/market-notes.md` and without feature inspirations. The agent should note this in the roadmap and flag any assumptions made about user priorities.
 - If the five criteria produce a split result (some point single-pass, some point standard loop), the standard loop always wins — any one standard-loop criterion overrides.
-- If the human wants to change scope after approving (e.g., mid-Step 6), return to this step and re-approve before proceeding.
+- If the human wants to change scope after approving (e.g., mid-Step 7), return to this step and re-approve before proceeding.
 
 ## References
 
 - `templates/06-roadmap.md`
 - `kit/steps/phase-1/p1-04-design.md`
-- `kit/steps/phase-1/p1-06-architecture.md`
+- `kit/steps/phase-1/p1-06-screen-design.md`
+- `kit/steps/phase-1/p1-07-architecture.md`
 - `phase-2-single-pass.md`
 - `phase-2-feature-dev.md`
