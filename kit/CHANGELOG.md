@@ -8,6 +8,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+---
+
+## [0.0.17] - 2026-10-03
+
+**Summary:** Phase 3 Iterate — post-release workflow for deciding what to build next, with or without existing ideas
+
 **Summary:** Phase 3 Iterate — post-release workflow for deciding and committing what to build next, with or without existing ideas.
 
 ### Added
@@ -19,6 +25,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit/steps/phase-2/p2-09-ship.md`** — when no pending features remain, the orchestrator now offers Phase 3 or the bug-fix workflow instead of only "await further direction".
 - **`kit/phase-1-bootstrap.md`** — existing-project note points to Phase 3 for post-ship improvement.
 - **Status:** not yet validated in a test round (see `testing/testing-log.md`, Open 4).
+
+---
 
 ---
 
