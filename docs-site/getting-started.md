@@ -58,21 +58,20 @@ Share `kit/phase-1-bootstrap.md` with your AI along with your filled-in kickoff 
 Start Phase 1 using the kickoff form I've shared.
 ```
 
-The AI reads both files and begins working through the eight steps. It announces each step as it starts.
+The AI reads both files and begins working through the nine steps. It announces each step as it starts.
 
 ### Step 4 — Review and approve along the way
 
-Phase 1 has five moments where the AI stops and waits for your sign-off before continuing:
+Phase 1 has six moments where the AI stops and waits for your sign-off before continuing:
 
 | What the AI has done | What you decide |
 |---|---|
 | Researched the market *(optional step)* | Is there a real need for this? Proceed, change direction, or stop. |
 | Designed the look and feel | Does the design match what you had in mind? |
 | Built the feature list and build order | Is the scope correct? Are the priorities right? |
+| Delivered full screen designs for every Must + Should feature | Do the screen designs accurately reflect the product? Approve before any code is written. |
 | Picked the tech stack and architecture | Is this the right foundation for what you want to build? |
 | Written the AI's working rules | Are the guidelines for how your app gets built correct? |
-
-At each point the AI gives you a one-sentence summary. You respond with approval or feedback — you don't need to read the full document it produced.
 
 ### Step 5 — Move to building
 

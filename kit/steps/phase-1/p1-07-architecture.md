@@ -1,11 +1,11 @@
-# Phase 1 · Step 6 — Tech Stack Research and Architecture Decision
+# Phase 1 · Step 7 — Tech Stack Research and Architecture Decision
 
 ## Overview
 
 - **Purpose**: Evaluate technology options against the approved roadmap and document the confirmed system architecture for Phase 2 implementation.
 - **Agent/Skill**: `research-analyst` agent (research, analysis, and recommendation); human makes the final stack decision.
 - **Model**: `capable`
-- **Trigger**: Step 5 gate approved.
+- **Trigger**: Step 6 gate approved.
 - **Inputs**:
   - `docs/idea-brief.md`
   - `docs/market-notes.md` *(if Step 2 was run)*
@@ -35,7 +35,7 @@
 
 ### Scope Boundary
 
-> The step ends when `docs/architecture.md` exists with `Status: approved` and the human has confirmed the stack by name. The orchestrator must not advance to Step 7 before this file exists and is approved.
+> The step ends when `docs/architecture.md` exists with `Status: approved` and the human has confirmed the stack by name. The orchestrator must not advance to Step 8 before this file exists and is approved.
 
 ## Execution Rules
 
@@ -99,7 +99,7 @@ The step is considered complete when:
 
 ### Next Step
 
-- **Default**: Step 7 — Constitution
+- **Default**: Step 8 — Constitution
 - **Optional skip**: No
 - **User decision required**: Yes — explicit stack confirmation by name
 
@@ -121,6 +121,7 @@ The step is considered complete when:
 - `templates/07-architecture.md`
 - `kit/orchestrator-conventions.md` (item 6 — fail-fast write instruction)
 - `kit/steps/phase-1/p1-05-roadmap.md`
-- `kit/steps/phase-1/p1-07-constitution.md`
+- `kit/steps/phase-1/p1-06-screen-design.md`
+- `kit/steps/phase-1/p1-08-constitution.md`
 - `research-analyst` skill
 - `librarian` skill

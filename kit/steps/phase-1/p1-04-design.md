@@ -158,7 +158,7 @@ Present the Gate Summary and wait for explicit approval before advancing:
 
 > **Gate Summary — Step 4 Complete**
 >
-> The design direction is locked. The UI preview reflects the visual language, components, and flows your product will use. Changing direction after this point means updating DESIGN.md, rebuilding the preview, and potentially revisiting the architecture in Step 6.
+> The design direction is locked. The UI preview reflects the visual language, components, and flows your product will use. Changing direction after this point means updating DESIGN.md, rebuilding the preview, and potentially revisiting the architecture in Step 7.
 >
 > **Ready to advance to Step 5 — Roadmap?**
 

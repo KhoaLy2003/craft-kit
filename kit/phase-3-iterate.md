@@ -333,8 +333,8 @@ Log progress in `docs/iterations/<release-slug>/session.md` using the table sche
 - Dispatch the general-purpose agent read-only to produce the impact verdicts. Verify `impact.md` is on disk.
 - If all verdicts are "no change": record that, skip the gate, and proceed to handoff.
 - If amendments are needed: present them with the feature they serve; apply only after explicit approval; set the document metadata `Last updated` and keep `Status: approved`.
-- A new stack choice goes through the same stack-catalog rules as `kit/steps/phase-1/p1-06-architecture.md`.
-- Offer the Design Sprint (`phase-2-design-sprint.md`) if 2+ new features need designer-provided screens.
+- A new stack choice goes through the same stack-catalog rules as `kit/steps/phase-1/p1-07-architecture.md`.
+- Offer the Design Sprint (`phase-2-design-sprint.md`) if 2+ new Phase 3 features need screen designs and have none from Phase 1 Step 6 or a previous sprint — the Design Sprint is the correct workflow for new features without existing designs.
 - Handoff is automatic: emit the exact first message for the next session — phase file `kit/phase-2-feature-dev.md`, project name, release slug, and the first pending feature in the new build order.
 
 ### Artifact Rules
@@ -376,7 +376,7 @@ Log progress in `docs/iterations/<release-slug>/session.md` using the table sche
 
 - `kit/phase-2-feature-dev.md`
 - `kit/phase-2-design-sprint.md`
-- `kit/steps/phase-1/p1-06-architecture.md`
+- `kit/steps/phase-1/p1-07-architecture.md`
 - `kit/guides/evolving-specs.md`
 
 ---

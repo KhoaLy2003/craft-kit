@@ -1,11 +1,11 @@
-# roadmap.md — Output Template for Step 6: Roadmap Generation
+# roadmap.md — Output Template for Step 5: Roadmap Generation
 
 ## Metadata
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
 - **Based on**: `idea-brief.md`, `market-notes.md`, `prototype/`, `DESIGN.md`
-- **Phase 2 Track**: `standard` | `single-pass` <!-- decided at Step 6 gate; see kit/steps/phase-1/p1-05-roadmap.md for criteria -->
+- **Phase 2 Track**: `standard` | `single-pass` <!-- decided at Step 5 gate; see kit/steps/phase-1/p1-05-roadmap.md for criteria -->
 
 > Product-scope decision, not a technical one. Do not assume any specific tech stack when writing this. The orchestrator reads this file to select the next feature for Phase 2 — keep the `Status` column accurate.
 
@@ -69,7 +69,7 @@ orchestrator to "in-progress" / "shipped" as Phase 2 runs.
 
 ---
 
-## Gate Checklist (before proceeding to Step 7 — Architecture)
+## Gate Checklist (before proceeding to Step 6 — Full Screen Design)
 
 - [ ] Every "Must have" feature traces back to the Core User Flow
 - [ ] No tech-stack assumptions embedded in feature descriptions

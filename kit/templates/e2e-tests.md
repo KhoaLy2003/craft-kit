@@ -26,7 +26,7 @@
 <!-- Every item here must be checked before Step 5b begins. If any box is unchecked, E2E cannot start. -->
 
 - [ ] Dev server starts without errors (`npm run dev` or equivalent)
-- [ ] `.env` has all required values (verified in Step 8 Scaffold — re-confirm here)
+- [ ] `.env` has all required values (verified in Step 9 Scaffold — re-confirm here)
 - [ ] <!-- add one line per external service or infrastructure requirement -->
 - [ ] Test data seeded (see Section 5)
 - [ ] Test credentials documented below and available

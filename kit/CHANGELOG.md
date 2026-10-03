@@ -5,6 +5,39 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 <!-- insert new changelog below this comment -->
+## [0.0.18] - 2026-10-03
+
+**Summary:** Phase 1 Step 6 Full Screen Design — designer handoff and sign-off before implementation; architecture/constitution/scaffold renumbered to Steps 7/8/9; Phase 2 Step 1b removed from both tracks; spec delta-only when designs exist; Design Sprint repositioned to Phase 3 / new features.
+
+### Added
+
+- **`kit/steps/phase-1/p1-06-screen-design.md`** — new Phase 1 Step 6 (hard gate). Trigger: Step 5 (Roadmap) approved. Scope: Must + Should features only. Phase A: lists every screen per in-scope feature (pages, modals, drawers, named views, divergent empty/error states), writes per-screen briefs to `docs/specs/<slug>/screens/<screen-name>.md` using `kit/templates/spec-screen.md`. Phase B: prints one batch designer handoff message covering all features (no file created). Phase C: user replies "files" (Path A — `docs/designs/<slug>/<screen-name>.png|jpg|webp|pdf|html`) or "mcp" (Path B — design tool via MCP; `docs/designs/<slug>/design-manifest.json` written with `status: mcp | file_fallback | design_md_fallback`). Phase D: hard gate requiring client/user sign-off on the full design set before Step 7 (Architecture) begins. Skip condition: if `docs/preview/` already covers every screen of every in-scope feature (≤1 simple screen per feature); requires user confirmation. Path A/B logic and wording sourced from `kit/steps/phase-2/p2-ds-batch-design.md`.
+
+### Changed
+
+- **`kit/steps/phase-1/p1-06-architecture.md` → `p1-07-architecture.md`** — renamed; step number updated to 7 throughout; internal "Step 6 research" reference updated to Step 7.
+- **`kit/steps/phase-1/p1-07-constitution.md` → `p1-08-constitution.md`** — renamed; step number updated to 8.
+- **`kit/steps/phase-1/p1-08-scaffold.md` → `p1-09-scaffold.md`** — renamed; step number updated to 9.
+- **`kit/phase-1-bootstrap.md`** — steps table updated: Step 6 Full Screen Design added; architecture/constitution/scaffold renumbered 7/8/9.
+- **`kit/phase-1-checklist.md`** — new Step 6 checklist section added; steps 7/8/9 renumbered.
+- **`kit/steps/phase-2/p2-01-spec.md`** and **`p2sp-01-full-app-spec.md`** — new rule: add `docs/designs/<slug>/` and `docs/specs/<slug>/screens/*.md` to Inputs; when designs exist, spec records only behavior not visible in designs (acceptance criteria, validation, data constraints, auth flows, errors, edge cases); undesigned screens listed under "Undesigned screens" with `design_md_fallback`; Next Step is Step 2 — Plan unconditionally.
+- **`kit/steps/phase-2/p2-04-implement.md`** and **`p2sp-03-implement.md`** — wording "Step 1b" replaced with "Phase 1 Step 6 (or Design Sprint)"; "Step 1b was skipped" replaced with "no `docs/designs/<slug>/` for this screen".
+- **`kit/phase-2-design-sprint.md`** and **`kit/steps/phase-2/p2-ds-batch-design.md`** — repositioned: now for Phase 3 releases and features added after Phase 1 that have no designs. Removed claims that Step 1b auto-skips; after sprint, run `phase-2-feature-dev.md` from Step 2 — Plan.
+- **`kit/phase-2-feature-dev.md`** and **`kit/phase-2-single-pass.md`** — Step 1b row removed from the steps table and skip-detection section; flow diagrams updated (Spec → Plan directly).
+- **`kit/templates/07-architecture.md`**, **`08-constitution.md`**, **`09-scaffold-checklist.md`** — inner step-number labels corrected to 7, 8, 9 respectively.
+- **`docs-site/.vitepress/config.ts`** — Phase 1 step rewrites updated (p1-06-screen-design added; p1-07/08/09 for architecture/constitution/scaffold); sidebar labels updated to Step 6 — Full Screen Design, Step 7 — Tech Stack & Architecture, Step 8 — Constitution, Step 9 — Scaffold.
+- **`README.md`** — Phase 1 table updated to 9 steps; Phase 1 Step 7 now listed for `research-analyst`.
+- **`docs-site/index.md`**, **`docs-site/getting-started.md`**, **`docs-site/guides/existing-projects.md`**, **`docs-site/reference/templates.md`**, **`docs-site/reference/required-skills.md`** — step counts and step references updated throughout.
+- **`docs-site/diagrams/*.workflow.json` and `docs-site/public/diagrams/*.html`** — all three workflow diagrams regenerated with Archify. Phase 1 now shows Full Screen Design (Step 6) as its own node with its own gate, plus Architecture-to-Scaffold (Steps 7–9) and the Stack + Rules gates. Phase 2 Standard: Spec node now notes the behavior-delta rule. Phase 2 Single-Pass: Manual Check gate added.
+
+### Removed
+
+- **`kit/steps/phase-2/p2-01b-screen-design.md`** — deleted; screen design now handled in Phase 1 Step 6 (initial build) or Design Sprint (Phase 3 / new features).
+- **`kit/steps/phase-2/p2sp-01b-screen-design.md`** — deleted; same rationale.
+- **Status:** not yet validated in a test round.
+
+---
+
 
 ## [Unreleased]
 

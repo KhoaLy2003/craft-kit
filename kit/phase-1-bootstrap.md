@@ -33,9 +33,10 @@ Before executing each step, read its step file. The step file is the authoritati
 | 3   | Interactive Prototype         | Build a working prototype to test UX assumptions and validate core user interactions. | `hard` | `kit/steps/phase-1/p1-03-prototype.md`       |
 | 4   | Product Design                | User provides a DESIGN.md file; orchestrator validates it, then builds a live UI preview with mock data for review. | `hard` | `kit/steps/phase-1/p1-04-design.md`          |
 | 5   | Roadmap Generation            | Prioritize features into Must/Should/Nice-to-Have and determine the development build order. | `hard` | `kit/steps/phase-1/p1-05-roadmap.md`         |
-| 6   | Tech Stack &amp; Architecture | Evaluate technology options and document the system architecture for Phase 2 implementation. | `hard` | `kit/steps/phase-1/p1-06-architecture.md`    |
-| 7   | Constitution                  | Establish coding standards, architectural rules, and non-negotiable principles for the project. | `hard` | `kit/steps/phase-1/p1-07-constitution.md`    |
-| 8   | Scaffold                      | Generate initial project structure, build setup, and verify the development environment works. | `none` | `kit/steps/phase-1/p1-08-scaffold.md`        |
+| 6   | Full Screen Design            | Identify all screens per feature; collect designer handoff; validate coverage before architecture. | `hard` | `kit/steps/phase-1/p1-06-screen-design.md`   |
+| 7   | Tech Stack & Architecture     | Evaluate technology options and document the system architecture for Phase 2 implementation. | `hard` | `kit/steps/phase-1/p1-07-architecture.md`    |
+| 8   | Constitution                  | Establish coding standards, architectural rules, and non-negotiable principles for the project. | `hard` | `kit/steps/phase-1/p1-08-constitution.md`    |
+| 9   | Scaffold                      | Generate initial project structure, build setup, and verify the development environment works. | `none` | `kit/steps/phase-1/p1-09-scaffold.md`        |
 
 
 ---
@@ -48,6 +49,8 @@ Before Phase 2 starts, verify all of these exist and are marked `approved`:
 - [ ] `docs/prototype/` (journey-map.md + prototype-brief.md + walkable HTML)
 - [ ] `docs/DESIGN.md`
 - [ ] `docs/roadmap.md` (all features `pending`)
+- [ ] `docs/designs/` (per-feature screen designs or manifest — skip if Step 6 skipped)
+- [ ] `docs/specs/*/screens/*.md` (per-screen briefs — skip if Step 6 skipped)
 - [ ] `docs/architecture.md`
 - [ ] `docs/constitution.md`
 - [ ] Scaffold: project builds and runs, smoke test passes
@@ -87,10 +90,11 @@ The new session has no memory of Phase 1 deliberations — only the four files a
 
 ```
 Ideation → Market Research [optional, hard gate if run] → Prototype → Product Design [hard gate]
-    → Roadmap [hard gate] → Architecture [hard gate] → Constitution [hard gate] → Scaffold
-                                                                           │
-                                                                           ▼
-                                              Close Phase 1 session → Open new Phase 2 session
+    → Roadmap [hard gate] → Full Screen Design [hard gate] → Architecture [hard gate]
+    → Constitution [hard gate] → Scaffold
+                │
+                ▼
+Close Phase 1 session → Open new Phase 2 session
 ```
 
 <div style="margin:24px 0;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.12);">

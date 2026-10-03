@@ -1,4 +1,4 @@
-# Phase 1 · Step 7 — Constitution / AI Working Guideline
+# Phase 1 · Step 8 — Constitution / AI Working Guideline
 
 ## Overview
 
@@ -72,7 +72,7 @@ The step is considered complete when:
 
 ### Next Step
 
-- **Default**: Step 8 — Scaffold and Convention Setup
+- **Default**: Step 9 — Scaffold and Convention Setup
 - **Optional skip**: No
 - **User decision required**: Yes — user must confirm the constitution before the hard gate opens
 

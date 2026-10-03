@@ -16,7 +16,7 @@
   ],
   "mainPath": ["spec", "planning", "implement", "quality", "testing", "ship"],
   "nodes": [
-    { "id": "spec", "lane": "loop", "col": 0, "type": "backend", "label": "Brainstorm & Spec", "sublabel": "acceptance criteria", "tag": "Step 1", "width": 132 },
+    { "id": "spec", "lane": "loop", "col": 0, "type": "backend", "label": "Brainstorm & Spec", "sublabel": "criteria + behavior delta", "tag": "Step 1", "width": 132 },
     { "id": "gate_spec", "lane": "human", "col": 0, "type": "security", "label": "Spec Gate", "sublabel": "approve before build", "width": 132 },
     { "id": "planning", "lane": "loop", "col": 1, "type": "backend", "label": "Plan + Assign", "sublabel": "tasks + specialist agents", "tag": "Steps 2–3", "width": 132 },
     { "id": "implement", "lane": "loop", "col": 2, "type": "backend", "label": "Implement", "sublabel": "specialist agents code", "tag": "Step 4", "width": 132 },
@@ -39,7 +39,7 @@
       "dot": "cyan",
       "title": "Hard Gates",
       "items": [
-        "Spec Gate: you approve acceptance criteria before a single line of code is written",
+        "Spec Gate: you approve acceptance criteria before code is written; with Phase 1 designs, the spec covers only what they do not show",
         "Manual Check: you walk through the running app before it ships"
       ]
     },

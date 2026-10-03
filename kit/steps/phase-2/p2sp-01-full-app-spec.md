@@ -11,6 +11,8 @@
   - `docs/architecture.md`
   - `docs/DESIGN.md`
   - `docs/constitution.md`
+  - `docs/designs/<feature-slug>/` — screen designs from Phase 1 Step 6 or Design Sprint (per feature, if they exist)
+  - `docs/specs/<feature-slug>/screens/*.md` — per-screen briefs from Phase 1 Step 6 (per feature, if they exist)
 - **Outputs**:
   - `docs/specs/spec.md` — one document, one `##` section per feature in roadmap build order
 - **Template**: none
@@ -36,6 +38,9 @@
 ## Execution Rules
 
 - Run `brainstorming` skill in Architectural mode, scoped to the complete roadmap
+- For each feature: if `docs/designs/<feature-slug>/` exists, it is the source of truth for the UI. The spec section for that feature records only behavior not visible in the designs: acceptance criteria, validation rules, data constraints, auth flows, error scenarios, and edge cases.
+- If the spec discovers a screen for a feature that has no corresponding design file, list it under an "Undesigned screens" subsection of that feature's section. Implementation uses `docs/DESIGN.md` + `docs/preview/` as the fallback for those screens.
+- If no `docs/designs/<feature-slug>/` exists for a feature, write the full spec section for it including UI behavior as today.
 - Organize output as one document with one `##` section per feature in build order
 - Each section must contain: acceptance criteria, edge cases, non-goals for that feature, and how it connects to the features immediately before it
 - Cross-feature interactions must be made explicit in the relevant sections — not left implicit
@@ -52,6 +57,8 @@
 The step is considered complete when:
 
 - [ ] `docs/specs/spec.md` exists with one section per Must feature in build order
+- [ ] For features with existing designs: sections are behavior-delta only; any screens with no design listed under "Undesigned screens"
+- [ ] For features without designs: sections include full UI behavior description
 - [ ] Every section contains acceptance criteria, edge cases, non-goals, and cross-feature connections
 - [ ] All cross-feature interactions are explicit
 - [ ] Hard gate passed: user has reviewed and approved the full document
@@ -66,7 +73,7 @@ The step is considered complete when:
 
 ### Next Step
 
-- **Default**: Step 1b — Screen Design (if any feature has 2+ non-trivial screens); Step 2 — Plan (if skip condition applies: all features have one simple screen covered by `docs/preview/`)
+- **Default**: Step 2 — Plan
 - **Optional skip**: No
 - **User decision required**: Yes — hard gate approval required
 
@@ -83,5 +90,4 @@ The step is considered complete when:
 ## References
 
 - `brainstorming` skill (Architectural path)
-- `kit/gate-management.md`
-- `templates/spec-screen.md` — use to document individual screens when a feature has 2+ non-trivial screens; save filled copies as `docs/specs/screens/<screen-name>.md` before Step 2 (Plan)
+- `templates/spec-screen.md` — per-screen briefs are produced in Phase 1 Step 6 and placed at `docs/specs/<feature-slug>/screens/<screen-name>.md`; use this template only if no Phase 1 Step 6 designs exist for a feature and screens need to be documented before Step 2 (Plan)

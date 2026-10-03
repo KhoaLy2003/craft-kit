@@ -1,22 +1,26 @@
 # Phase 2 — Design Sprint
 
-> **Run this once, before any feature implementation, when you have 2 or more features to build
-> and want to deliver all screen designs to your designer in a single batch.**
+> **Use this when building Phase 3 releases or features added after Phase 1 that need screen
+> designs before implementation begins.**
 >
-> Covers Steps 1 and 1b for every pending feature in one coordinated pass. When this sprint
-> finishes, every feature has a spec and validated designs, and implementation can begin on any
-> feature in any order — no further designer involvement needed mid-cycle.
+> Initial-build screens are produced in **Phase 1 Step 6 — Full Screen Design**. The Design
+> Sprint is not part of the initial build; it serves new features that arrive without Phase 1
+> designs attached.
 >
-> **When to use this instead of the Standard Loop:**
-> - You have 2+ features with non-trivial screens
+> Run it once, covering all new features in the release, when 2 or more of those features need
+> designer-provided screens and your designer is external or async.
+>
+> **When to use:**
+> - 2+ new features in the Phase 3 release need screen designs
 > - Your designer is external or async (Figma contractor, design agency, another team)
-> - You want to parallelize design work across features rather than serialize it
+> - None of the new features have designs from Phase 1 Step 6 or a previous sprint
 >
-> **Prerequisites:** Phase 1 complete — `docs/roadmap.md`, `docs/constitution.md`,
-> `docs/architecture.md`, and `docs/DESIGN.md` are all in place.
+> **Prerequisites:** Phase 1 complete and the Phase 3 release block approved in
+> `docs/roadmap.md` — `docs/constitution.md`, `docs/architecture.md`, and `docs/DESIGN.md`
+> are all in place.
 >
-> **After this sprint:** use `kit/phase-2-feature-dev.md` for each feature, starting at Step 2
-> (Plan). The orchestrator auto-skips Steps 1 and 1b on detecting the pre-built artifacts.
+> **After this sprint:** use `kit/phase-2-feature-dev.md` for each feature, starting at
+> Step 2 (Plan). Step 1 auto-skips when `docs/specs/<slug>/spec.md` already exists.
 
 ---
 
