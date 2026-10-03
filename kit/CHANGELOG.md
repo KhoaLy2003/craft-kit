@@ -9,6 +9,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+## [0.0.18] - 2026-10-03
+
+**Summary:** Full screen design in Phase 1 (new Step 6) · Phase 2 Step 1b removed · Phase 1 renumbered to 9 steps
+
+---
+
 ### Added
 
 - **`kit/steps/phase-1/p1-06-screen-design.md`** — new Phase 1 Step 6 (hard gate). Trigger: Step 5 (Roadmap) approved. Scope: Must + Should features only. Phase A: lists every screen per in-scope feature (pages, modals, drawers, named views, divergent empty/error states), writes per-screen briefs to `docs/specs/<slug>/screens/<screen-name>.md` using `kit/templates/spec-screen.md`. Phase B: prints one batch designer handoff message covering all features (no file created). Phase C: user replies "files" (Path A — `docs/designs/<slug>/<screen-name>.png|jpg|webp|pdf|html`) or "mcp" (Path B — design tool via MCP; `docs/designs/<slug>/design-manifest.json` written with `status: mcp | file_fallback | design_md_fallback`). Phase D: hard gate requiring client/user sign-off on the full design set before Step 7 (Architecture) begins. Skip condition: if `docs/preview/` already covers every screen of every in-scope feature (≤1 simple screen per feature); requires user confirmation. Path A/B logic and wording sourced from `kit/steps/phase-2/p2-ds-batch-design.md`.
@@ -38,6 +44,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+---
 
 ## [Unreleased]
 
