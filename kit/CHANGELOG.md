@@ -5,9 +5,9 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 <!-- insert new changelog below this comment -->
-## [0.0.18] - 2026-10-03
+## [Unreleased]
 
-**Summary:** Phase 1 Step 6 Full Screen Design — designer handoff and sign-off before implementation; architecture/constitution/scaffold renumbered to Steps 7/8/9; Phase 2 Step 1b removed from both tracks; spec delta-only when designs exist; Design Sprint repositioned to Phase 3 / new features.
+---
 
 ### Added
 
