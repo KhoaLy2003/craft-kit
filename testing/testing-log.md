@@ -20,6 +20,7 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | 30 | Step 4 DESIGN.md auto-skip only checks `PROJECT_ROOT` and `docs/` — a file placed one directory up (round staging level) is not detected; tester must manually copy or place at project root | Round 05 | Low — causes confusion; check fails silently | Open |
 | 31 | Todo system auto-promotes next step past a blocked step even when the next step has an undeclared dependency on the blocked step's output; reminder fires spuriously | Round 05 | Low — workflow confusion, no artifact harm | Open |
 | 32 | E2E testing requires Supabase provisioning (migration + users + seed data) before tests can run. Kit workflow did not make this explicit or enforced. First E2E run failed on 42 skipped tests (no auth, no tables). | Round 05 | High — E2E proves nothing without provisioning | **Fixed Round 05** — Added Step 5a (E2E Testing Plan documentation) as required gate before Step 5b E2E testing; created `kit/guides/e2e-testing-plan.md` provisioning workflow; updated `kit/phase-2-single-pass.md`, `kit/phase-2-checklist.md`, flow diagram |
+| Open 4 | `kit/phase-3-iterate.md` (post-release iteration: Review → Discover → Prioritise → Impact & Handoff) added without a validation round; gates, no-ideas Path B, and roadmap append-only rule are untested | Post-Round 05 | Medium — unvalidated new workflow | Open — validate in Round 06 (run on a shipped round project) |
 ---
 
 ## Kit Files Changed (cumulative)

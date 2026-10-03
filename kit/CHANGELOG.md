@@ -8,6 +8,18 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ## [Unreleased]
 
+**Summary:** Phase 3 Iterate — post-release workflow for deciding and committing what to build next, with or without existing ideas.
+
+### Added
+
+- **`kit/phase-3-iterate.md`** — new top-level orchestration file with four steps: Review (soft; records shipped state, evidence, release goal, whether the user has ideas), Discover (soft; Path A captures user ideas, Path B mines deferred/Could rows, feedback, defects, journey-map gaps and an optional market refresh; max 10 evidence-labelled candidates), Prioritise (hard; MoSCoW + sizing, appends a new release block to `docs/roadmap.md` with IDs continuing the sequence, shipped rows untouched), Impact & Handoff (hard only if amendments; checks architecture/constitution/DESIGN against new features, then hands off to `phase-2-feature-dev.md`). Artifacts live under `docs/iterations/<release-slug>/`.
+
+### Changed
+
+- **`kit/steps/phase-2/p2-09-ship.md`** — when no pending features remain, the orchestrator now offers Phase 3 or the bug-fix workflow instead of only "await further direction".
+- **`kit/phase-1-bootstrap.md`** — existing-project note points to Phase 3 for post-ship improvement.
+- **Status:** not yet validated in a test round (see `testing/testing-log.md`, Open 4).
+
 ---
 
 ## [0.0.16] - 2026-09-28

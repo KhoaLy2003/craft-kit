@@ -48,6 +48,7 @@ export default defineConfig({
     'kit/phase-2-feature-dev.md':  'phases/phase-2-standard.md',
     'kit/phase-2-single-pass.md':  'phases/phase-2-single-pass.md',
     'kit/phase-bug-fix.md':        'phases/bug-fix.md',
+    'kit/phase-3-iterate.md':      'phases/phase-3-iterate.md',
 
     // Phase 1 step detail files.
     'kit/steps/phase-1/p1-01-ideation.md':        'phases/steps/p1-01-ideation.md',
@@ -124,6 +125,7 @@ export default defineConfig({
           { text: 'Phase 2 — Standard Loop', link: '/phases/phase-2-standard' },
           { text: 'Phase 2 — Single Pass',   link: '/phases/phase-2-single-pass' },
           { text: 'Bug Fix Workflow',         link: '/phases/bug-fix' },
+          { text: 'Phase 3 — Iterate',        link: '/phases/phase-3-iterate' },
         ],
       },
       {
@@ -150,6 +152,7 @@ export default defineConfig({
             { text: 'Phase 2 — Standard Loop', link: '/phases/phase-2-standard' },
             { text: 'Phase 2 — Single Pass',   link: '/phases/phase-2-single-pass' },
             { text: 'Bug Fix Workflow',         link: '/phases/bug-fix' },
+            { text: 'Phase 3 — Iterate',        link: '/phases/phase-3-iterate' },
           ],
         },
       ],
@@ -161,6 +164,7 @@ export default defineConfig({
             { text: 'Phase 2 — Standard Loop', link: '/phases/phase-2-standard' },
             { text: 'Phase 2 — Single Pass',   link: '/phases/phase-2-single-pass' },
             { text: 'Bug Fix Workflow',         link: '/phases/bug-fix' },
+            { text: 'Phase 3 — Iterate',        link: '/phases/phase-3-iterate' },
           ],
         },
         {
@@ -229,6 +233,7 @@ export default defineConfig({
             { text: 'Phase 2 — Standard Loop', link: '/phases/phase-2-standard' },
             { text: 'Phase 2 — Single Pass',   link: '/phases/phase-2-single-pass' },
             { text: 'Bug Fix Workflow',         link: '/phases/bug-fix' },
+            { text: 'Phase 3 — Iterate',        link: '/phases/phase-3-iterate' },
           ],
         },
       ],
