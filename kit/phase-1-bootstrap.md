@@ -1,7 +1,7 @@
 # Phase 1 — Bootstrap
 
 > **Run this once per project, from raw idea to a ready-to-code codebase.**
-> On existing projects, skip this phase entirely and start directly at `phase-2-feature-dev.md`.
+> On existing projects, skip this phase entirely and start directly at `phase-2-feature-dev.md`. To improve an already-shipped product and decide what to build next, use `phase-3-iterate.md`.
 
 ---
 

@@ -79,7 +79,7 @@ The step is considered complete when:
 
 ## Exceptions / Special Cases
 
-- If no further `pending` features exist in `docs/roadmap.md`, Phase 2 is complete. Notify the user and await further direction.
+- If no further `pending` features exist in `docs/roadmap.md`, the current release is complete. Notify the user and offer the next move: run `kit/phase-3-iterate.md` to decide what to build next (works whether or not the user has ideas), or `kit/phase-bug-fix.md` for any reported defect. If the user already knows exactly one feature to add, append it to `docs/roadmap.md` and restart at Step 1.
 - The spec persistence decision (first feature only) must be made before restarting the cycle — it affects how all future spec artifacts are managed.
 
 ## References
