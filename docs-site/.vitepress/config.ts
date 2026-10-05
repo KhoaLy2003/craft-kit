@@ -53,6 +53,7 @@ const GUIDES: Page[] = [
   kit('guides/session-handover',            'guides/session-handover',           'Session Handover'),
   kit('guides/interactive-prototype-process', 'guides/interactive-prototype-process', 'Interactive Prototype Process'),
   kit('guides/design-reference',            'guides/design-reference',           'Design Reference'),
+  kit('guides/admin-blueprint',             'guides/admin-blueprint',            'Admin Blueprint'),
 ]
 
 const REFERENCE_SETUP: Page[] = [
