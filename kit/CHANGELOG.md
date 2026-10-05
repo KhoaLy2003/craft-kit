@@ -7,6 +7,21 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Added — Admin Site workflow (experimental)
+
+- **`kit/phase-admin.md`** — new workflow, run after Phase 2: Scope (hard; agent proposes modules, user edits, agent re-reviews once per round, loop until the user approves; roles and permission matrix, identity check, open-branch check) → Spec & Plan → Implement (Shell checkpoint before any module) → Review & E2E (security checklist, permission-matrix E2E) → Ship (hard; manual check, one PR).
+- **`kit/guides/admin-blueprint.md`** — fixed admin stack (thin Next.js app in `admin/`, no database, only calls `/api/admin/*`), per-archetype behavior contracts, module registry contract, backend conventions (guard, RBAC, list contract, audit record, token handling).
+- **`kit/templates/admin-scope.md`** — Step 1 artifact template.
+
+### Changed
+
+- **`kit/templates/04-roadmap.md`**, **`kit/steps/phase-1/p1-04-roadmap.md`** — new `Admin Site: yes | no | later` hint; never a feature row; excluded from the Phase 2 Scope criteria.
+- **`kit/task-agent-rubric.md`** — admin UI routing row (`frontend-developer` + optional `evon:ui-ux`).
+- **`kit/session-logging.md`** — `docs/admin-session.md`.
+- **`bin/cli.js`** — optional `evon:ui-ux` install (interactive prompt and non-TTY instructions), generic `installSkill`, admin quick-start block.
+- **`docs-site/`**, **`README.md`**, **`AGENTS.md`** — page table, templates and skills pages, workflow and gate lists.
+- **Status:** not yet validated in a test round.
+
 ---
 
 ## [0.0.19] - 2026-10-05

@@ -27,8 +27,8 @@ Single command, no subcommands. Execution order:
 5. Write `.craft-kit-version` and `.craft-kit-manifest.json` (sorted relative file list) on every install; print the upgrade message when `--force` crosses versions
 6. If `--skip-setup`: print quick-start and exit
 7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend` command + agent download instructions, then quick-start
-8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` → `.agents/skills/`, (b) download of 6 VoltAgent agent `.md` files to `.agents/agents/` (`httpsGet` has a 15 s timeout and a 5-redirect limit)
-9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`)
+8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` → `.agents/skills/`, plus an optional `evon:ui-ux` install (admin site workflow), (b) download of 6 VoltAgent agent `.md` files to `.agents/agents/` (`httpsGet` has a 15 s timeout and a 5-redirect limit)
+9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`)
 
 There is no harness detection; install instructions for every supported harness are always printed.
 
@@ -54,10 +54,12 @@ Phase 2 (Build) — one track, 7 steps, parameterised by scope
 Other workflows (all experimental — not yet validated in a test round)
   Bug Fix: Assess → Fix → Verify         docs/specs/bugs/<bug-slug>/assess.md, fix/<bug-slug> → PR
   Phase 3: Discover → Prioritise → Handoff
+  Admin Site: Scope → Spec & Plan → Implement → Review & E2E → Ship
+              docs/admin/scope.md, docs/specs/admin/{spec,plan}.md, feature/admin → one PR (main-backend changes + admin/)
   Session Handover: guides/session-handover.md
 ```
 
-Session logs, one per phase, never per project folder: `docs/phase-1-session.md`, `docs/phase-2-session.md`, `docs/bug-session.md`, `docs/phase-3-session.md`. Updated at gates and at completion, not after every step.
+Session logs, one per phase, never per project folder: `docs/phase-1-session.md`, `docs/phase-2-session.md`, `docs/bug-session.md`, `docs/phase-3-session.md`, `docs/admin-session.md`. Updated at gates and at completion, not after every step.
 
 ### Gate System
 
@@ -67,7 +69,7 @@ Session logs, one per phase, never per project folder: `docs/phase-1-session.md`
 | `soft` | Orchestrator presents summary; advances unless user objects |
 | `hard` | Full stop — emit a Gate Summary naming the decision, wait for explicit approval |
 
-Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Phase 3 Prioritise. Full definition: `kit/orchestrator-conventions.md` → Gates.
+Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Phase 3 Prioritise; Admin Scope, Admin Ship. Full definition: `kit/orchestrator-conventions.md` → Gates.
 
 ---
 
@@ -81,6 +83,7 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify
 | `kit/steps/phase-2/` | `p2-01-spec.md` … `p2-07-ship.md` |
 | `kit/templates/` | Fill-in output templates; copied to `<project>/docs/` — **never edit during a run** |
 | `kit/guides/` | `design-reference.md`, `evolving-specs.md`, `interactive-prototype-process.md`, `session-handover.md` |
+| `kit/guides/admin-blueprint.md` | Admin workflow's fixed stack, behavior contracts, module registry, backend conventions |
 | `kit/resource/` | `step-specification-template.md` — dev-only, **not installed** |
 | `testing/` | Narrative E2E validation rounds; each under `testing/round-NN/<project-slug>/` |
 | `docs-site/` | VitePress site; `srcDir: '..'` reads directly from `kit/` |
@@ -154,6 +157,7 @@ spec-screen.md         — Step 5 / Phase 2 specs (per-screen)
 08-scaffold-checklist.md — Step 8
 MODELS.md              — model tier map (→ docs/MODELS.md)
 e2e-tests.md           — Phase 2 Step 5 (→ docs/E2E-TESTS.md)
+admin-scope.md         — Admin Step 1 (→ docs/admin/scope.md)
 ```
 
 ### Bug Fix Scope Discipline
@@ -170,7 +174,7 @@ e2e-tests.md           — Phase 2 Step 5 (→ docs/E2E-TESTS.md)
 | `kit/orchestrator-conventions.md` | Universal rules + gate definitions (absorbed `gate-management.md`) |
 | `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`), single closeout checklist, Phase 2 handoff |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
-| `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md` | Other workflows |
+| `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md` | Other workflows |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |
 | `kit/stack-catalog.md` | Architecture-step stack reference: Canonical Baseline, Deviation Triggers, Additions Catalog |
 | `kit/session-logging.md` | Session log format and conventions |

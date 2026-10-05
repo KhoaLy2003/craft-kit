@@ -123,6 +123,7 @@ All experimental — not yet validated in a test round.
 |---|---|---|
 | Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess (hard) → Fix → Verify. Reproduce first; the fix stays inside the assessed scope. |
 | Phase 3 — Iterate | `phase-3-iterate.md` | Discover → Prioritise (hard) → Handoff: turn real-world feedback into the next roadmap release. |
+| Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). Fixed Next.js stack; the admin app only calls `/api/admin/*` on your backend. Run after Phase 2. |
 | Session Handover | `guides/session-handover.md` | A long run must continue in a fresh session. |
 
 ---
@@ -163,6 +164,8 @@ Install these before starting Phase 1. `npx github:KhoaLy2003/craft-kit` prompts
 
 > Skills improve consistency, not possibility: without them your AI handles the same work from general capability.
 
+> Optional: `evon:ui-ux` builds admin site screens in the Admin Site workflow (`phase-admin.md`); without it `frontend-developer` builds them from the admin blueprint.
+
 **Agents** (downloaded as `.md` files into `.agents/agents/`):
 
 | Agent | Role |
@@ -183,13 +186,13 @@ Install these before starting Phase 1. `npx github:KhoaLy2003/craft-kit` prompts
 | `orchestrator-conventions.md` | Universal rules: step banner, PROJECT_ROOT, write verification, gates |
 | `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers, closeout checklist, Phase 2 handoff |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
-| `phase-3-iterate.md`, `phase-bug-fix.md` | Other workflows (experimental) |
+| `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md` | Other workflows (experimental) |
 | `session-logging.md` | Session log format |
 | `stack-catalog.md` | Stack baseline and deviation model for the Architecture step |
 | `task-agent-rubric.md` | Task type → specialist agent routing |
 | `steps/phase-1/`, `steps/phase-2/` | Step detail files `p1-01` … `p1-08`, `p2-01` … `p2-07` |
-| `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map |
-| `guides/` | `design-reference.md`, `evolving-specs.md`, `interactive-prototype-process.md`, `session-handover.md` |
+| `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, admin scope |
+| `guides/` | `admin-blueprint.md`, `design-reference.md`, `evolving-specs.md`, `interactive-prototype-process.md`, `session-handover.md` |
 | `CHANGELOG.md` | Kit change history — kept in this repo, not installed |
 
 ---
