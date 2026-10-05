@@ -161,7 +161,7 @@ type AdminModule = {
 These live in the main app. They are the security-critical part of the workflow and are specified exactly.
 
 ### 5.1 Guard
-Every route under `/api/admin/` passes through one guard that takes the required permission. No valid admin token → `401`. Valid token whose role lacks the permission → `403`. A route under `/api/admin/` that does not call the guard is a defect.
+Every route under `/api/admin/` except the login route (§5.5) passes through one guard that takes the required permission. No valid admin token → `401`. Valid token whose role lacks the permission → `403`. `POST /api/admin/auth/login` is the only unauthenticated route. A route under `/api/admin/` other than the login route that does not call the guard is a defect.
 
 ### 5.2 RBAC
 - Roles and their permission sets are defined in **one place** in the backend. Permissions come from the approved matrix in `docs/admin/scope.md`.
@@ -475,7 +475,7 @@ Build `feature/admin` from the plan.
 ### Rules
 
 - **Security review.** Dispatch `code-reviewer` over the full branch diff with this checklist, in addition to its normal spec and constitution check:
-  1. every route under `/api/admin/` calls the guard
+  1. every route under `/api/admin/` except `POST /api/admin/auth/login` calls the guard; the login route is the only unauthenticated one
   2. deny by default: a role lacking a permission is refused (`403`)
   3. every mutation writes an audit row in the same transaction
   4. the token is never in `localStorage`, `sessionStorage`, a JS-readable cookie, or a URL
@@ -541,7 +541,7 @@ In `docs-site/.vitepress/config.ts`, in the `PHASES` array, after the `phase-3-i
 
 In `docs/superpowers/specs/2026-10-05-admin-workflow-design.md`:
 - In the Step table row for Step 4, change `` `reviewer`; Playwright `` to `` `code-reviewer`; Playwright `` (the kit's agent is `code-reviewer`).
-- In "Step 4 — Review & E2E", change "`reviewer` runs a short security checklist" to "`code-reviewer` runs a short security checklist".
+- In "Step 4 — Review & E2E", change the bullet "`reviewer` runs a short security checklist: guard on every `/api/admin/*` route, deny by default, ..." to "`code-reviewer` runs a short security checklist: guard on every `/api/admin/*` route except the unauthenticated login route, deny by default, ...".
 - In Step 1's `scope.md` bullet "**Identity model check:** whether the main app has a role or identity model. If it does not, ..." append: " It also records how admins authenticate (existing credential login, OAuth-only, other); a missing credential login likewise becomes part of task group 0."
 
 - [ ] **Step 5: Verify**
