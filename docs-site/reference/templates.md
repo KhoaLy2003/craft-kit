@@ -23,6 +23,7 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/07-constitution.md` | `docs/constitution.md` | Agent | Phase 1 Step 7 |
 | `templates/08-scaffold-checklist.md` | Used as a checklist in the session | Agent | Phase 1 Step 8 |
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |
+| `templates/admin-scope.md` | `docs/admin/scope.md` | Agent | Admin workflow Step 1 |
 
 ---
 
