@@ -24,6 +24,7 @@ One `Specialist:` line directly under the task heading. Use `task` for the gener
 |---|---|---|
 | React/Vue/Angular components, CSS, HTML, UI layout | "component", "page", "form", "style", "layout", "UI", "frontend" | `frontend-developer` — dispatch per the Frontend dispatch contract in `kit/orchestrator-conventions.md` |
 | UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` + `design-taste-frontend` skill (**required** for tasks matching these signals; generic AI patterns are the default failure mode for UI work) |
+| Admin site UI screens under `admin/` (shell, dashboard, list, detail, form, audit log, settings) | "admin site", "admin module", "admin screen" | `frontend-developer` + the `evon:ui-ux` skill when it is available (optional; see `kit/guides/admin-blueprint.md` §6) — dispatch per the Frontend dispatch contract; without the skill, `frontend-developer` builds from the blueprint archetypes |
 | Visual design, icons, mockup implementation, accessibility | "design", "icon", "color", "typography", "accessibility", "a11y" | general-purpose agent (`task`), or a dedicated visual design agent if available |
 | REST/GraphQL API endpoints, controllers, middleware | "endpoint", "route", "controller", "handler", "API" | `backend-developer` |
 | Database schema, migrations, queries, ORM models | "schema", "migration", "model", "query", "table", "index" | `backend-developer` |
