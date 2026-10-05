@@ -20,7 +20,7 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 
 Reproduce the bug, diagnose the root cause, and bound the fix.
 
-**Rules**
+### Rules
 
 - **Reproduce first.** Trigger the symptom reliably before reading any code; an unreproducible bug cannot be verified fixed. If it cannot be reproduced, record the attempts in `assess.md`, report to the human, and stop.
 - Dispatch a general-purpose agent to locate the code, read-only. Ask where the reported behavior originates, not for a fix. Make no code edits in this step.
@@ -50,7 +50,7 @@ Reproduce the bug, diagnose the root cause, and bound the fix.
 **Risk:** [what could break if the fix is wrong]
 ```
 
-**Completion criteria**
+### Completion criteria
 
 - [ ] Symptom reproduced reliably
 - [ ] Root cause identified to a specific location; causal chain and bounded fix scope in `assess.md`
@@ -64,7 +64,7 @@ Reproduce the bug, diagnose the root cause, and bound the fix.
 
 Implement the fix, scoped strictly to the root cause in `assess.md`.
 
-**Rules**
+### Rules
 
 - Create the branch first: `git checkout -b fix/<bug-slug>`.
 - Dispatch the specialist matched to the affected code. Keep changes within the files and functions listed in the fix scope.
@@ -72,7 +72,7 @@ Implement the fix, scoped strictly to the root cause in `assess.md`.
 - Check the fix against `docs/constitution.md`; a fix that violates it creates a new problem.
 - Do not commit yet; Step 3 commits once the fix is confirmed.
 
-**Completion criteria**
+### Completion criteria
 
 - [ ] `fix/<bug-slug>` exists with changes inside the `assess.md` fix scope, checked against the constitution
 - [ ] Nothing committed
@@ -83,7 +83,7 @@ Implement the fix, scoped strictly to the root cause in `assess.md`.
 
 Confirm the original symptom is gone and nothing nearby regressed; then commit and open a PR.
 
-**Rules**
+### Rules
 
 - Follow the exact reproduction steps from `assess.md` first. If the symptom persists, see "When the assessment is wrong".
 - Run the affected Phase 2 E2E flow, if one exists, to catch regressions.
@@ -92,7 +92,7 @@ Confirm the original symptom is gone and nothing nearby regressed; then commit a
 - Once verified: commit `fix(<scope>): <one-line description> — resolves <bug-slug>`, push the branch, and open a PR against main. Record status and PR link in `docs/bug-session.md`.
 - No further code changes in this step.
 
-**Completion criteria**
+### Completion criteria
 
 - [ ] Original symptom no longer occurs; affected E2E flow (if any) passes
 - [ ] Human confirmed, if the gate was hard

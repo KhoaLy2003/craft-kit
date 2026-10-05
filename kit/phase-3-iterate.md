@@ -34,7 +34,7 @@ Establish what the product does today and what evidence exists, then produce a s
 
 **Inputs:** `docs/roadmap.md` (shipped, deferred, `Could` / `Won't` rows), `docs/specs/`, `docs/specs/bugs/`, `docs/idea-brief.md`, `docs/market-notes.md`, `docs/prototype/journey-map.md` (where present), user-supplied evidence (feedback, support requests, analytics, interviews, usage notes).
 
-**Rules**
+### Rules
 
 - Read `roadmap.md` and `docs/specs/` before asking questions, so questions cover gaps rather than documented facts.
 - Ask one at a time, before writing anything: (1) the goal of this release, (2) what evidence exists, (3) whether the user already has feature ideas. Record (3) as `ideas: yes | no | partial`. "No evidence, no ideas" is valid input; do not block on it and do not invent evidence — record "none".
@@ -47,14 +47,14 @@ Establish what the product does today and what evidence exists, then produce a s
 
 **Artifact:** `docs/iterations/<release-slug>/discover.md` with the standard metadata header (`Status`, `Last updated`, `Based on`) and sections: Shipped State, Evidence, Known Defects & Debt, Release Goal (user's own words), Idea Status, Candidates (table), Considered and Dropped (with reasons).
 
-**Completion criteria**
+### Completion criteria
 
 - [ ] `discover.md` has all sections and 1–10 candidates, each with problem, source, size, evidence/hypothesis label
 - [ ] The user has seen the candidate list and added, removed, or accepted it
 
 **Gate summary:** *"Release goal: [goal]. I found [N] candidates, [k] evidence-backed and [m] hypotheses. Ready to prioritise which enter the roadmap?"*
 
-**Exceptions**
+### Exceptions
 
 - Product never shipped, or `roadmap.md` has unfinished Must features: stop and finish Phase 2 first.
 - No `docs/` artifacts (built outside the kit): dispatch a general-purpose agent to reverse-write minimal `roadmap.md`, `architecture.md`, `constitution.md` from the codebase; get the user's approval of each before continuing.
@@ -69,7 +69,7 @@ Choose, rank, and commit candidates as a new release block in `docs/roadmap.md`.
 
 **Inputs:** `discover.md` (release goal, candidates), `docs/roadmap.md`, `kit/templates/04-roadmap.md`.
 
-**Rules**
+### Rules
 
 - Present candidates as a table (impact, size, evidence, dependencies) with a recommended cut line. The orchestrator recommends; the user decides.
 - Score impact vs. size against the release goal and assign MoSCoW. Only `Must` features are guaranteed this release; `Should` / `Could` are explicit stretch.
@@ -78,7 +78,7 @@ Choose, rank, and commit candidates as a new release block in `docs/roadmap.md`.
 - The block uses the original Feature List columns (`ID | Feature | Priority | Size | Depends on | Status`), all `pending`, plus Build Order and Deferred subsections (unselected candidates with reasons). Set `Phase 2 Scope: feature`.
 - Mark the block `draft` until approved; refresh `Last updated`; add `discover.md` to `Based on`; restore roadmap `Status: approved` only after approval.
 
-**Completion criteria**
+### Completion criteria
 
 - [ ] Release block exists with IDs continuing the sequence; each feature traces to a candidate and the release goal
 - [ ] Build order respects dependencies; unselected candidates are in Deferred with reasons
@@ -87,7 +87,7 @@ Choose, rank, and commit candidates as a new release block in `docs/roadmap.md`.
 
 **Gate summary:** *"This release commits [N] features — [list] — to serve '[goal]'. [M] candidates are deferred. Do you approve this scope?"*
 
-**Exceptions**
+### Exceptions
 
 - User wants everything: show the summed cost against the goal; if they insist, record the decision and split into sequential releases.
 - Zero features selected: end Phase 3 as `complete` with no roadmap change; record the reason in the session log.
@@ -100,7 +100,7 @@ Check whether the new features invalidate the existing foundations, then hand of
 
 **Inputs:** the new release block, `docs/architecture.md`, `docs/constitution.md`, `docs/DESIGN.md`.
 
-**Rules**
+### Rules
 
 - Dispatch a general-purpose agent read-only to check each new feature for: a new dependency, service, data-model or auth change, a new design component, or a rule exception.
 - Record the result as an **Impact** section inside the release block of `docs/roadmap.md`: a table of feature × {architecture, constitution, design} with `none | amend` and a one-line reason. No separate file.
@@ -110,7 +110,7 @@ Check whether the new features invalidate the existing foundations, then hand of
 - If 2+ new features need screen designs and have none, run Phase 1 Step 5 as a re-entry for them (`kit/steps/phase-1/p1-05-screen-design.md`, "Re-entry for new features") before Phase 2.
 - Emit the Phase 2 handoff prompt: `kit/phase-2.md`, project name, release slug, `scope: feature`, and the first pending feature in the build order.
 
-**Completion criteria**
+### Completion criteria
 
 - [ ] Impact section present in the release block with a verdict for every new feature
 - [ ] Any amendments applied with approval, or none needed
