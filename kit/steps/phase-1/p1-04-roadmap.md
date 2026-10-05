@@ -36,6 +36,8 @@
 
   **Mid-cycle escape:** if Phase 2 Plan (`kit/phase-2.md`) finds more than 20% of tasks going to a minority specialist under `scope: all`, it recommends switching to `scope: feature`. On user confirmation, update the `Phase 2 Scope` field in `docs/roadmap.md`.
 
+- **Admin Site** (`yes` | `no` | `later`): ask once, before presenting the draft: "Will this product need an administrator site (to manage users, content, payments, and so on)?" Record the answer in the roadmap metadata. It is a hint for `kit/phase-admin.md`, which runs after Phase 2. It is **never a feature row** and is **excluded from every Phase 2 Scope criterion**: counting it would inflate the Must count or the domain split and could flip the scope to `feature`. `no` and `later` need no further work in Phase 1.
+
 ## Artifact Rules
 
 - Write `docs/roadmap.md` from the template; every feature `pending`.
@@ -47,6 +49,7 @@
 - [ ] All features listed and MoSCoW-prioritised; every Must feature traces to the Core User Flow; no tech-stack assumptions in feature descriptions.
 - [ ] Build order reflects the dependency chain; deferred features captured.
 - [ ] `Phase 2 Scope` written with criterion scores.
+- [ ] `Admin Site` answered and recorded in the roadmap metadata; no admin feature row added.
 - [ ] Human confirmed the feature scope and `Phase 2 Scope`.
 
 Gate summary: *"The feature roadmap is set: [N] Must features in build order, [X] items explicitly deferred, Phase 2 will run as scope [all|feature]. Does this scope match what you want to ship for the MVP?"*
