@@ -3,64 +3,46 @@
  *
  * Run:  node --test tests/cli.test.mjs
  *
- * Strategy: spawn the CLI as a subprocess via spawnSync.
- * Passing `input: ''` gives the child a piped (non-TTY) stdin, which triggers
- * the non-interactive code path — all instructions printed, no prompts.
- * Harness detection is controlled by overriding HOME / USERPROFILE to point
- * at a temporary directory we create for each test.
+ * Strategy: spawn the CLI as a subprocess via spawnSync. Passing `input: ''`
+ * gives the child a piped (non-TTY) stdin, which selects the non-interactive
+ * path — all instructions printed, no prompts, no network.
  *
- * No network calls are made by any test (the interactive TTY path that would
- * trigger npx / https downloads is never reached).
+ * The last block is a repo-wide link check over kit/ markdown, not a CLI test.
  */
 
 import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import {
-  mkdtempSync, mkdirSync, writeFileSync,
+  mkdtempSync, mkdirSync, writeFileSync, readFileSync,
   rmSync, existsSync, readdirSync,
 } from 'node:fs'
-import { tmpdir, homedir } from 'node:os'
-import { join, resolve } from 'node:path'
+import { tmpdir } from 'node:os'
+import { join, dirname, basename, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { readFileSync } from 'node:fs'
 
 // ─── Paths ────────────────────────────────────────────────────────────────────
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const CLI  = join(ROOT, 'bin', 'cli.js')
+const KIT  = join(ROOT, 'kit')
 const PKG  = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
 
-// Each tempDir() registers one process 'exit' handler for cleanup.
-// We create more than 10 temp dirs across the suite, so raise the limit.
-process.setMaxListeners(100)
+const META_FILES = ['.craft-kit-version', '.craft-kit-manifest.json']
+
+process.setMaxListeners(100) // one 'exit' cleanup handler per tempDir()
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Run the CLI as a subprocess.
- *
- * @param {string[]} args      - argv passed to the script
- * @param {object}   opts
- * @param {string}   opts.cwd  - working directory for the child process
- * @param {string}   opts.home - value for HOME and USERPROFILE (harness detection)
- */
-function run(args = [], opts = {}) {
-  const fakeHome = opts.home ?? tmpdir()
+function run(args = [], { cwd = tmpdir() } = {}) {
   return spawnSync('node', [CLI, ...args], {
-    cwd:      opts.cwd ?? tmpdir(),
-    input:    '',           // piped stdin → isTTY === false → non-interactive path
+    cwd,
+    input: '',        // piped stdin → isTTY === false → non-interactive path
     encoding: 'utf8',
-    timeout:  15_000,
-    env: {
-      ...process.env,
-      HOME:        fakeHome,  // Unix
-      USERPROFILE: fakeHome,  // Windows
-    },
+    timeout: 15_000,
   })
 }
 
-/** Create a fresh isolated temp directory; auto-cleaned at process exit. */
 function tempDir() {
   const dir = mkdtempSync(join(tmpdir(), 'pdk-test-'))
   process.on('exit', () => {
@@ -69,268 +51,269 @@ function tempDir() {
   return dir
 }
 
-// ─── Tests ───────────────────────────────────────────────────────────────────
+/** Install into a fresh temp location and return the target path. */
+function install(...flags) {
+  const target = join(tempDir(), 'kit')
+  const res = run([target, '--skip-setup', ...flags])
+  assert.equal(res.status, 0, res.stderr)
+  return target
+}
 
-describe('--help flag', () => {
-  test('exits with code 0', () => {
-    const { status } = run(['--help'])
-    assert.equal(status, 0)
-  })
+/** All files under dir as sorted forward-slash relative paths. */
+function walk(dir, base = dir) {
+  const out = []
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const abs = join(dir, e.name)
+    if (e.isDirectory()) out.push(...walk(abs, base))
+    else out.push(relative(base, abs).split(sep).join('/'))
+  }
+  return out.sort()
+}
 
-  test('prints "Usage" heading', () => {
-    const { stdout } = run(['--help'])
-    assert.match(stdout, /Usage/)
-  })
+const readManifest = target => JSON.parse(readFileSync(join(target, '.craft-kit-manifest.json'), 'utf8'))
+const writeManifest = (target, list) => writeFileSync(join(target, '.craft-kit-manifest.json'), JSON.stringify(list))
 
-  test('lists all four flags', () => {
-    const { stdout } = run(['--help'])
-    assert.match(stdout, /--force/)
-    assert.match(stdout, /--skip-setup/)
-    assert.match(stdout, /--version/)
-    assert.match(stdout, /--help/)
-  })
+// ─── Flags ────────────────────────────────────────────────────────────────────
 
-  test('short form -h works', () => {
-    const { status } = run(['-h'])
-    assert.equal(status, 0)
-  })
-})
-
-describe('--version flag', () => {
-  test('exits with code 0', () => {
-    const { status } = run(['--version'])
-    assert.equal(status, 0)
-  })
-
-  test('prints the version from package.json', () => {
-    const { stdout } = run(['--version'])
-    assert.equal(stdout.trim(), PKG.version)
-  })
-
-  test('short form -v works', () => {
-    const { stdout } = run(['-v'])
-    assert.equal(stdout.trim(), PKG.version)
-  })
-})
-
-describe('kit copy — fresh install', () => {
-  test('exits with code 0', () => {
-    const target = tempDir()
-    const { status } = run([target, '--skip-setup'])
-    assert.equal(status, 0)
-  })
-
-  test('kit directory is created at the target path', () => {
-    const target = join(tempDir(), 'my-kit')
-    run([target, '--skip-setup'])
-    assert.ok(existsSync(target), `Expected ${target} to exist`)
-  })
-
-  test('phase-1-bootstrap.md is present after install', () => {
-    const target = join(tempDir(), 'kit')
-    run([target, '--skip-setup'])
-    assert.ok(existsSync(join(target, 'phase-1-bootstrap.md')))
-  })
-
-  test('phase-2-feature-dev.md is present after install', () => {
-    const target = join(tempDir(), 'kit')
-    run([target, '--skip-setup'])
-    assert.ok(existsSync(join(target, 'phase-2-feature-dev.md')))
-  })
-
-  test('templates/ directory is present after install', () => {
-    const target = join(tempDir(), 'kit')
-    run([target, '--skip-setup'])
-    assert.ok(existsSync(join(target, 'templates')))
-  })
-
-  test('defaults to ./kit when no target-dir arg given', () => {
-    const cwd = tempDir()
-    run(['--skip-setup'], { cwd })
-    assert.ok(existsSync(join(cwd, 'kit', 'phase-1-bootstrap.md')))
-  })
-})
-
-describe('kit copy — non-empty target', () => {
-  test('exits with code 1 when target is non-empty and --force is absent', () => {
-    const target = tempDir()
-    writeFileSync(join(target, 'existing.txt'), 'content')
-    const { status } = run([target])
-    assert.equal(status, 1)
-  })
-
-  test('stderr mentions --force when target is non-empty', () => {
-    const target = tempDir()
-    writeFileSync(join(target, 'existing.txt'), 'content')
-    const { stderr } = run([target])
-    assert.match(stderr, /--force/)
-  })
-
-  test('exits with code 0 when --force is present on a non-empty target', () => {
-    const target = tempDir()
-    writeFileSync(join(target, 'existing.txt'), 'content')
-    const { status } = run([target, '--force', '--skip-setup'])
-    assert.equal(status, 0)
-  })
-
-  test('overwrites files when --force is used', () => {
-    const target = tempDir()
-    writeFileSync(join(target, 'existing.txt'), 'content')
-    run([target, '--force', '--skip-setup'])
-    assert.ok(existsSync(join(target, 'phase-1-bootstrap.md')))
-  })
-})
-
-describe('--skip-setup flag', () => {
-  test('exits with code 0', () => {
-    const target = tempDir()
-    const { status } = run([target, '--skip-setup'])
-    assert.equal(status, 0)
-  })
-
-  test('prints quick start section', () => {
-    const target = tempDir()
-    const { stdout } = run([target, '--skip-setup'])
-    assert.match(stdout, /Quick start/)
-  })
-
-  test('does not print superpowers install instructions', () => {
-    const target = tempDir()
-    const { stdout } = run([target, '--skip-setup'])
-    // "/plugin install superpowers" only appears in the full install instructions block,
-    // not in the quick start footer which merely links to the repo for reference.
-    assert.doesNotMatch(stdout, /\/plugin install superpowers/)
-  })
-
-  test('does not print taste-skill install command', () => {
-    const target = tempDir()
-    const { stdout } = run([target, '--skip-setup'])
-    assert.doesNotMatch(stdout, /taste-skill/)
-  })
-
-  test('does not print agent install instructions', () => {
-    const target = tempDir()
-    const { stdout } = run([target, '--skip-setup'])
-    assert.doesNotMatch(stdout, /VoltAgent/)
-  })
-})
-
-describe('non-TTY output (piped stdin — prints all instructions)', () => {
-  test('prints superpowers install instructions', () => {
-    const target = tempDir()
-    const { stdout } = run([target])
-    assert.match(stdout, /obra\/superpowers/)
-  })
-
-  test('prints /plugin install for Claude Code', () => {
-    const target = tempDir()
-    const { stdout } = run([target])
-    assert.match(stdout, /\/plugin install superpowers/)
-  })
-
-  test('prints taste-skill npx command', () => {
-    const target = tempDir()
-    const { stdout } = run([target])
-    assert.match(stdout, /npx skills add/)
-    assert.match(stdout, /Leonxlnx\/taste-skill/)
-    assert.match(stdout, /design-taste-frontend/)
-  })
-
-  test('prints VoltAgent agent instructions', () => {
-    const target = tempDir()
-    const { stdout } = run([target])
-    assert.match(stdout, /VoltAgent\/awesome-claude-code-subagents/)
-  })
-
-  test('lists all five required agents by name', () => {
-    const target = tempDir()
-    const { stdout } = run([target])
-    for (const name of ['market-researcher', 'research-analyst', 'frontend-developer', 'code-reviewer', 'ui-ux-tester']) {
-      assert.match(stdout, new RegExp(name), `Expected "${name}" in output`)
+describe('flags', () => {
+  test('--help and -h exit 0 and document every flag', () => {
+    for (const flag of ['--help', '-h']) {
+      const { status, stdout } = run([flag])
+      assert.equal(status, 0)
+      assert.match(stdout, /Usage/)
+      for (const f of ['--force', '--skip-setup', '--version', '--help']) assert.match(stdout, new RegExp(f))
     }
   })
 
-  test('prints quick start section', () => {
-    const target = tempDir()
-    const { stdout } = run([target])
-    assert.match(stdout, /Quick start/)
+  test('--version and -v print the package.json version', () => {
+    for (const flag of ['--version', '-v']) {
+      const { status, stdout } = run([flag])
+      assert.equal(status, 0)
+      assert.equal(stdout.trim(), PKG.version)
+    }
   })
 
-  test('exits with code 0', () => {
-    const target = tempDir()
-    const { status } = run([target])
-    assert.equal(status, 0)
+  test('an unknown flag exits 1, names the flag, shows usage, and installs nothing', () => {
+    const cwd = tempDir()
+    const { status, stderr } = run(['--bogus', '--skip-setup'], { cwd })
+    assert.equal(status, 1)
+    assert.match(stderr, /--bogus/)
+    assert.match(stderr, /Usage/)
+    assert.ok(!existsSync(join(cwd, 'kit')))
   })
 })
 
-describe('quick start path interpolation', () => {
-  test('phase-1-bootstrap.md path uses the installed directory name', () => {
-    const base   = tempDir()
-    const target = join(base, 'my-kit')
-    const cwd    = base
-    const { stdout } = run([target, '--skip-setup'], { cwd })
-    // Should be "my-kit/phase-1-bootstrap.md", NOT "kit/my-kit/..." or "kit/kit/..."
-    assert.match(stdout, /my-kit\/phase-1-bootstrap\.md|my-kit\\phase-1-bootstrap\.md/)
-    assert.doesNotMatch(stdout, /kit\/my-kit|kit\\my-kit/)
+// ─── Fresh install ────────────────────────────────────────────────────────────
+
+describe('fresh install', () => {
+  test('installs the orchestration files, steps and templates', () => {
+    const target = install()
+    for (const f of ['phase-1-bootstrap.md', 'phase-2.md', 'phase-bug-fix.md', 'orchestrator-conventions.md']) {
+      assert.ok(existsSync(join(target, f)), `missing ${f}`)
+    }
+    assert.ok(existsSync(join(target, 'templates')))
+    assert.ok(existsSync(join(target, 'steps')))
   })
 
-  test('phase-2 paths use the installed directory, not a hardcoded "kit/" prefix', () => {
-    const base   = tempDir()
-    const target = join(base, 'custom-dir')
-    const cwd    = base
-    const { stdout } = run([target, '--skip-setup'], { cwd })
-    assert.match(stdout, /custom-dir\/phase-2|custom-dir\\phase-2/)
-    assert.doesNotMatch(stdout, /kit\/custom-dir|kit\\custom-dir/)
-  })
-
-  test('default install (no target-dir) uses "kit" as the relative path', () => {
+  test('defaults to ./kit when no target-dir is given', () => {
     const cwd = tempDir()
-    const { stdout } = run(['--skip-setup'], { cwd })
+    assert.equal(run(['--skip-setup'], { cwd }).status, 0)
+    assert.ok(existsSync(join(cwd, 'kit', 'phase-1-bootstrap.md')))
+  })
+
+  test('excludes resource/ and CHANGELOG.md; installed files match the kit source exactly', () => {
+    const target = install()
+    const expected = walk(KIT).filter(f => f !== 'CHANGELOG.md' && !f.startsWith('resource/'))
+    assert.deepEqual(walk(target).filter(f => !META_FILES.includes(f)), expected)
+    assert.ok(!existsSync(join(target, 'resource')))
+    assert.ok(!existsSync(join(target, 'CHANGELOG.md')))
+  })
+
+  test('writes the version stamp and a sorted manifest of installed kit files', () => {
+    const target = install()
+    assert.equal(readFileSync(join(target, '.craft-kit-version'), 'utf8').trim(), PKG.version)
+    const manifest = readManifest(target)
+    assert.deepEqual(manifest, [...manifest].sort())
+    assert.deepEqual(manifest, walk(target).filter(f => !META_FILES.includes(f)))
+  })
+})
+
+// ─── Non-empty target / --force ──────────────────────────────────────────────
+
+describe('non-empty target', () => {
+  test('exits 1 and points at --force when the target is non-empty', () => {
+    const target = tempDir()
+    writeFileSync(join(target, 'existing.txt'), 'content')
+    const { status, stderr } = run([target])
+    assert.equal(status, 1)
+    assert.match(stderr, /--force/)
+  })
+
+  test('--force installs into a non-empty target and keeps unrelated files', () => {
+    const target = tempDir()
+    writeFileSync(join(target, 'existing.txt'), 'content')
+    assert.equal(run([target, '--force', '--skip-setup']).status, 0)
+    assert.ok(existsSync(join(target, 'phase-1-bootstrap.md')))
+    assert.ok(existsSync(join(target, 'existing.txt')))
+  })
+
+  test('--force removes stale kit files listed in the old manifest, prunes emptied dirs, keeps user files', () => {
+    const target = install()
+    // Simulate an older install that shipped files the current kit no longer has.
+    mkdirSync(join(target, 'retired'), { recursive: true })
+    writeFileSync(join(target, 'retired', 'old-step.md'), 'old')
+    writeFileSync(join(target, 'old-phase.md'), 'old')
+    writeManifest(target, [...readManifest(target), 'retired/old-step.md', 'old-phase.md'].sort())
+    // User content that was never part of the kit.
+    writeFileSync(join(target, 'my-notes.md'), 'mine')
+    mkdirSync(join(target, 'retired2'), { recursive: true })
+    writeFileSync(join(target, 'retired2', 'old-step.md'), 'old')
+    writeFileSync(join(target, 'retired2', 'mine.md'), 'mine')
+    writeManifest(target, [...readManifest(target), 'retired2/old-step.md'].sort())
+
+    assert.equal(run([target, '--force', '--skip-setup']).status, 0)
+
+    assert.ok(!existsSync(join(target, 'old-phase.md')))
+    assert.ok(!existsSync(join(target, 'retired')), 'emptied directory is pruned')
+    assert.ok(!existsSync(join(target, 'retired2', 'old-step.md')))
+    assert.ok(existsSync(join(target, 'retired2', 'mine.md')), 'directory with user files survives')
+    assert.ok(existsSync(join(target, 'my-notes.md')))
+    const after = readManifest(target)
+    for (const gone of ['old-phase.md', 'retired/old-step.md', 'retired2/old-step.md']) {
+      assert.ok(!after.includes(gone), `${gone} should leave the manifest`)
+    }
+  })
+
+  test('--force never deletes outside the target even if the manifest says so', () => {
+    const base = tempDir()
+    const target = join(base, 'kit')
+    assert.equal(run([target, '--skip-setup']).status, 0)
+    writeFileSync(join(base, 'outside.md'), 'precious')
+    writeManifest(target, [...readManifest(target), '../outside.md'])
+    assert.equal(run([target, '--force', '--skip-setup']).status, 0)
+    assert.ok(existsSync(join(base, 'outside.md')))
+  })
+
+  test('--force without a previous manifest warns that renamed files may linger', () => {
+    const target = install()
+    rmSync(join(target, '.craft-kit-manifest.json'))
+    const { status, stdout } = run([target, '--force', '--skip-setup'])
+    assert.equal(status, 0)
+    assert.match(stdout, /linger/)
+    assert.ok(existsSync(join(target, '.craft-kit-manifest.json')), 'manifest is recreated')
+  })
+
+  test('a file as target fails cleanly: non-zero exit, clear message, no stack trace', () => {
+    const file = join(tempDir(), 'not-a-dir')
+    writeFileSync(file, 'i am a file')
+    const { status, stderr } = run([file, '--skip-setup'])
+    assert.notEqual(status, 0)
+    assert.match(stderr, /file/i)
+    assert.doesNotMatch(stderr, /node:internal|\n\s+at /)
+  })
+})
+
+// ─── Post-install output ──────────────────────────────────────────────────────
+
+describe('--skip-setup', () => {
+  test('prints the quick start and none of the setup instructions', () => {
+    const { status, stdout } = run([tempDir(), '--skip-setup'])
+    assert.equal(status, 0)
+    assert.match(stdout, /Quick start/)
+    assert.doesNotMatch(stdout, /\/plugin install superpowers|taste-skill|VoltAgent/)
+  })
+})
+
+describe('non-TTY output (piped stdin prints all setup instructions)', () => {
+  test('prints Superpowers, design-taste-frontend and agent instructions, then the quick start', () => {
+    const { status, stdout } = run([tempDir()])
+    assert.equal(status, 0)
+    assert.match(stdout, /obra\/superpowers/)
+    assert.match(stdout, /\/plugin install superpowers/)
+    assert.match(stdout, /npx skills add .*Leonxlnx\/taste-skill.*design-taste-frontend/)
+    assert.match(stdout, /VoltAgent\/awesome-claude-code-subagents/)
+    assert.match(stdout, /Quick start/)
+  })
+
+  test('requires exactly the six specialist agents', () => {
+    const { stdout } = run([tempDir()])
+    const required = stdout.match(/Required:\s*(.+)/)?.[1].split(',').map(s => s.trim())
+    assert.deepEqual(required?.sort(), [
+      'backend-developer', 'code-reviewer', 'frontend-developer',
+      'market-researcher', 'research-analyst', 'ui-ux-tester',
+    ])
+  })
+})
+
+describe('quick start paths', () => {
+  test('use the installed directory, not a hardcoded "kit/" prefix', () => {
+    const base = tempDir()
+    const { stdout } = run([join(base, 'my-kit'), '--skip-setup'], { cwd: base })
+    for (const f of ['phase-1-bootstrap.md', 'phase-2.md', 'phase-bug-fix.md']) {
+      assert.match(stdout, new RegExp(`my-kit[/\\\\]${f.replace('.', '\\.')}`))
+    }
+    assert.doesNotMatch(stdout, /kit[/\\]my-kit/)
+  })
+
+  test('default install reports "kit" as the relative path', () => {
+    const { stdout } = run(['--skip-setup'], { cwd: tempDir() })
     assert.match(stdout, /kit[/\\]phase-1-bootstrap\.md/)
   })
 })
 
-describe('harness detection', () => {
-  // These tests control the HOME / USERPROFILE env vars so detectHarness()
-  // reads from a clean temp directory, not the real user home.
-  // The "Detected harness:" prefix is emitted at the top of the non-TTY path
-  // and is only present when a specific harness dir was actually found on disk.
+// ─── Kit link integrity ──────────────────────────────────────────────────────
+//
+// Every kit file path an orchestrator tells an agent to read must exist. Only
+// backticked spans and markdown-link targets ending in .md are checked, and
+// only when they look like kit paths (kit/, steps/, templates/, guides/,
+// resource/ prefixes, or bare phase-*.md / well-known kit root names).
+// Skipped: paths with < > * or docs/ (project artifacts and placeholders),
+// CHANGELOG.md (history names deleted files) and resource/ (dev-only).
 
-  test('detects Claude Code when ~/.claude exists', () => {
-    const fakeHome = tempDir()
-    mkdirSync(join(fakeHome, '.claude'), { recursive: true })
-    const target = join(tempDir(), 'kit')
-    const { stdout } = run([target], { home: fakeHome })
-    assert.match(stdout, /Detected harness: Claude Code/)
-  })
+describe('kit link integrity', () => {
+  const KIT_REF = /^(?:\.{1,2}\/)*(?:kit\/)?(?:(?:steps|templates|guides|resource)\/[\w./-]+\.md|(?:phase-[\w-]+|orchestrator-conventions|session-logging|stack-catalog|task-agent-rubric)\.md)$/
+  const PROJECT_ARTIFACT = /^phase-\d-session\.md$/
 
-  test('detects Cursor when ~/.cursor exists', () => {
-    const fakeHome = tempDir()
-    mkdirSync(join(fakeHome, '.cursor'), { recursive: true })
-    const target = join(tempDir(), 'kit')
-    const { stdout } = run([target], { home: fakeHome })
-    assert.match(stdout, /Detected harness: Cursor/)
-  })
+  const kitFiles = walk(KIT).filter(f => f.endsWith('.md'))
+  const scanned = [
+    ...kitFiles.filter(f => f !== 'CHANGELOG.md' && !f.startsWith('resource/')).map(f => join(KIT, f)),
+    join(ROOT, 'README.md'),
+  ]
+  const basenames = new Set(kitFiles.map(f => basename(f)))
 
-  test('detects Gemini when ~/.gemini exists', () => {
-    const fakeHome = tempDir()
-    mkdirSync(join(fakeHome, '.gemini'), { recursive: true })
-    const target = join(tempDir(), 'kit')
-    const { stdout } = run([target], { home: fakeHome })
-    assert.match(stdout, /Detected harness: Gemini CLI/)
-  })
+  function refsIn(text) {
+    const refs = []
+    text.split(/\r?\n/).forEach((line, i) => {
+      const found = [
+        ...[...line.matchAll(/`([^`\s]+)`/g)].map(m => m[1]),
+        ...[...line.matchAll(/\]\(([^)\s]+)\)/g)].map(m => m[1].replace(/#.*$/, '')),
+      ]
+      for (const ref of found) {
+        if (/[<>*]|docs\//.test(ref) || /^[a-z]+:/i.test(ref) || !KIT_REF.test(ref)) continue
+        if (PROJECT_ARTIFACT.test(basename(ref))) continue
+        refs.push({ ref, line: i + 1 })
+      }
+    })
+    return refs
+  }
 
-  test('prints "No harness detected" when no known directory exists', () => {
-    const fakeHome = tempDir()  // empty — no .claude, .cursor, .gemini etc.
-    const target = join(tempDir(), 'kit')
-    const { stdout } = run([target], { home: fakeHome })
-    assert.match(stdout, /No harness detected/)
-  })
+  function resolves(ref, fromFile) {
+    const clean = ref.replace(/^(?:\.\/)+/, '')
+    if ([KIT, dirname(fromFile), ROOT].some(base => existsSync(join(base, clean)))) return true
+    // A bare name (no directory) may name a file anywhere in the kit, e.g. phase-1-kickoff.md.
+    return !clean.includes('/') && basenames.has(clean)
+  }
 
-  test('does not print "Detected harness" when no known directory exists', () => {
-    const fakeHome = tempDir()
-    const target = join(tempDir(), 'kit')
-    const { stdout } = run([target], { home: fakeHome })
-    assert.doesNotMatch(stdout, /Detected harness:/)
+  test('every referenced kit file exists', () => {
+    const broken = []
+    let checked = 0
+    for (const file of scanned) {
+      for (const { ref, line } of refsIn(readFileSync(file, 'utf8'))) {
+        checked++
+        if (!resolves(ref, file)) broken.push(`${relative(ROOT, file)}:${line} → ${ref}`)
+      }
+    }
+    assert.ok(checked > 20, `scanner found only ${checked} references — the patterns are probably broken`)
+    assert.deepEqual(broken, [], `Broken kit references:\n  ${broken.join('\n  ')}`)
   })
 })

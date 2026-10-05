@@ -2,87 +2,47 @@
 
 ## Overview
 
-- **Purpose**: Break the feature into ordered implementation tasks with exact files, interfaces, and test steps.
-- **Skill/Agent**: `writing-plans` skill
+- **Purpose**: Break the approved spec into ordered tasks, give each a specialist, and mark parallel groups.
+- **Agent/Skill**: `writing-plans` skill
 - **Model**: `balanced`
-- **Trigger**: `docs/specs/<feature-slug>/spec.md` exists and is approved (Step 1 gate passed)
+- **Gate**: `soft` — plan summary
 - **Inputs**:
-  - `docs/specs/<feature-slug>/spec.md`
-  - `docs/architecture.md`
-  - `docs/constitution.md`
+  - the spec (`docs/specs/spec.md` or `docs/specs/<feature-slug>/spec.md`)
+  - `docs/architecture.md`, `docs/constitution.md`
+  - `kit/task-agent-rubric.md` — specialist routing, task splitting, and the parallel-group format
 - **Outputs**:
-  - `docs/specs/<feature-slug>/plan.md` — ordered implementation plan with concrete tasks; each task has exact files, interfaces, test steps, and implementation steps; no placeholders
-- **Gate**: `soft` — present a plan summary before advancing; do not dispatch Step 3 silently
+  - `scope: feature` → `docs/specs/<feature-slug>/plan.md`
+  - `scope: all` → `docs/specs/plan.md`
+- **Template**: none
 
 ## Scope
 
-### In Scope
+- **In**: ordered tasks with exact files, interfaces, test steps, and implementation steps; one `Specialist:` per task; parallel groups; validation against architecture and constitution.
+- **Out**: writing code (Step 3); tasks for features outside the spec.
 
-- Breaking the approved spec into ordered, concrete implementation tasks
-- Marking each task as parallel or sequential based on file scope
-- Validating the plan against `docs/architecture.md` and `docs/constitution.md`
-- Running the skill's self-review loop: placeholder scan, spec coverage, type consistency check
+## Rules
 
-### Out of Scope
-
-- Assigning specialist agents to tasks — that is Step 3
-- Implementing any code — that is Step 4
-
-### Scope Boundary
-
-> The plan covers exactly the feature described in `spec.md`. No tasks may be added for adjacent features or infrastructure not required by this feature.
-
-## Execution Rules
-
-- Invoke the `writing-plans` skill with the spec, architecture doc, and constitution as inputs.
-- The skill's self-review loop (placeholder scan, spec coverage, type consistency check) must complete before the plan is used in Step 3.
-- Tasks must be explicitly marked parallel vs. sequential based on file scope — Step 3 uses this to decide dispatch strategy.
-- After the plan is written, validate it against `docs/architecture.md` and `docs/constitution.md` before finalizing.
-
-## Artifact Rules
-
-- **Artifact**: `docs/specs/<feature-slug>/plan.md`
-- Each task must have: exact files, interfaces, test steps, and implementation steps. No placeholder content.
-- Parallel groups must be marked with `<!-- Parallel group -->` in the plan so Step 3 and Step 4 can identify them.
-- **Status / approval condition**: Soft gate — present a summary (task count, files, key decisions, parallel groups identified) and give the user an opportunity to request changes before advancing. A soft gate is not a silent advance.
+- Invoke `writing-plans` with the spec, architecture, and constitution. Its self-review loop (placeholder scan, spec coverage, type consistency) must finish before the gate.
+- Order tasks by dependency (build order), never by MoSCoW priority. `scope: all` interleaves tasks across features where dependencies require it.
+- No placeholders: every task names exact files, interfaces, test steps, and implementation steps.
+- Every task carries one `Specialist:` line chosen with `kit/task-agent-rubric.md`. A task spanning two domains is split first, per the rubric.
+- Mark parallel groups in the format the rubric defines. Step 3 dispatches from these marks and does not re-decide them.
+- Validate the plan against `docs/architecture.md` and `docs/constitution.md` before presenting it.
+- **Scope check (`scope: all` only):** if more than 20% of tasks go to a minority specialist, recommend switching to `scope: feature` (selection criteria: `kit/steps/phase-1/p1-04-roadmap.md`). If the user confirms, set `Phase 2 Scope: feature` in `docs/roadmap.md` and follow the mid-cycle escape in `kit/phase-2.md`.
+- Present the summary — task count, files, key decisions, specialist split, parallel groups. After significant requested changes, re-run the self-review loop before advancing.
 
 ## Completion Criteria
 
-The step is considered complete when:
+- [ ] Plan file exists with all tasks, each with exactly one `Specialist:` line
+- [ ] Parallel groups marked
+- [ ] Validated against `docs/architecture.md` and `docs/constitution.md`; self-review loop complete
+- [ ] Summary presented and requested changes incorporated
 
-- [ ] `docs/specs/<feature-slug>/plan.md` exists with all tasks defined
-- [ ] Each task has exact files, interfaces, test steps, and implementation steps — no placeholders
-- [ ] Tasks are marked parallel vs. sequential
-- [ ] The plan has been validated against `docs/architecture.md` and `docs/constitution.md`
-- [ ] The self-review loop has completed
-- [ ] A summary has been presented to the user and any requested changes have been incorporated
+## Transitions
 
-## Transition Rules
-
-### Before Advancing
-
-- The self-review loop must have completed without unresolved issues.
-- Present the plan summary to the user; wait for acknowledgement or change requests before advancing.
-- Gate summary: present task count, files touched, key decisions, and parallel groups identified.
-
-### Next Step
-
-- **Default**: Step 3 — Assign Specialists
-- **Optional skip**: No
-- **User decision required**: Yes — soft gate requires visibility; user must have seen the summary
-
-### Transition Record
-
-- **Record**: session log (per `kit/session-logging.md`)
-- **Values**: `complete`
-
-## Exceptions / Special Cases
-
-- If the user requests significant changes after seeing the plan summary, re-run the self-review loop on the revised plan before advancing.
+- **Next**: Step 3 — Implement
 
 ## References
 
 - `writing-plans` skill
-- `docs/specs/<feature-slug>/spec.md`
-- `docs/architecture.md`
-- `docs/constitution.md`
+- `kit/task-agent-rubric.md`

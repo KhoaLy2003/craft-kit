@@ -1,16 +1,16 @@
-# e2e-tests.md — Output Template for Step 5a: E2E Testing Plan
+# e2e-tests.md
 
 ## Metadata
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
-- **Based on**: `docs/specs/spec.md`
+- **Based on**: <!-- path of the approved spec, e.g. docs/specs/spec.md or docs/specs/<feature-slug>/spec.md -->
 
 ---
 
 ## 1. Overview
 
-<!-- Fill in totals derived from docs/specs/spec.md. Time estimate: roughly 30-60 seconds per test case as a baseline. -->
+<!-- Fill in totals derived from the spec. Time estimate: roughly 30-60 seconds per test case as a baseline. -->
 
 - **Total acceptance criteria**:
 - **Test cases planned**:
@@ -23,10 +23,10 @@
 
 ## 2. Prerequisites Checklist
 
-<!-- Every item here must be checked before Step 5b begins. If any box is unchecked, E2E cannot start. -->
+<!-- Every item must be checked before the E2E run begins. If any box is unchecked, E2E cannot start. -->
 
 - [ ] Dev server starts without errors (`npm run dev` or equivalent)
-- [ ] `.env` has all required values (verified in Step 9 Scaffold — re-confirm here)
+- [ ] `.env` has all required values (set up during Scaffold — re-confirm here)
 - [ ] <!-- add one line per external service or infrastructure requirement -->
 - [ ] Test data seeded (see Section 5)
 - [ ] Test credentials documented below and available
@@ -44,7 +44,7 @@
 
 ## 3. Test Coverage Map
 
-<!-- One table per feature from docs/specs/spec.md. AC IDs must match those in the spec exactly. Status column stays blank until Step 5b runs. -->
+<!-- One table per feature in the spec. AC IDs must match the spec exactly. Under `scope: feature` each cycle appends its own Feature block. Status stays blank until the E2E run; then PASS / FAIL / BLOCKED. -->
 
 <!-- Repeat this block for each feature: -->
 
@@ -61,7 +61,7 @@
 
 ## 4. External Service Setup
 
-<!-- One section per external service. Skip this section if the project has no external services. -->
+<!-- One section per external service. Skip this section if the project has no external services. Every service needs a provisioning checklist, a verification command, and at least one troubleshooting entry. -->
 
 <!-- Repeat this block for each service: -->
 
@@ -88,6 +88,35 @@
 
 - **If `<!-- common error message -->`**: <!-- cause and fix -->
 - **If `<!-- second common error -->`**: <!-- cause and fix -->
+
+<!--
+EXAMPLE — Supabase. Adapt and keep when the project uses Supabase; delete otherwise.
+
+### Supabase
+
+**What it does:**
+Hosts the Postgres database and the auth service.
+
+**Must-do checklist:**
+
+- [ ] Project created; schema migration applied
+- [ ] `SUPABASE_URL` and `SUPABASE_ANON_KEY` in `.env`
+- [ ] Test users created MANUALLY — Supabase Dashboard → Authentication → Users → "Add user", using the exact emails and passwords in Section 2. Test users cannot be created programmatically.
+- [ ] Each test user's UUID copied from the Auth dashboard and inserted into `profiles` (the profile `id` must equal the Auth user ID)
+- [ ] Test data seeded (e.g. `node seed.mjs`) after the profiles exist
+- [ ] Connection verified
+
+**Verification:**
+
+    Sign in with a test credential; then run: SELECT COUNT(*) FROM profiles; — expect at least the number of test users
+
+**Troubleshooting:**
+
+- **If `Invalid login credentials`**: the test users do not exist in Auth yet — create them in the dashboard. This is the most common E2E blocker on Supabase projects.
+- **If a signed-in user sees no data**: the profile `id` does not match the Auth UUID — re-copy the UUID and update the profile row.
+
+If provisioning takes more than a few lines, put the step-by-step walkthrough in a separate `PROVISIONING.md` and link it here.
+-->
 
 <!-- Add more services above this line -->
 
@@ -129,7 +158,7 @@
 
 ## 7. Troubleshooting Failed Tests
 
-<!-- Add one entry per known failure pattern. Populated incrementally as failures are encountered in Step 5b. -->
+<!-- Add one entry per known failure pattern. Populated incrementally as failures are encountered during the run. -->
 
 <!-- Template for each entry: -->
 
@@ -137,14 +166,3 @@
 - **Cause**: <!-- root cause -->
 - **Fix**: <!-- exact step to resolve -->
 - **Verify**: <!-- how to confirm the fix worked -->
-
----
-
-## Gate Checklist (before proceeding to Step 5b)
-
-- [ ] All acceptance criteria from `docs/specs/spec.md` appear in Section 3 (or are explicitly noted as excluded with reason)
-- [ ] Every external service in Section 4 has a provisioning checklist and at least one troubleshooting entry
-- [ ] Test credentials documented in Section 2
-- [ ] Section 5 covers every data state the test suite depends on
-- [ ] Section 6 commands are exact — copy-paste runnable with no gaps
-- [ ] User has reviewed and approved this plan

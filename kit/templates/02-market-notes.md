@@ -1,4 +1,4 @@
-# market-notes.md — Output Template for Step 2: Market Research for Inspiration
+# market-notes.md
 
 ## Metadata
 
@@ -10,7 +10,7 @@
 
 ## 1. Comparable Products
 
-<!-- List products that solve the same or an adjacent problem. Include direct competitors and "existing alternatives" (spreadsheets, manual process, unrelated tools people repurpose). One row per product, keep each entry short. -->
+<!-- Direct competitors and "existing alternatives" (spreadsheets, manual process, repurposed tools). At least 2-3 rows; keep each short. -->
 
 | Product | What it does | Who uses it | Strengths | Weaknesses / gaps |
 |---|---|---|---|---|
@@ -22,7 +22,7 @@
 
 ## 2. Trends
 
-<!-- What's shifting in this space right now — user behavior, technology, regulation, adjacent markets. Only include trends that actually affect this idea's timing or direction. -->
+<!-- What's shifting right now (behavior, technology, regulation, adjacent markets). Only trends that affect this idea's timing or direction. -->
 
 -
 
@@ -30,7 +30,7 @@
 
 ## 3. Market Gaps
 
-<!-- Where do the comparable products above fall short, for the target user defined in idea-brief.md specifically? -->
+<!-- Where the products above fall short for the target user in `idea-brief.md` specifically. -->
 
 -
 
@@ -38,7 +38,7 @@
 
 ## 4. Differentiation Angle
 
-<!-- One clear statement: why would the target user pick this over what already exists? If no honest answer exists yet, say so explicitly rather than forcing one. -->
+<!-- One statement: why would the target user pick this over what exists? If no honest answer exists yet, say so rather than forcing one. -->
 
 -
 
@@ -46,10 +46,7 @@
 
 ## 5. Feature Inspirations
 
-<!-- Features, patterns, or interactions from the comparable products above that this project does not have in its current idea scope but should consider adding.
-     Focus on features that genuinely add user value — not ones that just copy what competitors do.
-     Each entry answers: what does it do, which product has it, and why would it matter for this project's target user?
-     These are candidates only — the roadmap step decides which ones make the cut. -->
+<!-- Features, patterns, or interactions from the products above that this project lacks but should consider. Only features that add real user value, not ones that merely copy a competitor. Each row: what it does, which product has it, why it matters for this target user. Candidates only: the roadmap decides which make the cut. At least 2-3 concrete rows. -->
 
 | Feature / Pattern | Seen in | What it does | Why relevant to this project |
 |---|---|---|---|
@@ -61,7 +58,7 @@
 
 ## 6. Reasons This Might Not Work
 
-<!-- Deliberately adversarial section. Argue against the idea: is the problem painful enough that people are already paying (money or time) to solve it? Is the market too small, too crowded, or already well served? -->
+<!-- Deliberately adversarial. Is the problem painful enough that people already pay (money or time) to solve it? Is the market too small, too crowded, or already well served? -->
 
 -
 
@@ -69,16 +66,6 @@
 
 ## 7. Conclusions
 
-<!-- One paragraph: the single most important finding, what it means for the proceed/pivot/stop decision, and the top 2-3 feature inspirations worth carrying into the roadmap. -->
+<!-- One paragraph: the single most important finding, what it means for the proceed / pivot / stop decision, and the top 2-3 feature inspirations worth carrying into the roadmap. -->
 
 -
-
----
-
-## Gate Checklist (before proceeding to Step 3 — Interactive Prototype)
-
-- [ ] At least 2-3 comparable products/alternatives researched, not zero
-- [ ] Feature Inspirations section populated — at least 2-3 candidates with clear relevance rationale
-- [ ] Differentiation angle is honest — not forced if it doesn't hold up
-- [ ] "Reasons this might not work" section is not skipped or token
-- [ ] Decision made: proceed, pivot, or stop

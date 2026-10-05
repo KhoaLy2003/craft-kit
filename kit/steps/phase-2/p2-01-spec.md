@@ -1,93 +1,51 @@
-# Phase 2 · Step 1 — Brainstorm & Spec
+# Phase 2 · Step 1 — Spec
 
 ## Overview
 
-- **Purpose**: Write detailed acceptance criteria and edge cases for the feature; resolve ambiguity before implementation begins.
-- **Skill/Agent**: `brainstorming` skill
+- **Purpose**: Write acceptance criteria and edge cases; resolve ambiguity before planning.
+- **Agent/Skill**: `brainstorming` skill (Architectural mode when `scope: all`)
 - **Model**: `capable`
-- **Trigger**: Orchestrator selects the next `pending` feature from `docs/roadmap.md`
+- **Gate**: `hard` — approval of the spec
 - **Inputs**:
-  - `docs/roadmap.md` (feature entry)
-  - `docs/constitution.md`
-  - `docs/architecture.md`
-  - `docs/DESIGN.md`
-  - `docs/designs/<feature-slug>/` — screen designs from Phase 1 Step 6 or Design Sprint (if they exist for this feature)
-  - `docs/specs/<feature-slug>/screens/*.md` — per-screen briefs from Phase 1 Step 6 (if they exist)
+  - `docs/roadmap.md` (the feature entry, or all Must entries), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`
+  - `docs/designs/<feature-slug>/` and `docs/specs/<feature-slug>/screens/*.md` — designs and briefs from Phase 1 Step 5 (including a re-entry for new features), if they exist
 - **Outputs**:
-  - `docs/specs/<feature-slug>/spec.md` — acceptance criteria, edge cases, UI behavior (or behavior delta when designs exist), non-goals, open questions resolved
+  - `scope: feature` → `docs/specs/<feature-slug>/spec.md`
+  - `scope: all` → `docs/specs/spec.md`, one `##` section per feature in build order
 - **Template**: none
 
 ## Scope
 
-### In Scope
+- **In**: acceptance criteria with stable IDs, edge cases, non-goals, and UI behavior as the spec mode below dictates; constitution check; user approval.
+- **Out**: implementation planning (Step 2); technical or architectural decisions — the spec describes behavior, not implementation; batching features under `scope: feature`.
+- **Boundary**: the spec covers exactly the roadmap entry (entries) selected. If a feature is larger than estimated or a section stays ambiguous, flag it and re-agree scope before approval — never expand silently, never approve an ambiguous section.
 
-- Clarifying questions to resolve feature ambiguity
-- Proposed approaches and design sections
-- Acceptance criteria, edge cases, UI behavior, and non-goals for the single selected feature
-- Compliance check against `docs/constitution.md`
-- User review and explicit approval of the written spec
+## Rules
 
-### Out of Scope
-
-- Implementation planning — that is Step 2
-- Technical or architectural decisions — the spec describes behavior, not implementation
-- Batching multiple features together — one spec per feature cycle
-
-### Scope Boundary
-
-> The spec covers exactly one feature from the roadmap entry. If brainstorming reveals the feature is larger than estimated, flag this and re-agree scope before proceeding — do not silently expand.
-
-## Execution Rules
-
-- Invoke the `brainstorming` skill. It handles the full loop: clarifying questions → proposed approaches → design sections → written spec → user review.
-- Feature slug: use the slug assigned in Phase 1 Step 6 (lowercase kebab-case of the roadmap feature name) so `docs/specs/<feature-slug>/` and `docs/designs/<feature-slug>/` line up. If Step 6 was skipped or the feature is new, derive it the same way.
-- If `docs/designs/<feature-slug>/` exists for this feature, it is the source of truth for the UI. The spec records only behavior not visible in the designs: acceptance criteria, validation rules, data constraints, auth flows, error scenarios, and edge cases. Do not re-describe the layout or visual content the designs already show.
-- If the spec discovers a screen that has no corresponding design file, list it under an "Undesigned screens" section at the end of the spec. Implementation uses `docs/DESIGN.md` + `docs/preview/` as the fallback for those screens; the user may run the Design Sprint if a designer must supply a design.
-- If no `docs/designs/<feature-slug>/` exists (e.g. the feature was added in Phase 3 without a Design Sprint), write the full spec including UI behavior as today.
-- The spec must check compliance against `docs/constitution.md` before it is presented to the user.
-- Do not invoke `writing-plans` from inside this skill — that is the next step.
-- The orchestrator does not advance until the user explicitly approves the spec.
-
-## Artifact Rules
-
-- **Artifact**: `docs/specs/<feature-slug>/spec.md`
-- The skill writes the spec as its terminal output. Do not create it manually outside the skill.
-- **Status / approval condition**: The hard gate requires explicit user approval of the spec before the orchestrator advances.
+- Skipped when `kit/phase-2.md` skip detection applies.
+- Invoke `brainstorming`; it runs clarifying questions → approaches → design sections → written spec. Do not invoke `writing-plans` from inside it — that is Step 2.
+- Feature slug: the slug assigned in Phase 1 Step 5 (lowercase kebab-case of the roadmap feature name), so `docs/specs/<feature-slug>/` and `docs/designs/<feature-slug>/` line up. Derive it the same way if Step 5 was skipped or the feature is new.
+- Each feature's spec (or section) holds acceptance criteria, edge cases, and non-goals. `scope: all` adds, per section, how the feature connects to the one before it, and makes every cross-feature interaction explicit.
+- **Spec mode** — the one rule for UI content:
+  - *Behavior-only* — when designs exist in `docs/designs/<feature-slug>/`, or a Step 5 re-entry will supply them after this spec: record only what the designs do not show (acceptance criteria, validation rules, data constraints, auth flows, error scenarios, edge cases). Do not describe layout or visuals. Include a `## Screens` list naming every screen the feature needs; when designs already exist, mark screens lacking a design file `undesigned` — they fall back to `docs/DESIGN.md` + `docs/preview/`.
+  - *Full* — no designs and none planned: also write the UI behavior in full.
+- If per-screen briefs exist in `docs/specs/<feature-slug>/screens/`, fill each brief's Acceptance criteria section (section 8) with that screen's criteria, using the same IDs as `spec.md`; `spec.md` stays the complete index.
+- Check the spec against `docs/constitution.md` before presenting it.
+- Write the spec to disk, give the user the path, and ask them to review there. `scope: all`: review section by section and approve the whole document once, not per feature.
 
 ## Completion Criteria
 
-- [ ] `docs/specs/<feature-slug>/spec.md` exists and contains acceptance criteria, edge cases, non-goals, and resolved open questions
-- [ ] If `docs/designs/<feature-slug>/` exists: spec is behavior-delta only (no re-describing layout already shown in designs); any screens with no design listed under "Undesigned screens"
-- [ ] If no designs exist: spec includes full UI behavior description
-- [ ] The spec is scoped to a single feature
-- [ ] The spec has been checked against `docs/constitution.md`
-- [ ] The user has explicitly approved the spec
+- [ ] Spec file exists with acceptance criteria, edge cases, non-goals, and resolved open questions (`scope: all`: one section per Must feature in build order, cross-feature interactions explicit)
+- [ ] Spec mode applied: behavior-only with a `## Screens` list when designs exist or are coming; full UI behavior otherwise
+- [ ] Checked against `docs/constitution.md`
+- [ ] User has explicitly approved
 
-## Transition Rules
+## Transitions
 
-### Before Advancing
-
-- The user must have explicitly approved the written spec.
-- Gate summary: *"The spec for [feature name] is done — acceptance criteria, edge cases, and non-goals are defined. Does this correctly describe the feature as you want it built?"*
-
-### Next Step
-
-- **Default**: Step 2 — Plan
-- **User decision required**: Yes — explicit approval required at the hard gate
-
-### Transition Record
-
-- **Record**: session log (per `kit/session-logging.md`)
-- **Values**: `complete`
-
-## Exceptions / Special Cases
-
-- If brainstorming reveals the feature is larger than the roadmap estimate, halt and re-agree scope with the user before writing the spec. Do not silently expand scope.
+- **Next**: Step 2 — Plan
+- **Gate summary**: *`scope: feature` — "The spec for [feature name] defines its acceptance criteria, edge cases, and non-goals. Approve it as the description of what gets built." `scope: all` — "The full-app spec has one section per feature. Approve it as the contract for all of them — a wrong assumption here propagates into every feature."*
 
 ## References
 
 - `brainstorming` skill
-- `docs/constitution.md`
-- `docs/architecture.md`
-- `docs/DESIGN.md`
-- `templates/spec-screen.md` — per-screen briefs are produced in Phase 1 Step 6 and placed at `docs/specs/<feature-slug>/screens/<screen-name>.md`; use this template only if no Phase 1 Step 6 designs exist for this feature and screens need to be documented before Step 2 (Plan)
+- `kit/templates/spec-screen.md` — use only if no Phase 1 screen briefs exist and screens must be documented before Plan

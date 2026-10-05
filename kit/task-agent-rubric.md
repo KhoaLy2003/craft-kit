@@ -1,9 +1,20 @@
 # Task → Specialist Agent Rubric
 
-This reference is used in **Phase 2, Step 3 — Assign Specialists**.
-After `writing-plans` produces `plan.md`, read each task and annotate it with `Specialist: <agent-name>` using this table as a guide.
+Used in **Phase 2, Step 2 — Plan**. After `writing-plans` produces the plan, read each task and give it one `Specialist:` line using this table.
 
-> Update this file to match the agents actually configured in your project.
+> Update this file to match the agents actually configured in your harness.
+
+---
+
+## Annotation Format
+
+One `Specialist:` line directly under the task heading. Use `task` for the general-purpose agent.
+
+```markdown
+### Task 2: Build login form component
+**Specialist:** frontend-developer
+- Files: Create: src/components/LoginForm.tsx
+```
 
 ---
 
@@ -11,75 +22,72 @@ After `writing-plans` produces `plan.md`, read each task and annotate it with `S
 
 | Task involves... | Signals in the task description | Use agent |
 |---|---|---|
-| React/Vue/Angular components, CSS, HTML, UI layout | "component", "page", "form", "style", "layout", "UI", "frontend" | `frontend-developer` — **always include `docs/DESIGN.md` + `docs/preview/` in the dispatch brief** (approved visual contract from Phase 1 Step 4); also include the screen-specific file from `docs/designs/` if one exists for the screen being implemented |
-| UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` + `design-taste-frontend` skill (**required** — include in every dispatch matching these signals; generic AI patterns are the default failure mode for UI tasks) — **also include `docs/DESIGN.md` + `docs/preview/`** and the screen-specific file from `docs/designs/` if available |
-| Visual design, icons, mockup implementation, accessibility | "design", "icon", "color", "typography", "accessibility", "a11y" | your general-purpose agent (or a dedicated visual design agent if available) |
+| React/Vue/Angular components, CSS, HTML, UI layout | "component", "page", "form", "style", "layout", "UI", "frontend" | `frontend-developer` — dispatch per the Frontend dispatch contract in `kit/orchestrator-conventions.md` |
+| UI visual quality, premium design, anti-generic patterns | "visual quality", "design upgrade", "polish", "no generic patterns", "premium UI" | `frontend-developer` + `design-taste-frontend` skill (**required** for tasks matching these signals; generic AI patterns are the default failure mode for UI work) |
+| Visual design, icons, mockup implementation, accessibility | "design", "icon", "color", "typography", "accessibility", "a11y" | general-purpose agent (`task`), or a dedicated visual design agent if available |
 | REST/GraphQL API endpoints, controllers, middleware | "endpoint", "route", "controller", "handler", "API" | `backend-developer` |
 | Database schema, migrations, queries, ORM models | "schema", "migration", "model", "query", "table", "index" | `backend-developer` |
 | Business logic, services, domain rules | "service", "logic", "rule", "calculation", "validation" | `backend-developer` |
 | Authentication, authorization, sessions | "auth", "login", "JWT", "session", "permission", "role" | `backend-developer` |
-| Infrastructure, CI/CD, environment config | "CI", "deploy", "env", "config", "Docker", "workflow" | your general-purpose agent |
+| Infrastructure, CI/CD, environment config | "CI", "deploy", "env", "config", "Docker", "workflow" | general-purpose agent (`task`) |
 | Tests (unit, integration) | "test", "spec", "assertion", "mock" | same agent as the code being tested |
 | Multi-domain task crossing frontend + backend | task describes both UI and API work | **split the task first** |
+
+`task` is not a fallback for unclassified work — use the table first.
 
 ---
 
 ## Splitting Multi-Domain Tasks
 
-If a task touches both frontend and backend, it is two tasks being described as one.
-Split before annotating. Example:
+A task that touches both frontend and backend is two tasks described as one. Split before annotating; a task with two specialists is too large.
 
-**Before split:**
+**Before:**
 ```markdown
 ### Task 4: Build product listing feature
 - Files: Create src/components/ProductList.tsx, src/api/products.ts
 ```
 
-**After split:**
+**After:**
+```markdown
 ### Task 4a: Build product listing API endpoint
-**Specialist:** `backend-developer`
+**Specialist:** backend-developer
 - Files: Create: src/api/products.ts
 
 ### Task 4b: Build product listing UI component
-**Specialist:** `frontend-developer`
+**Specialist:** frontend-developer
 - Files: Create: src/components/ProductList.tsx
 - Depends on: Task 4a (consumes GET /api/products)
 ```
 
-Splitting makes dependency explicit and enables parallel dispatch when the file scopes are disjoint.
+Splitting makes the dependency explicit and enables parallel dispatch when file scopes are disjoint.
 
 ---
 
-## Parallel Dispatch Eligibility
+## Parallel Groups
 
-After all tasks are annotated, identify groups that can run in parallel.
-Tasks can run in parallel when:
-1. Their file scopes do not overlap (no shared files)
-2. Neither task depends on the output of the other
+Tasks can run in parallel when (1) their file scopes do not overlap and (2) neither depends on the other's output. Tasks of one specialist within a feature are often independent of each other.
 
-Common pattern: all `frontend-developer` tasks for a feature are often independent of each other. Same for all general-purpose-agent API tasks.
+Mark each group in the plan with one comment line:
 
-Mark parallel-eligible task groups in the plan before dispatching:
 ```markdown
 <!-- Parallel group A: tasks 2, 3 — disjoint files, no dependency -->
 ```
 
-Then use the `dispatching-parallel-agents` skill for each group, and `subagent-driven-development` skill for sequential chains.
+Step 3 dispatches each group with `dispatching-parallel-agents` and every sequential chain with `subagent-driven-development`; it does not re-decide the groups.
 
 ---
 
-## Available Agents Quick Reference
+## Available Agents
 
-Update this section to match the agents actually configured in your harness. Replace any default names that differ from your harness configuration — particularly for the four harness-dependent roles in the second table.
-
-**Specialist agents (install before starting):**
+Installed by the kit's CLI (six agents):
 
 | Agent | Type | Good for |
 |---|---|---|
-| `frontend-developer` | Specialist | UI components, pages, CSS, state management; invoke the `design-taste-frontend` skill for premium new UI, `redesign-existing-projects` skill for existing UI upgrades |
+| `frontend-developer` | Specialist | UI components, pages, CSS, state management; `design-taste-frontend` skill for premium new UI, `redesign-existing-projects` skill for upgrading existing UI |
 | `backend-developer` | Specialist | REST/GraphQL APIs, business logic, database schemas, auth, middleware |
 | `code-reviewer` | Review | Code review with spec and constitution compliance check |
 | `ui-ux-tester` | Testing | Browser-driven UI/UX flow testing |
 | `market-researcher` | Research | Market landscape, competitor analysis |
 | `research-analyst` | Research | Technology and domain research, synthesis |
-| `sonic` | Mechanical | Simple, repetitive, mechanical edits |
+
+`sonic` (simple, repetitive, mechanical edits) is an optional harness-provided agent, not installed by the kit.

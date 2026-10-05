@@ -4,7 +4,6 @@
 
 const fs        = require('fs')
 const path      = require('path')
-const os        = require('os')
 const https     = require('https')
 const readline  = require('readline')
 const { spawnSync } = require('child_process')
@@ -16,14 +15,13 @@ const PKG = require('../package.json')
 const TTY = Boolean(process.stdout.isTTY)
 const esc = TTY ? (c, s) => `\x1b[${c}m${s}\x1b[0m` : (_, s) => s
 
-const bold   = s => esc('1',    s)
-const dim    = s => esc('2',    s)
-const green  = s => esc('32',   s)
-const cyan   = s => esc('36',   s)
-const yellow = s => esc('33',   s)
-const red    = s => esc('31',   s)
-const bCyan  = s => esc('1;36', s)
-const bGreen = s => esc('1;32', s)
+const bold    = s => esc('1',    s)
+const dim     = s => esc('2',    s)
+const cyan    = s => esc('36',   s)
+const yellow  = s => esc('33',   s)
+const red     = s => esc('31',   s)
+const bCyan   = s => esc('1;36', s)
+const bGreen  = s => esc('1;32', s)
 const bYellow = s => esc('1;33', s)
 
 const SYM = {
@@ -44,12 +42,12 @@ const HR = dim('─'.repeat(52))
 // Skill (1 of 9):   https://github.com/Leonxlnx/taste-skill
 //   → design-taste-frontend — installed via `npx skills add` (cross-harness).
 //
-// Agents (5):       https://github.com/VoltAgent/awesome-claude-code-subagents
-//   → downloaded as .md files; installed to .claude/agents/ (project-scoped)
-//     or ~./claude/agents/ for global access.
+// Agents (6):       https://github.com/VoltAgent/awesome-claude-code-subagents
+//   → downloaded as .md files into <cwd>/.agents/agents/ (project-scoped).
 
 const TASTE_SKILL_REPO = 'https://github.com/Leonxlnx/taste-skill'
 const TASTE_SKILL_NAME = 'design-taste-frontend'
+const TASTE_SKILL_CMD  = `npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes`
 const VOLTAGENT_RAW    = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
 
 const REQUIRED_AGENTS = [
@@ -61,47 +59,39 @@ const REQUIRED_AGENTS = [
   { name: 'ui-ux-tester',       path: 'categories/04-quality-security/ui-ux-tester.md' },
 ]
 
-// ─── Harness detection ────────────────────────────────────────────────────────
-
-function detectHarness () {
-  const home = os.homedir()
-  const cwd  = process.cwd()
-  if (fs.existsSync(path.join(home, '.claude')))            return 'claude-code'
-  if (fs.existsSync(path.join(home, '.cursor')))            return 'cursor'
-  if (fs.existsSync(path.join(home, '.gemini')))            return 'gemini'
-  if (fs.existsSync(path.join(home, '.config', 'hermes'))) return 'hermes'
-  if (fs.existsSync(path.join(cwd,  '.github', 'copilot'))) return 'copilot'
-  return null
-}
-
-const HARNESS_LABELS = {
-  'claude-code': 'Claude Code',
-  cursor:        'Cursor',
-  gemini:        'Gemini CLI',
-  hermes:        'Hermes',
-  copilot:       'GitHub Copilot',
-}
+const VERSION_FILE  = '.craft-kit-version'
+const MANIFEST_FILE = '.craft-kit-manifest.json'
+const KNOWN_FLAGS   = new Set(['--force', '--skip-setup', '--help', '-h', '--version', '-v'])
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function prompt (rl, question) {
-  return new Promise(resolve => rl.question(question, resolve))
+function die (msg) {
+  console.error(`\n  ${SYM.cross}  ${msg}\n`)
+  process.exit(1)
 }
 
-function httpsGet (url) {
+const readKitFile = (target, name) => { try { return fs.readFileSync(path.join(target, name), 'utf8') } catch { return null } }
+
+function httpsGet (url, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'craft-kit-installer' } }, res => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return httpsGet(res.headers.location).then(resolve).catch(reject)
+    const req = https.get(url, { headers: { 'User-Agent': 'craft-kit-installer' }, timeout: 15_000 }, res => {
+      const { statusCode, headers } = res
+      if (statusCode >= 300 && statusCode < 400 && headers.location) {
+        res.resume()
+        if (redirectsLeft <= 0) return reject(new Error(`Too many redirects fetching ${url}`))
+        return httpsGet(new URL(headers.location, url).href, redirectsLeft - 1).then(resolve, reject)
       }
-      if (res.statusCode !== 200) {
-        return reject(new Error(`HTTP ${res.statusCode} fetching ${url}`))
+      if (statusCode !== 200) {
+        res.resume()
+        return reject(new Error(`HTTP ${statusCode} fetching ${url}`))
       }
       const chunks = []
       res.on('data', c => chunks.push(c))
       res.on('end',  () => resolve(Buffer.concat(chunks).toString('utf8')))
       res.on('error', reject)
-    }).on('error', reject)
+    })
+    req.on('timeout', () => req.destroy(new Error(`Timed out fetching ${url}`)))
+    req.on('error', reject)
   })
 }
 
@@ -120,12 +110,10 @@ async function installAgents (agentsDir) {
   fs.mkdirSync(agentsDir, { recursive: true })
   let ok = true
   for (const agent of REQUIRED_AGENTS) {
-    const url  = `${VOLTAGENT_RAW}/${agent.path}`
-    const dest = path.join(agentsDir, `${agent.name}.md`)
     process.stdout.write(`    ${SYM.down} ${agent.name.padEnd(22)}`)
     try {
-      const content = await httpsGet(url)
-      fs.writeFileSync(dest, content, 'utf8')
+      const content = await httpsGet(`${VOLTAGENT_RAW}/${agent.path}`)
+      fs.writeFileSync(path.join(agentsDir, `${agent.name}.md`), content, 'utf8')
       console.log(SYM.check)
     } catch (err) {
       console.log(`${SYM.cross}  ${dim(err.message)}`)
@@ -133,6 +121,65 @@ async function installAgents (agentsDir) {
     }
   }
   return ok
+}
+
+// ─── Kit files, manifest, stale cleanup ──────────────────────────────────────
+
+// Everything under kit/ except resource/ (dev-only) and the top-level CHANGELOG.md.
+function listKitFiles (dir, base = dir) {
+  const files = []
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const abs = path.join(dir, entry.name)
+    const rel = path.relative(base, abs).split(path.sep).join('/')
+    if (rel === 'resource' || rel === 'CHANGELOG.md') continue
+    if (entry.isDirectory()) files.push(...listKitFiles(abs, base))
+    else if (entry.isFile()) files.push(rel)
+  }
+  return files.sort()
+}
+
+function readManifest (target) {
+  try {
+    const list = JSON.parse(readKitFile(target, MANIFEST_FILE))
+    return Array.isArray(list) ? list.filter(f => typeof f === 'string') : null
+  } catch { return null }
+}
+
+// Delete a previously installed file and prune directories it leaves empty.
+// Manifest entries that resolve outside the target are ignored.
+function removeStale (target, relFile) {
+  const abs = path.resolve(target, relFile)
+  const r = path.relative(target, abs)
+  if (!r || r === '..' || r.startsWith('..' + path.sep) || path.isAbsolute(r)) return false
+  try { fs.rmSync(abs, { force: true }) } catch { return false }
+  for (let d = path.dirname(abs); d !== target; d = path.dirname(d)) {
+    try { fs.rmdirSync(d) } catch { break }   // throws while the directory is non-empty
+  }
+  return true
+}
+
+// ─── Output blocks ────────────────────────────────────────────────────────────
+
+function section (n, title, note = '') {
+  console.log(`\n  ${HR}`)
+  console.log(`  ${bold(`Step ${n} of 3`)}  ${SYM.dot}  ${bCyan(title)}${note ? '  ' + dim(note) : ''}`)
+  console.log(`  ${HR}\n`)
+}
+
+const HARNESS_INSTALL = [
+  ['Claude Code', cyan('/plugin install superpowers@claude-plugins-official')],
+  ['Cursor',      cyan('/add-plugin superpowers')],
+  ['Codex CLI',   `${cyan('/plugins')}  then search "superpowers"`],
+  ['Kimi Code',   `${cyan('/plugins')}  then Marketplace > Superpowers`],
+  ['OpenCode',    `Ask your agent to fetch and follow:\n                 ${dim('https://raw.githubusercontent.com/obra/superpowers/main/.opencode/INSTALL.md')}`],
+]
+
+function printSuperpowers () {
+  section(1, 'Superpowers', '(installed inside your AI session)')
+  console.log(`  Superpowers — https://github.com/obra/superpowers`)
+  console.log(`  Install from INSIDE your AI coding session. Command varies by harness:\n`)
+  for (const [name, how] of HARNESS_INSTALL) console.log(`    ${name.padEnd(11)}  ${SYM.arrow}  ${how}`)
+  console.log(`\n  Full guide: ${dim('https://github.com/obra/superpowers#installation')}`)
 }
 
 function printAgentManualInstructions () {
@@ -182,22 +229,18 @@ function printQuickStart (rel) {
     ${cyan('3.')} Say:  ${yellow('"Start Phase 1 using ' + rel + '/phase-1-bootstrap.md."')}
 
   ${SYM.dot} ${bold('Existing project')}  ${dim('(skip Phase 1)')}
-    Share  ${yellow(rel + '/phase-2-feature-dev.md')}  or  ${yellow(rel + '/phase-2-single-pass.md')}
-    and say:  ${yellow('"Pick the next pending feature and run the Phase 2 cycle."')}
+    Share  ${yellow(rel + '/phase-2.md')}  and say:  ${yellow('"Run Phase 2 using ' + rel + '/phase-2.md."')}
+
+  ${SYM.dot} ${bold('Bug fix')}
+    Share  ${yellow(rel + '/phase-bug-fix.md')}  and describe the problem
 
   ${SYM.dot} ${bold('Docs')}  ${dim('https://khoaly2003.github.io/craft-kit')}
   ${HR}
 `)
 }
 
-// ─── Args ─────────────────────────────────────────────────────────────────────
-
-const args      = process.argv.slice(2)
-const force     = args.includes('--force')
-const skipSetup = args.includes('--skip-setup')
-
-if (args.includes('--help') || args.includes('-h')) {
-  console.log(`
+function usage () {
+  return `
   ${bold('craft-kit')} v${PKG.version}
 
   ${bold('Usage')}
@@ -207,7 +250,8 @@ if (args.includes('--help') || args.includes('-h')) {
     target-dir    Directory to install the kit into  (default: ./kit)
 
   ${bold('Flags')}
-    --force         Overwrite an existing install
+    --force         Update an existing install (overwrites kit files, removes
+                    kit files dropped since the last install)
     --skip-setup    Copy kit files only; skip skill/agent setup
     --version       Print version and exit
     --help          Show this message
@@ -217,47 +261,94 @@ if (args.includes('--help') || args.includes('-h')) {
     npx github:KhoaLy2003/craft-kit ./my-project/kit     install to a custom path
     npx github:KhoaLy2003/craft-kit --force              update an existing install
     npx github:KhoaLy2003/craft-kit --skip-setup         kit files only, no setup prompt
-`)
-  process.exit(0)
+`
 }
 
-if (args.includes('--version') || args.includes('-v')) {
-  console.log(PKG.version)
-  process.exit(0)
+// ─── Interactive setup (TTY) ──────────────────────────────────────────────────
+
+async function interactiveSetup () {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
+  const ask = question => new Promise(resolve => rl.question(`  ${bYellow('?')}  ${question} ${dim('[Y/n]')} `, resolve))
+  const yes = async question => (await ask(question)).trim().toLowerCase() !== 'n'
+
+  console.log(`  ${dim('Three quick steps to unlock the full Phase 1–2 workflow.')}`)
+  printSuperpowers()
+
+  section(2, 'design-taste-frontend', '(installed via npx)')
+  if (await yes('Install design-taste-frontend now via npx?')) {
+    console.log('')
+    if (installTasteSkill()) {
+      console.log(`\n  ${SYM.check}  ${bGreen('design-taste-frontend')} installed.\n`)
+    } else {
+      console.log(`\n  ${SYM.cross}  Install failed. Run manually:\n     ${dim(TASTE_SKILL_CMD)}\n`)
+    }
+  } else {
+    console.log(`\n  Skipped. Run when ready:\n    ${dim(TASTE_SKILL_CMD)}\n`)
+  }
+
+  section(3, 'Specialist agents')
+  const agentsDir = path.join(process.cwd(), '.agents', 'agents')
+  const agentsRel = path.relative(process.cwd(), agentsDir)
+  if (await yes(`Download agents to ${bold(agentsRel + '/')}?`)) {
+    console.log('')
+    if (await installAgents(agentsDir)) {
+      console.log(`\n  ${SYM.check}  All agents installed to ${bold(agentsRel + '/')}\n`)
+    } else {
+      console.log(`\n  ${SYM.cross}  Some agents failed. Install the rest manually:\n`)
+      printAgentManualInstructions()
+    }
+  } else {
+    printAgentManualInstructions()
+  }
+  rl.close()
 }
 
-const targetArg = args.find(a => !a.startsWith('-'))
-const target    = targetArg
-  ? path.resolve(process.cwd(), targetArg)
-  : path.join(process.cwd(), 'kit')
+// ─── Main ─────────────────────────────────────────────────────────────────────
 
-// ─── Source ───────────────────────────────────────────────────────────────────
+async function main () {
+  const args = process.argv.slice(2)
 
-const src = path.join(__dirname, '..', 'kit')
+  const unknown = args.filter(a => a.startsWith('-') && !KNOWN_FLAGS.has(a))
+  if (unknown.length) {
+    console.error(`\n  ${SYM.cross}  Unknown flag${unknown.length > 1 ? 's' : ''}: ${unknown.join(' ')}`)
+    console.error(usage())
+    process.exit(1)
+  }
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(usage())
+    return
+  }
+  if (args.includes('--version') || args.includes('-v')) {
+    console.log(PKG.version)
+    return
+  }
 
-if (!fs.existsSync(src)) {
-  console.error(`\n  ${SYM.cross}  Internal error: kit/ directory not found in this package.\n`)
-  process.exit(1)
-}
+  const force     = args.includes('--force')
+  const skipSetup = args.includes('--skip-setup')
+  const targetArg = args.find(a => !a.startsWith('-'))
+  const target    = targetArg ? path.resolve(process.cwd(), targetArg) : path.join(process.cwd(), 'kit')
+  const rel       = path.relative(process.cwd(), target) || '.'
+  const src       = path.join(__dirname, '..', 'kit')
 
-// ─── Version stamp ────────────────────────────────────────────────────────────
+  if (!fs.existsSync(src)) die('Internal error: kit/ directory not found in this package.')
 
-const versionFile = path.join(target, '.craft-kit-version')
-const prevVersion = fs.existsSync(versionFile)
-  ? fs.readFileSync(versionFile, 'utf8').trim()
-  : null
-const rel = path.relative(process.cwd(), target) || '.'
+  // Preflight
+  let existing = []
+  try {
+    existing = fs.readdirSync(target)
+  } catch (err) {
+    if (err.code === 'ENOTDIR') die(`Cannot install into ${bold(rel)}: a file exists where a directory is needed.`)
+    if (err.code !== 'ENOENT') die(`Cannot read ${bold(rel)}: ${err.message}`)
+  }
+  const prevVersion  = (readKitFile(target, VERSION_FILE) || '').trim() || null
+  const prevManifest = readManifest(target)
 
-// ─── Preflight ────────────────────────────────────────────────────────────────
-
-if (fs.existsSync(target)) {
-  const entries = fs.readdirSync(target)
-  if (entries.length > 0 && !force) {
-    const versionLine = prevVersion
-      ? prevVersion === PKG.version
+  if (existing.length > 0 && !force) {
+    const versionLine = !prevVersion
+      ? `  ${dim('Installed:')}  ${dim('unknown version')}`
+      : prevVersion === PKG.version
         ? `  ${dim('Installed:')}  v${prevVersion}  ${dim('(already up to date)')}`
         : `  ${dim('Installed:')}  ${yellow('v' + prevVersion)}  ${SYM.arrow}  ${bold('v' + PKG.version)}  ${dim('(update available)')}`
-      : `  ${dim('Installed:')}  ${dim('unknown version')}`
     console.error(`
   ${SYM.cross}  ${bold(rel + '/')} already exists.
 ${versionLine}
@@ -267,149 +358,59 @@ ${versionLine}
 `)
     process.exit(1)
   }
-}
 
-printBanner()
+  printBanner()
 
-// ─── Copy ─────────────────────────────────────────────────────────────────────
-
-try {
-  fs.mkdirSync(target, { recursive: true })
-  fs.cpSync(src, target, {
-    recursive: true,
-    force: true,
-    filter: (srcPath) => {
-      // Exclude resource/ — internal development files not needed by kit users
-      const rel = path.relative(src, srcPath)
-      return !rel.startsWith('resource')
-    },
-  })
-} catch (err) {
-  console.error(`\n  ${SYM.cross}  Copy failed: ${err.message}\n`)
-  process.exit(1)
-}
-
-fs.writeFileSync(versionFile, PKG.version + '\n', 'utf8')
-
-if (force && prevVersion && prevVersion !== PKG.version) {
-  console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + PKG.version)}  ${dim('(' + rel + '/')}\n`)
-  console.log(`  ${dim('What changed:')}  ${cyan('https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md')}\n`)
-} else {
-  console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
-}
-
-if (skipSetup) {
-  printQuickStart(rel)
-  process.exit(0)
-}
-
-// ─── Post-install: skills and agents ─────────────────────────────────────────
-
-const harness = detectHarness()
-
-// Non-interactive (CI / piped stdin): print everything, run nothing interactive.
-if (!process.stdin.isTTY) {
-  if (harness) {
-    console.log(`  ${SYM.check}  Detected harness: ${HARNESS_LABELS[harness] || harness}\n`)
-  } else {
-    console.log(`  No harness detected — see instructions below.\n`)
-  }
-
-  console.log(`  ${HR}`)
-  console.log(`  Step 1 of 3  ${SYM.dot}  Superpowers`)
-  console.log(`  ${HR}\n`)
-  console.log(`  Superpowers — https://github.com/obra/superpowers`)
-  console.log(`  Install from INSIDE your AI coding session:\n`)
-  console.log(`    Claude Code  →  /plugin install superpowers@claude-plugins-official`)
-  console.log(`    Cursor       →  /add-plugin superpowers`)
-  console.log(`    Codex CLI    →  /plugins  then search "superpowers"`)
-  console.log(`    Kimi Code    →  /plugins  then Marketplace > Superpowers`)
-  console.log(`    OpenCode     →  Ask your agent to fetch and follow:`)
-  console.log(`                    https://raw.githubusercontent.com/obra/superpowers/main/.opencode/INSTALL.md`)
-  console.log(`\n  Full guide: https://github.com/obra/superpowers#installation`)
-
-  console.log(`\n  ${HR}`)
-  console.log(`  Step 2 of 3  ${SYM.dot}  design-taste-frontend`)
-  console.log(`  ${HR}\n`)
-  console.log(`  Run in your terminal:`)
-  console.log(`    npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes\n`)
-
-  console.log(`  ${HR}`)
-  console.log(`  Step 3 of 3  ${SYM.dot}  Specialist agents`)
-  console.log(`  ${HR}`)
-  printAgentManualInstructions()
-  printQuickStart(rel)
-  process.exit(0)
-}
-
-// ─── Interactive setup ────────────────────────────────────────────────────────
-
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-
-;(async () => {
-  if (harness) {
-    console.log(`  ${SYM.check}  Detected: ${bold(HARNESS_LABELS[harness] || harness)}`)
-  } else {
-    console.log(`  ${dim('No harness detected')} — instructions will be printed below.\n`)
-  }
-  console.log(`  ${dim('Three quick steps to unlock the full Phase 1–2 workflow.')}\n`)
-
-  // ── Step 1: Superpowers ────────────────────────────────────────────────────
-  console.log(`  ${HR}`)
-  console.log(`  ${bold('Step 1 of 3')}  ${SYM.dot}  ${bCyan('Superpowers')}  ${dim('(installed inside your AI session)')}`)
-  console.log(`  ${HR}\n`)
-  console.log(`  Install command varies by harness:\n`)
-  console.log(`    Claude Code  ${SYM.arrow}  ${cyan('/plugin install superpowers@claude-plugins-official')}`)
-  console.log(`    Cursor       ${SYM.arrow}  ${cyan('/add-plugin superpowers')}`)
-  console.log(`    Codex CLI    ${SYM.arrow}  ${cyan('/plugins')}  then search "superpowers"`)
-  console.log(`    Kimi Code    ${SYM.arrow}  ${cyan('/plugins')}  then Marketplace > Superpowers`)
-  console.log(`    OpenCode     ${SYM.arrow}  Ask your agent to fetch and follow:`)
-  console.log(`                 ${dim('https://raw.githubusercontent.com/obra/superpowers/main/.opencode/INSTALL.md')}`)
-  console.log(`\n  Full guide: ${dim('https://github.com/obra/superpowers#installation')}`)
-
-  // ── Step 2: design-taste-frontend ─────────────────────────────────────────
-  console.log(`\n  ${HR}`)
-  console.log(`  ${bold('Step 2 of 3')}  ${SYM.dot}  ${bCyan('design-taste-frontend')}  ${dim('(installed via npx)')}`)
-  console.log(`  ${HR}\n`)
-
-  const ans2 = await prompt(rl, `  ${bYellow('?')}  Install design-taste-frontend now via npx? ${dim('[Y/n]')} `)
-  if (ans2.trim().toLowerCase() !== 'n') {
-    console.log('')
-    const ok = installTasteSkill()
-    if (ok) {
-      console.log(`\n  ${SYM.check}  ${bGreen('design-taste-frontend')} installed.\n`)
-    } else {
-      console.log(`\n  ${SYM.cross}  Install failed. Run manually:`)
-      console.log(`     ${dim('npx skills add ' + TASTE_SKILL_REPO + ' --skill "' + TASTE_SKILL_NAME + '" --yes')}\n`)
+  // Copy
+  const files = listKitFiles(src)
+  try {
+    for (const file of files) {
+      const dest = path.join(target, ...file.split('/'))
+      fs.mkdirSync(path.dirname(dest), { recursive: true })
+      fs.copyFileSync(path.join(src, ...file.split('/')), dest)
     }
-  } else {
-    console.log(`\n  Skipped. Run when ready:`)
-    console.log(`    ${dim('npx skills add ' + TASTE_SKILL_REPO + ' --skill "' + TASTE_SKILL_NAME + '" --yes')}\n`)
+  } catch (err) {
+    die(`Copy failed: ${err.message}`)
   }
 
-  // ── Step 3: Agents ─────────────────────────────────────────────────────────
-  console.log(`  ${HR}`)
-  console.log(`  ${bold('Step 3 of 3')}  ${SYM.dot}  ${bCyan('Specialist agents')}`)
-  console.log(`  ${HR}\n`)
+  // Drop kit files that earlier versions installed and this version no longer ships.
+  let removed = 0
+  if (force && prevManifest) {
+    const current = new Set(files)
+    for (const file of prevManifest) {
+      if (!current.has(file) && removeStale(target, file)) removed++
+    }
+  }
 
-  const agentsDir = path.join(process.cwd(), '.agents', 'agents')
-  const agentsRel = path.relative(process.cwd(), agentsDir)
+  fs.writeFileSync(path.join(target, VERSION_FILE), PKG.version + '\n', 'utf8')
+  fs.writeFileSync(path.join(target, MANIFEST_FILE), JSON.stringify(files, null, 2) + '\n', 'utf8')
 
-  const ans3 = await prompt(rl, `  ${bYellow('?')}  Download agents to ${bold(agentsRel + '/')}? ${dim('[Y/n]')} `)
-  if (ans3.trim().toLowerCase() !== 'n') {
-    console.log('')
-    const ok = await installAgents(agentsDir)
-    if (ok) {
-      console.log(`\n  ${SYM.check}  All agents installed to ${bold(agentsRel + '/')}\n`)
+  if (force && prevVersion && prevVersion !== PKG.version) {
+    console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + PKG.version)}  ${dim('(' + rel + '/')}\n`)
+    console.log(`  ${dim('What changed:')}  ${cyan('https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md')}\n`)
+  } else {
+    console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
+  }
+  if (removed > 0) {
+    console.log(`  ${dim(`Removed ${removed} file${removed > 1 ? 's' : ''} no longer part of the kit.`)}\n`)
+  } else if (force && !prevManifest && existing.length > 0) {
+    console.log(`  ${dim('No install manifest found: files renamed or removed since an older version may linger — delete the kit folder and reinstall for a clean copy.')}\n`)
+  }
+
+  // Post-install: skills and agents
+  if (!skipSetup) {
+    if (process.stdin.isTTY) {
+      await interactiveSetup()
     } else {
-      console.log(`\n  ${SYM.cross}  Some agents failed. Install the rest manually:\n`)
+      // Non-interactive (CI / piped stdin): print everything, run nothing.
+      printSuperpowers()
+      section(2, 'design-taste-frontend')
+      console.log(`  Run in your terminal:\n    ${TASTE_SKILL_CMD}`)
+      section(3, 'Specialist agents')
       printAgentManualInstructions()
     }
-  } else {
-    printAgentManualInstructions()
   }
-
-  rl.close()
   printQuickStart(rel)
-  process.exit(0)
-})()
+}
+
+main().catch(err => die(err.message))

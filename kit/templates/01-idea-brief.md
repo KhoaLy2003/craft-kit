@@ -1,4 +1,4 @@
-# idea-brief.md — Output Template for Step 1: Product Ideation
+# idea-brief.md
 
 ## Metadata
 
@@ -10,13 +10,13 @@
 
 ## 1. Problem
 
-<!-- List 1-3 problems max. Each should be something the target user ALREADY has today — not a problem they'd only have if your product existed. -->
+<!-- 1-3 problems max. Each is something the target user ALREADY has today, not one they'd only have if your product existed. -->
 
 1.
 2.
 3.
 
-**Existing alternatives** — how do people solve this today (manual process, spreadsheet, competitor tool, or nothing at all)?
+**Existing alternatives** — how do people solve this today (manual process, spreadsheet, competitor tool, nothing)?
 
 -
 
@@ -24,17 +24,17 @@
 
 ## 2. Target Users
 
-<!-- Be specific enough that a stranger reading this could picture a real person, not a demographic label. -->
+<!-- Specific enough that a stranger could picture a real person, not a demographic label. -->
 
 - **Primary user**:
-- **Context of use** (when/where they'd encounter this problem):
+- **Context of use** (when/where they hit this problem):
 - **Early adopter profile** (who would try this first, before it's polished):
 
 ---
 
-## 3. Proposed Solution (kept brief — do not over-specify)
+## 3. Proposed Solution
 
-<!-- Fill this in last. This is a hypothesis to test, not a spec. -->
+<!-- Fill in last. A hypothesis to test, not a spec. Keep it brief. -->
 
 **One-sentence description**:
 
@@ -44,13 +44,11 @@
 
 ## 4. Rough Scope
 
-**In scope for MVP** (directional, not final — roadmap.md will formalize this in Step 5):
+**In scope for MVP** (directional; `roadmap.md` formalizes it):
 
 -
 
-**Explicitly out of scope / no-gos**:
-
-<!-- Name what's deliberately excluded to prevent scope creep later -->
+**Explicitly out of scope / no-gos** (prevents scope creep later):
 
 -
 
@@ -58,7 +56,7 @@
 
 ## 5. Known Constraints
 
-<!-- Anything already fixed before research starts: budget, timeline, platform requirement, must-integrate-with-X, team size, etc. -->
+<!-- Fixed before research starts: budget, timeline, platform, must-integrate-with-X, team size. A platform the user names goes here verbatim as a preliminary signal, not a decision. -->
 
 -
 
@@ -66,15 +64,6 @@
 
 ## 6. Open Questions
 
-<!-- Things this brief does NOT yet answer — carried forward for Market Research (Step 2) or Technical Research (Step 3) to resolve -->
+<!-- What this brief does NOT answer, carried forward to market research or architecture. -->
 
 -
-
----
-
-## Gate Checklist (before proceeding to Step 2 — Market Research)
-
-- [ ] Problem is stated as something users already experience, not hypothetical
-- [ ] At least one target user profile is concrete enough to picture
-- [ ] Solution section stays a hypothesis, not a detailed spec
-- [ ] Out-of-scope items are explicit

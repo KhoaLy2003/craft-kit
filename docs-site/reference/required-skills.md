@@ -8,7 +8,7 @@ For most users, getting started requires nothing beyond an AI assistant — Chat
 
 Some AI platforms can run multiple specialized workers in parallel: one agent for market research, one for writing code, one for code review. The kit is built to use these when they are available, which speeds up the workflow significantly.
 
-If your platform supports agent orchestration, the following skills and agents need to be available before Phase 1 begins. Your platform should check for missing ones automatically when Phase 1 starts.
+If your platform supports agent orchestration, the following skills and agents need to be available before Phase 1 begins. Your platform should check for missing ones automatically when Phase 1 starts. `npx github:KhoaLy2003/craft-kit` prints (or, interactively, runs) the install steps for all of them.
 
 ---
 
@@ -18,14 +18,14 @@ Skills are instruction sets that teach your AI platform how to do a specific tas
 
 | Skill | Used in |
 |---|---|
-| `brainstorming` | Phase 1 Step 1 — product ideation; Phase 2 Step 1 — feature spec |
+| `brainstorming` | Phase 1 Step 1 — ideation; Phase 2 Step 1 — spec |
 | `writing-plans` | Phase 2 Step 2 — implementation planning |
-| `subagent-driven-development` | Phase 2 Step 4 — building features |
-| `dispatching-parallel-agents` | Phase 2 Step 4 — parallel build tasks |
-| `design-taste-frontend` | Phase 2 Step 4 — UI quality; invoked inside `frontend-developer` dispatches for new UI work |
-| `requesting-code-review` | Phase 2 Step 6 — code quality check |
-| `finishing-a-development-branch` | Phase 2 Step 9 — shipping a feature (standard loop) |
-| `using-git-worktrees` | Phase 2 — keeping features isolated during build |
+| `subagent-driven-development` | Phase 2 Step 3 — building |
+| `dispatching-parallel-agents` | Phase 2 Step 3 — parallel build tasks |
+| `using-git-worktrees` | Phase 2 Step 3 — keeping the feature branch isolated |
+| `design-taste-frontend` | Phase 2 Step 3 — UI quality; invoked inside `frontend-developer` dispatches for new UI work |
+| `requesting-code-review` | Phase 2 Step 4 — code quality check |
+| `finishing-a-development-branch` | Phase 2 Step 7 — shipping |
 | `verification-before-completion` | All phases — confirming files were created correctly |
 
 ---
@@ -37,26 +37,27 @@ Agents are specialized AI workers. The kit routes tasks to the right one automat
 | Agent | Role | Used in |
 |---|---|---|
 | `market-researcher` | Competitive research | Phase 1 Step 2 |
-| `research-analyst` | Technology and domain research, synthesis | Phase 1 Step 7 |
-| `frontend-developer` | UI components, pages, CSS, state management | Phase 1 Step 3; Phase 2 UI tasks |
-| `code-reviewer` | Code review with spec and constitution compliance | Phase 2 Step 6 |
-| `ui-ux-tester` | Browser-driven UI/UX flow testing | Phase 2 Step 7 (UI features) |
+| `research-analyst` | Technology and domain research, synthesis | Phase 1 Step 6 |
+| `frontend-developer` | UI components, pages, CSS, state management | Phase 1 Step 3; Phase 2 Step 3 UI tasks |
+| `backend-developer` | APIs, data layer, business logic | Phase 2 Step 3 backend tasks |
+| `code-reviewer` | Code review with spec and constitution compliance | Phase 2 Step 4 |
+| `ui-ux-tester` | Browser-driven UI/UX flow testing | Phase 2 Step 5 (UI features) |
 
-For all other tasks — business logic, backend, infrastructure, visual design — the kit uses your platform's **general-purpose agent**. No named agent is required for those roles.
+For other tasks — infrastructure, visual design — the kit uses your platform's **general-purpose agent**.
 
 ::: tip Different agent names?
-If your platform uses different names for these agents, update `kit/task-agent-rubric.md` to match. That's the only file in the kit that references agent names directly.
+If your platform uses different names for these agents, update `kit/task-agent-rubric.md` to match. That's the only file in the kit that maps tasks to agent names.
 :::
 
 ---
 
 ## Minimal Setup (Solo Builder, Small Project)
 
-If you are building alone and your app has 15 or fewer features, you can use a smaller set:
+If you are building alone on a small app, you can use a smaller set:
 
 **Skills:** `brainstorming`, `writing-plans`, `subagent-driven-development`, `design-taste-frontend`, `verification-before-completion`
 
-**Agents:** `research-analyst`, `frontend-developer`
+**Agents:** `research-analyst`, `frontend-developer`, `backend-developer`
 
 **What you can leave out:**
 - `market-researcher` — market research is optional; skip Phase 1 Step 2

@@ -4,7 +4,7 @@
   "scripts": {
     "test": "node --test tests/cli.test.mjs"
   },
-  "description": "AI-agent workflow kit for crafting software products — Phase 1 bootstrap, Phase 2 feature dev, bug fix workflow, templates, and step guides.",
+  "description": "AI-agent workflow kit for crafting software products — Phase 1 bootstrap, a unified Phase 2 build cycle, bug fix workflow, templates, and step guides.",
   "author": "Khoa Ly",
   "license": "MIT",
   "bin": {

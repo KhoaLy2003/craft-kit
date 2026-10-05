@@ -31,7 +31,7 @@ This creates a `kit/` folder with all the phase files, templates, and guides. Yo
 npx github:KhoaLy2003/craft-kit --force
 ```
 
-When the version changes, the installer prints an upgrade summary (`v0.0.5 › v0.0.6`) and a direct link to the changelog so you can review what changed before continuing.
+When the version changes, the installer prints an upgrade summary (`v0.0.5 › v0.0.6`) and a direct link to the changelog. It also removes kit files the new version no longer ships; files you added yourself are left alone.
 
 ### Step 2 — Describe your idea
 
@@ -46,6 +46,7 @@ Then fill in `docs/phase-1-kickoff.md`. It asks for:
 - What problem you're solving and for whom
 - Who the target user is
 - Anything you already have (a rough design, a preference for certain tools, existing code)
+- Whether to run the optional market research step
 - Any hard limits (budget, deadline, things that must or must not be included)
 
 Rough notes are fine — the AI will ask follow-up questions before committing to anything.
@@ -58,32 +59,32 @@ Share `kit/phase-1-bootstrap.md` with your AI along with your filled-in kickoff 
 Start Phase 1 using the kickoff form I've shared.
 ```
 
-The AI reads both files and begins working through the nine steps. It announces each step as it starts.
+The AI reads both files and begins working through the eight steps. It announces each step as it starts.
 
 ### Step 4 — Review and approve along the way
 
-Phase 1 has six moments where the AI stops and waits for your sign-off before continuing:
+Phase 1 has four moments where the AI stops and waits for your sign-off before continuing:
 
 | What the AI has done | What you decide |
 |---|---|
-| Researched the market *(optional step)* | Is there a real need for this? Proceed, change direction, or stop. |
-| Designed the look and feel | Does the design match what you had in mind? |
-| Built the feature list and build order | Is the scope correct? Are the priorities right? |
-| Delivered full screen designs for every Must + Should feature | Do the screen designs accurately reflect the product? Approve before any code is written. |
+| Designed the look and feel and built one clickable prototype with it | Does the design and flow match what you had in mind? |
+| Built the feature list, build order, and chosen how Phase 2 will run | Is the scope correct? Are the priorities right? |
+| Delivered full screen designs for every Must + Should feature *(skipped when you already have designs)* | Do the screen designs accurately reflect the product? Approve before any code is written. |
 | Picked the tech stack and architecture | Is this the right foundation for what you want to build? |
-| Written the AI's working rules | Are the guidelines for how your app gets built correct? |
+
+Two softer steps — market research and the coding rules ("constitution") — show you a summary and move on unless you object. The coding rules are usually approved together with the architecture.
 
 ### Step 5 — Move to building
 
 When Phase 1 finishes, the AI gives you an exact message to start the next stage. Copy and paste it into a fresh conversation — the AI tells you what to say, with your project name already filled in.
 
-Phase 2 builds your features one at a time. Before each feature ships, you walk through the working app yourself and confirm it matches what you asked for.
+Phase 2 specs, plans, builds, reviews, and tests the work. Small apps build every Must feature in one cycle; larger products go one feature per cycle. Before anything ships, you walk through the working app yourself and confirm it matches what you asked for.
 
 ---
 
 ## Already Have a Project?
 
-Skip Phase 1. Install the kit (`npx github:KhoaLy2003/craft-kit`), then create four planning documents in a `docs/` folder. See [Existing Projects](/guides/existing-projects) for what to include in each one.
+Skip Phase 1. Install the kit (`npx github:KhoaLy2003/craft-kit`), then create a few planning documents in a `docs/` folder. See [Existing Projects](/guides/existing-projects) for what to include in each one.
 
 ---
 
@@ -95,4 +96,4 @@ When something in your shipped app is broken, share `kit/phase-bug-fix.md` with 
 Run the bug fix workflow. The problem is: [describe what's wrong and where it happens].
 ```
 
-See [Bug Fix Workflow](/phases/bug-fix) for the full three-step process.
+See [Bug Fix Workflow](/phases/bug-fix) for the full process. This workflow is experimental.
