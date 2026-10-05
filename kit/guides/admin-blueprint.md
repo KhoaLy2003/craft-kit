@@ -96,7 +96,7 @@ type AdminModule = {
 These live in the main app. They are the security-critical part of the workflow and are specified exactly.
 
 ### 5.1 Guard
-Every route under `/api/admin/` passes through one guard that takes the required permission. No valid admin token → `401`. Valid token whose role lacks the permission → `403`. A route under `/api/admin/` that does not call the guard is a defect.
+Every route under `/api/admin/` except the login route (§5.5) passes through one guard that takes the required permission. No valid admin token → `401`. Valid token whose role lacks the permission → `403`. `POST /api/admin/auth/login` is the only unauthenticated route. A route under `/api/admin/` other than the login route that does not call the guard is a defect.
 
 ### 5.2 RBAC
 - Roles and their permission sets are defined in **one place** in the backend. Permissions come from the approved matrix in `docs/admin/scope.md`.
