@@ -55,7 +55,7 @@ Single file with inline steps, following the Phase 3 and Bug Fix pattern. Marked
 | 1 | Scope | hard | capable | read-only general-purpose agent + user | `docs/admin/scope.md` |
 | 2 | Spec & Plan | soft | balanced | orchestrator | `docs/specs/admin/{spec,plan}.md` |
 | 3 | Implement | none | balanced | specialists per `kit/task-agent-rubric.md`; `evon:ui-ux` for admin screens when installed | code on `feature/admin` |
-| 4 | Review & E2E | none | capable | `reviewer`; Playwright | findings fixed, suite green |
+| 4 | Review & E2E | none | capable | `code-reviewer`; Playwright | findings fixed, suite green |
 | 5 | Ship | hard | balanced | orchestrator + user | commit and PR |
 
 ### Step 1 — Scope (hard)
@@ -71,7 +71,7 @@ Loop:
 
 `scope.md` also records, before the gate:
 - **Admin roles and permission matrix** (module × action × role).
-- **Identity model check:** whether the main app has a role or identity model. If it does not, the plan opens with **task group 0: schema migration adding it**, before any admin feature.
+- **Identity model check:** whether the main app has a role or identity model. If it does not, the plan opens with **task group 0: schema migration adding it**, before any admin feature. It also records how admins authenticate (existing credential login, OAuth-only, other); a missing credential login likewise becomes part of task group 0.
 - **Open-branch check** from section 3.
 - **Impact on the main codebase:** the `/api/admin/*` routes, guard, and audit table that will be added.
 
@@ -88,7 +88,7 @@ Branch `feature/admin`. Build Shell first. **Mandatory checkpoint before any mod
 ### Step 4 — Review & E2E (none)
 
 - Playwright covers the permission matrix (each role × each module action) plus one happy path per module. Extend `kit/templates/e2e-tests.md`.
-- `reviewer` runs a short security checklist: guard on every `/api/admin/*` route, deny by default, audit on every mutation, no token in browser-accessible storage.
+- `code-reviewer` runs a short security checklist: guard on every `/api/admin/*` route except the unauthenticated login route, deny by default, audit on every mutation, no token in browser-accessible storage.
 - Fix findings; suite must be green.
 
 ### Step 5 — Ship (hard)

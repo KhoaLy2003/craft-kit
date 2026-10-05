@@ -24,6 +24,7 @@ const PHASES: Page[] = [
   kit('phase-2',                'phases/phase-2',        'Phase 2 — Build'),
   kit('phase-bug-fix',          'phases/bug-fix',        'Bug Fix Workflow'),
   kit('phase-3-iterate',        'phases/phase-3-iterate', 'Phase 3 — Iterate'),
+  kit('phase-admin',            'phases/admin',          'Admin Site Workflow'),
 ]
 
 const PHASE_1_STEPS = steps('phase-1', [
