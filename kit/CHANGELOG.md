@@ -8,6 +8,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ## [Unreleased]
 
 ---
+
+## [0.0.19] - 2026-10-05
+
+**Summary:** Workflow consolidation: 8-step Phase 1 · unified 7-step Phase 2 (scope all|feature) · Design Sprint folded into Step 5 · leaner conventions
+
+---
 ### Refactor (2026-10) — workflow consolidation
 
 Prompted by a full-kit review. **Not yet validated in a test round** (all prior rounds used the old single-pass track).
@@ -21,6 +27,7 @@ Prompted by a full-kit review. **Not yet validated in a test round** (all prior 
 - **Phase 3** is 3 steps (Discover, Prioritise, Handoff; no `impact.md`). **Bug fix** trimmed, Verify gate `soft` unless UI-only, "return to Step 1" contradiction fixed. Unvalidated workflows are marked experimental.
 - **CLI:** `CHANGELOG.md` no longer installed; `--force` removes stale files via `.craft-kit-manifest.json`; unknown flags and file targets fail cleanly; harness detection removed; download timeout. Added a kit link-integrity test. Added `LICENSE`.
 
+---
 
 ## [0.0.18] - 2026-10-03
 
