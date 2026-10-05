@@ -1,7 +1,9 @@
 # Kit Testing Log
 
-Working document for all kit changes made during test runs.
-Updated immediately when a kit change is made — before proceeding to the next step.
+Issues found and lessons learned during test rounds. File-level kit changes are **not** recorded here — `kit/CHANGELOG.md` is the single source for which kit files changed and why.
+
+> **2026-10 refactor:** the kit was restructured (Phase 1 is 8 steps; Phase 2 is one 7-step track with `scope: all | feature`; session logs, templates, and step files renamed). Step numbers and file names in older entries below refer to the pre-refactor layout.
+
 Round result metadata (PASS/FAIL, issue counts) is recorded in `testing/kit-testing-summary.md` only when a round closes.
 
 ---
@@ -20,63 +22,8 @@ Issues found but not yet fixed — carried across rounds until resolved.
 | 30 | Step 4 DESIGN.md auto-skip only checks `PROJECT_ROOT` and `docs/` — a file placed one directory up (round staging level) is not detected; tester must manually copy or place at project root | Round 05 | Low — causes confusion; check fails silently | Open |
 | 31 | Todo system auto-promotes next step past a blocked step even when the next step has an undeclared dependency on the blocked step's output; reminder fires spuriously | Round 05 | Low — workflow confusion, no artifact harm | Open |
 | 32 | E2E testing requires Supabase provisioning (migration + users + seed data) before tests can run. Kit workflow did not make this explicit or enforced. First E2E run failed on 42 skipped tests (no auth, no tables). | Round 05 | High — E2E proves nothing without provisioning | **Fixed Round 05** — Added Step 5a (E2E Testing Plan documentation) as required gate before Step 5b E2E testing; created `kit/guides/e2e-testing-plan.md` provisioning workflow; updated `kit/phase-2-single-pass.md`, `kit/phase-2-checklist.md`, flow diagram |
-| Open 4 | `kit/phase-3-iterate.md` (post-release iteration: Review → Discover → Prioritise → Impact & Handoff) added without a validation round; gates, no-ideas Path B, and roadmap append-only rule are untested | Post-Round 05 | Medium — unvalidated new workflow | Open — validate in Round 06 (run on a shipped round project) |
+| Open 4 | The post-release iteration workflow (`kit/phase-3-iterate.md`: Discover → Prioritise → Handoff after the 2026-10 refactor; originally Review → Discover → Prioritise → Impact & Handoff) has not been validated in a test round; gates, no-ideas Path B, and the roadmap append-only rule are untested | Post-Round 05 | Medium — unvalidated new workflow | Open — validate in Round 06 (run on a shipped round project) |
 | 33 | Phase 1 Step 6 Full Screen Design added; Phase 2 Step 1b removed from both tracks; architecture/constitution/scaffold renumbered 7/8/9; spec step delta-only when designs exist; Design Sprint repositioned to Phase 3/new features | Refactor | Medium — structural workflow change | Fixed |
----
-
-## Kit Files Changed (cumulative)
-
-| File | Rounds | Nature of changes |
-|---|---|---|
-| `kit/phase-1-bootstrap.md` | 01, 02, 03, refactor | Orchestrator convention; step scope; Step 4 richer process + CSS rule; Step 5 output renamed to `docs/DESIGN.md` + path descriptions; Steps 6/7/8 inputs; Phase 1 Output Checklist; Step 7 hard gate; Step 9 pre-flight; Phase Handoff; item 6 fail-fast; Step 3 catalog-first; **Issue 26**: step table renumbered (8 steps), output checklist removes `docs/tech-options.md`, flow diagram updated |
-| `kit/phase-2-single-pass.md` | 01, 02, 03, **Round 05** | Created Round 01; Step 2 hard gate; Step 3 branch creation; checklist reference; Step 1 input renamed to `docs/DESIGN.md`; **Issue 32 Fix**: Added Step 5a (E2E Testing Plan Documentation) as hard gate before E2E testing; split old Step 5 into 5a + 5b; updated flow diagram to show new gate |
-| `kit/phase-2-checklist.md` | 03, post-04, **Round 05** | Created; Step 5 updated — batch E2E approach (Issue 25); **Issue 29**: Universal item 7 content-preview added; **Issue 32 Fix**: Added Step 5a checklist for E2E Testing Plan documentation hard gate; renamed Step 5 to Step 5b |
-| `kit/guides/e2e-testing-plan.md` | **Round 05** | Created — Comprehensive E2E provisioning workflow for Supabase projects; prerequisite checklist, step-by-step provisioning, troubleshooting, CI/CD automation template; **Issue 32 Fix** |
-| `kit/README.md` | 01, 02, 03, refactor | Phase 2 track table; doc path updates; `design-system.md` → `DESIGN.md` throughout; **Issue 26**: step groupings renumbered, Step 3 description removed, Architecture step updated, hard gates table updated, end-state artifact list removes `docs/tech-options.md` |
-| `kit/templates/04b-prototype-brief.md` | 03 | Full rewrite — State Coverage, Mock Data, Feedback Log, DoD 11 items; CSS clarity item |
-| `kit/templates/05-design-system.md` | 03 | Title and output reference updated to `docs/DESIGN.md` |
-| `kit/templates/06-roadmap.md` | 01, 03 | Phase 2 Track field; `design-system.md` → `DESIGN.md` in Based on |
-| `kit/templates/07-architecture.md` | 03, refactor | `design-system.md` → `DESIGN.md` in Based on; **Issue 26**: "Based on" updated, tech-options references removed from Sections 1, 3, and header note |
-| `kit/templates/08-constitution.md` | 03 | `design-system.md` → `DESIGN.md` in Based on |
-| `kit/templates/09-scaffold-checklist.md` | 01, 03, refactor | Phase 1 Closeout section; `design-system.md` → `DESIGN.md` in artifact list; **Issue 26**: `docs/tech-options.md` removed from artifact list; title updated to Step 8 |
-| `kit/templates/phase-1-kickoff.md` | 03 | Removed "run all 9 steps" framing; gate-bypass warning; DESIGN.md path guidance |
-| `kit/stack-catalog.md` | 03 | Created — 6 stack entries; `Requires` field; fail-fast write note |
-| `kit/phase-1-checklist.md` | 03, 04, post-04 | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance; **Round 04**: Step 5 expanded to check project root `DESIGN.md` and auto-proceed without user confirmation (Issue 27); **Issues 28–29**: Step 1 [BLOCK] Q&A-before-artifact; Universal item 7 content-preview |
-| `kit/phase-2-checklist.md` | 03, post-04 | Created; Step 5 updated — batch E2E approach (Issue 25); **Issue 29**: Universal item 7 content-preview added |
-| `kit/orchestrator-conventions.md` | post-04 | **Issue 29**: item 7 added — preview first 20 lines of every written file |
-| `kit/steps/p1-01-ideation.md` | post-04 | **Issue 28**: Q&A-before-artifact rule added as explicit note with sequencing contract |
-| `kit/CHANGELOG.md` | 02, 03 | Created Round 02; Round 03 entries added (Issues 17–25) |
-| `kit/phase-1-checklist.md` | 03, refactor | Created; Step 5 updated — `docs/DESIGN.md` output, import path guidance; **Issue 26**: full rewrite — Step 3 (Tech Research) section removed, all steps renumbered, Step 6 gains three-stage research checklist |
-| `kit/steps/p1-03-tech-research.md` | refactor | **Issue 26**: deleted — step removed; research absorbed into architecture step |
-| `kit/templates/03-tech-options.md` | refactor | **Issue 26**: deleted — artifact removed |
-| `kit/steps/p1-03-prototype.md` | refactor | **Issue 26**: renamed from p1-04; step number and trigger updated |
-| `kit/steps/p1-04-design.md` | refactor | **Issue 26**: renamed from p1-05; step number and internal references updated |
-| `kit/steps/p1-05-roadmap.md` | refactor | **Issue 26**: renamed from p1-06; step number and trigger updated |
-| `kit/steps/p1-06-architecture.md` | refactor | **Issue 26**: renamed from p1-07; full rewrite — absorbs Step 3 catalog-first research as Stage 1; two-stage process becomes Stages 2–3; inputs updated |
-| `kit/steps/p1-07-constitution.md` | refactor | **Issue 26**: renamed from p1-08; step number updated |
-| `kit/steps/p1-08-scaffold.md` | refactor | **Issue 26**: renamed from p1-09; step number and trigger updated |
-| `kit/steps/phase-1/p1-06-screen-design.md` | refactor-2 | **#33**: created — new Phase 1 Step 6 (hard gate): per-screen briefs, designer handoff, Path A/B design intake, sign-off before implementation |
-| `kit/steps/phase-1/p1-07-architecture.md` | refactor-2 | **#33**: renamed from p1-06-architecture; step number updated to 7 |
-| `kit/steps/phase-1/p1-08-constitution.md` | refactor-2 | **#33**: renamed from p1-07-constitution; step number updated to 8 |
-| `kit/steps/phase-1/p1-09-scaffold.md` | refactor-2 | **#33**: renamed from p1-08-scaffold; step number updated to 9 |
-| `kit/steps/phase-2/p2-01b-screen-design.md` | refactor-2 | **#33**: deleted — screen design moved to Phase 1 Step 6 (initial build) or Design Sprint (Phase 3/new features) |
-| `kit/steps/phase-2/p2sp-01b-screen-design.md` | refactor-2 | **#33**: deleted — same rationale |
-| `kit/steps/phase-2/p2-01-spec.md` | refactor-2 | **#33**: new rule — add `docs/designs/<slug>/` + `docs/specs/<slug>/screens/*.md` to Inputs; spec delta-only when designs exist; undesigned screens listed explicitly |
-| `kit/steps/phase-2/p2sp-01-full-app-spec.md` | refactor-2 | **#33**: same spec delta-only rule; Next Step unconditionally Step 2 — Plan |
-| `kit/steps/phase-2/p2-04-implement.md` | refactor-2 | **#33**: "Step 1b" wording replaced with "Phase 1 Step 6 (or Design Sprint)" |
-| `kit/steps/phase-2/p2sp-03-implement.md` | refactor-2 | **#33**: "Step 1b" wording replaced with "Phase 1 Step 6 (or Design Sprint)" |
-| `kit/phase-2-feature-dev.md` | refactor-2 | **#33**: Step 1b row removed from steps table and skip-detection; flow diagram updated |
-| `kit/phase-2-single-pass.md` | refactor-2 | **#33**: Step 1b row removed; flow updated |
-| `kit/phase-2-design-sprint.md` | refactor-2 | **#33**: repositioned to Phase 3/new features; "Step 1b auto-skip" claims removed; after sprint, run phase-2-feature-dev from Step 2 |
-| `kit/steps/phase-2/p2-ds-batch-design.md` | refactor-2 | **#33**: updated to reflect Phase 3/new-feature scope |
-| `kit/phase-1-bootstrap.md` | refactor-2 | **#33**: steps table updated — Step 6 Full Screen Design added; steps 7/8/9 for architecture/constitution/scaffold |
-| `kit/phase-1-checklist.md` | refactor-2 | **#33**: Step 6 section added; steps 7/8/9 renumbered |
-| `kit/templates/07-architecture.md` | refactor-2 | **#33**: inner step label corrected to Step 7 |
-| `kit/templates/08-constitution.md` | refactor-2 | **#33**: inner step label corrected to Step 8 |
-| `kit/templates/09-scaffold-checklist.md` | refactor-2 | **#33**: title updated to Step 9 |
-| `docs-site/.vitepress/config.ts` | refactor-2 | **#33**: Phase 1 rewrites and sidebar updated — p1-06-screen-design added; p1-07/08/09 for architecture/constitution/scaffold |
-| `README.md` | refactor-2 | **#33**: Phase 1 table updated to 9 steps; Step 6 Full Screen Design added; research-analyst updated to Step 7 |
-| `docs-site/public/diagrams/phase-1-bootstrap.html` | refactor-2 | **#33**: "Roadmap + Architecture" node → "Roadmap + Screen Design" (Steps 5–6); "Constitution + Scaffold" → "Architecture + Scaffold" (Steps 7–9); gates renamed |
 
 ---
 

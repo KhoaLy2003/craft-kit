@@ -6,259 +6,91 @@
     "quality_profile": "showcase"
   },
   "lanes": [
-    {
-      "id": "work",
-      "label": "Phase Steps"
-    },
-    {
-      "id": "gate",
-      "label": "Hard Gates (You decide)",
-      "variant": "exception"
-    }
+    { "id": "work", "label": "Phase Steps" },
+    { "id": "gate", "label": "Hard Gates (You decide)", "variant": "exception" }
   ],
   "phases": [
-    {
-      "id": "discovery",
-      "label": "Discovery",
-      "fromCol": 0,
-      "toCol": 1
-    },
-    {
-      "id": "design_phase",
-      "label": "Design & Planning",
-      "fromCol": 2,
-      "toCol": 4,
-      "variant": "emphasis"
-    },
-    {
-      "id": "foundation",
-      "label": "Foundation",
-      "fromCol": 5,
-      "toCol": 5,
-      "variant": "dashed"
-    }
+    { "id": "discovery", "label": "Discovery", "fromCol": 0, "toCol": 1 },
+    { "id": "design_phase", "label": "Planning & Design", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "foundation", "label": "Foundation", "fromCol": 4, "toCol": 4, "variant": "dashed" }
   ],
-  "mainPath": [
-    "ideation",
-    "prototype",
-    "design",
-    "roadmap",
-    "screens",
-    "foundation"
-  ],
+  "mainPath": ["ideation", "prototype", "roadmap", "screens", "foundation"],
   "nodes": [
     {
-      "id": "ideation",
-      "lane": "work",
-      "col": 0,
-      "type": "backend",
-      "label": "Ideation + Market",
-      "sublabel": "problem, solution, demand",
-      "tag": "Steps 1–2",
-      "width": 150
+      "id": "ideation", "lane": "work", "col": 0, "type": "backend",
+      "label": "Ideation + Market", "sublabel": "problem, solution, demand",
+      "tag": "Steps 1–2", "width": 150
     },
     {
-      "id": "gate_market",
-      "lane": "gate",
-      "col": 0,
-      "type": "security",
-      "label": "Market Gate",
-      "sublabel": "only if Step 2 runs",
-      "width": 132
+      "id": "prototype", "lane": "work", "col": 1, "type": "frontend",
+      "label": "Prototype & Design", "sublabel": "DESIGN.md + one HTML build",
+      "tag": "Step 3", "width": 150
     },
     {
-      "id": "prototype",
-      "lane": "work",
-      "col": 1,
-      "type": "frontend",
-      "label": "Prototype",
-      "sublabel": "test UX assumptions",
-      "tag": "Step 3",
-      "width": 132
+      "id": "gate_proto", "lane": "gate", "col": 1, "type": "security",
+      "label": "Design Gate", "sublabel": "one approval", "width": 150
     },
     {
-      "id": "gate_proto",
-      "lane": "gate",
-      "col": 1,
-      "type": "security",
-      "label": "Prototype Gate",
-      "sublabel": "review and approve",
-      "width": 132
+      "id": "roadmap", "lane": "work", "col": 2, "type": "cloud",
+      "label": "Roadmap", "sublabel": "MoSCoW + Phase 2 scope",
+      "tag": "Step 4", "width": 132
     },
     {
-      "id": "design",
-      "lane": "work",
-      "col": 2,
-      "type": "frontend",
-      "label": "Product Design",
-      "sublabel": "DESIGN.md + live preview",
-      "tag": "Step 4",
-      "width": 132
+      "id": "gate_roadmap", "lane": "gate", "col": 2, "type": "security",
+      "label": "Roadmap Gate", "sublabel": "approve scope", "width": 132
     },
     {
-      "id": "gate_design",
-      "lane": "gate",
-      "col": 2,
-      "type": "security",
-      "label": "Design Gate",
-      "sublabel": "lock visual language",
-      "width": 132
+      "id": "screens", "lane": "work", "col": 3, "type": "frontend",
+      "label": "Full Screen Design", "sublabel": "every screen, client-reviewable",
+      "tag": "Step 5", "width": 150
     },
     {
-      "id": "roadmap",
-      "lane": "work",
-      "col": 3,
-      "type": "cloud",
-      "label": "Roadmap",
-      "sublabel": "Must / Should / Nice + track",
-      "tag": "Step 5",
-      "width": 132
+      "id": "gate_screens", "lane": "gate", "col": 3, "type": "security",
+      "label": "Screen Design Gate", "sublabel": "sign off all designs", "width": 140
     },
     {
-      "id": "gate_roadmap",
-      "lane": "gate",
-      "col": 3,
-      "type": "security",
-      "label": "Roadmap Gate",
-      "sublabel": "approve scope",
-      "width": 132
+      "id": "foundation", "lane": "work", "col": 4, "type": "messagebus",
+      "label": "Architecture to Scaffold", "sublabel": "stack, rules, running app",
+      "tag": "Steps 6–8", "width": 164
     },
     {
-      "id": "screens",
-      "lane": "work",
-      "col": 4,
-      "type": "frontend",
-      "label": "Full Screen Design",
-      "sublabel": "every screen, client-reviewable",
-      "tag": "Step 6",
-      "width": 150
-    },
-    {
-      "id": "gate_screens",
-      "lane": "gate",
-      "col": 4,
-      "type": "security",
-      "label": "Screen Design Gate",
-      "sublabel": "sign off all designs",
-      "width": 140
-    },
-    {
-      "id": "foundation",
-      "lane": "work",
-      "col": 5,
-      "type": "messagebus",
-      "label": "Architecture to Scaffold",
-      "sublabel": "stack, rules, running app",
-      "tag": "Steps 7–9",
-      "width": 164
-    },
-    {
-      "id": "gate_stack",
-      "lane": "gate",
-      "col": 5,
-      "type": "security",
-      "label": "Stack + Rules Gates",
-      "sublabel": "name stack, approve rules",
-      "width": 150
+      "id": "gate_stack", "lane": "gate", "col": 4, "type": "security",
+      "label": "Stack Gate", "sublabel": "name the stack", "width": 132
     }
   ],
   "edges": [
-    {
-      "id": "e1",
-      "from": "ideation",
-      "to": "prototype",
-      "variant": "default"
-    },
-    {
-      "id": "e2",
-      "from": "prototype",
-      "to": "design",
-      "variant": "default"
-    },
-    {
-      "id": "e3",
-      "from": "design",
-      "to": "roadmap",
-      "variant": "default"
-    },
-    {
-      "id": "e4",
-      "from": "roadmap",
-      "to": "screens",
-      "variant": "default"
-    },
-    {
-      "id": "e5",
-      "from": "screens",
-      "to": "foundation",
-      "variant": "default"
-    },
-    {
-      "id": "g1",
-      "from": "ideation",
-      "to": "gate_market",
-      "variant": "security",
-      "role": "branch"
-    },
-    {
-      "id": "g2",
-      "from": "prototype",
-      "to": "gate_proto",
-      "variant": "security",
-      "role": "branch"
-    },
-    {
-      "id": "g3",
-      "from": "design",
-      "to": "gate_design",
-      "variant": "security",
-      "role": "branch"
-    },
-    {
-      "id": "g4",
-      "from": "roadmap",
-      "to": "gate_roadmap",
-      "variant": "security",
-      "role": "branch"
-    },
-    {
-      "id": "g5",
-      "from": "screens",
-      "to": "gate_screens",
-      "variant": "security",
-      "role": "branch"
-    },
-    {
-      "id": "g6",
-      "from": "foundation",
-      "to": "gate_stack",
-      "variant": "security",
-      "role": "branch"
-    }
+    { "id": "e1", "from": "ideation", "to": "prototype", "variant": "default" },
+    { "id": "e2", "from": "prototype", "to": "roadmap", "variant": "default" },
+    { "id": "e3", "from": "roadmap", "to": "screens", "variant": "default" },
+    { "id": "e4", "from": "screens", "to": "foundation", "variant": "default" },
+    { "id": "g1", "from": "prototype", "to": "gate_proto", "variant": "security", "role": "branch" },
+    { "id": "g2", "from": "roadmap", "to": "gate_roadmap", "variant": "security", "role": "branch" },
+    { "id": "g3", "from": "screens", "to": "gate_screens", "variant": "security", "role": "branch" },
+    { "id": "g4", "from": "foundation", "to": "gate_stack", "variant": "security", "role": "branch" }
   ],
   "cards": [
     {
       "dot": "cyan",
-      "title": "Hard Gates",
+      "title": "Gates",
       "items": [
-        "AI stops and waits for your explicit approval before advancing",
-        "Market Research (Step 2) is optional; its gate only fires if the step runs"
+        "Hard gates: the AI stops until you explicitly approve",
+        "Market Research and Constitution are soft: summary shown, advances unless you object"
       ]
     },
     {
       "dot": "amber",
       "title": "Design Before Stack",
       "items": [
-        "Step 6 delivers every screen for Must and Should features before the tech stack is locked",
-        "Your client can review the full design here; Phase 2 only builds against it"
+        "Step 5 delivers every screen for Must and Should features before the tech stack is locked",
+        "Skipped when approved designs already exist"
       ]
     },
     {
       "dot": "emerald",
       "title": "Phase Handoff",
       "items": [
-        "After Scaffold, close this session — Phase 1 context is no longer needed",
-        "Open a new session for Phase 2 with docs/architecture.md + roadmap.md"
+        "After Scaffold: one Phase 1 commit, then close this session",
+        "Open a new session for Phase 2 with the handoff prompt"
       ]
     }
   ]

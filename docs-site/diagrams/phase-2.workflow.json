@@ -1,0 +1,176 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Phase 2 — Build",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "work",
+      "label": "Build Steps"
+    },
+    {
+      "id": "human",
+      "label": "Hard Gates (You decide)",
+      "variant": "exception"
+    }
+  ],
+  "phases": [
+    {
+      "id": "define",
+      "label": "Define",
+      "fromCol": 0,
+      "toCol": 1,
+      "variant": "emphasis"
+    },
+    {
+      "id": "execute",
+      "label": "Build & Verify",
+      "fromCol": 2,
+      "toCol": 3
+    },
+    {
+      "id": "release",
+      "label": "Release",
+      "fromCol": 4,
+      "toCol": 4,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "spec",
+    "plan",
+    "build",
+    "e2e",
+    "ship"
+  ],
+  "nodes": [
+    {
+      "id": "spec",
+      "lane": "work",
+      "col": 0,
+      "type": "backend",
+      "label": "Spec",
+      "sublabel": "behavior + criteria",
+      "tag": "Step 1",
+      "width": 132
+    },
+    {
+      "id": "gate_spec",
+      "lane": "human",
+      "col": 0,
+      "type": "security",
+      "label": "Spec Gate",
+      "sublabel": "approve the spec",
+      "width": 132
+    },
+    {
+      "id": "plan",
+      "lane": "work",
+      "col": 1,
+      "type": "backend",
+      "label": "Plan",
+      "sublabel": "tasks, specialists, parallel groups",
+      "tag": "Step 2",
+      "width": 150
+    },
+    {
+      "id": "build",
+      "lane": "work",
+      "col": 2,
+      "type": "frontend",
+      "label": "Implement + Review",
+      "sublabel": "specialists, then code review",
+      "tag": "Steps 3–4",
+      "width": 150
+    },
+    {
+      "id": "e2e",
+      "lane": "work",
+      "col": 3,
+      "type": "frontend",
+      "label": "E2E",
+      "sublabel": "plan, run, batch fixes",
+      "tag": "Step 5",
+      "width": 132
+    },
+    {
+      "id": "ship",
+      "lane": "work",
+      "col": 4,
+      "type": "messagebus",
+      "label": "Manual Check + Ship",
+      "sublabel": "walkthrough, then ship",
+      "tag": "Steps 6–7",
+      "width": 150
+    },
+    {
+      "id": "gate_manual",
+      "lane": "human",
+      "col": 4,
+      "type": "security",
+      "label": "Manual Check",
+      "sublabel": "walk through the app",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "spec",
+      "to": "plan",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "plan",
+      "to": "build",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "build",
+      "to": "e2e",
+      "variant": "default"
+    },
+    {
+      "id": "e4",
+      "from": "e2e",
+      "to": "ship",
+      "variant": "default"
+    },
+    {
+      "id": "g1",
+      "from": "spec",
+      "to": "gate_spec",
+      "variant": "security",
+      "role": "branch"
+    },
+    {
+      "id": "g2",
+      "from": "ship",
+      "to": "gate_manual",
+      "variant": "security",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Two Scopes, One Track",
+      "items": [
+        "scope all: every Must feature in one cycle (validated)",
+        "scope feature: one feature per cycle, repeated (experimental)"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Gates",
+      "items": [
+        "Hard: Spec before any code; Manual Check before ship",
+        "Soft: Plan and E2E show a summary and advance unless you object"
+      ]
+    }
+  ]
+}

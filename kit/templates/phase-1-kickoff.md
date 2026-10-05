@@ -10,7 +10,7 @@
      Option B — Self-fill:
        Write rough notes in each section. Bullet points and half-formed
        sentences are fine. The orchestrating agent asks clarifying
-       questions in Step 1 and fills any gaps.
+       questions during Ideation and fills any gaps.
 
      Once filled, place the file at your project root. Start Phase 1 by
      giving your orchestrating agent this file and kit/phase-1-bootstrap.md.
@@ -52,9 +52,10 @@
 
 ---
 
-## Market Research — Step 2
+## Market Research
 
-<!-- Step 2 validates demand and surfaces competitive risks. It is optional.
+<!-- Market Research validates demand and surfaces competitive risks. It is optional.
+     The orchestrator follows your decision here; if you leave it blank it asks once.
 
      Run it if:  you haven't validated this idea externally yet.
      Skip it if: you already have market evidence, or you're building for yourself.
@@ -74,4 +75,3 @@
      - Prior research notes or competitor analysis
      - Domain expertise the agent should factor in
      - Anything else relevant to the idea or target user -->
-

@@ -5213,8 +5213,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="402" y="163" class="t-muted" font-size="7" text-anchor="middle">in-scope files only</text>
         </g>
 
-        <g id="node-verify" data-node-id="verify" data-node-label="Verify" tabindex="0" role="button" aria-label="Focus Verify, bug gone, no regressions, Bug Fix Process" aria-pressed="false" data-node-kind="decision" data-node-sublabel="bug gone, no regressions" data-node-tag="hard gate" data-node-context="Bug Fix Process">
-          <title>Verify · bug gone, no regressions · Bug Fix Process · hard gate</title>
+        <g id="node-verify" data-node-id="verify" data-node-label="Verify" tabindex="0" role="button" aria-label="Focus Verify, bug gone, no regressions, Bug Fix Process" aria-pressed="false" data-node-kind="decision" data-node-sublabel="bug gone, no regressions" data-node-tag="soft gate" data-node-context="Bug Fix Process">
+          <title>Verify · bug gone, no regressions · Bug Fix Process · soft gate</title>
           <rect x="497" y="126" width="118" height="62" rx="7" class="c-mask"/>
           <rect x="497" y="126" width="118" height="62" rx="7" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="neutral" class="semantic-sigil s-external" transform="translate(598 132) scale(0.6875)">
@@ -5224,7 +5224,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="fine" x="507" y="140" class="t-security" font-size="7" font-weight="700">04</text>
           <text data-node-label="" data-detail-anchor="" x="556" y="147" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Verify</text>
           <text data-detail="context" x="556" y="163" class="t-muted" font-size="7" text-anchor="middle">bug gone, no regressions</text>
-        <text data-detail="fine" x="556" y="177" class="t-security" font-size="7" text-anchor="middle">hard gate</text>
+        <text data-detail="fine" x="556" y="177" class="t-security" font-size="7" text-anchor="middle">soft gate</text>
         </g>
 
         <g id="node-reopened" data-node-id="reopened" data-node-label="Reopened" tabindex="0" role="button" aria-label="Focus Reopened, fix incomplete, Outcomes" aria-pressed="false" data-node-kind="failure" data-node-sublabel="fix incomplete" data-node-context="Outcomes">
@@ -5480,11 +5480,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <div class="card">
         <div class="card-header">
           <div class="card-dot cyan"></div>
-          <h3>Hard Gates</h3>
+          <h3>Gates</h3>
         </div>
         <ul>
-          <li>&bull; Assess: AI must name root cause and in-scope files before any code changes</li>
-          <li>&bull; Verify: original symptom must be gone with no new failures introduced</li>
+          <li>&bull; Assess (hard): AI must name the root cause and in-scope files before any code changes</li>
+          <li>&bull; Verify (soft): original symptom must be gone with no new failures; hard only if the symptom is UI-only</li>
         </ul>
       </div>
 

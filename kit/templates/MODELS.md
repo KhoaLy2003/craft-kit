@@ -9,9 +9,9 @@
 
 | Tier | Model | Used for |
 |---|---|---|
-| `capable` | | Complex reasoning and hard decisions. Steps where a wrong call is costly to reverse: Ideation, Architecture, Spec. |
+| `capable` | | Complex reasoning and hard decisions, where a wrong call is costly to reverse: Ideation, Architecture, Spec. |
 | `balanced` | | Implementation, planning, analysis, code generation. Covers most of Phase 2. |
-| `fast` | | Mechanical tasks with no complex reasoning: Assign Specialists, Ship, git operations. |
+| `fast` | | Mechanical tasks with no complex reasoning: Ship, git operations, routing. |
 
 > `fast` may be the same model as `balanced` if only one model is available on your subscription.
 

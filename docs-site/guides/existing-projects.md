@@ -1,6 +1,6 @@
 # Existing Projects
 
-Skip Phase 1. The kit reads four files on every Phase 2 run — if those files exist, Phase 2 works regardless of how the project was started.
+Skip Phase 1. Phase 2 reads a small set of files on every run — if those files exist, it works regardless of how the project was started.
 
 ## Install the Kit
 
@@ -14,16 +14,17 @@ This creates a `kit/` folder alongside your existing project. The templates refe
 
 ---
 
-## The Four Files Phase 2 Needs
+## The Files Phase 2 Needs
 
-Create a `docs/` folder at your project root and produce these four files:
+Create a `docs/` folder at your project root and produce these files:
 
 | File | Template | Priority |
 |---|---|---|
-| `docs/constitution.md` | `kit/templates/08-constitution.md` | **Start here.** Phase 2 cannot run without it. |
-| `docs/architecture.md` | `kit/templates/07-architecture.md` | Documents your existing stack for plan validation. |
-| `docs/DESIGN.md` | `kit/templates/05-design-system.md` | Required for projects with UI. |
-| `docs/roadmap.md` | `kit/templates/06-roadmap.md` | Lists features in MoSCoW priority with build order. |
+| `docs/constitution.md` | `kit/templates/07-constitution.md` | **Start here.** Phase 2 cannot run without it. |
+| `docs/architecture.md` | `kit/templates/06-architecture.md` | Documents your existing stack for plan validation. |
+| `docs/DESIGN.md` | `kit/templates/03c-design-system.md` | Required for projects with UI. |
+| `docs/roadmap.md` | `kit/templates/04-roadmap.md` | Lists features in MoSCoW priority with build order and Phase 2 scope. |
+| `docs/MODELS.md` | `kit/templates/MODELS.md` | Maps your AI models to capability tiers. Run the "Model tiers" section of `kit/phase-1-bootstrap.md` to produce it. |
 
 Phase 2 writes per-feature specs and plans into `docs/specs/` — no separate root-level `specs/` directory is needed.
 
@@ -40,7 +41,7 @@ What it must contain:
 - **Architectural boundaries** — what lives where; what is allowed to import what
 - **Formatting and lint** — which formatter, which linter, any rules with non-default config
 
-Every principle must be concrete enough to change at least one plan or diff. Vague principles ("keep code clean") are dropped at the gate checklist.
+Every principle must be concrete enough to change at least one plan or diff. Vague principles ("keep code clean") are dropped when the constitution is reviewed.
 
 ::: info Solo project?
 For a solo developer on a small codebase, 3–5 concrete rules is enough. Amendment procedure can be: "update this file directly; no approval process needed."
@@ -69,7 +70,7 @@ What it must contain:
 - **Component inventory** — what UI components exist and where they live
 - **Patterns** — layout conventions, interaction patterns, state display (loading, error, empty)
 
-If your project has a Figma file, a Storybook, or a style guide, extract from those. The `samples/DESIGN.md` in the kit shows the expected format.
+If your project has a Figma file, a Storybook, or a style guide, extract from those. `kit/guides/design-reference.md` shows the expected format.
 
 ---
 
@@ -78,28 +79,22 @@ If your project has a Figma file, a Storybook, or a style guide, extract from th
 What it must contain:
 - **Feature list** with MoSCoW priority (Must / Should / Could / Won't)
 - **Build order** — the sequence Phase 2 follows; accounts for dependencies, not just priority
-- **Phase 2 track** — Standard Loop or Single Pass (decide now using the criteria in [Getting Started](/getting-started))
+- **`Phase 2 Scope: all | feature`** — choose using the rule in `kit/steps/phase-1/p1-04-roadmap.md`; `all` builds every Must feature in one cycle, `feature` runs one cycle per feature (experimental)
 - **Status** for each feature — all start as `pending`
 
-As Phase 2 runs, the orchestrator updates `Status` to `in-progress` and then `shipped` after each feature cycle.
+As Phase 2 runs, the orchestrator updates `Status` to `in-progress` and then `shipped`.
 
 ---
 
 ## Starting Phase 2
 
-Once all four files exist:
+Once the files exist:
 
 ```text
-Pick the next `pending` feature from `docs/roadmap.md`
-and run the Phase 2 cycle using `kit/phase-2-feature-dev.md`.
+Run Phase 2 using `kit/phase-2.md`.
 ```
 
-Or for single pass:
-
-```text
-Run Phase 2 single-pass using `kit/phase-2-single-pass.md`
-for all Must features in `docs/roadmap.md`.
-```
+The orchestrator reads `Phase 2 Scope` from the roadmap and runs either the single full-app cycle or the next `pending` feature.
 
 ---
 
@@ -108,7 +103,6 @@ for all Must features in `docs/roadmap.md`.
 You don't need:
 - `docs/idea-brief.md` — Phase 2 never reads it
 - `docs/market-notes.md` — Phase 2 never reads it
-- `docs/tech-options.md` — Phase 2 never reads it
 - `docs/prototype/` — Phase 2 never reads it
 
-Phase 2 reads exactly: `docs/constitution.md`, `docs/architecture.md`, `docs/roadmap.md`, and `docs/DESIGN.md` (for UI features). Nothing else from `docs/`.
+Phase 2 reads `docs/constitution.md`, `docs/architecture.md`, `docs/roadmap.md`, `docs/MODELS.md`, and — for UI work — `docs/DESIGN.md` and `docs/preview/`. Nothing else from `docs/` is required.

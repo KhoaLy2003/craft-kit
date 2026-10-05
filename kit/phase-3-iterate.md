@@ -1,392 +1,128 @@
 # Phase 3 — Iterate
 
-> **Use this after a release has shipped and you want to improve the product — whether you already have ideas or have none at all.**
-> Output is a new release block in `docs/roadmap.md`. Features are then built with the normal Phase 2 Standard Loop. Phase 3 never writes feature code.
+> **Status:** experimental — not yet validated in a test round.
 >
-> Prerequisites: A shipped (or at least runnable) application; `docs/roadmap.md`, `docs/constitution.md`, `docs/architecture.md`, and `docs/DESIGN.md` in place.
+> **Use after a release has shipped and you want to improve the product — with ideas or without.** Output is a new release block in `docs/roadmap.md`; features are then built with Phase 2 (`kit/phase-2.md`, `scope: feature`). Phase 3 never writes feature code.
+>
+> Prerequisites: a shipped (or runnable) application; `docs/roadmap.md`, `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`.
 
----
+Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`. Session log: `docs/phase-3-session.md`, one section per release (`kit/session-logging.md`). Agree `<release-slug>` with the user before Step 1 (e.g. `r2-growth`); it names the folder `docs/iterations/<release-slug>/`.
 
-## How to Read This Document
+## Steps
 
-Four steps: **Review → Discover → Prioritise → Impact & Handoff**. Each step is structured as: Overview, Scope, Execution Rules, Artifact Rules, Completion Criteria, Transition Rules, Exceptions / Special Cases, and References. The gate at Prioritise is the most important — nothing enters the roadmap without explicit user approval.
+| Step | Name | Gate | Model | Agent | Output |
+|---|---|---|---|---|---|
+| 1 | Discover | soft | capable | `brainstorming`; `market-researcher` / `research-analyst` when the user has few ideas | `docs/iterations/<release-slug>/discover.md` |
+| 2 | Prioritise | hard | capable | orchestrator with the user | new release block in `docs/roadmap.md` |
+| 3 | Handoff | soft | balanced | orchestrator; general-purpose agent (read-only impact check) | impact section in the release block; Phase 2 handoff prompt |
 
-## Orchestrator Conventions
-
-Read `kit/orchestrator-conventions.md` for the universal rules every orchestrating agent must follow. For Phase 3 the key items are: step banner (use `Phase 3 · Step N — [Step Name]  |  Release: [release-slug]  |  Gate: [none/soft/hard]`), wall-clock time recording, PROJECT_ROOT injection into every subagent dispatch, file-write verification with 20-line preview, and gate summary protocol.
-
-Log progress in `docs/iterations/<release-slug>/session.md` using the table schema from `kit/session-logging.md`.
-
-`<release-slug>` names the iteration, e.g. `r2-growth` or `v1-1`. Agree on it with the user before Step 1 and use it for every path below.
-
----
-
-## When to Use Phase 3 vs. Other Workflows
+## When to Use Phase 3
 
 | Situation | Use |
 |---|---|
-| Something shipped is broken | `phase-bug-fix.md` |
-| One known shipped feature needs different behavior | `guides/evolving-specs.md`, then `phase-2-feature-dev.md` |
-| You know exactly one new feature to add, and it fits the architecture | `phase-2-feature-dev.md` directly (add a row to `docs/roadmap.md` first) |
-| You want to improve the product but need to decide **what** to build — with ideas or without | **This phase** |
-| Core idea, audience, or stack has changed fundamentally | Start a new project with `phase-1-bootstrap.md` |
+| Something shipped is broken | `kit/phase-bug-fix.md` |
+| One shipped feature needs different behavior | `kit/guides/evolving-specs.md`, then `kit/phase-2.md` |
+| One known new feature that fits the architecture | Add a row to `docs/roadmap.md`, then `kit/phase-2.md` |
+| Need to decide **what** to build next | **This phase** |
+| Core idea, audience, or stack has fundamentally changed | New project: `kit/phase-1-bootstrap.md` |
 
 ---
 
-## Step 1 — Review
+## Step 1 — Discover | Gate: soft
 
-### Overview
+Establish what the product does today and what evidence exists, then produce a short, evidence-backed candidate list.
 
-- **Purpose**: Establish what the shipped product actually does today and what evidence exists about how it is used, so that new work is grounded in reality rather than the original plan.
-- **Agent/Skill**: General-purpose agent (read-only codebase and artifact research); `brainstorming` skill for the user conversation.
-- **Trigger**: User asks to improve, extend, or "do the next version of" a shipped product.
-- **Inputs**:
-  - `docs/roadmap.md` (what shipped, what was deferred)
-  - `docs/idea-brief.md`, `docs/market-notes.md` (if present)
-  - `docs/specs/` (what was actually built)
-  - `docs/specs/bugs/` (known defects)
-  - User-supplied evidence, any of: user feedback, support requests, analytics, interviews, personal usage notes
-- **Outputs**:
-  - `docs/iterations/<release-slug>/review.md` — shipped-state summary, evidence list, pain points, and the user's stated goal for this release
-- **Gate**: `soft`
+**Inputs:** `docs/roadmap.md` (shipped, deferred, `Could` / `Won't` rows), `docs/specs/`, `docs/specs/bugs/`, `docs/idea-brief.md`, `docs/market-notes.md`, `docs/prototype/journey-map.md` (where present), user-supplied evidence (feedback, support requests, analytics, interviews, usage notes).
 
-### Scope
+**Rules**
 
-#### In Scope
+- Read `roadmap.md` and `docs/specs/` before asking questions, so questions cover gaps rather than documented facts.
+- Ask one at a time, before writing anything: (1) the goal of this release, (2) what evidence exists, (3) whether the user already has feature ideas. Record (3) as `ideas: yes | no | partial`. "No evidence, no ideas" is valid input; do not block on it and do not invent evidence — record "none".
+- **Path A (`yes`)**: capture each idea, ask until the problem it solves is stated, then add it as a candidate. Offer Path B sources as extras if `partial`.
+- **Path B (`no`/`partial`)**: mine these sources and name the source for each candidate: (1) deferred / `Could` / `Won't` roadmap rows, (2) pain points in the user's evidence, (3) known defects and debt blocking the goal, (4) manual, weak, or missing steps in the journey map, (5) a competitor and trend scan via `market-researcher` with `market-notes.md` as baseline — only if the user approves the cost.
+- A candidate needs an ID (`C01…`), a one-line description, the user problem it solves, a source, evidence or a `hypothesis` label (never present a trend guess as evidence), size (S / M / L), and whether it likely touches existing architecture. A candidate without a problem and a source is not a candidate. Maximum 10; fewer well-evidenced ones beat a long speculative list.
+- Discuss candidates with the user before writing the file. Do not rank or choose (Step 2) and do not write specs or designs.
+- A candidate that is really a bug goes to `kit/phase-bug-fix.md`; note it in `discover.md`.
+- Dispatch research subagents per the PROJECT_ROOT and fail-fast write rules.
 
-- Summarising shipped features from `roadmap.md` and `docs/specs/`.
-- Collecting whatever evidence the user has. Missing evidence is recorded as "none", not invented.
-- Recording the user's goal for this release (e.g. retention, revenue, polish, new audience, "I just want it better").
-- Listing known bugs and tech debt that affect the goal.
+**Artifact:** `docs/iterations/<release-slug>/discover.md` with the standard metadata header (`Status`, `Last updated`, `Based on`) and sections: Shipped State, Evidence, Known Defects & Debt, Release Goal (user's own words), Idea Status, Candidates (table), Considered and Dropped (with reasons).
 
-#### Out of Scope
+**Completion criteria**
 
-- Proposing features — that is Step 2.
-- Editing any code or existing artifact.
+- [ ] `discover.md` has all sections and 1–10 candidates, each with problem, source, size, evidence/hypothesis label
+- [ ] The user has seen the candidate list and added, removed, or accepted it
 
-#### Scope Boundary
+**Gate summary:** *"Release goal: [goal]. I found [N] candidates, [k] evidence-backed and [m] hypotheses. Ready to prioritise which enter the roadmap?"*
 
-> Step 1 records facts and goals only. Do not suggest solutions here; a solution proposed before the evidence is on paper will anchor Step 2.
+**Exceptions**
 
-### Execution Rules
-
-- Confirm the `<release-slug>` with the user first.
-- Read `roadmap.md` and `docs/specs/` before asking questions, so questions are about gaps, not things already documented.
-- Ask the user, one question at a time: (1) what is the goal of this release, (2) what evidence do you have (feedback, analytics, observations), (3) do you already have feature ideas. Questions are asked **before** `review.md` is written.
-- Record the answer to (3) as `ideas: yes | no | partial`. It selects the Step 2 path.
-- Treat an answer of "no evidence, no ideas" as valid input. Do not block on it.
-
-### Artifact Rules
-
-- **Artifact**: `docs/iterations/<release-slug>/review.md`
-- Starts with the standard metadata header (`Status`, `Last updated`, `Based on`).
-- Sections: Shipped State, Evidence, Known Defects & Debt, Release Goal, Idea Status (`yes | no | partial`).
-- **Status / approval condition**: `soft` gate — orchestrator presents a summary and advances unless the user objects.
-
-### Completion Criteria
-
-- [ ] `review.md` exists with all five sections
-- [ ] Release goal is recorded in the user's own words
-- [ ] Evidence is listed, or explicitly recorded as "none"
-- [ ] Idea Status is recorded
-- [ ] 20-line preview done; no unfilled placeholders
-
-### Transition Rules
-
-#### Before Advancing
-
-- Gate summary: *"Here is where the product stands and what you want from this release: [goal]. Evidence available: [summary or none]. Ideas in hand: [yes/no/partial]. Move on to finding candidate features?"*
-
-#### Next Step
-
-- **Default**: Step 2 — Discover
-- **Optional skip**: No
-- **User decision required**: No (soft gate)
-
-#### Transition Record
-
-- **Record**: `docs/iterations/<release-slug>/session.md`
-- **Values**: `complete`
-
-### Exceptions / Special Cases
-
-- **Product never shipped or `roadmap.md` has unfinished Must features**: stop and finish Phase 2 first. Phase 3 starts from a stable base.
-- **No `docs/` artifacts exist (product built outside the kit)**: dispatch the general-purpose agent to reverse-write a minimal `docs/roadmap.md`, `docs/architecture.md`, and `docs/constitution.md` from the codebase, and obtain user approval of each before continuing.
-
-### References
-
-- `docs/roadmap.md`, `docs/specs/`
-- `kit/phase-bug-fix.md`
+- Product never shipped, or `roadmap.md` has unfinished Must features: stop and finish Phase 2 first.
+- No `docs/` artifacts (built outside the kit): dispatch a general-purpose agent to reverse-write minimal `roadmap.md`, `architecture.md`, `constitution.md` from the codebase; get the user's approval of each before continuing.
+- Nothing credible found (no evidence, nothing deferred, no ideas): say so, recommend gathering usage evidence first, end Phase 3 as `blocked`. Do not manufacture candidates.
+- A candidate changes the product's core idea: flag it; it may belong in a new project.
 
 ---
 
-## Step 2 — Discover
+## Step 2 — Prioritise | Gate: hard
 
-### Overview
+Choose, rank, and commit candidates as a new release block in `docs/roadmap.md`. No subagent.
 
-- **Purpose**: Produce a short, evidence-backed list of candidate features for this release.
-- **Agent/Skill**: `brainstorming` skill (user has ideas); `market-researcher` / `research-analyst` agents (user has no or few ideas).
-- **Trigger**: Step 1 complete.
-- **Inputs**:
-  - `docs/iterations/<release-slug>/review.md`
-  - `docs/roadmap.md` §4 (Explicitly Deferred) and all `Could` / `Won't` rows
-  - `docs/market-notes.md`, `docs/prototype/journey-map.md` (if present)
-- **Outputs**:
-  - `docs/iterations/<release-slug>/candidates.md` — candidate list, each with problem, evidence, source, rough size
-- **Gate**: `soft`
+**Inputs:** `discover.md` (release goal, candidates), `docs/roadmap.md`, `kit/templates/04-roadmap.md`.
 
-### Scope
+**Rules**
 
-#### In Scope
+- Present candidates as a table (impact, size, evidence, dependencies) with a recommended cut line. The orchestrator recommends; the user decides.
+- Score impact vs. size against the release goal and assign MoSCoW. Only `Must` features are guaranteed this release; `Should` / `Could` are explicit stretch.
+- Prefer a small release. If the selection exceeds roughly 5 `Must` features or includes an `L` feature, propose splitting into two releases.
+- **Append only.** Add a `## Release <slug>` section; never renumber, edit, or reorder shipped rows. Feature IDs continue the existing sequence (roadmap ends at `F11` → start at `F12`).
+- The block uses the original Feature List columns (`ID | Feature | Priority | Size | Depends on | Status`), all `pending`, plus Build Order and Deferred subsections (unselected candidates with reasons). Set `Phase 2 Scope: feature`.
+- Mark the block `draft` until approved; refresh `Last updated`; add `discover.md` to `Based on`; restore roadmap `Status: approved` only after approval.
 
-- **Path A — user has ideas**: capture each idea, ask clarifying questions until the problem it solves is stated, then add it as a candidate. Offer, never impose, additional candidates from Path B sources.
-- **Path B — no or few ideas**: mine these sources and propose candidates with the source named for each:
-  1. Deferred, `Could`, and `Won't` rows in `roadmap.md`
-  2. Pain points and themes in the user's evidence from Step 1
-  3. Known defects and debt that block the release goal
-  4. Gaps along the journey in `journey-map.md` (steps that are manual, weak, or missing)
-  5. A refreshed competitor and trend scan, dispatched to `market-researcher` with the existing `market-notes.md` as baseline (only if the user approves the cost)
-- Rough sizing (S / M / L) of each candidate.
+**Completion criteria**
 
-#### Out of Scope
-
-- Ranking or choosing — that is Step 3.
-- Specs, plans, or technical design for any candidate.
-
-#### Scope Boundary
-
-> A candidate without a stated problem and a named source is not a candidate. Generate at most 10; fewer well-evidenced candidates beat a long speculative list.
-
-### Execution Rules
-
-- Follow Path A if Idea Status is `yes`; run Path A first, then offer Path B, if `partial`; Path B only if `no`.
-- Every candidate needs: ID (`C01…`), one-line description, the user problem it solves, evidence or source, size, and whether it likely touches existing architecture.
-- Never present a market-trend guess as evidence. Mark it `hypothesis`.
-- Dispatch research subagents with PROJECT_ROOT and the fail-fast write instruction. Verify the output exists on disk.
-- Do not write `candidates.md` until the user has reacted to the candidates discussed in conversation.
-
-### Artifact Rules
-
-- **Artifact**: `docs/iterations/<release-slug>/candidates.md`
-- Standard metadata header. A table of candidates plus a short "Considered and dropped" list with reasons.
-- **Status / approval condition**: `soft` gate.
-
-### Completion Criteria
-
-- [ ] `candidates.md` exists with 1–10 candidates
-- [ ] Every candidate has problem, source, size, evidence/hypothesis label
-- [ ] The user has seen the list and either added, removed, or accepted it
-- [ ] 20-line preview done
-
-### Transition Rules
-
-#### Before Advancing
-
-- Gate summary: *"I found [N] candidate features for this release, [k] backed by evidence and [m] hypotheses. Ready to prioritise which of these enter the roadmap?"*
-
-#### Next Step
-
-- **Default**: Step 3 — Prioritise
-- **Optional skip**: No
-- **User decision required**: No (soft gate)
-
-#### Transition Record
-
-- **Record**: `docs/iterations/<release-slug>/session.md`
-- **Values**: `complete`
-
-### Exceptions / Special Cases
-
-- **Discovery yields nothing credible** (no evidence, nothing deferred, user has no ideas): report that honestly and recommend gathering real usage evidence first. End Phase 3 with status `blocked`; do not manufacture candidates.
-- **A candidate is really a bug**: move it to the bug-fix workflow and note it in `candidates.md`.
-- **A candidate changes the product's core idea**: flag it; this may belong in a new project, not this release.
-
-### References
-
-- `brainstorming` skill
-- `market-researcher`, `research-analyst` agents
-- `kit/task-agent-rubric.md`
-
----
-
-## Step 3 — Prioritise
-
-### Overview
-
-- **Purpose**: Choose which candidates enter this release, rank them, and commit them to `docs/roadmap.md` as a new release block.
-- **Agent/Skill**: Orchestrator with the user. No subagent.
-- **Trigger**: Step 2 complete.
-- **Inputs**:
-  - `docs/iterations/<release-slug>/review.md` (release goal)
-  - `docs/iterations/<release-slug>/candidates.md`
-  - `docs/roadmap.md`
-- **Outputs**:
-  - `docs/roadmap.md` — new `## Release <slug>` section appended (existing rows untouched)
-- **Gate**: `hard`
-
-### Scope
-
-#### In Scope
-
-- Scoring each candidate against the release goal and sizing (impact vs. size), then assigning MoSCoW.
-- Resolving dependencies between candidates and on shipped features.
-- Assigning feature IDs that continue the existing sequence (if the roadmap ends at `F11`, start at `F12`).
-- Setting a build order.
-- Recording unselected candidates as deferred.
-
-#### Out of Scope
-
-- Editing existing shipped rows in `roadmap.md`.
-- Specs or plans.
-
-#### Scope Boundary
-
-> Scope the release to what the goal needs. Prefer a small release the user can finish and learn from. If the selected set exceeds roughly 5 `Must` features or any `L` feature, propose splitting it into two releases.
-
-### Execution Rules
-
-- Present candidates as a table (impact, size, evidence, dependency) and a recommended cut line. The user decides; the orchestrator recommends.
-- Only `Must` features are guaranteed to be built this release. `Should` / `Could` are explicit stretch.
-- New roadmap block uses the same columns as the original Feature List (`ID | Feature | Priority | Size | Depends on | Status`), all `pending`, plus its own Build Order and Deferred subsections.
-- Append only. Never renumber or modify shipped rows.
-- Phase 2 track for any iteration release is `standard`. Single-pass is for initial builds only (see `kit/steps/phase-2/p2sp-07-ship.md`).
-- Set `roadmap.md` metadata `Status` back to `approved` only after the user approves the new block.
-
-### Artifact Rules
-
-- **Artifact**: `docs/roadmap.md` (appended section)
-- Refresh `Last updated`. Add `docs/iterations/<release-slug>/candidates.md` to `Based on`.
-- **Status / approval condition**: Explicit user approval of the new release block. Until then the block is marked `draft`.
-
-### Completion Criteria
-
-- [ ] New release block exists in `docs/roadmap.md` with IDs continuing the existing sequence
-- [ ] Every selected feature traces to a candidate and to the release goal
-- [ ] Build order accounts for dependencies
-- [ ] Unselected candidates appear in the release's Deferred subsection with reasons
+- [ ] Release block exists with IDs continuing the sequence; each feature traces to a candidate and the release goal
+- [ ] Build order respects dependencies; unselected candidates are in Deferred with reasons
 - [ ] Shipped rows are byte-for-byte unchanged
-- [ ] The user has explicitly approved
+- [ ] The user explicitly approved the scope
 
-### Transition Rules
+**Gate summary:** *"This release commits [N] features — [list] — to serve '[goal]'. [M] candidates are deferred. Do you approve this scope?"*
 
-#### Before Advancing
+**Exceptions**
 
-- Gate summary: *"This release commits [N] features — [list] — to serve the goal '[goal]'. [M] candidates are deferred. Do you approve this scope?"*
-
-#### Next Step
-
-- **Default**: Step 4 — Impact & Handoff
-- **Optional skip**: No
-- **User decision required**: Yes — explicit approval at the hard gate
-
-#### Transition Record
-
-- **Record**: `docs/iterations/<release-slug>/session.md`
-- **Values**: `complete`
-
-### Exceptions / Special Cases
-
-- **User wants everything**: show the cost (sum of sizes) against the goal; if they still insist, record the decision and split into sequential releases.
-- **Zero features selected**: end Phase 3 with status `complete`, no roadmap change. Record the reason in `session.md`.
-
-### References
-
-- `kit/templates/06-roadmap.md`
-- `kit/gate-management.md`
+- User wants everything: show the summed cost against the goal; if they insist, record the decision and split into sequential releases.
+- Zero features selected: end Phase 3 as `complete` with no roadmap change; record the reason in the session log.
 
 ---
 
-## Step 4 — Impact & Handoff
+## Step 3 — Handoff | Gate: soft
 
-### Overview
+Check whether the new features invalidate the existing foundations, then hand off to Phase 2.
 
-- **Purpose**: Check whether the new features invalidate the existing architecture, constitution, or design system, amend them with approval if so, and hand off to Phase 2.
-- **Agent/Skill**: General-purpose agent (read-only impact analysis); orchestrator applies approved amendments.
-- **Trigger**: Step 3 approved.
-- **Inputs**:
-  - New release block in `docs/roadmap.md`
-  - `docs/architecture.md`, `docs/constitution.md`, `docs/DESIGN.md`
-- **Outputs**:
-  - `docs/iterations/<release-slug>/impact.md` — per-feature verdict against each foundation document
-  - Amended `architecture.md` / `constitution.md` / `DESIGN.md` (only if needed and approved)
-- **Gate**: `hard` if any amendment is proposed; otherwise `none`
+**Inputs:** the new release block, `docs/architecture.md`, `docs/constitution.md`, `docs/DESIGN.md`.
 
-### Scope
+**Rules**
 
-#### In Scope
+- Dispatch a general-purpose agent read-only to check each new feature for: a new dependency, service, data-model or auth change, a new design component, or a rule exception.
+- Record the result as an **Impact** section inside the release block of `docs/roadmap.md`: a table of feature × {architecture, constitution, design} with `none | amend` and a one-line reason. No separate file.
+- If any verdict is `amend`: present the minimal amendments, each tagged with the feature requiring it; apply only after explicit user approval; keep `Status: approved` and refresh `Last updated`. Amend only what a selected feature cannot be built without. A new stack choice follows `kit/stack-catalog.md` and `kit/steps/phase-1/p1-06-architecture.md`.
+- Large impact (new stack, new auth model, data migration): make the foundation change its own feature at the head of the build order, with its own spec and migration plan.
+- An amendment that contradicts a constitutional rule fundamental to the product: stop and surface it; the user chooses between dropping the feature and amending the constitution explicitly.
+- If 2+ new features need screen designs and have none, run Phase 1 Step 5 as a re-entry for them (`kit/steps/phase-1/p1-05-screen-design.md`, "Re-entry for new features") before Phase 2.
+- Emit the Phase 2 handoff prompt: `kit/phase-2.md`, project name, release slug, `scope: feature`, and the first pending feature in the build order.
 
-- For each new feature: does it need a new dependency, service, data model change, auth change, new design component, or rule exception?
-- Drafting minimal amendments, each tagged with the feature that requires it.
-- Handing off to `phase-2-feature-dev.md`.
+**Completion criteria**
 
-#### Out of Scope
+- [ ] Impact section present in the release block with a verdict for every new feature
+- [ ] Any amendments applied with approval, or none needed
+- [ ] Phase 2 handoff prompt emitted; session log shows Phase 3 `complete`
 
-- Rewriting foundation documents beyond what the new features require.
-- Implementing or migrating anything.
-
-#### Scope Boundary
-
-> Amend the foundation documents only where a selected feature cannot be built without it. A change that no selected feature needs is out of scope.
-
-### Execution Rules
-
-- Dispatch the general-purpose agent read-only to produce the impact verdicts. Verify `impact.md` is on disk.
-- If all verdicts are "no change": record that, skip the gate, and proceed to handoff.
-- If amendments are needed: present them with the feature they serve; apply only after explicit approval; set the document metadata `Last updated` and keep `Status: approved`.
-- A new stack choice goes through the same stack-catalog rules as `kit/steps/phase-1/p1-07-architecture.md`.
-- Offer the Design Sprint (`phase-2-design-sprint.md`) if 2+ new Phase 3 features need screen designs and have none from Phase 1 Step 6 or a previous sprint — the Design Sprint is the correct workflow for new features without existing designs.
-- Handoff is automatic: emit the exact first message for the next session — phase file `kit/phase-2-feature-dev.md`, project name, release slug, and the first pending feature in the new build order.
-
-### Artifact Rules
-
-- **Artifact**: `docs/iterations/<release-slug>/impact.md`
-- Standard metadata header. A table: feature × {architecture, constitution, design} with `none | amend` and a one-line reason.
-- **Status / approval condition**: `hard` gate only when amendments exist.
-
-### Completion Criteria
-
-- [ ] `impact.md` exists with a verdict for every new feature
-- [ ] All proposed amendments are applied with approval, or none were needed
-- [ ] Handoff message emitted
-- [ ] Session log shows Phase 3 `complete`
-
-### Transition Rules
-
-#### Before Advancing
-
-- Gate summary (only if amendments): *"The new features require these changes to existing foundations: [list]. Approve them so Phase 2 can build on them?"*
-
-#### Next Step
-
-- **Default**: Phase 2 — `kit/phase-2-feature-dev.md`, Step 1 for the first pending feature of the new release
-- **Optional skip**: No
-- **User decision required**: Only if amendments exist
-
-#### Transition Record
-
-- **Record**: `docs/iterations/<release-slug>/session.md`
-- **Values**: `complete`
-
-### Exceptions / Special Cases
-
-- **Amendment would contradict a constitutional rule fundamental to the product**: stop and surface the conflict; the user decides between dropping the feature and amending the constitution explicitly.
-- **Impact is large (new stack, new auth model, data migration)**: treat the foundation change as its own feature at the head of the build order, with its own spec and migration plan.
-
-### References
-
-- `kit/phase-2-feature-dev.md`
-- `kit/phase-2-design-sprint.md`
-- `kit/steps/phase-1/p1-07-architecture.md`
-- `kit/guides/evolving-specs.md`
+**Gate summary (only when amendments exist):** *"The new features require these changes to existing foundations: [list]. Approve them so Phase 2 can build on them?"*
 
 ---
 
-## Phase 3 Output Checklist
+## Output Checklist
 
-- [ ] `docs/iterations/<release-slug>/review.md`
-- [ ] `docs/iterations/<release-slug>/candidates.md`
-- [ ] `docs/roadmap.md` has an approved new release block
-- [ ] `docs/iterations/<release-slug>/impact.md`
-- [ ] Foundation documents amended if and only if required, with approval
-- [ ] `docs/iterations/<release-slug>/session.md` shows all four steps complete
-- [ ] Phase 2 handoff message emitted
+- [ ] `docs/iterations/<release-slug>/discover.md`
+- [ ] `docs/roadmap.md`: approved release block with Impact section
+- [ ] Foundation documents amended only if required, with approval
+- [ ] `docs/phase-3-session.md` shows all three steps complete

@@ -8,6 +8,19 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ## [Unreleased]
 
 ---
+### Refactor (2026-10) — workflow consolidation
+
+Prompted by a full-kit review. **Not yet validated in a test round** (all prior rounds used the old single-pass track).
+
+- **Phase 1 is now 8 steps.** Prototype and Design are merged into `steps/phase-1/p1-03-prototype-design.md` (one HTML build, one hard gate). Later steps renumbered: Roadmap 4, Screen Design 5, Architecture 6, Constitution 7, Scaffold 8. Templates renumbered to match (`03a/03b/03c`, `04-roadmap`, `06-architecture`, `07-constitution`, `08-scaffold-checklist`). Gates: Market Research and Constitution are now `soft`; Step 2 honours the kickoff run/skip decision.
+- **Phase 2 is one track, 7 steps**, parameterised by `Phase 2 Scope: all | feature` (replaces single-pass / standard loop and the `Phase 2 Track` field). New `phase-2.md`; steps: Spec, Plan (now assigns specialists), Implement (creates the feature branch), Review (absorbs Converge), E2E (plan + run; batch failures, scoped re-run), Manual Check, Ship. The scope selection rule lives only in `p1-04-roadmap.md`.
+- **Removed:** `gate-management.md` (now `## Gates` in `orchestrator-conventions.md`), `setup-models.md` (now `## Model tiers` in `phase-1-bootstrap.md`), `phase-1-checklist.md`, `phase-2-checklist.md`, `phase-2-feature-dev.md`, `phase-2-single-pass.md`, `guides/e2e-testing-plan.md`, the duplicate `resource/interactive-prototype-process.md`, all `p2sp-*` step files, and per-step Transition Record / Gate Checklist boilerplate.
+- **Moved:** `resource/DESIGN.md` → `guides/design-reference.md` (resource/ is not installed).
+- **Conventions:** one-line step banner; no clock/credits mandate; session log updated at gates and completion; one session-log path per phase; model tiers resolved once; frontend dispatch contract defined once in `orchestrator-conventions.md`.
+- **Design Sprint removed** (`phase-2-design-sprint.md`, `p2-ds-batch-design.md`): Phase 1 Step 5 is now re-enterable for new-release features (batched handoff, same gate); Phase 3 Handoff and the Phase 2 spec-mode rule point to it.
+- **Phase 3** is 3 steps (Discover, Prioritise, Handoff; no `impact.md`). **Bug fix** trimmed, Verify gate `soft` unless UI-only, "return to Step 1" contradiction fixed. Unvalidated workflows are marked experimental.
+- **CLI:** `CHANGELOG.md` no longer installed; `--force` removes stale files via `.craft-kit-manifest.json`; unknown flags and file targets fail cleanly; harness detection removed; download timeout. Added a kit link-integrity test. Added `LICENSE`.
+
 
 ## [0.0.18] - 2026-10-03
 
@@ -44,15 +57,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
----
-
-## [Unreleased]
-
----
-
 ## [0.0.17] - 2026-10-03
-
-**Summary:** Phase 3 Iterate — post-release workflow for deciding what to build next, with or without existing ideas
 
 **Summary:** Phase 3 Iterate — post-release workflow for deciding and committing what to build next, with or without existing ideas.
 
