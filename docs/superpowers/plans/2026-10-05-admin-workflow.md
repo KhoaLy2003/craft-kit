@@ -458,7 +458,7 @@ Build `feature/admin` from the plan.
   2. a signed-in non-admin receives `403` from `/api/admin/*`
   3. the example module renders its empty, loading, and error states
   4. one mutation writes one `admin_audit_log` row
-  
+
   If any check fails, fix the Shell before continuing. Modules build on a Shell that has passed.
 - Group 0 (if present) completes before the Shell.
 
