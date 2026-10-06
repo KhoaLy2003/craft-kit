@@ -108,7 +108,7 @@ describe('flags', () => {
 describe('fresh install', () => {
   test('installs the orchestration files, steps and templates', () => {
     const target = install()
-    for (const f of ['phase-1-bootstrap.md', 'phase-2.md', 'phase-bug-fix.md', 'orchestrator-conventions.md']) {
+    for (const f of ['phase-1-bootstrap.md', 'phase-2.md', 'phase-bug-fix.md', 'phase-admin.md', 'orchestrator-conventions.md']) {
       assert.ok(existsSync(join(target, f)), `missing ${f}`)
     }
     assert.ok(existsSync(join(target, 'templates')))
@@ -231,6 +231,7 @@ describe('non-TTY output (piped stdin prints all setup instructions)', () => {
     assert.match(stdout, /obra\/superpowers/)
     assert.match(stdout, /\/plugin install superpowers/)
     assert.match(stdout, /npx skills add .*Leonxlnx\/taste-skill.*design-taste-frontend/)
+    assert.match(stdout, /npx skills add .*evondev\/evondevKit.*ui-ux/)
     assert.match(stdout, /VoltAgent\/awesome-claude-code-subagents/)
     assert.match(stdout, /Quick start/)
   })
@@ -249,7 +250,7 @@ describe('quick start paths', () => {
   test('use the installed directory, not a hardcoded "kit/" prefix', () => {
     const base = tempDir()
     const { stdout } = run([join(base, 'my-kit'), '--skip-setup'], { cwd: base })
-    for (const f of ['phase-1-bootstrap.md', 'phase-2.md', 'phase-bug-fix.md']) {
+    for (const f of ['phase-1-bootstrap.md', 'phase-2.md', 'phase-bug-fix.md', 'phase-admin.md']) {
       assert.match(stdout, new RegExp(`my-kit[/\\\\]${f.replace('.', '\\.')}`))
     }
     assert.doesNotMatch(stdout, /kit[/\\]my-kit/)

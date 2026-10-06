@@ -36,11 +36,12 @@ const HR = dim('─'.repeat(52))
 
 // ─── Dependency sources ───────────────────────────────────────────────────────
 //
-// Skills (8 of 9):  https://github.com/obra/superpowers
+// Superpowers skills (8):  https://github.com/obra/superpowers
 //   → installed as a plugin inside your AI harness; not a shell command.
 //
-// Skill (1 of 9):   https://github.com/Leonxlnx/taste-skill
-//   → design-taste-frontend — installed via `npx skills add` (cross-harness).
+// Skills (2 via npx): design-taste-frontend https://github.com/Leonxlnx/taste-skill,
+//                     evon:ui-ux (optional, admin site workflow) https://github.com/evondev/evondevKit
+//   → installed via `npx skills add` (cross-harness).
 //
 // Agents (6):       https://github.com/VoltAgent/awesome-claude-code-subagents
 //   → downloaded as .md files into <cwd>/.agents/agents/ (project-scoped).
@@ -48,6 +49,9 @@ const HR = dim('─'.repeat(52))
 const TASTE_SKILL_REPO = 'https://github.com/Leonxlnx/taste-skill'
 const TASTE_SKILL_NAME = 'design-taste-frontend'
 const TASTE_SKILL_CMD  = `npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes`
+const EVON_SKILL_REPO  = 'https://github.com/evondev/evondevKit'
+const EVON_SKILL_NAME  = 'ui-ux'
+const EVON_SKILL_CMD   = `npx skills add ${EVON_SKILL_REPO} --skill "${EVON_SKILL_NAME}" --yes`
 const VOLTAGENT_RAW    = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
 
 const REQUIRED_AGENTS = [
@@ -95,15 +99,29 @@ function httpsGet (url, redirectsLeft = 5) {
   })
 }
 
-function installTasteSkill () {
+function installSkill (repo, name) {
   // shell: true is required on Windows (npx resolves to npx.cmd).
   // On Unix it triggers DEP0190 because args are concatenated, not escaped.
   const result = spawnSync(
     'npx',
-    ['skills', 'add', TASTE_SKILL_REPO, '--skill', TASTE_SKILL_NAME, '--yes'],
+    ['skills', 'add', repo, '--skill', name, '--yes'],
     { stdio: 'inherit', shell: process.platform === 'win32' }
   )
   return result.status === 0
+}
+
+// Prompt for one optional `npx skills add` install; `yes` is the Y/n prompt from interactiveSetup.
+async function offerSkill (yes, { question, display, repo, name, cmd }) {
+  if (await yes(question)) {
+    console.log('')
+    if (installSkill(repo, name)) {
+      console.log(`\n  ${SYM.check}  ${bGreen(display)} installed.\n`)
+    } else {
+      console.log(`\n  ${SYM.cross}  Install failed. Run manually:\n     ${dim(cmd)}\n`)
+    }
+  } else {
+    console.log(`\n  Skipped. Run when ready:\n    ${dim(cmd)}\n`)
+  }
 }
 
 async function installAgents (agentsDir) {
@@ -234,6 +252,9 @@ function printQuickStart (rel) {
   ${SYM.dot} ${bold('Bug fix')}
     Share  ${yellow(rel + '/phase-bug-fix.md')}  and describe the problem
 
+  ${SYM.dot} ${bold('Admin site')}  ${dim('(after Phase 2 has shipped)')}
+    Share  ${yellow(rel + '/phase-admin.md')}  and say:  ${yellow('"Build the admin site using ' + rel + '/phase-admin.md."')}
+
   ${SYM.dot} ${bold('Docs')}  ${dim('https://khoaly2003.github.io/craft-kit')}
   ${HR}
 `)
@@ -274,17 +295,23 @@ async function interactiveSetup () {
   console.log(`  ${dim('Three quick steps to unlock the full Phase 1–2 workflow.')}`)
   printSuperpowers()
 
-  section(2, 'design-taste-frontend', '(installed via npx)')
-  if (await yes('Install design-taste-frontend now via npx?')) {
-    console.log('')
-    if (installTasteSkill()) {
-      console.log(`\n  ${SYM.check}  ${bGreen('design-taste-frontend')} installed.\n`)
-    } else {
-      console.log(`\n  ${SYM.cross}  Install failed. Run manually:\n     ${dim(TASTE_SKILL_CMD)}\n`)
-    }
-  } else {
-    console.log(`\n  Skipped. Run when ready:\n    ${dim(TASTE_SKILL_CMD)}\n`)
-  }
+  section(2, 'Design skills', '(installed via npx)')
+  await offerSkill(yes, {
+    question: 'Install design-taste-frontend now via npx?',
+    display: 'design-taste-frontend',
+    repo: TASTE_SKILL_REPO,
+    name: TASTE_SKILL_NAME,
+    cmd: TASTE_SKILL_CMD,
+  })
+
+  console.log(`  ${dim('Optional: evon:ui-ux builds admin site screens (used by the admin site workflow).')}\n`)
+  await offerSkill(yes, {
+    question: 'Also install evon:ui-ux?',
+    display: 'evon:ui-ux',
+    repo: EVON_SKILL_REPO,
+    name: EVON_SKILL_NAME,
+    cmd: EVON_SKILL_CMD,
+  })
 
   section(3, 'Specialist agents')
   const agentsDir = path.join(process.cwd(), '.agents', 'agents')
@@ -404,8 +431,9 @@ ${versionLine}
     } else {
       // Non-interactive (CI / piped stdin): print everything, run nothing.
       printSuperpowers()
-      section(2, 'design-taste-frontend')
+      section(2, 'Design skills')
       console.log(`  Run in your terminal:\n    ${TASTE_SKILL_CMD}`)
+      console.log(`\n  Optional — admin site workflow (evon:ui-ux):\n    ${EVON_SKILL_CMD}`)
       section(3, 'Specialist agents')
       printAgentManualInstructions()
     }
