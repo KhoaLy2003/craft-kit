@@ -36,7 +36,7 @@ const HR = dim('─'.repeat(52))
 
 // ─── Dependency sources ───────────────────────────────────────────────────────
 //
-// Skills (8 of 9):  https://github.com/obra/superpowers
+// Superpowers skills (8):  https://github.com/obra/superpowers
 //   → installed as a plugin inside your AI harness; not a shell command.
 //
 // Skills (2 via npx): design-taste-frontend https://github.com/Leonxlnx/taste-skill,

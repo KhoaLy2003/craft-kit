@@ -102,7 +102,7 @@ Build `feature/admin` from the plan.
 - **Frontend dispatches** follow the Frontend dispatch contract: include `docs/DESIGN.md` and `docs/preview/`; admin screens have no `docs/designs/` entries. Pass the matching archetype contract from `kit/guides/admin-blueprint.md` §3 as the brief, and apply blueprint §6: use the `evon:ui-ux` skill in its "just build it" mode when it is available, never its brief-approval or wireframe stops.
 - **Shell checkpoint — mandatory before any module starts.** Verify, against the running application:
   1. an admin signs in and sees a role-filtered menu
-  2. a signed-in non-admin receives `403` from `/api/admin/*`
+  2. a signed-in non-admin cannot reach the admin API: login returns `403`, and `/api/admin/*` called with a non-admin token returns `401`; an admin whose role lacks the permission gets `403`
   3. the example module renders its empty, loading, and error states
   4. one mutation writes one `admin_audit_log` row
   
@@ -124,7 +124,7 @@ Build `feature/admin` from the plan.
 - **Security review.** Dispatch `code-reviewer` over the full branch diff with this checklist, in addition to its normal spec and constitution check:
   1. every route under `/api/admin/` except `POST /api/admin/auth/login` calls the guard; the login route is the only unauthenticated one
   2. deny by default: a role lacking a permission is refused (`403`)
-  3. every mutation writes an audit row in the same transaction
+  3. every mutation other than the login route writes an audit row in the same transaction
   4. the token is never in `localStorage`, `sessionStorage`, a JS-readable cookie, or a URL
   5. list endpoints whitelist `sort` and `filter` keys and cap `pageSize`
   6. audit `payload` carries no secrets or credentials

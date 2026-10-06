@@ -112,7 +112,7 @@ Response: `{ "items": [], "page": 1, "pageSize": 25, "total": 0 }`.
 `pageSize` is capped at 100. `sort` keys and `filter` keys are whitelisted per module; an unknown key returns `400`.
 
 ### 5.4 Audit record
-Every successful mutation under `/api/admin/` writes one row to `admin_audit_log`, in the same transaction as the mutation:
+Every successful mutation under `/api/admin/` other than `POST /api/admin/auth/login` writes one row to `admin_audit_log`, in the same transaction as the mutation:
 
 | Column | Meaning |
 |---|---|

@@ -26,7 +26,7 @@ Single command, no subcommands. Execution order:
 4. With `--force` and a previous `<target>/.craft-kit-manifest.json`: delete files in the old manifest that the new kit no longer ships, then prune emptied directories. Files not in the manifest (user-added) are never touched, and manifest entries resolving outside the target are ignored. With no previous manifest, print a one-line note that renamed files from older versions may linger
 5. Write `.craft-kit-version` and `.craft-kit-manifest.json` (sorted relative file list) on every install; print the upgrade message when `--force` crosses versions
 6. If `--skip-setup`: print quick-start and exit
-7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend` command + agent download instructions, then quick-start
+7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend` command + optional `evon:ui-ux` command + agent download instructions, then quick-start
 8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` → `.agents/skills/`, plus an optional `evon:ui-ux` install (admin site workflow), (b) download of 6 VoltAgent agent `.md` files to `.agents/agents/` (`httpsGet` has a 15 s timeout and a 5-redirect limit)
 9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`)
 
