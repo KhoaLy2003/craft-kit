@@ -54,9 +54,11 @@ jobs:
 
           NOTES_EOF
 
-          if [[ -s RELEASE_NOTES.md ]]; then
+          # The release commit resets RELEASE_NOTES.md, so read the notes from its parent.
+          NOTES=$(git show "${TAG}^:RELEASE_NOTES.md" 2>/dev/null | perl -0pe 's/<!--.*?-->//gs' || true)
+          if [[ -n "$(printf '%s' "$NOTES" | tr -d '[:space:]')" ]]; then
             echo "" >> release_notes.md
-            cat RELEASE_NOTES.md >> release_notes.md
+            printf '%s\n' "$NOTES" >> release_notes.md
           else
             # Fallback: commit messages since previous tag
             PREVIOUS_TAG=$(git tag -l 'v*' --sort=-version:refname | grep -v "^${TAG}$" | head -n 1 || true)

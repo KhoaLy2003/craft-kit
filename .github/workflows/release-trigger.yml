@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
+      # Pushes to main and the tag use RELEASE_PAT (so release.yml fires on the tag push).
 
     steps:
       - name: Checkout repository
@@ -37,6 +37,31 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Preflight (main only, notes written, CI green)
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "Error: release must be dispatched from main (got $GITHUB_REF)."
+            exit 1
+          fi
+
+          NOTES=$(perl -0pe 's/<!--.*?-->//gs' RELEASE_NOTES.md | tr -d '[:space:]')
+          if [[ -z "$NOTES" ]]; then
+            echo "Error: RELEASE_NOTES.md has no content. Write the release notes and push them to main first."
+            exit 1
+          fi
+
+          SHA=$(git rev-parse HEAD)
+          BAD=$(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs" --paginate \
+            --jq '[.check_runs[] | select(.status != "completed" or (.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral"))] | length' \
+            | awk '{s+=$1} END{print s+0}')
+          if [[ "$BAD" != "0" ]]; then
+            echo "Error: $BAD check run(s) on $SHA are failing or still running. Wait for green CI on main."
+            exit 1
+          fi
 
       - name: Determine version
         id: version
@@ -77,13 +102,6 @@ jobs:
             echo "Error: tag $TAG already exists."
             exit 1
           fi
-
-      - name: Create release branch
-        id: branch
-        run: |
-          BRANCH="chore/release-${{ steps.version.outputs.tag }}"
-          git checkout -b "$BRANCH"
-          echo "name=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: Update package.json version
         run: |
@@ -146,55 +164,28 @@ jobs:
           console.log(`Extraction check passed (${out.split('\n').length} lines).`);
           EOF
 
-      - name: Commit version bump
+      - name: Commit, tag, and push to main
         run: |
-          git add package.json kit/CHANGELOG.md
-          if git diff --cached --quiet; then
-            echo "Nothing to commit."
-          else
-            git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
-          fi
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG="${{ steps.version.outputs.tag }}"
 
-      - name: Push branch and tag
-        run: |
-          git tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.tag }}"
-          git push origin "${{ steps.branch.outputs.name }}"
-          git push origin "${{ steps.version.outputs.tag }}"
-          echo "Pushed branch ${{ steps.branch.outputs.name }} and tag ${{ steps.version.outputs.tag }}"
-
-      - name: Reset RELEASE_NOTES.md for next release
-        run: |
+          # Reset RELEASE_NOTES.md in the same commit. release.yml reads the notes
+          # from the commit before the tag, so they are not lost.
           cat > RELEASE_NOTES.md << 'RESET_EOF'
           <!-- Write user-facing release notes here before triggering release-trigger.yml.
                This file becomes the GitHub release body. Keep it concise and user-focused —
                what improved for kit users, not which files changed (kit/CHANGELOG.md tracks that).
-               After the release workflow runs and the PR merges, this file resets automatically. -->
+               After the release workflow runs, this file resets automatically. -->
           RESET_EOF
-          git add RELEASE_NOTES.md
-          if git diff --cached --quiet; then
-            echo "RELEASE_NOTES.md already at template state — nothing to commit."
-          else
-            git commit -m "chore: reset RELEASE_NOTES.md after ${{ steps.version.outputs.tag }}"
-            git push origin "${{ steps.branch.outputs.name }}"
-          fi
 
+          git add package.json kit/CHANGELOG.md RELEASE_NOTES.md
+          git commit -m "chore: release ${VERSION}"
+          git tag -a "$TAG" -m "Release $TAG"
 
-      - name: Open pull request
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
-        run: |
-          gh pr create \
-            --base main \
-            --head "${{ steps.branch.outputs.name }}" \
-            --title "chore: release ${{ steps.version.outputs.version }}" \
-            --body "Automated release of \`${{ steps.version.outputs.version }}\`.
-
-          The git tag \`${{ steps.version.outputs.tag }}\` has been pushed and \`release.yml\` is building the GitHub Release.
-
-          Merge this PR after the release is published to keep \`main\` in sync."
+          # Atomic: either main and the tag both update, or neither does.
+          git push --atomic origin HEAD:main "refs/tags/$TAG"
 
       - name: Summary
         run: |
-          echo "Version bumped to ${{ steps.version.outputs.version }}"
-          echo "Tag ${{ steps.version.outputs.tag }} pushed"
-          echo "PR opened from ${{ steps.branch.outputs.name }} → main"
+          echo "Released ${{ steps.version.outputs.version }}: one commit on main, tag ${{ steps.version.outputs.tag }} pushed."
