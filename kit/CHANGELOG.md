@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.21] - 2026-10-07
+
+**Summary:** Admin Site workflow · trigger prompt in README and docs
+
 ### Added — Admin Site workflow (experimental)
 
 - **`kit/phase-admin.md`** — new workflow, run after Phase 2: Scope (hard; agent proposes modules, user edits, agent re-reviews once per round, loop until the user approves; roles and permission matrix, identity check, open-branch check) → Spec & Plan → Implement (Shell checkpoint before any module) → Review & E2E (security checklist, permission-matrix E2E) → Ship (hard; manual check, one PR).
@@ -21,6 +27,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`bin/cli.js`** — optional `evon:ui-ux` install (interactive prompt and non-TTY instructions), generic `installSkill`, admin quick-start block.
 - **`docs-site/`**, **`README.md`**, **`AGENTS.md`** — page table, templates and skills pages, workflow and gate lists.
 - **Status:** not yet validated in a test round.
+
+---
 
 ---
 
