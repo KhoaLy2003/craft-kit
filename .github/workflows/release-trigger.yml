@@ -55,9 +55,10 @@ jobs:
           fi
 
           SHA=$(git rev-parse HEAD)
+          # Skip this job's own check run (it is in progress by definition).
           BAD=$(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/check-runs" --paginate \
-            --jq '[.check_runs[] | select(.status != "completed" or (.conclusion != "success" and .conclusion != "skipped" and .conclusion != "neutral"))] | length' \
-            | awk '{s+=$1} END{print s+0}')
+            --jq '.check_runs[] | [.name, .status, .conclusion] | @tsv' \
+            | awk -F'\t' -v job="$GITHUB_JOB" '$1 != job && !($2 == "completed" && ($3 == "success" || $3 == "skipped" || $3 == "neutral")) {n++} END{print n+0}')
           if [[ "$BAD" != "0" ]]; then
             echo "Error: $BAD check run(s) on $SHA are failing or still running. Wait for green CI on main."
             exit 1
