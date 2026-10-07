@@ -134,6 +134,10 @@ Run Phase 2 using kit/phase-2.md.
 Run the bug fix workflow for: [describe what's wrong and where it appears].
 ```
 
+```text [Admin site]
+Build the admin site using kit/phase-admin.md.
+```
+
 :::::
 
 Everything the AI produces (documents, plans, code) lands in your **project folder**. The `kit/` folder is a guide the AI reads — you never edit it.
