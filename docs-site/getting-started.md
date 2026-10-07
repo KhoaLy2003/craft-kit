@@ -97,3 +97,15 @@ Run the bug fix workflow. The problem is: [describe what's wrong and where it ha
 ```
 
 See [Bug Fix Workflow](/phases/bug-fix) for the full process. This workflow is experimental.
+
+---
+
+## Building an Admin Site
+
+After Phase 2 has shipped, share `kit/phase-admin.md` with your AI and send:
+
+```text
+Build the admin site using kit/phase-admin.md.
+```
+
+The AI proposes modules in `docs/admin/scope.md` and asks you to edit it. You approve at two hard gates: Scope and Ship. See [Admin Site Workflow](/phases/admin) for the full process. This workflow is experimental.

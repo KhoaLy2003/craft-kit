@@ -126,6 +126,14 @@ All experimental — not yet validated in a test round.
 | Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). Fixed Next.js stack; the admin app only calls `/api/admin/*` on your backend. Run after Phase 2. |
 | Session Handover | `guides/session-handover.md` | A long run must continue in a fresh session. |
 
+To start the Admin Site workflow (after Phase 2 has shipped), share `kit/phase-admin.md` with your agent and say:
+
+```
+"Build the admin site using kit/phase-admin.md."
+```
+
+The agent drafts `docs/admin/scope.md` and asks you to edit it; the two hard gates (Scope, Ship) need your approval.
+
 ---
 
 ## Existing Projects
