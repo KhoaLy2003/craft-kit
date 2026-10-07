@@ -9,6 +9,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+## [0.0.22] - 2026-10-07
+
+**Summary:** Single-commit release flow
+
+---
+
+---
+
 ## [0.0.21] - 2026-10-07
 
 **Summary:** Admin Site workflow · trigger prompt in README and docs
