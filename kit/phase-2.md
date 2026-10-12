@@ -3,12 +3,12 @@
 > **Status:** scope `feature` is experimental — not yet validated in a test round. Scope `all` is validated.
 >
 > One orchestration script for the whole build phase. The same 7 steps run in one of two scopes:
-> - **`scope: all`** — every Must feature in `docs/roadmap.md` is specced, planned, built, reviewed, tested, and shipped in one cycle.
+> - **`scope: all`** — every Must feature in `docs/backlog.json` is specced, planned, built, reviewed, tested, and shipped in one cycle.
 > - **`scope: feature`** — one feature per cycle, repeated in build order. Never batch features.
 >
 > Scope `all` is for the initial complete build only. Later releases run `scope: feature`.
 
-**Prerequisites:** Phase 1 complete, or an existing project with `docs/constitution.md`, `docs/architecture.md`, and `docs/DESIGN.md` in place. `docs/roadmap.md` states `Phase 2 Scope: all | feature`; if the field is absent (existing project), apply the selection rule in `kit/steps/phase-1/p1-04-roadmap.md` and record the result in the roadmap before Step 1.
+**Prerequisites:** Phase 1 complete, or an existing project with `docs/constitution.md`, `docs/architecture.md`, and `docs/DESIGN.md` in place. `docs/backlog.json` holds the features and their status; Phase 2 reads it to select `pending` features in build order (`docs/roadmap.md`). `docs/roadmap.md` states `Phase 2 Scope: all | feature`; if the field is absent (existing project), apply the selection rule in `kit/steps/phase-1/p1-04-roadmap.md` and record the result in the roadmap before Step 1.
 
 **Conventions:** read `kit/orchestrator-conventions.md` (banner, PROJECT_ROOT, write verification, fail-fast write instruction, gates, frontend dispatch) and `kit/session-logging.md` before starting. Each step file is the authoritative source for that step's inputs, outputs, rules, and completion criteria; read it before running the step.
 
@@ -34,7 +34,7 @@
 | 4 | `code-reviewer` | Acceptance-criteria coverage verdict; all findings fixed |
 | 5 | general-purpose agent, `ui-ux-tester` | `docs/E2E-TESTS.md`; test results |
 | 6 | Human | Approval |
-| 7 | `finishing-a-development-branch` + general-purpose agent | Commit, PR, roadmap updated |
+| 7 | `finishing-a-development-branch` + general-purpose agent | Commit, PR, shipped events recorded |
 
 ```
 [1] Spec ─hard→ [2] Plan ─soft→ [3] Implement → [4] Review → [5] E2E ─soft→ [6] Manual Check ─hard→ [7] Ship

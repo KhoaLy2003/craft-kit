@@ -8,7 +8,7 @@
 - **Phase 2 Scope**: `all` | `feature` <!-- recommended from the criteria in kit/steps/phase-1/p1-04-roadmap.md; confirmed by the user -->
 - **Admin Site**: `yes` | `no` | `later` <!-- asked at Step 4; a hint for kit/phase-admin.md only. Never a feature row; not counted in the Phase 2 Scope criteria. -->
 
-> Product-scope decision, not a technical one. Assume no tech stack. The orchestrator reads this file to pick the next feature for Phase 2, so keep the `Status` column accurate.
+> Product-scope decision, not a technical one. Assume no tech stack. Features are read from `docs/backlog.json`; the orchestrator uses it to pick the next feature for Phase 2.
 
 ---
 
@@ -22,22 +22,10 @@
 
 ## 2. Feature List
 
-<!--
-One row per feature. Priority uses MoSCoW:
-- Must  — MVP is not viable without this
-- Should — important but MVP can launch without it
-- Could — nice to have, first candidate to cut
-- Won't (this round) — explicitly deferred, not forgotten
+<!-- Generated from docs/backlog.json by kit/scripts/render-backlog.js. Do not edit by hand. -->
 
-Size is rough: S / M / L. Status starts "pending"; the orchestrator moves it to "in-progress" / "shipped" as Phase 2 runs.
--->
-
-| ID | Feature | Priority | Size | Depends on | Status |
-|---|---|---|---|---|---|
-| F01 | | Must | | | pending |
-| F02 | | Must | | | pending |
-| F03 | | Should | | | pending |
-| F04 | | Could | | | pending |
+<!-- BEGIN FEATURES -->
+<!-- END FEATURES -->
 
 ---
 
@@ -81,4 +69,4 @@ Size is rough: S / M / L. Status starts "pending"; the orchestrator moves it to 
 
 -
 
-<!-- Phase 3 appends `## Release <slug>` blocks below this line. Never edit shipped rows above. -->
+<!-- Phase 3 appends `## Release <slug>` blocks below this line. Shipped features in docs/backlog.json are never edited or removed. -->

@@ -105,7 +105,7 @@ One track, seven steps, run at one of two scopes. The scope is decided at the Ph
 | 4 | Review — code review plus acceptance-criteria coverage | none |
 | 5 | E2E — write the E2E plan, run it, batch failures into one fix pass | soft |
 | 6 | Manual Check — you walk through the running app | **hard** |
-| 7 | Ship — commit, PR, roadmap updated | none |
+| 7 | Ship — commit, PR, shipped events recorded | none |
 
 Start it:
 
@@ -145,7 +145,8 @@ Skip Phase 1. Create these files in `docs/` — Phase 2 reads them on every cycl
 | `docs/constitution.md` | `templates/07-constitution.md` | Coding principles for AI-generated code: naming, types, testing standard, architectural rules. Be specific. |
 | `docs/architecture.md` | `templates/06-architecture.md` | Existing stack, folder layout, key architectural decisions. |
 | `docs/DESIGN.md` | `templates/03c-design-system.md` | Design tokens and component list. `guides/design-reference.md` shows the expected format. |
-| `docs/roadmap.md` | `templates/04-roadmap.md` | MoSCoW feature list with build order and `Phase 2 Scope`. Phase 2 updates `Status` as features ship. |
+| `docs/roadmap.md` | `templates/04-roadmap.md` | Build order, deferrals, and `Phase 2 Scope`; the feature table is generated from `docs/backlog.json`. |
+| `docs/backlog.json` | `templates/backlog.json` | Features, status, and dated events. Phase 2 appends events as features start and ship; `kit/scripts/render-backlog.js` renders `docs/backlog.html`. |
 | `docs/MODELS.md` | `templates/MODELS.md` | Tier → model map. Run the "Model tiers" section of `phase-1-bootstrap.md` to produce it. |
 
 Then start Phase 2 with the prompt above.
