@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.23] - 2026-10-12
+
+**Summary:** Structured backlog · generated HTML board
+
 ### Added — structured backlog (`docs/backlog.json` + generated HTML board)
 
 - **`kit/templates/backlog.json`** — skeleton for the single source of feature status and dates; events are append-only with `source` (`live`, `backfill-confirmed`, `backfill-unverified`, `unknown`) so every date states its confidence.
@@ -28,6 +34,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 - **Upgrade note:** existing projects with a hand-maintained roadmap table must run `kit/phase-roadmap-migrate.md` once before using Phase 2 Ship or Phase 3 Prioritise, since those steps now write to `backlog.json`.
 - **Status:** not yet validated in a test round.
+
+---
 
 ---
 
