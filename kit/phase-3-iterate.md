@@ -2,9 +2,9 @@
 
 > **Status:** experimental — not yet validated in a test round.
 >
-> **Use after a release has shipped and you want to improve the product — with ideas or without.** Output is a new release block in `docs/roadmap.md`; features are then built with Phase 2 (`kit/phase-2.md`, `scope: feature`). Phase 3 never writes feature code.
+> **Use after a release has shipped and you want to improve the product — with ideas or without.** Output is a new release in `docs/backlog.json` plus a release block in `docs/roadmap.md`; features are then built from `docs/backlog.json` with Phase 2 (`kit/phase-2.md`, `scope: feature`). Phase 3 never writes feature code.
 >
-> Prerequisites: a shipped (or runnable) application; `docs/roadmap.md`, `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`.
+> Prerequisites: a shipped (or runnable) application; `docs/backlog.json`, `docs/roadmap.md`, `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`.
 
 Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`. Session log: `docs/phase-3-session.md`, one section per release (`kit/session-logging.md`). Agree `<release-slug>` with the user before Step 1 (e.g. `r2-growth`); it names the folder `docs/iterations/<release-slug>/`.
 
@@ -13,7 +13,7 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 | Step | Name | Gate | Model | Agent | Output |
 |---|---|---|---|---|---|
 | 1 | Discover | soft | capable | `brainstorming`; `market-researcher` / `research-analyst` when the user has few ideas | `docs/iterations/<release-slug>/discover.md` |
-| 2 | Prioritise | hard | capable | orchestrator with the user | new release block in `docs/roadmap.md` |
+| 2 | Prioritise | hard | capable | orchestrator with the user | new release and features in `docs/backlog.json`; release block in `docs/roadmap.md` |
 | 3 | Handoff | soft | balanced | orchestrator; general-purpose agent (read-only impact check) | impact section in the release block; Phase 2 handoff prompt |
 
 ## When to Use Phase 3
@@ -22,7 +22,7 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 |---|---|
 | Something shipped is broken | `kit/phase-bug-fix.md` |
 | One shipped feature needs different behavior | `kit/guides/evolving-specs.md`, then `kit/phase-2.md` |
-| One known new feature that fits the architecture | Add a row to `docs/roadmap.md`, then `kit/phase-2.md` |
+| One known new feature that fits the architecture | Add the feature to `docs/backlog.json` (status `pending`, `created` event), run `node kit/scripts/render-backlog.js`, then `kit/phase-2.md` |
 | Need to decide **what** to build next | **This phase** |
 | Core idea, audience, or stack has fundamentally changed | New project: `kit/phase-1-bootstrap.md` |
 
@@ -32,14 +32,14 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 
 Establish what the product does today and what evidence exists, then produce a short, evidence-backed candidate list.
 
-**Inputs:** `docs/roadmap.md` (shipped, deferred, `Could` / `Won't` rows), `docs/specs/`, `docs/specs/bugs/`, `docs/idea-brief.md`, `docs/market-notes.md`, `docs/prototype/journey-map.md` (where present), user-supplied evidence (feedback, support requests, analytics, interviews, usage notes).
+**Inputs:** `docs/backlog.json` (shipped, deferred, `Could` / `Won't` features), `docs/roadmap.md`, `docs/specs/`, `docs/specs/bugs/`, `docs/idea-brief.md`, `docs/market-notes.md`, `docs/prototype/journey-map.md` (where present), user-supplied evidence (feedback, support requests, analytics, interviews, usage notes).
 
 ### Rules
 
-- Read `roadmap.md` and `docs/specs/` before asking questions, so questions cover gaps rather than documented facts.
+- Read `docs/backlog.json`, `roadmap.md` and `docs/specs/` before asking questions, so questions cover gaps rather than documented facts.
 - Ask one at a time, before writing anything: (1) the goal of this release, (2) what evidence exists, (3) whether the user already has feature ideas. Record (3) as `ideas: yes | no | partial`. "No evidence, no ideas" is valid input; do not block on it and do not invent evidence — record "none".
 - **Path A (`yes`)**: capture each idea, ask until the problem it solves is stated, then add it as a candidate. Offer Path B sources as extras if `partial`.
-- **Path B (`no`/`partial`)**: mine these sources and name the source for each candidate: (1) deferred / `Could` / `Won't` roadmap rows, (2) pain points in the user's evidence, (3) known defects and debt blocking the goal, (4) manual, weak, or missing steps in the journey map, (5) a competitor and trend scan via `market-researcher` with `market-notes.md` as baseline — only if the user approves the cost.
+- **Path B (`no`/`partial`)**: mine these sources and name the source for each candidate: (1) deferred / `Could` / `Won't` features from `docs/backlog.json`, (2) pain points in the user's evidence, (3) known defects and debt blocking the goal, (4) manual, weak, or missing steps in the journey map, (5) a competitor and trend scan via `market-researcher` with `market-notes.md` as baseline — only if the user approves the cost.
 - A candidate needs an ID (`C01…`), a one-line description, the user problem it solves, a source, evidence or a `hypothesis` label (never present a trend guess as evidence), size (S / M / L), and whether it likely touches existing architecture. A candidate without a problem and a source is not a candidate. Maximum 10; fewer well-evidenced ones beat a long speculative list.
 - Discuss candidates with the user before writing the file. Do not rank or choose (Step 2) and do not write specs or designs.
 - A candidate that is really a bug goes to `kit/phase-bug-fix.md`; note it in `discover.md`.
@@ -65,24 +65,24 @@ Establish what the product does today and what evidence exists, then produce a s
 
 ## Step 2 — Prioritise | Gate: hard
 
-Choose, rank, and commit candidates as a new release block in `docs/roadmap.md`. No subagent.
+Choose, rank, and commit candidates as a new release in `docs/backlog.json`, with its `## Release <slug>` block in `docs/roadmap.md`. No subagent.
 
-**Inputs:** `discover.md` (release goal, candidates), `docs/roadmap.md`, `kit/templates/04-roadmap.md`.
+**Inputs:** `discover.md` (release goal, candidates), `docs/backlog.json`, `docs/roadmap.md`, `kit/templates/04-roadmap.md`.
 
 ### Rules
 
 - Present candidates as a table (impact, size, evidence, dependencies) with a recommended cut line. The orchestrator recommends; the user decides.
 - Score impact vs. size against the release goal and assign MoSCoW. Only `Must` features are guaranteed this release; `Should` / `Could` are explicit stretch.
 - Prefer a small release. If the selection exceeds roughly 5 `Must` features or includes an `L` feature, propose splitting into two releases.
-- **Append only.** Add a `## Release <slug>` section; never renumber, edit, or reorder shipped rows. Feature IDs continue the existing sequence (roadmap ends at `F11` → start at `F12`).
-- The block uses the original Feature List columns (`ID | Feature | Priority | Size | Depends on | Status`), all `pending`, plus Build Order and Deferred subsections (unselected candidates with reasons). Set `Phase 2 Scope: feature`.
+- **Append only.** Append the new release entry (`status: planned`) and its features to `docs/backlog.json`, each feature `pending` with a `created` event (`source: live`, `by: orchestrator`); never renumber, edit, or remove shipped features. Feature IDs continue the existing sequence (backlog ends at `F11` → start at `F12`). Then run `node kit/scripts/render-backlog.js`; never hand-edit the generated table.
+- Add a `## Release <slug>` section to `docs/roadmap.md` holding the Build Order, Deferred (unselected candidates with reasons), and Impact prose. Set `Phase 2 Scope: feature`.
 - Mark the block `draft` until approved; refresh `Last updated`; add `discover.md` to `Based on`; restore roadmap `Status: approved` only after approval.
 
 ### Completion criteria
 
-- [ ] Release block exists with IDs continuing the sequence; each feature traces to a candidate and the release goal
+- [ ] Release entry and features exist in `docs/backlog.json` with IDs continuing the sequence; each feature traces to a candidate and the release goal
 - [ ] Build order respects dependencies; unselected candidates are in Deferred with reasons
-- [ ] Shipped rows are byte-for-byte unchanged
+- [ ] Shipped features are unchanged in `docs/backlog.json`; the render script exits 0
 - [ ] The user explicitly approved the scope
 
 **Gate summary:** *"This release commits [N] features — [list] — to serve '[goal]'. [M] candidates are deferred. Do you approve this scope?"*
@@ -123,6 +123,6 @@ Check whether the new features invalidate the existing foundations, then hand of
 ## Output Checklist
 
 - [ ] `docs/iterations/<release-slug>/discover.md`
-- [ ] `docs/roadmap.md`: approved release block with Impact section
+- [ ] `docs/backlog.json` updated and rendered; `docs/roadmap.md`: approved release block with Impact section
 - [ ] Foundation documents amended only if required, with approval
 - [ ] `docs/phase-3-session.md` shows all three steps complete

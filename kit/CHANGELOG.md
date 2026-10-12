@@ -7,6 +7,28 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Added — structured backlog (`docs/backlog.json` + generated HTML board)
+
+- **`kit/templates/backlog.json`** — skeleton for the single source of feature status and dates; events are append-only with `source` (`live`, `backfill-confirmed`, `backfill-unverified`, `unknown`) so every date states its confidence.
+- **`kit/templates/backlog.html`** — static board template (no JavaScript, no external assets, works offline).
+- **`kit/scripts/render-backlog.js`** — zero-dependency script: validates `docs/backlog.json` (reports every error, writes nothing on failure), writes `docs/backlog.html`, and rewrites the feature table between `<!-- BEGIN FEATURES -->` / `<!-- END FEATURES -->` in `docs/roadmap.md`. Idempotent.
+- **`kit/phase-roadmap-migrate.md`** — one-time, interactive migration for existing projects: git-derived date hints are shown with squash flags, the user confirms or corrects each date, unconfirmed hints are stored as `backfill-unverified`, and missing dates are left blank (`unknown`). Limitations are documented in the step.
+
+### Changed — feature status moves out of `roadmap.md`
+
+- **`kit/templates/04-roadmap.md`** — section 2 is the generated table between markers; metadata and narrative are unchanged.
+- **`kit/steps/phase-1/p1-04-roadmap.md`** — writes `backlog.json` (one `created` event per feature) and runs the render script; the table is never hand-edited.
+- **`kit/steps/phase-1/p1-05-screen-design.md`**, **`kit/steps/phase-2/p2-01-spec.md`** — read features from `backlog.json`.
+- **`kit/steps/phase-2/p2-03-implement.md`** — records a `started` event when the feature branch is created.
+- **`kit/steps/phase-2/p2-07-ship.md`** — records a `shipped` event with the PR as evidence (replaces setting `Status: shipped` in the table).
+- **`kit/phase-1-bootstrap.md`**, **`kit/phase-2.md`** — `backlog.json` added to outputs, checklist, and the Phase 2 handoff file list.
+- **`kit/phase-3-iterate.md`** — Prioritise appends the release and its features to `backlog.json`; the release block in `roadmap.md` keeps Build Order, Deferred, and Impact prose.
+- **`docs-site/.vitepress/config.ts`** (migration page), **`docs-site/guides/existing-projects.md`**, **`README.md`** — updated references.
+- **`AGENTS.md`** (repo, not shipped) — test commands cover both test files.
+
+- **Upgrade note:** existing projects with a hand-maintained roadmap table must run `kit/phase-roadmap-migrate.md` once before using Phase 2 Ship or Phase 3 Prioritise, since those steps now write to `backlog.json`.
+- **Status:** not yet validated in a test round.
+
 ---
 
 ## [0.0.22] - 2026-10-07

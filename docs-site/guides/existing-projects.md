@@ -24,6 +24,7 @@ Create a `docs/` folder at your project root and produce these files:
 | `docs/architecture.md` | `kit/templates/06-architecture.md` | Documents your existing stack for plan validation. |
 | `docs/DESIGN.md` | `kit/templates/03c-design-system.md` | Required for projects with UI. |
 | `docs/roadmap.md` | `kit/templates/04-roadmap.md` | Lists features in MoSCoW priority with build order and Phase 2 scope. |
+| `docs/backlog.json` | `kit/templates/backlog.json` | Source of feature status and dates. Phase 2 reads it. Render it with `node kit/scripts/render-backlog.js`. |
 | `docs/MODELS.md` | `kit/templates/MODELS.md` | Maps your AI models to capability tiers. Run the "Model tiers" section of `kit/phase-1-bootstrap.md` to produce it. |
 
 Phase 2 writes per-feature specs and plans into `docs/specs/` — no separate root-level `specs/` directory is needed.
@@ -77,12 +78,24 @@ If your project has a Figma file, a Storybook, or a style guide, extract from th
 ## Roadmap
 
 What it must contain:
-- **Feature list** with MoSCoW priority (Must / Should / Could / Won't)
+- **Feature list** in `docs/backlog.json` (from `kit/templates/backlog.json`) with MoSCoW priority (Must / Should / Could / Won't); run `node kit/scripts/render-backlog.js` to render the table in `roadmap.md` and `docs/backlog.html`
 - **Build order** — the sequence Phase 2 follows; accounts for dependencies, not just priority
 - **`Phase 2 Scope: all | feature`** — choose using the rule in `kit/steps/phase-1/p1-04-roadmap.md`; `all` builds every Must feature in one cycle, `feature` runs one cycle per feature (experimental)
-- **Status** for each feature — all start as `pending`
+- **Status** for each feature — all start as `pending`, each with a `created` event
 
-As Phase 2 runs, the orchestrator updates `Status` to `in-progress` and then `shipped`.
+As Phase 2 runs, the orchestrator appends `started` and then `shipped` events and re-runs the render script.
+
+---
+
+## Migrating an Existing Roadmap
+
+If your `docs/roadmap.md` already has a hand-maintained feature table, do not rewrite it by hand. Send this to your AI, from the project root:
+
+```text
+Run the roadmap migration using kit/phase-roadmap-migrate.md.
+```
+
+The AI shows you each feature with the dates it found in git history, and asks you to confirm, correct, or mark each date unknown. It writes `docs/backlog.json` and renders the table only after you approve. Dates it could not confirm are shown as unverified in the HTML. See the step file for the limitations.
 
 ---
 
@@ -105,4 +118,4 @@ You don't need:
 - `docs/market-notes.md` — Phase 2 never reads it
 - `docs/prototype/` — Phase 2 never reads it
 
-Phase 2 reads `docs/constitution.md`, `docs/architecture.md`, `docs/roadmap.md`, `docs/MODELS.md`, and — for UI work — `docs/DESIGN.md` and `docs/preview/`. Nothing else from `docs/` is required.
+Phase 2 reads `docs/constitution.md`, `docs/architecture.md`, `docs/backlog.json`, `docs/roadmap.md`, `docs/MODELS.md`, and — for UI work — `docs/DESIGN.md` and `docs/preview/`. Nothing else from `docs/` is required.

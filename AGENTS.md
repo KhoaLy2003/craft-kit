@@ -39,7 +39,7 @@ Phase 1 (Bootstrap, once per project) — 8 steps
   1 Ideation → 2 Market Research → 3 Prototype & Design → 4 Roadmap →
   5 Full Screen Design → 6 Architecture → 7 Constitution → 8 Scaffold
   Output: docs/{idea-brief,market-notes,DESIGN,roadmap,architecture,constitution,
-                scaffold-checklist,MODELS}.md; docs/prototype/, docs/preview/, docs/designs/
+                scaffold-checklist,MODELS}.md (+ backlog.json, backlog.html); docs/prototype/, docs/preview/, docs/designs/
           docs/phase-1-session.md; one Phase 1 commit; Phase 2 handoff prompt
 
 Phase 2 (Build) — one track, 7 steps, parameterised by scope
@@ -52,6 +52,7 @@ Phase 2 (Build) — one track, 7 steps, parameterised by scope
           docs/phase-2-session.md (one section per feature)
 
 Other workflows (all experimental — not yet validated in a test round)
+  Roadmap Migration (existing projects, once): Preflight → Evidence → Review dates → Write & render   kit/phase-roadmap-migrate.md
   Bug Fix: Assess → Fix → Verify         docs/specs/bugs/<bug-slug>/assess.md, fix/<bug-slug> → PR
   Phase 3: Discover → Prioritise → Handoff
   Admin Site: Scope → Spec & Plan → Implement → Review & E2E → Ship
@@ -94,7 +95,7 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify
 
 ```bash
 # Run the test suite (no npm install needed — zero external deps)
-node --test tests/cli.test.mjs
+node --test tests/*.test.mjs
 
 # Docs site
 cd docs-site
@@ -150,7 +151,8 @@ phase-1-kickoff.md     — user-filled intake form
 03a-journey-map.md     — Step 3 (→ docs/prototype/journey-map.md)
 03b-prototype-brief.md — Step 3 (→ docs/prototype/prototype-brief.md)
 03c-design-system.md   — Step 3 (→ docs/DESIGN.md)
-04-roadmap.md          — Step 4
+04-roadmap.md          — Step 4 (feature table generated from backlog.json)
+backlog.json           — Step 4 (→ docs/backlog.json; validated and rendered by kit/scripts/render-backlog.js)
 spec-screen.md         — Step 5 / Phase 2 specs (per-screen)
 06-architecture.md     — Step 6
 07-constitution.md     — Step 7
@@ -175,6 +177,8 @@ admin-scope.md         — Admin Step 1 (→ docs/admin/scope.md)
 | `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`), single closeout checklist, Phase 2 handoff |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
 | `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md` | Other workflows |
+| `kit/phase-roadmap-migrate.md` | One-time roadmap migration for existing projects (interactive, git-evidence hints) |
+| `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |
 | `kit/stack-catalog.md` | Architecture-step stack reference: Canonical Baseline, Deviation Triggers, Additions Catalog |
 | `kit/session-logging.md` | Session log format and conventions |
@@ -204,7 +208,7 @@ Published package files: `kit/` and `bin/` (`LICENSE` and `README.md` are includ
 
 ### Framework
 
-`node:test` with `node:assert/strict`. No external libraries. Single file: `tests/cli.test.mjs` (7 describe blocks, 19 tests).
+`node:test` with `node:assert/strict`. No external libraries. Two files: `tests/cli.test.mjs` (installer) and `tests/render-backlog.test.mjs` (backlog validator and renderer, run against the real script).
 
 ### Test Strategy
 

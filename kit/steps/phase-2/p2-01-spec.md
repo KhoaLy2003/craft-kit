@@ -7,7 +7,7 @@
 - **Model**: `capable`
 - **Gate**: `hard` — approval of the spec
 - **Inputs**:
-  - `docs/roadmap.md` (the feature entry, or all Must entries), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`
+  - `docs/backlog.json` (the feature entry, or all Must entries), `docs/roadmap.md` (build-order context), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`
   - `docs/designs/<feature-slug>/` and `docs/specs/<feature-slug>/screens/*.md` — designs and briefs from Phase 1 Step 5 (including a re-entry for new features), if they exist
 - **Outputs**:
   - `scope: feature` → `docs/specs/<feature-slug>/spec.md`

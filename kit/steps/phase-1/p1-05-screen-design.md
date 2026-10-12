@@ -5,8 +5,8 @@
 - **Purpose**: Identify every screen each in-scope feature needs, write per-screen briefs, send one combined designer handoff, accept designs back (file exports or an MCP design tool), and get sign-off on the full design set before architecture.
 - **Agent/Skill**: orchestrator only. No subagent dispatch, no AI-generated designs.
 - **Model**: `balanced`
-- **Trigger**: Step 4 gate approved (`docs/roadmap.md` exists, all features `pending`).
-- **Inputs**: `docs/roadmap.md`; `docs/prototype/prototype-brief.md`; `docs/DESIGN.md`; `docs/preview/`.
+- **Trigger**: Step 4 gate approved (`docs/backlog.json` and `docs/roadmap.md` exist, all features `pending`).
+- **Inputs**: `docs/backlog.json`; `docs/roadmap.md` (build order); `docs/prototype/prototype-brief.md`; `docs/DESIGN.md`; `docs/preview/`.
 - **Outputs**:
   - `docs/specs/<feature-slug>/screens/<screen-name>.md` — one brief per screen (Phase A)
   - `docs/designs/<feature-slug>/` — image files (Path A), or `design-manifest.json` (Path B)
@@ -22,7 +22,7 @@
 
 ### Phase A — Screen list and briefs
 
-1. Read `docs/roadmap.md`; take every Must and Should feature in build order. Derive each slug: lowercase kebab-case of the feature name. Phase 2 reuses these slugs for `docs/specs/<slug>/` and `docs/designs/<slug>/`.
+1. Read the feature list from `docs/backlog.json`; take every feature with priority Must or Should, in build order from `docs/roadmap.md` Section 3. Derive each slug: lowercase kebab-case of the feature name. Phase 2 reuses these slugs for `docs/specs/<slug>/` and `docs/designs/<slug>/`.
 2. **Skip the whole step** only if every feature has one simple screen already covered by `docs/preview/`: record the reason in the session log and wait for user confirmation. Never permitted if any feature has two or more non-trivial screens.
 3. For each slug:
    - If `docs/designs/<slug>/` already holds design files or a valid `design-manifest.json`, record `skipped, designs_exist` and leave the feature out of the handoff. If the feature's one simple screen is covered by `docs/preview/` and the user confirms, record `skipped, preview_sufficient`.

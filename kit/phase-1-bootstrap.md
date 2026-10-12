@@ -32,7 +32,7 @@ Before each step, read its step file; it is authoritative for that step's inputs
 | 1 | Product Ideation | `none` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
 | 2 | Market Research *(optional; the kickoff decides run/skip)* | `soft` | fast | `market-researcher` | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
 | 3 | Prototype & Design | `hard` | balanced | general-purpose agent; orchestrator builds the HTML | `docs/prototype/`, `docs/DESIGN.md`, `docs/preview/` | `kit/steps/phase-1/p1-03-prototype-design.md` |
-| 4 | Roadmap (also sets Phase 2 scope) | `hard` | balanced | general-purpose agent | `docs/roadmap.md` | `kit/steps/phase-1/p1-04-roadmap.md` |
+| 4 | Roadmap (also sets Phase 2 scope) | `hard` | balanced | general-purpose agent | `docs/roadmap.md`, `docs/backlog.json`, `docs/backlog.html` | `kit/steps/phase-1/p1-04-roadmap.md` |
 | 5 | Full Screen Design *(skippable)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
 | 6 | Tech Stack & Architecture | `hard` | capable | `research-analyst` | `docs/architecture.md` | `kit/steps/phase-1/p1-06-architecture.md` |
 | 7 | Constitution | `soft` | fast | general-purpose agent | `docs/constitution.md` | `kit/steps/phase-1/p1-07-constitution.md` |
@@ -47,7 +47,7 @@ The single closeout checklist. Step 8 runs it; every item must pass before the P
 - [ ] `docs/idea-brief.md` is `approved`
 - [ ] `docs/market-notes.md` *(skip if Step 2 was skipped)*
 - [ ] `docs/prototype/` (journey-map.md and prototype-brief.md, Definition of Done checked), `docs/DESIGN.md`, and `docs/preview/index.html` (the approved prototype)
-- [ ] `docs/roadmap.md` is `approved`, all features `pending`, `Phase 2 Scope` recorded
+- [ ] `docs/roadmap.md` is `approved`, `Phase 2 Scope` recorded; `docs/backlog.json` validates (all features `pending`) and `docs/backlog.html` is rendered
 - [ ] `docs/specs/*/screens/*.md` and `docs/designs/` *(skip if Step 5 was skipped)*
 - [ ] `docs/architecture.md` and `docs/constitution.md` are `approved`
 - [ ] Scaffold: every item in `kit/templates/08-scaffold-checklist.md` is checked; the app builds and runs; the smoke test passes
@@ -66,6 +66,7 @@ Read these files before starting:
 - docs/architecture.md
 - docs/constitution.md
 - docs/roadmap.md
+- docs/backlog.json
 - docs/MODELS.md
 - kit/phase-2.md
 
