@@ -7,6 +7,13 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed — feature titles and details are separate fields
+
+- **`kit/scripts/render-backlog.js`** — optional `description` on a feature (full text, shown only in the detail dialog). `name` is the short title used on cards and in the roadmap table. A title over 80 characters produces a warning, not an error.
+- **`kit/templates/backlog.html`** — the dialog shows the description under the title.
+- **`kit/phase-roadmap-migrate.md`** — long legacy feature text is split: a proposed short title (at most 60 characters, no new facts) goes into `name`, and the original text moves unchanged into `description`. The user approves every title before anything is written.
+- **Upgrade note:** existing `backlog.json` files with long `name` values still validate; they produce title warnings until the names are shortened or split.
+
 ---
 
 ## [0.0.24] - 2026-10-13

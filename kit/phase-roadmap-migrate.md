@@ -78,7 +78,8 @@ Gate summary: *"[N] dates confirmed, [k] unverified, [m] unknown. Write docs/bac
 
 1. Build `docs/backlog.json` from `kit/templates/backlog.json`:
    - `schema_version: 1`; `project` from the project name; `phase2_scope` and `admin_site` from the roadmap metadata.
-   - For each feature: keep the legacy ID, name, priority, size, and dependencies. A `Won't` or `deferred` feature gets `release: null`; every other feature gets its release id.
+   - For each feature: keep the legacy ID, priority, size, and dependencies. A `Won't` or `deferred` feature gets `release: null`; every other feature gets its release id.
+   - **Title and description:** if the legacy feature text is longer than 80 characters, propose a short `name` (at most 60 characters, taken from the text, no new facts) and move the full original text, unchanged, into `description`. Show every proposed title in the Step 3 review table and get the user's approval or edit for each one before writing. Features whose text is already short keep it as `name` with no `description`.
    - Events, in order: `created` (from the Step 3 decision), then the status event that matches the legacy status (`started` for `in-progress`, `shipped` for `shipped`, `deferred` for `deferred`), with `by: "migration"`, `evidence` from Step 3, and `note: "migrated from roadmap.md"`. A `pending` feature has only the `created` event.
    - Set `status` to match the latest status event (the validator enforces this).
 2. Replace the legacy table in `docs/roadmap.md` with the marker pair (`<!-- BEGIN FEATURES -->` and `<!-- END FEATURES -->`), placed where the table was, under "## 2. Feature List". This is the only manual edit allowed to `roadmap.md`; everything else in the file stays.
