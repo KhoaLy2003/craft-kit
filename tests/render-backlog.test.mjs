@@ -364,3 +364,40 @@ describe('render-backlog: warnings and line endings', () => {
     assert.ok(!html.includes('\r'));
   });
 });
+
+describe('render-backlog: short title and description', () => {
+  it('dialog shows the description under the short title; roadmap table shows only the title', () => {
+    const root = tempProject({
+      backlog: backlog([baseFeature({ name: 'Short title', description: 'Full detail line one\nline two' })]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    const html = fs.readFileSync(path.join(root, 'docs', 'backlog.html'), 'utf8');
+    assert.ok(html.includes('<p class="description">Full detail line one\nline two</p>'));
+    const md = fs.readFileSync(path.join(root, 'docs', 'roadmap.md'), 'utf8');
+    assert.ok(md.includes('| F01 | Short title | Must | M |  | pending |'));
+    assert.ok(!md.includes('Full detail line one'));
+  });
+
+  it('warns, without failing, when a title is longer than 80 characters', () => {
+    const longTitle = 'x'.repeat(81);
+    const root = tempProject({
+      backlog: backlog([baseFeature({ name: longTitle })]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stderr, /F01: name is 81 characters \(over 80\)/);
+  });
+
+  it('rejects a description that is not a string', () => {
+    const root = tempProject({
+      backlog: backlog([baseFeature({ description: 42 })]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /F01: description must be a string when present/);
+  });
+});

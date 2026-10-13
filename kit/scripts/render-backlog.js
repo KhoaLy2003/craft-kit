@@ -23,6 +23,7 @@ const STATUS_OF_EVENT = { created: 'pending', started: 'in-progress', shipped: '
 const STATUS_EVENT_TYPES = Object.keys(STATUS_OF_EVENT);
 const UNASSIGNED_RELEASE_ALLOWED = ['pending', 'deferred'];
 const SHARED_TIMESTAMP_WARN = 3;
+const SHORT_NAME_MAX = 80;
 const BEGIN = '<!-- BEGIN FEATURES -->';
 const END = '<!-- END FEATURES -->';
 
@@ -74,6 +75,9 @@ function validate(doc) {
     if (!f || !isNonEmptyString(f.id)) continue;
     const id = f.id;
     if (!isNonEmptyString(f.name)) err(`${id}: name must be a non-empty string`);
+    if (f.description !== undefined && typeof f.description !== 'string') {
+      err(`${id}: description must be a string when present`);
+    }
     if (!PRIORITIES.includes(f.priority)) err(`${id}: priority must be one of: ${PRIORITIES.join(' | ')}`);
     if (!SIZES.includes(f.size)) err(`${id}: size must be one of: ${SIZES.join(' | ')}`);
     if (!FEATURE_STATUS.includes(f.status)) err(`${id}: status must be one of: ${FEATURE_STATUS.join(' | ')}`);
@@ -166,6 +170,11 @@ function warnings(doc) {
         'These dates may come from one batch commit rather than each feature; check them.');
     }
   }
+  for (const f of doc.features) {
+    if (f.name.length > SHORT_NAME_MAX) {
+      out.push(`${f.id}: name is ${f.name.length} characters (over ${SHORT_NAME_MAX}); move the detail to "description" and keep a short title.`);
+    }
+  }
   return out;
 }
 
@@ -227,6 +236,7 @@ function renderDialog(f, doc) {
     `<div class="sheet">` +
     `<p class="muted">${escapeHtml(f.id)}</p>` +
     `<h2 id="${escapeHtml(titleId)}">${escapeHtml(f.name)}</h2>` +
+    (f.description ? `<p class="description">${escapeHtml(f.description)}</p>` : '') +
     `<dl>` +
     `<dt>Priority</dt><dd>${escapeHtml(f.priority)}</dd>` +
     `<dt>Size</dt><dd>${escapeHtml(f.size)}</dd>` +
