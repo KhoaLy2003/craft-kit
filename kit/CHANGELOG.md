@@ -7,11 +7,19 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.24] - 2026-10-13
+
+**Summary:** Backlog cards with detail dialog · safer migration dates
+
 ### Changed — backlog board: metadata cards with detail dialog; migration and renderer fixes
 
 - **`kit/templates/backlog.html`** — cards show ID, priority, size, title (clamped to two lines), and created / started / shipped dates. Clicking a card opens a native `<dialog>` with the full title, release, dependencies, and the event history with evidence. Closing uses the dialog's own controls; a few lines of inline script open it.
 - **`kit/scripts/render-backlog.js`** — warns (stderr, does not fail) when three or more features share one dated timestamp, which usually means one batch commit. Generated HTML and the roadmap table use the roadmap file's line endings, so files no longer mix CRLF and LF.
 - **`kit/phase-roadmap-migrate.md`** — a flagged hint (a commit that touched several feature rows) defaults to `unknown`, never to a date; it can become `backfill-unverified` only by an explicit answer for that feature. A created hint from the same commit as the shipped hint becomes `unknown`. The step now reports legacy sections (`Phase 2 Track`, `Gate Checklist`) and leaves them unless the user asks for a rewrite.
+
+---
 
 ---
 
