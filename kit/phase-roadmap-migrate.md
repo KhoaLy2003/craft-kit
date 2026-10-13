@@ -41,6 +41,7 @@ What to have ready: the roadmap file as it is today, and the git history if you 
 3. Read the feature table. Map columns by header name: `ID`, `Feature`, `Priority`, `Size`, `Depends on`, `Status`. If a required column is missing, stop and report the table as-is; do not guess values.
 4. Validate each row: ID unique, priority in `Must | Should | Could | Won't`, size in `S | M | L`, status in `pending | in-progress | shipped | deferred`. Report every bad row and stop until the user fixes the table or agrees to map it.
 5. Read the Release sections (if any) for release names. If there are none, create one release `r1` named after the project's MVP (status `shipped` if every feature is shipped, otherwise `in-progress`).
+6. Scan `docs/roadmap.md` for sections the current kit no longer uses: a `Phase 2 Track` metadata field or section, and a `Gate Checklist` for a removed step. Do not edit them. List each one in the report and ask whether to leave them, or rewrite them to match the current kit (the user decides; the default is to leave them).
 
 ## Step 2 — Gather evidence
 
@@ -52,8 +53,9 @@ Run from the project root. Skip the whole step, with a note, if `git rev-parse -
 2. The earliest entry is the **created hint**; the newest entry is the **status hint**. For a `shipped` feature, the status hint is the shipped date.
 3. **Squash flag:** count the feature rows changed in that commit:
    `git show --format= --unified=0 <sha> -- docs/roadmap.md | grep -c "^+| F"`.
-   If the count is greater than 1, the hint is **flagged**: the commit touched other rows, so the date may not be the feature's own.
-4. Record for each feature: created hint (sha, date, flagged or not), status hint (sha, date, flagged or not), or "no evidence".
+   If the count is greater than 1, the hint is **flagged**: the commit touched other rows, so the date may not be the feature's own. A flagged hint **defaults to `unknown`**, never to a date. It can only become a date by an explicit per-feature answer in Step 3.
+4. **Same-commit check:** if the created hint and the status hint are the same commit, the history cannot show when the feature was created. Set the created hint to `unknown` and keep the status hint.
+5. Record for each feature: created hint (sha, date, flagged or not, same-commit or not), status hint (sha, date, flagged or not), or "no evidence".
 
 ## Step 3 — Review dates (hard gate)
 
@@ -65,7 +67,8 @@ Present one table: feature, status, created hint, status hint, flag, and a defau
 - **Accept without review** (only for hints that are not flagged) → `source: backfill-unverified`.
 
 Rules:
-- A **flagged** hint cannot be confirmed silently. The user must confirm it explicitly, correct it, or accept it as `backfill-unverified`.
+- A **flagged** hint defaults to `unknown`. The user may explicitly confirm, correct, or accept it as `backfill-unverified` for that one feature. A bulk answer such as "accept all" never covers flagged hints.
+- An **unflagged** hint may be accepted as `backfill-unverified` only when the user says so for that feature or for all unflagged features in one answer.
 - If there is no hint, the default is `unknown`. The user may still supply a date.
 - The user may answer for the whole table at once ("confirm all unflagged, rest unknown"); echo back exactly what that means per feature before writing.
 
