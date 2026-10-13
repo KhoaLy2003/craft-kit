@@ -3,7 +3,8 @@
 // render-backlog.js — validate docs/backlog.json, then write docs/backlog.html and
 // rewrite the feature table inside docs/roadmap.md. Zero dependencies.
 // Usage: node scripts/render-backlog.js [project-root]   (default: current directory)
-// Exit 0 on success; exit 1 on any validation or marker error, writing nothing.
+// Exit 0 on success (warnings go to stderr); exit 1 on any validation or marker error,
+// writing nothing.
 
 const fs = require('fs');
 const path = require('path');
@@ -19,9 +20,18 @@ const EVENT_TYPES = ['created', 'approved', 'started', 'shipped', 'deferred', 'n
 const EVENT_SOURCES = ['live', 'backfill-confirmed', 'backfill-unverified', 'unknown'];
 const EVENT_BY = ['orchestrator', 'user', 'migration'];
 const STATUS_OF_EVENT = { created: 'pending', started: 'in-progress', shipped: 'shipped', deferred: 'deferred' };
+const STATUS_EVENT_TYPES = Object.keys(STATUS_OF_EVENT);
 const UNASSIGNED_RELEASE_ALLOWED = ['pending', 'deferred'];
+const SHARED_TIMESTAMP_WARN = 3;
 const BEGIN = '<!-- BEGIN FEATURES -->';
 const END = '<!-- END FEATURES -->';
+
+const SOURCE_LABEL = {
+  'live': 'recorded',
+  'backfill-confirmed': 'from git, confirmed',
+  'backfill-unverified': 'from git, unverified',
+  'unknown': 'date unknown',
+};
 
 function isNonEmptyString(v) {
   return typeof v === 'string' && v.trim() !== '';
@@ -136,6 +146,29 @@ function validateEvents(f, err) {
   }
 }
 
+// Non-fatal findings. A batch of features sharing one dated timestamp usually means the
+// dates came from a single commit, not from each feature's own history.
+function warnings(doc) {
+  const byKey = new Map();
+  for (const f of doc.features) {
+    for (const e of f.events) {
+      if (e.at === null || !STATUS_EVENT_TYPES.includes(e.type)) continue;
+      const key = `${e.type}|${e.at}`;
+      if (!byKey.has(key)) byKey.set(key, { type: e.type, at: e.at, ids: [] });
+      byKey.get(key).ids.push(f.id);
+    }
+  }
+  const out = [];
+  for (const { type, at, ids } of byKey.values()) {
+    const unique = [...new Set(ids)];
+    if (unique.length >= SHARED_TIMESTAMP_WARN) {
+      out.push(`${unique.length} features share the same ${type} time ${at} (${unique.join(', ')}). ` +
+        'These dates may come from one batch commit rather than each feature; check them.');
+    }
+  }
+  return out;
+}
+
 function escapeHtml(s) {
   return String(s)
     .replace(/&/g, '&amp;')
@@ -149,30 +182,67 @@ function escapeCell(s) {
   return String(s).replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 }
 
-function latestStatusEvent(f) {
-  const events = f.events.filter((e) => STATUS_OF_EVENT[e.type]);
-  return events[events.length - 1];
+// One dated event per status type (the latest of that type), in chronological order.
+function datedStatusEvents(f) {
+  const latest = {};
+  for (const e of f.events) {
+    if (e.at !== null && STATUS_EVENT_TYPES.includes(e.type)) latest[e.type] = e;
+  }
+  return Object.values(latest).sort((a, b) => Date.parse(a.at) - Date.parse(b.at));
 }
 
+function dialogId(f) {
+  return `dlg-${f.id}`;
+}
+
+// Card shows metadata only. Long titles are clamped in CSS; the dialog shows the full text.
 function renderCard(f) {
-  const ev = latestStatusEvent(f);
-  const hasDate = ev && ev.at !== null;
-  const unverified = hasDate && ev.source === 'backfill-unverified';
-  const dateHtml = hasDate
-    ? `<time class="${unverified ? 'unverified' : ''}">${escapeHtml(ev.at.slice(0, 10))}</time>` +
-      (unverified ? ' <span class="badge warn">unverified</span>' : '')
-    : '';
-  const deps = f.depends_on.length
-    ? `<div class="meta">Depends on ${escapeHtml(f.depends_on.join(', '))}</div>`
-    : '';
+  const dates = datedStatusEvents(f).map((e) => {
+    const cls = e.source === 'backfill-unverified' ? ' class="unverified"' : '';
+    return `<span${cls} title="${escapeHtml(SOURCE_LABEL[e.source])}">${escapeHtml(e.type)} ${escapeHtml(e.at.slice(0, 10))}</span>`;
+  }).join(' → ');
   return (
-    `<article class="card">` +
+    `<button type="button" class="card" data-open="${escapeHtml(dialogId(f))}" aria-haspopup="dialog">` +
     `<div class="id">${escapeHtml(f.id)} · ${escapeHtml(f.priority)} · ${escapeHtml(f.size)}</div>` +
     `<div class="name">${escapeHtml(f.name)}</div>` +
-    deps +
-    (dateHtml ? `<div class="meta">${dateHtml}</div>` : '') +
-    `</article>`
+    (dates ? `<div class="meta">${dates}</div>` : '') +
+    `</button>`
   );
+}
+
+function renderDialog(f, doc) {
+  const release = f.release === null
+    ? 'Unassigned'
+    : escapeHtml((doc.releases.find((r) => r.id === f.release) || {}).name || f.release);
+  const deps = f.depends_on.length ? escapeHtml(f.depends_on.join(', ')) : 'none';
+  const events = f.events.map((e) => {
+    const when = e.at === null ? '' : escapeHtml(e.at.slice(0, 10));
+    const evidence = e.evidence ? ` · ${escapeHtml(e.evidence)}` : '';
+    const note = e.note ? `<div class="note">${escapeHtml(e.note)}</div>` : '';
+    return `<li><strong>${escapeHtml(e.type)}</strong> ${when} <span class="muted">(${escapeHtml(SOURCE_LABEL[e.source])})</span>${evidence}${note}</li>`;
+  }).join('');
+  const titleId = `${dialogId(f)}-title`;
+  return (
+    `<dialog class="detail" id="${escapeHtml(dialogId(f))}" aria-labelledby="${escapeHtml(titleId)}">` +
+    `<div class="sheet">` +
+    `<p class="muted">${escapeHtml(f.id)}</p>` +
+    `<h2 id="${escapeHtml(titleId)}">${escapeHtml(f.name)}</h2>` +
+    `<dl>` +
+    `<dt>Priority</dt><dd>${escapeHtml(f.priority)}</dd>` +
+    `<dt>Size</dt><dd>${escapeHtml(f.size)}</dd>` +
+    `<dt>Status</dt><dd>${escapeHtml(f.status)}</dd>` +
+    `<dt>Release</dt><dd>${release}</dd>` +
+    `<dt>Depends on</dt><dd>${deps}</dd>` +
+    `</dl>` +
+    `<h3>History</h3>` +
+    `<ol class="timeline">${events}</ol>` +
+    `<form method="dialog"><button class="close">Close</button></form>` +
+    `</div></dialog>`
+  );
+}
+
+function renderDialogs(doc) {
+  return doc.features.map((f) => renderDialog(f, doc)).join('\n');
 }
 
 const STATUS_COLUMNS = [
@@ -214,12 +284,13 @@ function renderSummary(doc) {
 }
 
 function renderHtml(doc, template) {
-  // split/join replaces every occurrence; String.replace would only replace the first
-  // (PROJECT appears in both <title> and <h1>).
-  return template
+  // Generated HTML always uses LF, whatever line endings the template file has on disk.
+  // split/join replaces every occurrence; String.replace would only replace the first.
+  return template.replace(/\r\n/g, '\n')
     .split('{{PROJECT}}').join(escapeHtml(doc.project))
     .split('{{SUMMARY}}').join(renderSummary(doc))
-    .split('{{BOARD}}').join(renderBoard(doc));
+    .split('{{BOARD}}').join(renderBoard(doc))
+    .split('{{DIALOGS}}').join(renderDialogs(doc));
 }
 
 function renderFeatureTable(doc) {
@@ -236,6 +307,8 @@ function renderFeatureTable(doc) {
   return lines.join('\n');
 }
 
+// Splice the generated table into roadmap.md, using the file's own line endings so the
+// file never ends up with mixed CRLF and LF.
 function replaceFeatureBlock(markdown, table) {
   const begin = markdown.indexOf(BEGIN);
   const end = markdown.indexOf(END);
@@ -245,7 +318,9 @@ function replaceFeatureBlock(markdown, table) {
   if (markdown.indexOf(BEGIN, begin + 1) !== -1 || markdown.indexOf(END, end + 1) !== -1) {
     throw new Error('roadmap.md has more than one feature block marker pair');
   }
-  return markdown.slice(0, begin + BEGIN.length) + '\n' + table + '\n' + markdown.slice(end);
+  const eol = markdown.includes('\r\n') ? '\r\n' : '\n';
+  const body = table.split('\n').join(eol);
+  return markdown.slice(0, begin + BEGIN.length) + eol + body + eol + markdown.slice(end);
 }
 
 function main(argv) {
@@ -290,6 +365,8 @@ function main(argv) {
     return 1;
   }
 
+  for (const w of warnings(doc)) console.error(`render-backlog: warning: ${w}`);
+
   fs.writeFileSync(htmlPath, renderHtml(doc, template));
   if (updatedRoadmap !== roadmap) fs.writeFileSync(roadmapPath, updatedRoadmap);
   console.log(`render-backlog: wrote docs/backlog.html; roadmap feature table has ${doc.features.length} row(s)`);
@@ -300,4 +377,4 @@ if (require.main === module) {
   process.exitCode = main(process.argv);
 }
 
-module.exports = { validate, renderHtml, renderFeatureTable, replaceFeatureBlock };
+module.exports = { validate, warnings, renderHtml, renderFeatureTable, replaceFeatureBlock };

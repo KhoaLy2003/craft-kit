@@ -240,14 +240,14 @@ describe('render-backlog: presentation', () => {
     assert.ok(md.includes('Tags \\| <script>x</script>'));
   });
 
-  it('marks backfill-unverified dates distinctly and leaves an undated status event blank', () => {
+  it('card shows created and shipped dates, styling only unverified ones; undated dates are omitted', () => {
     const root = tempProject({
       backlog: backlog([
         baseFeature({
           status: 'shipped',
           events: [
             { at: '2026-09-02T08:00:00Z', type: 'created', source: 'backfill-unverified', by: 'migration', evidence: null, note: '' },
-            { at: '2026-09-12T16:40:00Z', type: 'shipped', source: 'backfill-unverified', by: 'migration', evidence: null, note: '' },
+            { at: '2026-09-12T16:40:00Z', type: 'shipped', source: 'backfill-confirmed', by: 'user', evidence: 'PR #4', note: '' },
           ],
         }),
         baseFeature({
@@ -263,9 +263,104 @@ describe('render-backlog: presentation', () => {
     const result = run(root);
     assert.equal(result.status, 0, result.stderr);
     const html = fs.readFileSync(path.join(root, 'docs', 'backlog.html'), 'utf8');
-    assert.ok(html.includes('<time class="unverified">2026-09-12</time>'));
-    assert.ok(html.includes('<span class="badge warn">unverified</span>'));
-    const undatedCard = html.slice(html.indexOf('>Undated<'));
-    assert.ok(!undatedCard.slice(0, undatedCard.indexOf('</article>')).includes('<time'));
+    assert.ok(html.includes('<span class="unverified" title="from git, unverified">created 2026-09-02</span> → <span title="from git, confirmed">shipped 2026-09-12</span>'));
+    const undatedCard = html.slice(html.indexOf('<button type="button" class="card" data-open="dlg-F02"'));
+    assert.ok(!undatedCard.slice(0, undatedCard.indexOf('</button>')).includes('class="meta"'));
+  });
+
+  it('each feature gets a detail dialog with the full name, release, dependencies and history', () => {
+    const longName = 'Daily check-in with streak count and a very long description '.repeat(3).trim();
+    const root = tempProject({
+      backlog: backlog([
+        baseFeature({ id: 'F01', name: 'Sign in' }),
+        baseFeature({
+          id: 'F02',
+          name: longName,
+          depends_on: ['F01'],
+          status: 'shipped',
+          events: [
+            { at: '2026-09-02T08:00:00Z', type: 'created', source: 'live', by: 'orchestrator', evidence: null, note: 'first note' },
+            { at: '2026-09-12T16:40:00Z', type: 'shipped', source: 'live', by: 'orchestrator', evidence: 'PR #7', note: '' },
+          ],
+        }),
+      ]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    const html = fs.readFileSync(path.join(root, 'docs', 'backlog.html'), 'utf8');
+    assert.ok(html.includes('<dialog class="detail" id="dlg-F02" aria-labelledby="dlg-F02-title">'));
+    assert.ok(html.includes(`<h2 id="dlg-F02-title">${longName}</h2>`));
+    assert.ok(html.includes('<dt>Depends on</dt><dd>F01</dd>'));
+    assert.ok(html.includes('<dt>Release</dt><dd>MVP</dd>'));
+    assert.ok(html.includes('PR #7'));
+    assert.ok(html.includes('<div class="note">first note</div>'));
+    assert.ok(html.includes('<form method="dialog"><button class="close">Close</button></form>'));
+  });
+
+  it('escapes feature text inside the dialog', () => {
+    const root = tempProject({
+      backlog: backlog([baseFeature({ name: '<img src=x onerror=alert(1)>' })]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    const html = fs.readFileSync(path.join(root, 'docs', 'backlog.html'), 'utf8');
+    assert.ok(!html.includes('<img src=x'));
+    assert.ok(html.includes('&lt;img src=x onerror=alert(1)&gt;'));
+  });
+});
+
+describe('render-backlog: warnings and line endings', () => {
+  const sameTime = '2026-09-02T08:00:00Z';
+  const createdAt = (id, at = sameTime) => baseFeature({
+    id,
+    name: `Feature ${id}`,
+    events: [{ at, type: 'created', source: 'backfill-unverified', by: 'migration', evidence: 'commit abc', note: '' }],
+  });
+
+  it('warns when three or more features share one dated timestamp, without failing', () => {
+    const root = tempProject({
+      backlog: backlog([createdAt('F01'), createdAt('F02'), createdAt('F03')]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stderr, /warning: 3 features share the same created time 2026-09-02T08:00:00Z \(F01, F02, F03\)/);
+  });
+
+  it('does not warn for two features sharing a timestamp', () => {
+    const root = tempProject({
+      backlog: backlog([createdAt('F01'), createdAt('F02')]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stderr, '');
+  });
+
+  it('writes the feature table with the roadmap file line endings (no mixed CRLF and LF)', () => {
+    const crlfRoadmap = roadmapWithMarkers.replace(/\n/g, '\r\n');
+    const root = tempProject({
+      backlog: backlog([baseFeature({})]),
+      roadmap: crlfRoadmap,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    const md = fs.readFileSync(path.join(root, 'docs', 'roadmap.md'), 'utf8');
+    const lfOnly = md.match(/(?<!\r)\n/g) || [];
+    assert.equal(lfOnly.length, 0);
+    assert.ok(md.includes('| F01 | Sign in | Must | M |  | pending |'));
+  });
+
+  it('generated HTML contains no carriage returns', () => {
+    const root = tempProject({
+      backlog: backlog([baseFeature({})]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    const html = fs.readFileSync(path.join(root, 'docs', 'backlog.html'), 'utf8');
+    assert.ok(!html.includes('\r'));
   });
 });
