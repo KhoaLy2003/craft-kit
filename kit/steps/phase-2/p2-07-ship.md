@@ -14,20 +14,21 @@
 
 - Commit everything. `scope: feature`: one commit referencing the feature slug. `scope: all`: one commit covering all features, with the full scope in the message (for example `feat: complete <project> MVP — F01 through FNN`).
 - Push the branch and open a PR against `main`. Never merge it and never push to `main`.
-- Append a `shipped` event (`source: live`, `by: orchestrator`, `evidence`: the PR reference, e.g. `PR #7`) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built in this pass), then run `node kit/scripts/render-backlog.js`.
+- Push first, because the PR reference is the shipped event's evidence. Then append a `shipped` event (`source: live`, `by: orchestrator`, `evidence`: the PR reference, e.g. `PR #7`) to each feature built (`scope: all`: every Must feature built in this pass), set `status: shipped` on every release with no `pending` or `in-progress` Must feature left (Should and Could features not built stay `pending` and do not hold a release open), run `node kit/scripts/render-backlog.js`, and commit and push those files to the same branch so the same PR carries them.
 - **Spec persistence (ask once):** if `docs/constitution.md` has no "Spec Evolution" section, ask the user how specs will evolve and record the choice there — the three models are in `kit/guides/evolving-specs.md`. Decide before starting another cycle.
 
 ## Completion Criteria
 
 - [ ] All changes committed; branch pushed; PR open against `main`
 - [ ] `docs/backlog.json` has a `shipped` event with PR evidence for every feature built; render script exits 0
+- [ ] Every release with no `pending` or `in-progress` Must feature has `status: shipped` in `docs/backlog.json`
 - [ ] Spec persistence decision recorded in `docs/constitution.md`
 
 ## Transitions
 
 - **Next**:
   - `scope: feature` with `pending` features left: select the next one in build order and restart at Step 1.
-  - Otherwise (`scope: all`, or no `pending` features left): the release is complete. Tell the user and offer the next move — `kit/phase-3-iterate.md` to decide what to build next (works with or without ideas), or `kit/phase-bug-fix.md` for a reported defect. If the user already knows exactly one feature to add, append it to `docs/backlog.json`, run the render script, then run Phase 2 with `scope: feature`.
+  - Otherwise (`scope: all`, or no `pending` features left): the release is complete. Tell the user and offer the next move — `kit/phase-3-iterate.md` to decide what to build next (works with or without ideas), or `kit/phase-bug-fix.md` for a reported defect. If the user already knows exactly one feature to add, append a release entry (`id`, `name`, `status: planned`) and the feature (`release` set to that id, status `pending`, a `created` event with `at`, `source`, `by`, `note`) to `docs/backlog.json`, run the render script, set `Phase 2 Scope` to `feature` in `docs/roadmap.md` and `phase2_scope` in `docs/backlog.json`, then run Phase 2 with `scope: feature`.
 
 ## References
 

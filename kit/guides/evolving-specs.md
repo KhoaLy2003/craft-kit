@@ -4,6 +4,15 @@ When a shipped feature needs to change — new requirements, discovered edge cas
 
 ---
 
+## Changing a Shipped Feature
+
+Shipped features are never edited in `docs/backlog.json`: the file is append-only and a shipped feature stays `shipped`. Every change is a new feature entry, added as `pending` with a `created` event whose `note` names the feature it changes. Add it through Phase 3 if the change needs an impact check, or directly as described in `kit/steps/phase-2/p2-07-ship.md`. Phase 2 then builds it like any other feature.
+
+- **Flow-forward** gives the new entry a new slug, so it gets its own `docs/specs/<feature-slug-v2>/`.
+- **Flow-back** and **living spec** keep the original slug, so the existing `docs/specs/<feature-slug>/` is edited in place. Phase 2 skips Step 1 when that spec exists, so approve the spec edit before starting at Step 2.
+
+---
+
 ## The Three Models
 
 ### Flow-Forward

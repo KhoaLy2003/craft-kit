@@ -16,7 +16,7 @@
 
 - **In**: dispatching each task to its specialist; checking each task against the constitution.
 - **Out**: re-deciding parallel groups or specialists (Step 2 did); spec coverage and code review (Step 4); commits (Step 7).
-- **Boundary**: **BLOCK — create the branch before any code.** `git checkout -b feature/<slug>` if it does not already exist, then confirm it is checked out. `<slug>` is the feature slug (`scope: feature`) or the project slug (`scope: all`). Never implement on `main`. If no git repository exists, that is a Phase 1 gap — stop and resolve it. When the branch is created, append a `started` event (`source: live`, `by: orchestrator`, `evidence`: the branch name) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built in this pass), then run `node kit/scripts/render-backlog.js`.
+- **Boundary**: **BLOCK — create the branch before any code.** `git checkout -b feature/<slug>` if it does not already exist, then confirm it is checked out. `<slug>` is the feature slug (`scope: feature`) or the project slug (`scope: all`). Never implement on `main`. If no git repository exists, that is a Phase 1 gap — stop and resolve it. When the branch is created, append a `started` event (`source: live`, `by: orchestrator`, `evidence`: the branch name) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built in this pass); if the feature's release is `planned`, set it to `in-progress` in the same write. Then run `node kit/scripts/render-backlog.js`.
 
 ## Rules
 

@@ -6,7 +6,7 @@
 - **Agent/Skill**: `brainstorming` skill (Architectural path)
 - **Model**: `capable`
 - **Trigger**: New project, no existing codebase.
-- **Inputs**: `phase-1-kickoff.md` at the project root (idea, target user, constraints, Market Research run/skip decision). If absent or thin, fall back to conversational Q&A.
+- **Inputs**: the kickoff file, `phase-1-kickoff.md`, at the project root or at `docs/phase-1-kickoff.md` (idea, target user, constraints, Market Research run/skip decision). If absent or thin, fall back to conversational Q&A.
 - **Outputs**: `docs/idea-brief.md`; the kickoff file moved to `docs/phase-1-kickoff.md`.
 - **Template**: `templates/01-idea-brief.md`
 - **Gate**: `none`
@@ -24,7 +24,7 @@
 2. Ask only clarifying questions: problem today, who has it, existing alternatives, what is out of scope. Print only the questions, never draft document content.
 3. Sequence: questions → answers → write `docs/idea-brief.md` → user opens and reviews the file → approval. Writing before the answers produces a brief built on assumptions.
 4. If the user names a target platform, record it verbatim under Known Constraints as a preliminary signal. Platform is decided in Step 6.
-5. After the brief is written (this creates `docs/`), move `phase-1-kickoff.md` from the project root to `docs/phase-1-kickoff.md`.
+5. After the brief is written (this creates `docs/`), move `phase-1-kickoff.md` from the project root to `docs/phase-1-kickoff.md`. If it is already in `docs/`, leave it there.
 6. **Market Research decision.** Honour the kickoff's "Market Research" run/skip decision and state it in one line. Only if the kickoff leaves it blank, ask once: *"Step 2 (Market Research) validates demand and finds competitive risks. Run it, or skip because you already have evidence or are building for yourself?"* Record the decision in the session log.
 
 ## Artifact Rules

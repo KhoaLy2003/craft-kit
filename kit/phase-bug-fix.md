@@ -55,6 +55,7 @@ Reproduce the bug, diagnose the root cause, and bound the fix.
 - [ ] Symptom reproduced reliably
 - [ ] Root cause identified to a specific location; causal chain and bounded fix scope in `assess.md`
 - [ ] Human confirmed the diagnosis
+- [ ] `docs/bug-session.md` has a `## <bug-slug>` section with the Step 1 gate recorded
 
 **Gate summary:** *"The diagnosis is: [one-sentence root cause]. The fix will touch: [files/scope]. Does this match what you believe is broken?"*
 
@@ -70,12 +71,14 @@ Implement the fix, scoped strictly to the root cause in `assess.md`.
 - Dispatch the specialist matched to the affected code. Keep changes within the files and functions listed in the fix scope.
 - **Scope boundary:** no refactoring of adjacent code and no added features. Anything else found broken becomes a separate bug report.
 - Check the fix against `docs/constitution.md`; a fix that violates it creates a new problem.
-- Do not commit yet; Step 3 commits once the fix is confirmed.
+- Add a regression test that fails on the unfixed code and passes with the fix, if the project has a test runner. If it cannot be added, record why in `assess.md`.
+- Do not commit yet; Step 3 commits once the fix is confirmed. If the session hands over here, the handover makes a WIP commit of the fix on `fix/<bug-slug>` (`kit/guides/session-handover.md`); Step 3's commit follows it on the same branch.
 
 ### Completion criteria
 
 - [ ] `fix/<bug-slug>` exists with changes inside the `assess.md` fix scope, checked against the constitution
 - [ ] Nothing committed
+- [ ] Regression test added, or its absence recorded in `assess.md`
 
 ---
 
