@@ -10,21 +10,25 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 
 ## Steps
 
-| Step | Name | Gate | Model | Agent | Output |
-|---|---|---|---|---|---|
-| 1 | Discover | soft | capable | `brainstorming`; `market-researcher` / `research-analyst` when the user has few ideas | `docs/iterations/<release-slug>/discover.md` |
-| 2 | Prioritise | hard | capable | orchestrator with the user | new release and features in `docs/backlog.json`; release block in `docs/roadmap.md` |
-| 3 | Handoff | soft | balanced | orchestrator; general-purpose agent (read-only impact check) | impact section in the release block; Phase 2 handoff prompt |
+
+| Step | Name       | Gate | Model    | Agent                                                        | Output                                                                              |
+| ---- | ---------- | ---- | -------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| 1    | Discover   | soft | capable  | `brainstorming`                                              | `docs/iterations/<release-slug>/discover.md`                                        |
+| 2    | Prioritise | hard | capable  | orchestrator with the user                                   | new release and features in `docs/backlog.json`; release block in `docs/roadmap.md` |
+| 3    | Handoff    | soft | balanced | orchestrator; general-purpose agent (read-only impact check) | impact section in the release block; Phase 2 handoff prompt                         |
+
 
 ## When to Use Phase 3
 
-| Situation | Use |
-|---|---|
-| Something shipped is broken | `kit/phase-bug-fix.md` |
-| One shipped feature needs different behavior | `kit/guides/evolving-specs.md`, then `kit/phase-2.md` |
-| One known new feature that fits the architecture | Add the feature to `docs/backlog.json` (status `pending`, `created` event), run `node kit/scripts/render-backlog.js`, then `kit/phase-2.md` |
-| Need to decide **what** to build next | **This phase** |
-| Core idea, audience, or stack has fundamentally changed | New project: `kit/phase-1-bootstrap.md` |
+
+| Situation                                               | Use                                                                                                                                         |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Something shipped is broken                             | `kit/phase-bug-fix.md`                                                                                                                      |
+| One shipped feature needs different behavior            | `kit/guides/evolving-specs.md`, then `kit/phase-2.md`                                                                                       |
+| One known new feature that fits the architecture        | Direct path: add a `planned` release entry and the feature (`pending`, `release` set to that entry) to `docs/backlog.json`, run `node kit/scripts/render-backlog.js`, set Phase 2 Scope to `feature`, then `kit/phase-2.md`. Impact is not checked; see `kit/steps/phase-2/p2-07-ship.md`. |
+| Need to decide **what** to build next                   | **This phase**                                                                                                                              |
+| Core idea, audience, or stack has fundamentally changed | New project: `kit/phase-1-bootstrap.md`                                                                                                     |
+
 
 ---
 
@@ -45,7 +49,7 @@ Establish what the product does today and what evidence exists, then produce a s
 - A candidate that is really a bug goes to `kit/phase-bug-fix.md`; note it in `discover.md`.
 - Dispatch research subagents per the PROJECT_ROOT and fail-fast write rules.
 
-**Artifact:** `docs/iterations/<release-slug>/discover.md` with the standard metadata header (`Status`, `Last updated`, `Based on`) and sections: Shipped State, Evidence, Known Defects & Debt, Release Goal (user's own words), Idea Status, Candidates (table), Considered and Dropped (with reasons).
+**Artifact:** `docs/iterations/<release-slug>/discover.md` with the standard metadata header (`Status`, `Last updated`, `Based on`) and sections: Shipped State, Evidence, Known Defects &amp; Debt, Release Goal (user's own words), Idea Status, Candidates (table), Considered and Dropped (with reasons).
 
 ### Completion criteria
 
@@ -74,8 +78,8 @@ Choose, rank, and commit candidates as a new release in `docs/backlog.json`, wit
 - Present candidates as a table (impact, size, evidence, dependencies) with a recommended cut line. The orchestrator recommends; the user decides.
 - Score impact vs. size against the release goal and assign MoSCoW. Only `Must` features are guaranteed this release; `Should` / `Could` are explicit stretch.
 - Prefer a small release. If the selection exceeds roughly 5 `Must` features or includes an `L` feature, propose splitting into two releases.
-- **Append only.** Append the new release entry (`status: planned`) and its features to `docs/backlog.json`, each feature `pending` with a `created` event (`source: live`, `by: orchestrator`); never renumber, edit, or remove shipped features. Feature IDs continue the existing sequence (backlog ends at `F11` → start at `F12`). Then run `node kit/scripts/render-backlog.js`; never hand-edit the generated table.
-- Add a `## Release <slug>` section to `docs/roadmap.md` holding the Build Order, Deferred (unselected candidates with reasons), and Impact prose. Set `Phase 2 Scope: feature`.
+- **Append only, after approval.** Write nothing to `docs/backlog.json` until the user approves the scope. Then append the new release entry (`status: planned`) and its features to `docs/backlog.json`, each feature `pending` with a `created` event (`source: live`, `by: orchestrator`); never renumber, edit, or remove shipped features. Feature IDs continue from the highest existing ID (e.g. `F11` → `F12`). Then run `node kit/scripts/render-backlog.js`; never hand-edit the generated table.
+- Add a `## Release <slug>` section to `docs/roadmap.md` holding the Build Order, Deferred (unselected candidates with reasons), and Impact prose. Set the top-level `Phase 2 Scope` metadata to `feature` (the field Phase 2 reads) and `phase2_scope` to `feature` in `docs/backlog.json`, both written with the release; do not add a second scope field in the block.
 - Mark the block `draft` until approved; refresh `Last updated`; add `discover.md` to `Based on`; restore roadmap `Status: approved` only after approval.
 
 ### Completion criteria
@@ -108,7 +112,7 @@ Check whether the new features invalidate the existing foundations, then hand of
 - Large impact (new stack, new auth model, data migration): make the foundation change its own feature at the head of the build order, with its own spec and migration plan.
 - An amendment that contradicts a constitutional rule fundamental to the product: stop and surface it; the user chooses between dropping the feature and amending the constitution explicitly.
 - If 2+ new features need screen designs and have none, run Phase 1 Step 5 as a re-entry for them (`kit/steps/phase-1/p1-05-screen-design.md`, "Re-entry for new features") before Phase 2.
-- Emit the Phase 2 handoff prompt: `kit/phase-2.md`, project name, release slug, `scope: feature`, and the first pending feature in the build order.
+- Emit the Phase 2 handoff prompt: `kit/phase-2.md`, project name, `scope: feature`, and the first pending feature in the build order. Phase 2 selects features from `docs/backlog.json`; the release slug is not an input.
 
 ### Completion criteria
 

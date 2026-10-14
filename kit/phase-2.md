@@ -73,7 +73,7 @@ Stop the cycle if any of these surfaces:
 - A technical decision that invalidates later features' specs
 - A minority specialist ends up with a large share of the tasks (Step 2 checks this — see `p2-02-plan.md`), or two independent domains emerge during implementation
 
-Revise the affected spec sections, set `Phase 2 Scope: feature` in `docs/roadmap.md`, and run each remaining Must feature as its own cycle from Step 1, seeding its spec from its section of `docs/specs/spec.md`. Switching is the correct response to discovered complexity, not a failure.
+Revise the affected spec sections, set `Phase 2 Scope: feature` in `docs/roadmap.md` and `phase2_scope` to `feature` in `docs/backlog.json`, and run each remaining Must feature as its own cycle from Step 1, seeding its spec from its section of `docs/specs/spec.md`. Switching is the correct response to discovered complexity, not a failure.
 
 ---
 

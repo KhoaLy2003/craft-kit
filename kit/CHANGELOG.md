@@ -7,6 +7,34 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Fixed — kickoff location, bug-fix gaps, handover, shipped-feature changes
+
+- **`kit/steps/phase-1/p1-01-ideation.md`** — the kickoff is read from the project root or from `docs/phase-1-kickoff.md`. Previously a kickoff already in `docs/` was ignored and Q&A started from scratch.
+- **`kit/phase-bug-fix.md`** — Step 1 records the gate in `docs/bug-session.md`; Step 2 adds a regression test (or records why not); a handover at Step 2 is a WIP commit on the fix branch.
+- **`kit/guides/session-handover.md`** — admin site and bug fix at the Verify gate are covered; the handover states the phase options and the admin session log; resuming sets the step back to `in progress` and deletes the one-time `docs/handover.md`.
+- **`kit/guides/evolving-specs.md`** — a change to a shipped feature is a new backlog entry (the backlog is append-only); flow-forward uses a new slug, flow-back and living spec keep the original.
+- **Status:** not yet validated in a test round.
+
+### Fixed — scope mirror and release lifecycle
+
+- **`kit/phase-2.md`**, **`kit/steps/phase-2/p2-02-plan.md`**, **`kit/steps/phase-1/p1-04-roadmap.md`**, **`kit/phase-3-iterate.md`** — every change to `Phase 2 Scope` also sets `phase2_scope` in `docs/backlog.json`, because the validator requires both copies; Phase 2 still reads the roadmap.
+- **`kit/steps/phase-2/p2-07-ship.md`** — a release is set to `shipped` when it has no `pending` or `in-progress` Must feature left; unbuilt Should and Could features stay `pending` and do not hold a release open.
+- **Status:** not yet validated in a test round.
+
+### Fixed — backlog contract gaps found in workflow review
+
+- **`kit/steps/phase-1/p1-04-roadmap.md`** — fills `project`, `phase2_scope`, and `admin_site` (the validator rejected the empty template, so Phase 1's render step failed); the release entry and event shape are specified; Won't and deferred features are `release: null` with a `deferred` event.
+- **`kit/steps/phase-2/p2-07-ship.md`** — shipped events need the PR reference, so they are written after the PR is open and committed to the same branch; the direct path for one feature adds a release entry (a feature with `release: null` fails validation once started).
+- **`kit/phase-3-iterate.md`** — the "one known feature" row describes the direct path with the release entry and the scope setting.
+- **Status:** not yet validated in a test round.
+
+### Changed — Phase 3 contract and release lifecycle
+
+- **`kit/phase-3-iterate.md`** — Step 2 writes nothing to `backlog.json` until the user approves scope (append-only applies after approval); feature IDs continue from the highest existing ID; scope is set in the roadmap's top-level `Phase 2 Scope` metadata only; the Step 3 handoff prompt no longer lists the release slug (Phase 2 reads features from `backlog.json`).
+- **`kit/steps/phase-2/p2-03-implement.md`** — first `started` event on a `planned` release sets the release to `in-progress`.
+- **`kit/steps/phase-2/p2-07-ship.md`** — a release whose features are all `shipped` is set to `shipped`; new completion criterion.
+- **Status:** not yet validated in a test round.
+
 ---
 
 ## [0.0.25] - 2026-10-13

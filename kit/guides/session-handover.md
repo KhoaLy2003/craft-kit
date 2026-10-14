@@ -20,7 +20,7 @@ Natural seams (nothing mid-flight, state is on disk):
 |---|---|
 | Phase 1 | Any step whose hard gate has just cleared |
 | Phase 2 | After Step 2 (Plan: spec and plan on disk, no code), Step 3 (Implement: code on the feature branch; the handover commits it), Step 4 (Review: findings fixed; the handover commits it) |
-| Phase 3 / bug fix | After any hard gate |
+| Phase 3 / bug fix / admin site | After any hard gate (admin: after the Scope gate, or after the shell checkpoint passes) |
 
 Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 
@@ -30,7 +30,7 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 
 ## Before Writing
 
-**Clean seam:** confirm the completed step is `complete` in the phase's session log. If there are uncommitted code changes (Phase 2 after Implement or Review), WIP-commit them on the feature branch. Then go to the Capture Checklist.
+**Clean seam:** confirm the completed step is `complete` in the phase's session log. If there are uncommitted code changes (Phase 2 after Implement or Review; bug fix at its Verify gate), WIP-commit them on the feature or fix branch. Then go to the Capture Checklist.
 
 **Mid-step (user-triggered, typically Implement or E2E):** resolve partial work first.
 
@@ -47,7 +47,7 @@ Never hand over with uncommitted writes; a new session cannot recover unsaved wo
 - [ ] Project name (`docs/idea-brief.md` or `package.json → name`)
 - [ ] Phase, unit (feature slug / bug slug / release slug), current step number and name
 - [ ] Sub-progress: what within the step is done, what remains
-- [ ] Session log status per step (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Phase 3: `docs/phase-3-session.md`)
+- [ ] Session log status per step (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Phase 3: `docs/phase-3-session.md`; admin: `docs/admin-session.md`)
 - [ ] Paths and approval status of the step's artifacts (spec, plan, assess.md, discover.md …); plan task counts if applicable
 - [ ] Current branch (`git branch --show-current`) if code is involved
 - [ ] Decisions made this session not captured in an artifact
@@ -69,7 +69,7 @@ Write to `docs/handover.md`, overwriting any existing file. Fill every `[bracket
 
 | Field | Value |
 |---|---|
-| Phase | [Phase 1 | Phase 2 (scope: all|feature) | Phase 3 | Bug fix] |
+| Phase | [Phase 1 | Phase 2 (scope: all|feature) | Phase 3 | Bug fix | Admin site] |
 | Unit | `[feature-slug | bug-slug | release-slug | project]` |
 | Step | Step [N] — [Step Name] |
 | Status | [complete | in progress — sub-progress] |
@@ -106,7 +106,7 @@ I am resuming **[phase]** work on **[project-name]**.
 
 **Phase file:** `[kit/phase-….md]`
 **Unit:** `[slug]`
-**Resume at:** Step [N] — [Step Name] (`[step file path]`)
+**Resume at:** Step [N] — [Step Name] (`[step file path, or the phase file section for steps written inline]`)
 **Handover document:** `docs/handover.md` — read this first.
 
 Verify these exist before doing anything else:
@@ -128,3 +128,5 @@ Do not re-run any step recorded as `complete` in the session log.
 1. Read `docs/handover.md` in full; the resumption prompt is only a summary.
 2. Verify every path in "Completed Artifacts" exists. If any is missing, stop and report it.
 3. Emit the banner for the resumption step and continue per the step file. The session log is the authoritative record of what is done; never re-run a `complete` step.
+4. Set the resumed step to `in progress` in the session log; the handover left it `blocked`.
+5. Once the log shows the step in progress, delete `docs/handover.md`. It is a one-time handoff, not a record.
