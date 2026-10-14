@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.26] - 2026-10-14
+
+**Summary:** Backlog and scope fixes · single-feature path · Phase 2 and resuming guides
+
 ### Fixed — kickoff location, bug-fix gaps, handover, shipped-feature changes
 
 - **`kit/steps/phase-1/p1-01-ideation.md`** — the kickoff is read from the project root or from `docs/phase-1-kickoff.md`. Previously a kickoff already in `docs/` was ignored and Q&A started from scratch.
@@ -34,6 +40,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit/steps/phase-2/p2-03-implement.md`** — first `started` event on a `planned` release sets the release to `in-progress`.
 - **`kit/steps/phase-2/p2-07-ship.md`** — a release whose features are all `shipped` is set to `shipped`; new completion criterion.
 - **Status:** not yet validated in a test round.
+
+---
 
 ---
 
