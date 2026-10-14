@@ -95,7 +95,9 @@ If your `docs/roadmap.md` already has a hand-maintained feature table, do not re
 Run the roadmap migration using kit/phase-roadmap-migrate.md.
 ```
 
-The AI shows you each feature with the dates it found in git history, and asks you to confirm, correct, or mark each date unknown. It writes `docs/backlog.json` and renders the table only after you approve. Dates it could not confirm are shown as unverified in the HTML. See the step file for the limitations.
+The AI shows you each feature with the dates it found in git history, and asks you to confirm, correct, or mark each date unknown. Long feature names are proposed as shorter titles, with the full original text kept as the description; you approve each title. Features marked Won't or deferred are kept but not built. Dates it could not confirm are shown as unverified in the HTML.
+
+Nothing is written to `docs/backlog.json` until you approve the migration. If your roadmap has a legacy `Phase 2 Track` section, the AI reports it and leaves it alone unless you ask it to rewrite the section. See the step file for the limitations.
 
 ---
 

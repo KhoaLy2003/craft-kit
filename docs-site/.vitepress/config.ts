@@ -51,6 +51,10 @@ const PHASE_2_STEPS = steps('phase-2', [
 
 const GUIDES: Page[] = [
   docs('guides/existing-projects',          'guides/existing-projects',          'Existing Projects'),
+  docs('guides/phase-2-build',              'guides/phase-2-build',              'Phase 2 — Build'),
+  docs('guides/phase-3-iterate',            'guides/phase-3-iterate',            'Phase 3 — Iterate'),
+  docs('guides/adding-a-feature',           'guides/adding-a-feature',           'Adding a Single Feature'),
+  docs('guides/resuming-a-session',         'guides/resuming-a-session',         'Resuming in a New Session'),
   kit('guides/evolving-specs',              'guides/evolving-specs',             'Evolving Specs'),
   kit('guides/session-handover',            'guides/session-handover',           'Session Handover'),
   kit('guides/interactive-prototype-process', 'guides/interactive-prototype-process', 'Interactive Prototype Process'),

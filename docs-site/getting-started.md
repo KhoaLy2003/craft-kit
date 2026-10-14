@@ -96,7 +96,19 @@ When something in your shipped app is broken, share `kit/phase-bug-fix.md` with 
 Run the bug fix workflow. The problem is: [describe what's wrong and where it happens].
 ```
 
-See [Bug Fix Workflow](/phases/bug-fix) for the full process. This workflow is experimental.
+You decide at the Assess step: the AI confirms the root cause and the files it will change, and you approve before any code is written. After the fix, the AI verifies it; if the problem shows only in the user interface, you confirm it yourself before anything is committed. See [Bug Fix Workflow](/phases/bug-fix) for the full process. This workflow is experimental.
+
+---
+
+## Planning the Next Release
+
+After a release has shipped, share `kit/phase-3-iterate.md` with your AI and send:
+
+```text
+Run Phase 3 using kit/phase-3-iterate.md. The release slug is [your-release-slug].
+```
+
+The AI asks what the release should achieve, what evidence you have, and whether you have ideas. It writes nothing to the backlog until you approve the scope. See [Phase 3 — Iterate](/guides/phase-3-iterate) for each step and gate.
 
 ---
 
@@ -108,4 +120,4 @@ After Phase 2 has shipped, share `kit/phase-admin.md` with your AI and send:
 Build the admin site using kit/phase-admin.md.
 ```
 
-The AI proposes modules in `docs/admin/scope.md` and asks you to edit it. You approve at two hard gates: Scope and Ship. See [Admin Site Workflow](/phases/admin) for the full process. This workflow is experimental.
+Before you start, the app must have shipped through Phase 2, and no unfinished `feature/*` branch may touch the backend areas the admin site needs. The AI proposes modules in `docs/admin/scope.md` and asks you to edit it. You approve at two hard gates: Scope, and Ship. Before Ship, you sign in as each role and walk through the modules yourself. See [Admin Site Workflow](/phases/admin) for the full process. This workflow is experimental.

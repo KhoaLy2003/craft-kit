@@ -134,6 +134,10 @@ Run Phase 2 using kit/phase-2.md.
 Run the bug fix workflow for: [describe what's wrong and where it appears].
 ```
 
+```text [Next release (Phase 3)]
+Run Phase 3 using kit/phase-3-iterate.md. The release slug is [your-release-slug].
+```
+
 ```text [Admin site]
 Build the admin site using kit/phase-admin.md.
 ```

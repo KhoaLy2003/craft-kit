@@ -134,6 +134,16 @@ To start the Admin Site workflow (after Phase 2 has shipped), share `kit/phase-a
 
 The agent drafts `docs/admin/scope.md` and asks you to edit it; the two hard gates (Scope, Ship) need your approval.
 
+To plan the next release after Phase 2 has shipped, share `kit/phase-3-iterate.md` with your agent and say:
+
+```
+"Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth."
+```
+
+The agent asks about the release goal, your evidence, and any ideas, then waits for your approval before writing the new release to `docs/backlog.json`.
+
+To add one known feature to a shipped app without planning a release, use `kit/phase-2.md` directly after adding the feature to `docs/backlog.json`. See `docs-site/guides/adding-a-feature.md`.
+
 ---
 
 ## Existing Projects
