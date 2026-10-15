@@ -22,7 +22,8 @@
 1. **Pre-flight, before dispatching the agent.** A scaffold started with missing tooling fails mid-run and leaves a partial state.
    - Read the stack from `docs/architecture.md`. Identify every runtime it needs (language, CLI tools, platform SDKs), cross-referencing the `Minimum local toolchain` and `Requires:` fields in `kit/stack-catalog.md` for the chosen stack and each addition.
    - Run `<tool> --version` (or the catalog's check command) for each via `bash`; `git` is always required, check it first. For each failure give the tool name, install URL, and a one-line install instruction, and wait until the user confirms and the check passes.
-   - Hosted stacks (Supabase, Neon, Firebase, Expo EAS, ...): confirm the user has created the account/project and has the keys and URLs. The scaffold agent cannot retrieve credentials itself.
+   - Hosted stacks (Supabase, Neon, Firebase, Expo EAS, ...): confirm the user has created the account/project and has the keys and URLs. The scaffold agent cannot retrieve credentials itself. Check the free tier and pricing in `kit/stack-catalog.md` before creating accounts.
+   - Git remote: optional now, needed before Phase 2 Ship. Ship pushes to a remote; if you have none, set one up before Ship or accept the local-only fallback in p2-07.
    - Confirm a git repo exists (`git rev-parse --git-dir`); Step 1 should have created it. If missing, `git init`. Make no commits here.
 2. Dispatch the scaffold agent with `docs/architecture.md`, `docs/constitution.md`, and `templates/08-scaffold-checklist.md` as the completion checklist. If it fails mid-run (missing tool or credential discovered late), do not continue from the partial state: fix the root cause, clean the output, re-run from scratch.
 3. **Environment Variables Gate** (skip if the project has no external services or secrets):
@@ -46,9 +47,9 @@
    4. Validate: `.env` exists and every key from `.env.example` is present with a non-empty, non-placeholder value (reject `<...>`, `your-key-here`, `TODO`, `""`). For any bad key, name it, restate where to get it, and wait. Repeat until all are valid.
 
    **Hard gate:** do not close Phase 1 while `.env` is missing, holds placeholders, or causes env-related startup errors. Wrong credentials found during E2E force costly reruns; this is the cheapest moment to fix them.
-4. **Smoke test.** Run the start command from the generated `README.md` and confirm the app launches with no errors (browser shows a working "hello world" state; for a static site, open `index.html`). If an error names a missing or invalid environment variable, return to the gate above. On Windows, `npm` and `npx` are `.cmd` wrappers that `hub start` cannot launch: for Vite projects use `hub start` with `application: "node"` and `args: ["node_modules/vite/bin/vite.js"]`; on macOS/Linux `npm run dev` works directly.
+4. **Smoke test.** Run the start command from the generated `README.md` and confirm the app launches with no errors (browser shows a working "hello world" state; for a static site, open `index.html`). If an error names a missing or invalid environment variable, return to the gate above. On Windows, if your platform's background-process tool cannot launch `.cmd` wrappers such as `npm` and `npx`, launch the underlying `node` entry file directly (for Vite: `node node_modules/vite/bin/vite.js`) or run the command in a normal terminal; on macOS/Linux `npm run dev` works directly.
 5. **Closeout.**
-   1. Run `/init` to generate `AGENTS.md` at the project root (works across AI providers) and check it holds a meaningful project summary, not a stub.
+   1. Use your tool's project-init command if it has one (it generates `AGENTS.md` or equivalent); otherwise write `AGENTS.md` by hand from `docs/architecture.md` and `docs/constitution.md`. Check it holds a meaningful project summary, not a stub.
    2. Run the Phase 1 closeout checklist in `kit/phase-1-bootstrap.md`; every item except the commit must pass.
    3. Commit everything in one commit, the only commit of Phase 1:
       ```

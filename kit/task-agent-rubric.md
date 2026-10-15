@@ -2,7 +2,7 @@
 
 Used in **Phase 2, Step 2 — Plan**. Give every task one `Specialist:` line using this table.
 
-> Update this file to match the agents actually configured in your harness.
+> `task` below means your platform's general-purpose agent; `code-reviewer` is the review agent. Update this file if your harness names them differently.
 
 ---
 

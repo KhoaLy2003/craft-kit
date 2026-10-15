@@ -6,9 +6,9 @@
 > - **`scope: all`** — every Must feature in `docs/backlog.json` is specced, planned, built, reviewed, tested, and shipped in one cycle.
 > - **`scope: feature`** — one feature per cycle, repeated in build order. Never batch features.
 >
-> Scope `all` is for the initial complete build only. Later releases run `scope: feature`.
+> Scope `all` is for the initial complete build only. Later releases may run `scope: feature` (experimental, as noted above); the user confirms the choice.
 
-**Prerequisites:** Phase 1 complete, or an existing project with `docs/constitution.md`, `docs/architecture.md`, and `docs/DESIGN.md` in place. `docs/backlog.json` holds the features and their status; Phase 2 reads it to select `pending` features in build order (`docs/roadmap.md`). `docs/roadmap.md` states `Phase 2 Scope: all | feature`; if the field is absent (existing project), apply the selection rule in `kit/steps/phase-1/p1-04-roadmap.md` and record the result in the roadmap before Step 1.
+**Prerequisites:** Phase 1 complete, or an existing project with `docs/constitution.md`, `docs/architecture.md`, and `docs/DESIGN.md` in place. `docs/backlog.json` holds the features and their status; Phase 2 reads it to select `pending` features in build order (`docs/roadmap.md`). `docs/roadmap.md` states `Phase 2 Scope: all | feature`; if the field is absent (existing project), apply the selection rule in `kit/steps/phase-1/p1-04-roadmap.md` and record the result in the roadmap before Step 1. **Which features are built:** `scope: all` builds the Must features only; Should features stay `pending` and are built in a later cycle after the Must features ship. Phase 1 Step 5 designs Must and Should so those later cycles already have designs (rule: `kit/steps/phase-1/p1-05-screen-design.md`).
 
 **Conventions:** read `kit/orchestrator-conventions.md` (banner, PROJECT_ROOT, write verification, fail-fast write instruction, gates, frontend dispatch) and `kit/session-logging.md` before starting. Each step file is the authoritative source for that step's inputs, outputs, rules, and completion criteria; read it before running the step.
 
@@ -53,13 +53,13 @@ scope feature: Ship → next pending feature → [1]      scope all: Ship → Ph
 | Spec | `docs/specs/spec.md` — one `##` section per feature in build order; cross-feature interactions explicit; approved once | `docs/specs/<feature-slug>/spec.md` |
 | Plan | `docs/specs/plan.md` — tasks in dependency order across features | `docs/specs/<feature-slug>/plan.md` |
 | Branch (created in Step 3) | `feature/<project-slug>` | `feature/<feature-slug>` |
-| Skip Step 1 when | `docs/specs/spec.md` exists | `docs/specs/<feature-slug>/spec.md` exists (e.g. written before a Phase 1 Step 5 re-entry) |
-| E2E | Cross-feature interactions tested exhaustively | The feature |
+| Skip Step 1 when | `docs/specs/spec.md` exists and its Status is `approved` | `docs/specs/<feature-slug>/spec.md` exists and its Status is `approved` (e.g. written before a Phase 1 Step 5 re-entry) |
+| E2E | Every interaction between two features has its own test case | The feature |
 | Manual Check | Whole app, empty state through every Must feature in usage order | The feature |
 | Ship | One commit, one PR; every Must feature `shipped` | One commit, one PR; this feature `shipped`; then the next `pending` feature restarts at Step 1 |
 | Session log section | `## <project-slug>` | `## <feature-slug>`, one per feature |
 
-**Skip detection.** When the Step 1 skip condition is met, record `skipped (spec exists)` in the session log and go to Step 2 without re-asking for approval — the gate was already passed. Exception: if the log marks Step 1 `in progress` for this unit, the spec was never approved; resume Step 1 instead.
+**Skip detection.** When the Step 1 skip condition is met (the spec exists **and** its Status is `approved`), record `skipped (spec exists)` in the session log and go to Step 2 without re-asking for approval — the gate was already passed. If the spec exists with any other Status (`draft`), or the log marks Step 1 `in progress` for this unit, the spec was never approved; resume Step 1 instead.
 
 **Feature loop (`scope: feature`).** Select the next `pending` feature in build order (dependency-driven, not MoSCoW). Run Steps 1–7. Start a new log section and repeat.
 
@@ -71,14 +71,15 @@ Stop the cycle if any of these surfaces:
 - A feature is much more complex than estimated (L-sized in practice)
 - A spec gap that substantially re-scopes a feature
 - A technical decision that invalidates later features' specs
-- A minority specialist ends up with a large share of the tasks (Step 2 checks this — see `p2-02-plan.md`), or two independent domains emerge during implementation
+- A second domain (a distinct area needing a different specialist skill or a separate deployable concern — definition in `p1-04-roadmap.md`; UI plus API is one domain) holds ≥ 20% of the plan's tasks (Step 2 checks this — see `p2-02-plan.md`), or two independent domains emerge during implementation
 
-Revise the affected spec sections, set `Phase 2 Scope: feature` in `docs/roadmap.md` and `phase2_scope` to `feature` in `docs/backlog.json`, and run each remaining Must feature as its own cycle from Step 1, seeding its spec from its section of `docs/specs/spec.md`. Switching is the correct response to discovered complexity, not a failure.
+Revise the affected spec sections, set `Phase 2 Scope: feature` in `docs/roadmap.md` and `phase2_scope` to `feature` in `docs/backlog.json` (only after the user confirms; `scope: feature` is experimental), and run each remaining Must feature as its own cycle from Step 1, seeding its spec from its section of `docs/specs/spec.md`. Switching is the correct response to discovered complexity, not a failure.
 
 ---
 
 ## Run State and Handover
 
 - **Session log:** `docs/phase-2-session.md`, one section per feature (per the table above), created at Step 1; its header copies the tier→model map from `docs/MODELS.md` once. Update it at each gate and at completion, not after every step. Schema: `kit/session-logging.md`.
-- **Handover:** one mechanism for the whole phase — `kit/guides/session-handover.md` (its `Unit` is the feature slug, or the project slug under `scope: all`; resume at the step recorded in the session log). Phase 2's clean seams are after Step 2 (Plan), Step 3 (Implement), and Step 4 (Review).
+- **Handover:** `kit/guides/session-handover.md` is the one mid-phase mechanism for every pause inside Phase 2 (its `Unit` is the feature slug, or the project slug under `scope: all`; resume at the step recorded in the session log). The one-time Phase 1 → Phase 2 handoff prompt is separate and is owned by `kit/phase-1-bootstrap.md`. Phase 2's clean seams are after Step 2 (Plan), Step 3 (Implement), and Step 4 (Review).
 - **No per-task commits.** Changes accumulate on the feature branch; Ship commits them (a handover may commit earlier).
+- **Shipped events:** Ship appends a `shipped` event per feature to `docs/backlog.json`; `docs/backlog.html` and the roadmap table are rendered from it.

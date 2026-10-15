@@ -5,6 +5,17 @@
 
 Universal rules (step banner, gates, file verification, English-only, write-then-review) are in `kit/orchestrator-conventions.md`. In this phase, every subagent dispatch carries `PROJECT_ROOT` and, if it writes a file, the fail-fast write instruction; afterwards confirm each file exists on disk (conventions rules 1–3). Session log: `docs/phase-1-session.md` (`kit/session-logging.md`).
 
+## Skills and agents pre-flight
+
+Run once, before Model tiers. Check that each skill and agent below is available in this session (consult your platform's skill or agent list; if it has no list, try to load the skill by name). Skills and agents are optional per-tool add-ons: where they live depends on your platform (often `.agents/` or a tool-specific skills folder, or a plugin). Full list and install notes: the site page *What You Need*.
+
+| Needed in | Skills | Agent |
+|---|---|---|
+| Phase 1 | `brainstorming` (Step 1), `design-taste-frontend` (Step 3 prototype build), `verification-before-completion` (every step) | none beyond the general-purpose agent |
+| Phase 2 | `brainstorming`, `writing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees`, `design-taste-frontend`, `requesting-code-review`, `finishing-a-development-branch`, `verification-before-completion` | `code-reviewer` (Step 4) |
+
+If any skill or agent is missing: tell the user in one message which items are missing and name the step each one affects. Proceed with your closest built-in behavior for that step only after the user agrees; if they would rather install first, wait. Record what is missing and the user's decision in the session log. Phase 2 items may be checked again at the Phase 2 start.
+
 ## Model tiers
 
 Resolve tiers once, before Step 1. If `docs/MODELS.md` exists with `Status: approved`, skip to step 4.
@@ -29,11 +40,11 @@ Before each step, read its step file; it is authoritative for that step's inputs
 
 | Step | Name | Gate | Model | Agent | Output | Step file |
 |---|---|---|---|---|---|---|
-| 1 | Product Ideation | `none` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
-| 2 | Market Research *(optional; the kickoff decides run/skip)* | `soft` | fast | general-purpose agent | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
+| 1 | Product Ideation | `soft` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
+| 2 | Market Research *(optional; runs if the kickoff says run, or if you answer "run" to the one question Step 1 asks when the kickoff is blank)* | `soft` | fast | general-purpose agent | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
 | 3 | Prototype & Design | `hard` | balanced | general-purpose agent; orchestrator builds the HTML | `docs/prototype/`, `docs/DESIGN.md`, `docs/preview/` | `kit/steps/phase-1/p1-03-prototype-design.md` |
 | 4 | Roadmap (also sets Phase 2 scope) | `hard` | balanced | general-purpose agent | `docs/roadmap.md`, `docs/backlog.json`, `docs/backlog.html` | `kit/steps/phase-1/p1-04-roadmap.md` |
-| 5 | Full Screen Design *(skippable)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
+| 5 | Full Screen Design *(skippable only when approved designs exist, or every feature has one simple screen already covered by `docs/preview/`)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
 | 6 | Tech Stack & Architecture | `hard` | capable | general-purpose agent | `docs/architecture.md` | `kit/steps/phase-1/p1-06-architecture.md` |
 | 7 | Constitution | `soft` | fast | general-purpose agent | `docs/constitution.md` | `kit/steps/phase-1/p1-07-constitution.md` |
 | 8 | Scaffold | `none` | balanced | general-purpose agent | runnable codebase, `AGENTS.md`, one commit | `kit/steps/phase-1/p1-08-scaffold.md` |
@@ -43,7 +54,7 @@ Before each step, read its step file; it is authoritative for that step's inputs
 The single closeout checklist. Step 8 runs it; every item must pass before the Phase 1 commit and the handoff. Nothing else in the kit restates it.
 
 - [ ] `docs/MODELS.md` is `approved`; `docs/phase-1-session.md` shows every step `complete` or `skipped`
-- [ ] `docs/phase-1-kickoff.md` (moved from the project root in Step 1)
+- [ ] `docs/phase-1-kickoff.md`
 - [ ] `docs/idea-brief.md` is `approved`
 - [ ] `docs/market-notes.md` *(skip if Step 2 was skipped)*
 - [ ] `docs/prototype/` (journey-map.md and prototype-brief.md, Definition of Done checked), `docs/DESIGN.md`, and `docs/preview/index.html` (the approved prototype)
@@ -74,6 +85,8 @@ Then run Phase 2 (scope: [all | feature]) for [project-name].
 ```
 
 The new session has no memory of Phase 1; these files are all it needs.
+
+`kit/` is in `.gitignore`, so a fresh clone or a new machine does not have it. Before the handoff prompt works there, reinstall the kit in the project root (`npx github:KhoaLy2003/craft-kit`) so `kit/phase-2.md` exists. The `docs/` files are committed and travel with the repo.
 
 ## Flow
 

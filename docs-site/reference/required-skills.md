@@ -1,20 +1,20 @@
 # What You Need
 
-For most users, getting started requires nothing beyond an AI assistant — ChatGPT, Claude, or any capable AI. Share the relevant phase file, fill in the kickoff form, and follow the steps in [Getting Started](/getting-started).
+For most users, getting started requires nothing beyond an AI assistant. Share the relevant phase file, fill in the kickoff form, and follow the steps in [Getting Started](/getting-started), which also covers setup on Windows, macOS, and Linux and how to prepare your `DESIGN.md`.
 
 ---
 
-## If You Use a Multi-Agent Platform
+## Skills and Agents Are Optional Add-ons
 
-Some AI platforms can run multiple specialized workers in parallel: one agent for market research, one for writing code, one for code review. The kit is built to use these when they are available, which speeds up the workflow significantly.
+Some AI platforms can load *skills* (instruction sets for a specific task) and run specialist *agents* in parallel. The kit uses them when they exist and works from the AI's general capability when they do not. They live in per-tool locations (a plugin, a skills folder such as `.agents/skills/`, or an agents folder such as `.agents/agents/`); which one applies depends on your platform.
 
-If your platform supports agent orchestration, the following skills and agents need to be available before Phase 1 begins. Your platform should check for missing ones automatically when Phase 1 starts. `npx github:KhoaLy2003/craft-kit` prints (or, interactively, runs) the install steps for all of them.
+**Pre-flight.** When Phase 1 starts, the AI checks that the items below are available, using your platform's skill and agent list. If any are missing it tells you which ones and which step each affects, and continues with the closest built-in behavior only after you agree. You can also install them first and then continue. The check is defined in `kit/phase-1-bootstrap.md` (*Skills and agents pre-flight*).
+
+**Installer.** `npx github:KhoaLy2003/craft-kit` copies `kit/`, then prints install instructions for the plugin skills and, in an interactive terminal, offers to install `design-taste-frontend` and the `code-reviewer` agent. The full list of paths it writes is in [Getting Started](/getting-started#what-the-installer-writes).
 
 ---
 
 ## Skills
-
-Skills are instruction sets that teach your AI platform how to do a specific task.
 
 | Skill | Used in |
 |---|---|
@@ -23,7 +23,7 @@ Skills are instruction sets that teach your AI platform how to do a specific tas
 | `subagent-driven-development` | Phase 2 Step 3 — building |
 | `dispatching-parallel-agents` | Phase 2 Step 3 — parallel build tasks |
 | `using-git-worktrees` | Phase 2 Step 3 — keeping the feature branch isolated |
-| `design-taste-frontend` | Phase 2 Step 3 — UI quality; invoked by the general-purpose agent for new UI work |
+| `design-taste-frontend` | Phase 1 Step 3 — prototype build; Phase 2 Step 3 — UI quality for new UI work |
 | `requesting-code-review` | Phase 2 Step 4 — code quality check |
 | `finishing-a-development-branch` | Phase 2 Step 7 — shipping |
 | `verification-before-completion` | All phases — confirming files were created correctly |
@@ -32,7 +32,7 @@ Skills are instruction sets that teach your AI platform how to do a specific tas
 
 ## Agents
 
-Agents are specialized AI workers. The kit uses two: `code-reviewer` for review, and your platform's general-purpose agent for everything else. You never address them directly.
+Agents are specialized AI workers. The kit uses two kinds: `code-reviewer` for review, and your platform's general-purpose agent for everything else. You never address them directly.
 
 | Agent | Role | Used in |
 |---|---|---|

@@ -29,16 +29,18 @@
 - [ ] `.env` has all required values (set up during Scaffold — re-confirm here)
 - [ ] <!-- add one line per external service or infrastructure requirement -->
 - [ ] Test data seeded (see Section 5)
-- [ ] Test credentials documented below and available
+- [ ] Test credentials set in `.env` (key names listed below) and available
 
 **Test credentials:**
 
-<!-- List every account the tests will use. Include email, password, and role. Do not use production credentials. -->
+<!-- This file is committed: it MUST stay secret-free, like ENV_SETUP.md. Never write a real password, token, or key here. List every account the tests will use by role and the `.env` KEY NAMES that hold its email and password; the values live only in `.env` (git-ignored). Do not use production credentials. -->
 
-| Role | Email | Password |
-|------|-------|----------|
-| <!-- e.g. admin --> | | |
-| <!-- e.g. standard user --> | | |
+| Role | Email key in `.env` | Password key in `.env` |
+|------|---------------------|------------------------|
+| <!-- e.g. admin --> | <!-- e.g. E2E_ADMIN_EMAIL --> | <!-- e.g. E2E_ADMIN_PASSWORD --> |
+| <!-- e.g. standard user --> | <!-- e.g. E2E_USER_EMAIL --> | <!-- e.g. E2E_USER_PASSWORD --> |
+
+<!-- Placeholders for the `.env` values: `E2E_USER_EMAIL=<test-user-email>`, `E2E_USER_PASSWORD=<choose-a-throwaway-password>`. Add the same keys, with empty or placeholder values, to `.env.example` if the project has one. -->
 
 ---
 
@@ -101,7 +103,7 @@ Hosts the Postgres database and the auth service.
 
 - [ ] Project created; schema migration applied
 - [ ] `SUPABASE_URL` and `SUPABASE_ANON_KEY` in `.env`
-- [ ] Test users created MANUALLY — Supabase Dashboard → Authentication → Users → "Add user", using the exact emails and passwords in Section 2. Test users cannot be created programmatically.
+- [ ] Test users created MANUALLY — Supabase Dashboard → Authentication → Users → "Add user", using the emails and passwords from the `.env` keys in Section 2 (never copied into this file). Test users cannot be created programmatically.
 - [ ] Each test user's UUID copied from the Auth dashboard and inserted into `profiles` (the profile `id` must equal the Auth user ID)
 - [ ] Test data seeded (e.g. `node seed.mjs`) after the profiles exist
 - [ ] Connection verified
@@ -114,6 +116,30 @@ Hosts the Postgres database and the auth service.
 
 - **If `Invalid login credentials`**: the test users do not exist in Auth yet — create them in the dashboard. This is the most common E2E blocker on Supabase projects.
 - **If a signed-in user sees no data**: the profile `id` does not match the Auth UUID — re-copy the UUID and update the profile row.
+
+
+EXAMPLE — Non-Supabase stack (self-hosted Postgres + app-managed login). Adapt and keep when it fits; delete otherwise.
+
+### Local Postgres + app login
+
+**What it does:**
+Stores application data; the app's own sign-in uses accounts from the `users` table.
+
+**Must-do checklist:**
+
+- [ ] Database running; schema migration applied
+- [ ] `DATABASE_URL`, `E2E_USER_EMAIL`, `E2E_USER_PASSWORD` in `.env`
+- [ ] Seed script creates the test user from those `.env` values (e.g. `node seed.mjs`)
+- [ ] Connection verified
+
+**Verification:**
+
+    Run: SELECT COUNT(*) FROM users; — expect at least the number of test users, then sign in through the app with the `.env` credentials
+
+**Troubleshooting:**
+
+- **If `ECONNREFUSED`**: the database is not running or `DATABASE_URL` points at the wrong host/port — start it and re-check the value.
+- **If sign-in fails for the seeded user**: the seed ran before the migration, or `.env` credentials changed after seeding — re-run the seed.
 
 If provisioning takes more than a few lines, put the step-by-step walkthrough in a separate `PROVISIONING.md` and link it here.
 -->

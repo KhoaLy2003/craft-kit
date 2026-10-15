@@ -24,7 +24,7 @@ Three stages. Never collapse them.
 
 1. Read `kit/stack-catalog.md` before any web search. Follow its analysis protocol: start from the Canonical Baseline; apply a Deviation Trigger only when the roadmap's requirements match it; walk the Additions Catalog domain by domain and add only what the roadmap requires.
 2. Web-search only for a required service or library missing from the catalog, or for a volatile fact (pricing, free-tier limits) whose `Last verified` date is over 3 months old.
-3. Use a `librarian` agent only when a specific library needs source-verified confirmation.
+3. Use a research or general-purpose agent only when a specific library needs source-verified confirmation.
 4. Any subagent dispatch that writes a file follows the fail-fast write instruction in `kit/orchestrator-conventions.md`.
 
 ### Stage 2 — Analysis (chat only)

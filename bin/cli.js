@@ -233,7 +233,7 @@ function printQuickStart (rel) {
   ${HR}
 
   ${SYM.dot} ${bold('New project')}
-    ${cyan('1.')} Fill in    ${yellow(rel + '/templates/phase-1-kickoff.md')}   with your idea
+    ${cyan('1.')} Copy ${yellow(rel + '/templates/phase-1-kickoff.md')} to ${yellow('docs/phase-1-kickoff.md')} and fill it in with your idea
     ${cyan('2.')} Open your AI assistant with this folder as the working directory
     ${cyan('3.')} Say:  ${yellow('"Start Phase 1 using ' + rel + '/phase-1-bootstrap.md."')}
 

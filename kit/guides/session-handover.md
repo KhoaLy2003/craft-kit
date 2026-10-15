@@ -2,7 +2,9 @@
 
 > **Status:** experimental — not yet validated in a test round.
 >
-> The one handover mechanism for every phase (Phase 1, Phase 2, Phase 3, bug fix). Produces `docs/handover.md`, the single file a new session needs to resume. Works with any AI harness.
+> The one mid-phase handover mechanism for every phase (Phase 1, Phase 2, Phase 3, bug fix). Produces `docs/handover.md`, the single file a new session needs to resume. Works with any AI harness.
+>
+> **Relation to the Phase 1 → 2 handoff:** that one-time prompt, printed when Phase 1 ends and owned by `kit/phase-1-bootstrap.md`, starts Phase 2 in a fresh session. This guide covers pauses *inside* a phase, including inside Phase 2 after the handoff. The two never overlap: the handoff prompt is not written to `docs/handover.md`, and a handover never replaces it.
 
 ---
 
@@ -11,7 +13,7 @@
 | Trigger | Action |
 |---|---|
 | **Natural seam** | Offer a handover before starting the next step, after a seam step completes. |
-| **Stress signal** | 3 or more steps completed in the current session → offer at the next natural seam. |
+| **Stress signal** | 3 or more steps completed in the current session (steps completed in earlier sessions do not count; the counter restarts at every resume) → offer at the next natural seam. |
 | **User request** | "hand over", "new session", "checkpoint", "session is getting big" → execute immediately; do not offer. |
 
 Natural seams (nothing mid-flight, state is on disk):
@@ -35,10 +37,11 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 **Mid-step (user-triggered, typically Implement or E2E):** resolve partial work first.
 
 1. Identify which plan tasks have complete code on the feature branch.
-2. Commit the complete work as a WIP commit (handover is the one place besides Ship where commits happen). For partial code: commit what compiles cleanly, stash or discard the rest, and flag the task "restarted in new session" in the session log.
-3. Set the step to `blocked` in the session log with reason `session handover`.
+2. Commit the complete work as a WIP commit (handover is the one place besides Ship where commits happen).
+3. For partial code, apply the one rule: **commit only what compiles cleanly; every other uncommitted change is stashed (`git stash push -m "handover: <task>"`, listed under In-Progress State) or discarded, and its task is flagged "restarted in new session" in the session log.** Never leave partial writes in the working tree.
+4. Set the step to `blocked` in the session log with reason `session handover`.
 
-Never hand over with uncommitted writes; a new session cannot recover unsaved work.
+**Rule:** after these steps the working tree is clean apart from `docs/handover.md` and the session log (`git status` shows no other uncommitted change). Never hand over with uncommitted writes; a new session cannot recover unsaved work. A stash is saved work only if it is named in the handover document.
 
 ---
 
@@ -57,7 +60,11 @@ Never hand over with uncommitted writes; a new session cannot recover unsaved wo
 
 ## Handover Document
 
-Write to `docs/handover.md`, overwriting any existing file. Fill every `[bracket]`.
+Write to `docs/handover.md`. Fill every `[bracket]`.
+
+**If `docs/handover.md` already exists:** it is an unconsumed handover (the New Session Bootstrap deletes it once consumed). Read its `Generated`, Phase, Unit, and Step first.
+- Same phase and unit: the new document supersedes it. Overwrite, and mention the replaced one's step in Open Decisions if it differs.
+- Different phase or unit: do not overwrite silently. Tell the user and ask whether to replace it or finish the earlier unit first.
 
 ```
 # Session Handover — [project-name]

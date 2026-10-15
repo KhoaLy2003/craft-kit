@@ -33,11 +33,7 @@ If the work is in code, the AI commits it to the current branch before it saves,
 
 ## Resuming
 
-Open a new conversation in your project folder and send:
-
-```text
-Read docs/handover.md and resume from there.
-```
+Open a new conversation in your project folder and paste the **Resumption Prompt** that the AI wrote into `docs/handover.md` as the first message. It is the last section of that file and is already filled in with your phase, project, and the step to resume. Its template is in [Session Handover](/guides/session-handover#resumption-prompt).
 
 The AI then:
 
