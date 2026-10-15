@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.28] - 2026-10-15
+
+**Summary:** Review-report fixes · Ship safety · clearer setup · overview diagram
+
 **Summary:** Review-report fixes (`Craft-Kit-Review-Report.md`, kit 0.0.26) · preconditions · Ship safety · scope clarity · harness-neutral wording
 
 ### Changed — preconditions and onboarding (N1, N3, N8, N12, N14, N17–N19, F1, F2, F4, F6, F8, F12, F13)
@@ -44,6 +50,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 ### Removed — redundant guide
 
 - **`kit/guides/interactive-prototype-process.md`** — removed. It was marked background only; its rules already live in `p1-03-prototype-design.md` and `templates/03b-prototype-brief.md`. The "what a prototype does not validate" and wireframe/mockup distinction now sit in `p1-03` Scope. References dropped from **`p1-03`**, **`README.md`**, **`AGENTS.md`**, **`docs-site/.vitepress/config.ts`**.
+
+---
 
 ---
 
