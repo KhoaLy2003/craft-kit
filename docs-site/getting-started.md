@@ -232,13 +232,21 @@ You decide at the Assess step: the AI confirms the root cause and the files it w
 
 ## Planning the Next Release
 
-After a release has shipped, share `kit/phase-3-iterate.md` with your AI and send:
+After a release has shipped, open a **new AI session in your project root** (the kit must be installed there, so `kit/phase-3-iterate.md` exists) and send:
 
 ```text
 Run Phase 3 using kit/phase-3-iterate.md. The release slug is [your-release-slug].
 ```
 
-The AI asks what the release should achieve, what evidence you have, and whether you have ideas. It writes nothing to the backlog until you approve the scope. See [Phase 3 — Iterate](/guides/phase-3-iterate) for each step and gate.
+The **release slug** is a short name you choose for this release: lowercase letters, digits and hyphens, no spaces. The AI uses it for the folder `docs/iterations/<slug>/` and the `## Release <slug>` block in `docs/roadmap.md`. A `r<number>-<theme>` pattern works well, for example `r2-growth`.
+
+**Real-world example.** Your online bookstore shipped its first release. The client now asks for a wishlist, order-tracking emails, and a CSV export of orders. Collect those requests (emails, tickets, notes) and send:
+
+```text
+Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-client-requests.
+```
+
+The AI asks what the release should achieve, what evidence you have, and whether you have ideas. Answer "yes" and paste the client's requests; each one is kept only if it states the problem it solves. Nothing is written to the backlog until you approve the scope. At the end, the AI gives you a prompt to start Phase 2 in a fresh session. Phase 3 needs `docs/backlog.json`, `roadmap.md`, `constitution.md`, `architecture.md` and `DESIGN.md`; if `backlog.json` is missing, run `kit/phase-roadmap-migrate.md` first. See [Phase 3 — Iterate](/guides/phase-3-iterate) for each step and gate.
 
 ---
 

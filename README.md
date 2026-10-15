@@ -136,7 +136,7 @@ To start the Admin Site workflow (after Phase 2 has shipped), share `kit/phase-a
 
 The agent drafts `docs/admin/scope.md` and asks you to edit it; the two hard gates (Scope, Ship) need your approval.
 
-To plan the next release after Phase 2 has shipped, share `kit/phase-3-iterate.md` with your agent and say:
+To plan the next release after Phase 2 has shipped, open a new session in the project root and say (the slug is a short lowercase-hyphen name you choose, e.g. a client's follow-up requests become `r2-client-requests`):
 
 ```
 "Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth."

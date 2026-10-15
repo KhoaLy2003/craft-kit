@@ -30,17 +30,21 @@ Phase 3 needs these files in your project's `docs/` folder:
 - `constitution.md`, `architecture.md`, `DESIGN.md`
 - Your application, shipped or at least runnable
 
-Pick a short name for the release before you start, such as `r2-growth`. The AI uses it for the folder `docs/iterations/<release-slug>/` and for the release block in the roadmap.
+Pick a short name (the **slug**) for the release before you start: lowercase letters, digits and hyphens, no spaces, such as `r2-growth` or `r2-client-requests`. The AI uses it for the folder `docs/iterations/<release-slug>/` and for the release block in the roadmap. Use a new slug for every release.
+
+Have your input ready too: the client's requests, feedback, tickets or usage notes. The AI asks for them in Step 1.
 
 ---
 
 ## Starting Phase 3
 
-Share `kit/phase-3-iterate.md` with your AI, then send:
+Open a **new AI session in your project root** (the kit must be installed, so `kit/phase-3-iterate.md` exists), then send:
 
 ```text
 Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth.
 ```
+
+**Real-world example.** Your online bookstore shipped its first release. The client now asks for a wishlist, order-tracking emails, and a CSV export of orders. Use `r2-client-requests` as the slug, send the prompt, and when the AI asks whether you have ideas, answer "yes" and paste the three requests.
 
 The AI reads your existing backlog, roadmap, and specs before it asks you anything, so its questions cover gaps rather than things already written down.
 

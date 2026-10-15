@@ -146,7 +146,7 @@ Run the bug fix workflow using kit/phase-bug-fix.md. The problem is: [describe w
 ```
 
 ```text [Next release (Phase 3)]
-Run Phase 3 using kit/phase-3-iterate.md. The release slug is [your-release-slug].
+Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth.
 ```
 
 ```text [Admin site]
