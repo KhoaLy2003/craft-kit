@@ -99,7 +99,7 @@ Build `feature/admin` from the plan.
 
 - Create the branch `feature/admin`, using `using-git-worktrees` as in Phase 2 Step 3. Do not commit until Step 5.
 - Dispatch per the plan: sequential chains with `subagent-driven-development`, parallel groups with `dispatching-parallel-agents`. Follow the universal dispatch rules in `kit/orchestrator-conventions.md` (PROJECT_ROOT, fail-fast write, verify every write).
-- **Frontend dispatches** follow the Design dispatch contract in `kit/orchestrator-conventions.md`: include `docs/DESIGN.md` and `docs/preview/`; admin screens have no `docs/designs/` entries. Pass the matching archetype contract from `kit/guides/admin-blueprint.md` §3 as the brief, and build per blueprint §6.
+- **UI dispatches** follow the Design dispatch contract in `kit/orchestrator-conventions.md`: include `docs/DESIGN.md` and `docs/preview/`; admin screens have no `docs/designs/` entries. Pass the matching archetype contract from `kit/guides/admin-blueprint.md` §3 as the brief, and build per blueprint §6.
 - **Shell checkpoint — mandatory before any module starts.** Verify, against the running application:
   1. an admin signs in and sees a role-filtered menu
   2. a signed-in non-admin cannot reach the admin API: login returns `403`, and `/api/admin/*` called with a non-admin token returns `401`; an admin whose role lacks the permission gets `403`
