@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.27] - 2026-10-15
+
+**Summary:** Agent simplification · code-reviewer only · evon:ui-ux removed
+
 **Summary:** Agent simplification — the kit installs and routes to one review agent (`code-reviewer`) and the platform's general-purpose agent. The optional `evon:ui-ux` skill is removed; `design-taste-frontend` is kept.
 
 ### Removed — specialist agents from kit installation and routing
@@ -28,6 +34,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 - **`tests/cli.test.mjs`** — the six-agent assertion now expects `['code-reviewer']`; the `evon:ui-ux` assertion is removed.
 
+
+---
 
 ---
 
