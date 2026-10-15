@@ -173,7 +173,7 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 
 [**Evolving Specs**<br>How to update your feature plan after something has shipped](/guides/evolving-specs)
 
-[**What You Need**<br>Optional skills and agents the kit can use, and how it checks for them](/reference/required-skills)
+[**What You Need**<br>Skills and agents the kit uses (one is required for visual work), and how it checks for them](/reference/required-skills)
 
 [**Glossary**<br>Must, gate, scope, domain, seam, and other terms in plain words](/reference/glossary)
 

@@ -7,7 +7,7 @@ Universal rules (step banner, gates, file verification, English-only, write-then
 
 ## Skills and agents pre-flight
 
-Run once, before Model tiers. Check that each skill and agent below is available in this session (consult your platform's skill or agent list; if it has no list, try to load the skill by name). Skills and agents are optional per-tool add-ons: where they live depends on your platform (often `.agents/` or a tool-specific skills folder, or a plugin). Full list and install notes: the site page *What You Need*.
+Run once, before Model tiers. Check that each skill and agent below is available in this session (consult your platform's skill or agent list; if it has no list, try to load the skill by name). Skills and agents are per-tool add-ons: the kit uses them where they exist and falls back to the AI's general capability where they do not, except `design-taste-frontend`, which is required for visual-quality work (see `kit/task-agent-rubric.md`). Where they live depends on your platform (often `.agents/` or a tool-specific skills folder, or a plugin). Full list and install notes: the site page *What You Need*.
 
 | Needed in | Skills | Agent |
 |---|---|---|
