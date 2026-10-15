@@ -7,26 +7,26 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
-**Summary:** Agent simplification — the kit installs and routes to one review agent (`code-reviewer`) and the platform's general-purpose agent. Skills are unchanged.
+**Summary:** Agent simplification — the kit installs and routes to one review agent (`code-reviewer`) and the platform's general-purpose agent. The optional `evon:ui-ux` skill is removed; `design-taste-frontend` is kept.
 
 ### Removed — specialist agents from kit installation and routing
 
 - **`bin/cli.js`** — `REQUIRED_AGENTS` now contains only `code-reviewer`. Removed from installation and manual instructions: `frontend-developer`, `backend-developer`, `market-researcher`, `research-analyst`, `ui-ux-tester`. Agent count comment and agent section label updated.
-- **`kit/task-agent-rubric.md`** — rewritten. Routing is `code-reviewer` for review and `task` (general-purpose agent) for everything else; `design-taste-frontend` and `evon:ui-ux` skill routing kept.
+- **`kit/task-agent-rubric.md`** — rewritten. Routing is `code-reviewer` for review and `task` (general-purpose agent) for everything else; `design-taste-frontend` skill routing kept.
+- **`bin/cli.js`**, **`README.md`**, **`AGENTS.md`**, **`docs-site/reference/required-skills.md`**, **`kit/phase-admin.md`**, **`kit/guides/admin-blueprint.md`** — `evon:ui-ux` removed: install prompt and non-TTY command, docs rows, and the admin-screen skill clause.
 
 ### Changed — agent references in phase, step, guide, and doc files
 
 - **`kit/phase-1-bootstrap.md`**, **`kit/phase-2.md`**, **`kit/phase-3-iterate.md`**, **`kit/phase-bug-fix.md`** — step tables and rules name the general-purpose agent instead of specialists.
 - **`kit/steps/phase-1/p1-02-market-research.md`**, **`p1-06-architecture.md`**, **`p1-08-scaffold.md`**, **`kit/steps/phase-2/p2-05-e2e.md`** — agent field and execution rules use the general-purpose agent.
-- **`kit/steps/phase-2/p2-03-implement.md`** — `frontend-developer` wording replaced by the Frontend dispatch contract; `design-taste-frontend` kept.
-- **`kit/orchestrator-conventions.md`** — Frontend dispatch contract kept (design manifest and `docs/DESIGN.md` / `docs/preview/` rules unchanged); agent name removed from it.
-- **`kit/guides/admin-blueprint.md`** §6 — fallback builder is the general-purpose agent; `evon:ui-ux` conditional unchanged.
+- **`kit/steps/phase-2/p2-03-implement.md`**, **`kit/orchestrator-conventions.md`** — `frontend-developer` wording replaced; the contract is renamed **Design dispatch contract** and moved after Gates. Design-manifest statuses (`mcp`, `file_fallback`, `design_md_fallback`) are unchanged.
+- **`kit/guides/admin-blueprint.md`** §6 — the implementing agent builds admin screens from §3 and `docs/DESIGN.md`.
 - **`kit/stack-catalog.md`**, **`kit/templates/spec-screen.md`** — agent names replaced.
 - **`README.md`**, **`AGENTS.md`**, **`docs-site/reference/required-skills.md`** — agent tables, installer description, and minimal-setup list updated to the single review agent plus the general-purpose agent.
 
 ### Tests updated
 
-- **`tests/cli.test.mjs`** — the six-agent assertion now expects `['code-reviewer']`. No other test changed.
+- **`tests/cli.test.mjs`** — the six-agent assertion now expects `['code-reviewer']`; the `evon:ui-ux` assertion is removed.
 
 
 ---

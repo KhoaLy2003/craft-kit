@@ -39,8 +39,7 @@ const HR = dim('─'.repeat(52))
 // Superpowers skills (8):  https://github.com/obra/superpowers
 //   → installed as a plugin inside your AI harness; not a shell command.
 //
-// Skills (2 via npx): design-taste-frontend https://github.com/Leonxlnx/taste-skill,
-//                     evon:ui-ux (optional, admin site workflow) https://github.com/evondev/evondevKit
+// Skill (1 via npx): design-taste-frontend https://github.com/Leonxlnx/taste-skill
 //   → installed via `npx skills add` (cross-harness).
 //
 // Agents (1):       https://github.com/VoltAgent/awesome-claude-code-subagents
@@ -49,9 +48,6 @@ const HR = dim('─'.repeat(52))
 const TASTE_SKILL_REPO = 'https://github.com/Leonxlnx/taste-skill'
 const TASTE_SKILL_NAME = 'design-taste-frontend'
 const TASTE_SKILL_CMD  = `npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes`
-const EVON_SKILL_REPO  = 'https://github.com/evondev/evondevKit'
-const EVON_SKILL_NAME  = 'ui-ux'
-const EVON_SKILL_CMD   = `npx skills add ${EVON_SKILL_REPO} --skill "${EVON_SKILL_NAME}" --yes`
 const VOLTAGENT_RAW    = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
 
 const REQUIRED_AGENTS = [
@@ -299,16 +295,7 @@ async function interactiveSetup () {
     cmd: TASTE_SKILL_CMD,
   })
 
-  console.log(`  ${dim('Optional: evon:ui-ux builds admin site screens (used by the admin site workflow).')}\n`)
-  await offerSkill(yes, {
-    question: 'Also install evon:ui-ux?',
-    display: 'evon:ui-ux',
-    repo: EVON_SKILL_REPO,
-    name: EVON_SKILL_NAME,
-    cmd: EVON_SKILL_CMD,
-  })
-
-  section(3, 'Specialist agents')
+  section(3, 'Code reviewer agent')
   const agentsDir = path.join(process.cwd(), '.agents', 'agents')
   const agentsRel = path.relative(process.cwd(), agentsDir)
   if (await yes(`Download agents to ${bold(agentsRel + '/')}?`)) {
@@ -428,7 +415,6 @@ ${versionLine}
       printSuperpowers()
       section(2, 'Design skills')
       console.log(`  Run in your terminal:\n    ${TASTE_SKILL_CMD}`)
-      console.log(`\n  Optional — admin site workflow (evon:ui-ux):\n    ${EVON_SKILL_CMD}`)
       section(3, 'Code reviewer agent')
       printAgentManualInstructions()
     }

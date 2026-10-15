@@ -24,7 +24,6 @@ Skills are instruction sets that teach your AI platform how to do a specific tas
 | `dispatching-parallel-agents` | Phase 2 Step 3 — parallel build tasks |
 | `using-git-worktrees` | Phase 2 Step 3 — keeping the feature branch isolated |
 | `design-taste-frontend` | Phase 2 Step 3 — UI quality; invoked by the general-purpose agent for new UI work |
-| `evon:ui-ux` *(optional)* | Admin Site workflow Step 3 — admin screens; without it the general-purpose agent builds them from the admin blueprint |
 | `requesting-code-review` | Phase 2 Step 4 — code quality check |
 | `finishing-a-development-branch` | Phase 2 Step 7 — shipping |
 | `verification-before-completion` | All phases — confirming files were created correctly |

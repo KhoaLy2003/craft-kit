@@ -231,7 +231,6 @@ describe('non-TTY output (piped stdin prints all setup instructions)', () => {
     assert.match(stdout, /obra\/superpowers/)
     assert.match(stdout, /\/plugin install superpowers/)
     assert.match(stdout, /npx skills add .*Leonxlnx\/taste-skill.*design-taste-frontend/)
-    assert.match(stdout, /npx skills add .*evondev\/evondevKit.*ui-ux/)
     assert.match(stdout, /VoltAgent\/awesome-claude-code-subagents/)
     assert.match(stdout, /Quick start/)
   })

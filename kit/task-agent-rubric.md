@@ -13,9 +13,9 @@ Used in **Phase 2, Step 2 — Plan**. Give every task one `Specialist:` line usi
 | Code review, spec and constitution compliance | `code-reviewer` | — |
 | Everything else: frontend, backend, database, auth, infrastructure, tests, research, visual design | `task` (general-purpose agent) | — |
 | UI visual quality: "visual quality", "design upgrade", "polish", "premium UI" | `task` | `design-taste-frontend` skill (**required** for these signals) |
-| Admin site screens under `admin/` | `task` | `evon:ui-ux` skill when available (optional; see `kit/guides/admin-blueprint.md` §6) |
+| Admin site screens under `admin/` | `task` | — (build from `kit/guides/admin-blueprint.md` §3 and §6) |
 
-Every frontend dispatch follows the Frontend dispatch contract in `kit/orchestrator-conventions.md`.
+Every UI dispatch follows the Design dispatch contract in `kit/orchestrator-conventions.md`.
 
 ---
 

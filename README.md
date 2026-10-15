@@ -183,8 +183,6 @@ Install these before starting Phase 1. `npx github:KhoaLy2003/craft-kit` prompts
 
 > Skills improve consistency, not possibility: without them your AI handles the same work from general capability.
 
-> Optional: `evon:ui-ux` builds admin site screens in the Admin Site workflow (`phase-admin.md`); without it the general-purpose agent builds them from the admin blueprint.
-
 **Agent** (downloaded as `.md` file into `.agents/agents/`):
 
 | Agent | Role |
