@@ -60,7 +60,6 @@ const GUIDES: Page[] = [
   docs('guides/resuming-a-session',         'guides/resuming-a-session',         'Resuming in a New Session'),
   kit('guides/evolving-specs',              'guides/evolving-specs',             'Evolving Specs'),
   kit('guides/session-handover',            'guides/session-handover',           'Session Handover'),
-  kit('guides/interactive-prototype-process', 'guides/interactive-prototype-process', 'Interactive Prototype Process'),
   kit('guides/design-reference',            'guides/design-reference',           'Design Reference'),
   kit('guides/admin-blueprint',             'guides/admin-blueprint',            'Admin Blueprint'),
 ]

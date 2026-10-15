@@ -37,6 +37,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 - **`kit/orchestrator-conventions.md`**, **`kit/steps/phase-1/p1-06-architecture.md`**, **`p1-08-scaffold.md`**, **`kit/task-agent-rubric.md`** — `hub`, `agent://`, `/init` and `librarian` replaced with platform-neutral instructions.
 
+### Removed — redundant guide
+
+- **`kit/guides/interactive-prototype-process.md`** — removed. It was marked background only; its rules already live in `p1-03-prototype-design.md` and `templates/03b-prototype-brief.md`. The "what a prototype does not validate" and wireframe/mockup distinction now sit in `p1-03` Scope. References dropped from **`p1-03`**, **`README.md`**, **`AGENTS.md`**, **`docs-site/.vitepress/config.ts`**.
+
 ---
 
 ## [0.0.27] - 2026-10-15

@@ -206,7 +206,7 @@ All other work uses your platform's general-purpose agent.
 | `task-agent-rubric.md` | Task type → specialist agent routing |
 | `steps/phase-1/`, `steps/phase-2/` | Step detail files `p1-01` … `p1-08`, `p2-01` … `p2-07` |
 | `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, admin scope |
-| `guides/` | `admin-blueprint.md`, `design-reference.md`, `evolving-specs.md`, `interactive-prototype-process.md`, `session-handover.md` |
+| `guides/` | `admin-blueprint.md`, `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
 | `CHANGELOG.md` | Kit change history — kept in this repo, not installed |
 
 ---

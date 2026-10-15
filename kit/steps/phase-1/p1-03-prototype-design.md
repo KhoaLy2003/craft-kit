@@ -14,7 +14,6 @@
   - `docs/preview/` — the HTML prototype (no real backend; opens as `file://`)
 - **Template**: `templates/03a-journey-map.md`, `templates/03b-prototype-brief.md`, `templates/03c-design-system.md` (skeleton for a user who writes their own `DESIGN.md`)
 - **Gate**: `hard` — one gate for flow and look together.
-- **Optional reference**: `kit/guides/interactive-prototype-process.md` (background only; this file is authoritative).
 
 ## Scope
 
@@ -23,7 +22,7 @@
 
 > **Before this step, prepare `docs/DESIGN.md`** (Phase B). Ideally have it ready before Phase 1 starts so the flow does not stop here.
 
-> The prototype answers: *"Are we building the right product, and does the proposed workflow actually work for the people who will use it?"* It is a learning tool. Prototype code is disposable; do not refactor or optimise it.
+> The prototype answers: *"Are we building the right product, and does the proposed workflow actually work for the people who will use it?"* It is a learning tool. Prototype code is disposable; do not refactor or optimise it. It validates requirements, flows, business rules, and usability; it does **not** validate production architecture, backend, database, performance, security, or scalability, and it is not an MVP or the start of one. It is also not a wireframe (layout) or a mockup (look): it shows how the user experiences the flow.
 
 ## Execution Rules
 
