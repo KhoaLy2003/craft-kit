@@ -21,7 +21,7 @@
 ## Rules
 
 - Dispatch each task to its `Specialist:`. Sequential chains use `subagent-driven-development`; groups marked parallel in the plan use `dispatching-parallel-agents`.
-- Every `frontend-developer` dispatch follows the Frontend dispatch contract in `kit/orchestrator-conventions.md`. UI tasks with visual-quality signals also use `design-taste-frontend`, as the rubric requires.
+- Every frontend dispatch follows the Frontend dispatch contract in `kit/orchestrator-conventions.md`. UI tasks with visual-quality signals also use `design-taste-frontend`, as the rubric requires.
 - Skip the skill's per-task and whole-branch review passes — Step 4 reviews the whole diff once.
 - Check each completed task against `docs/constitution.md` before starting the next.
 - Spec gap or contradiction found mid-task: pause and update the spec before continuing — do not guess.

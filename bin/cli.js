@@ -43,7 +43,7 @@ const HR = dim('─'.repeat(52))
 //                     evon:ui-ux (optional, admin site workflow) https://github.com/evondev/evondevKit
 //   → installed via `npx skills add` (cross-harness).
 //
-// Agents (6):       https://github.com/VoltAgent/awesome-claude-code-subagents
+// Agents (1):       https://github.com/VoltAgent/awesome-claude-code-subagents
 //   → downloaded as .md files into <cwd>/.agents/agents/ (project-scoped).
 
 const TASTE_SKILL_REPO = 'https://github.com/Leonxlnx/taste-skill'
@@ -55,12 +55,7 @@ const EVON_SKILL_CMD   = `npx skills add ${EVON_SKILL_REPO} --skill "${EVON_SKIL
 const VOLTAGENT_RAW    = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
 
 const REQUIRED_AGENTS = [
-  { name: 'market-researcher',  path: 'categories/10-research-analysis/market-researcher.md' },
-  { name: 'research-analyst',   path: 'categories/10-research-analysis/research-analyst.md' },
-  { name: 'frontend-developer', path: 'categories/01-core-development/frontend-developer.md' },
-  { name: 'backend-developer',  path: 'categories/01-core-development/backend-developer.md' },
-  { name: 'code-reviewer',      path: 'categories/04-quality-security/code-reviewer.md' },
-  { name: 'ui-ux-tester',       path: 'categories/04-quality-security/ui-ux-tester.md' },
+  { name: 'code-reviewer', path: 'categories/04-quality-security/code-reviewer.md' },
 ]
 
 const VERSION_FILE  = '.craft-kit-version'
@@ -434,7 +429,7 @@ ${versionLine}
       section(2, 'Design skills')
       console.log(`  Run in your terminal:\n    ${TASTE_SKILL_CMD}`)
       console.log(`\n  Optional — admin site workflow (evon:ui-ux):\n    ${EVON_SKILL_CMD}`)
-      section(3, 'Specialist agents')
+      section(3, 'Code reviewer agent')
       printAgentManualInstructions()
     }
   }

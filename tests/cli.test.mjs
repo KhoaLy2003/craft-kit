@@ -236,13 +236,10 @@ describe('non-TTY output (piped stdin prints all setup instructions)', () => {
     assert.match(stdout, /Quick start/)
   })
 
-  test('requires exactly the six specialist agents', () => {
+  test('requires only the code-reviewer agent', () => {
     const { stdout } = run([tempDir()])
     const required = stdout.match(/Required:\s*(.+)/)?.[1].split(',').map(s => s.trim())
-    assert.deepEqual(required?.sort(), [
-      'backend-developer', 'code-reviewer', 'frontend-developer',
-      'market-researcher', 'research-analyst', 'ui-ux-tester',
-    ])
+    assert.deepEqual(required, ['code-reviewer'])
   })
 })
 

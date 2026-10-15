@@ -3,7 +3,7 @@
 ## Overview
 
 - **Purpose**: Generate the initial project structure and build setup, verify the dev environment runs end to end, then close Phase 1 with a single commit and a Phase 2 handoff.
-- **Agent/Skill**: general-purpose agent; `frontend-developer` if the stack is primarily frontend (follow the Frontend dispatch contract in `kit/orchestrator-conventions.md`).
+- **Agent/Skill**: general-purpose agent
 - **Model**: `balanced`
 - **Trigger**: Step 7 complete (`docs/constitution.md` is `approved`).
 - **Inputs**: `docs/architecture.md`; `docs/constitution.md`.

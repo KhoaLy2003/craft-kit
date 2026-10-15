@@ -9,7 +9,7 @@ non-trivial screens, at:
 For a single-screen feature, describe the screen inside the feature spec instead.
 
 Written at the PRODUCT level: code-agnostic, usable as a design brief. A designer, if present, designs
-from this file; the frontend-developer agent reads it with docs/DESIGN.md to build the screen.
+from this file; the agent reads it with docs/DESIGN.md to build the screen.
 
 Full Screen Design fills sections 1, 2, 6, and 7 (and 3-5 where the prototype brief already answers them)
 and leaves section 8 for the feature spec. Fill every section; for an inapplicable one write a line saying

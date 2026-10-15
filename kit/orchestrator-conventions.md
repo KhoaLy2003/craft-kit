@@ -33,8 +33,22 @@ Tiers are resolved once, in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers
 5. **English only** — all AI-generated output (artifacts, plans, code comments, in-session summaries) is in English regardless of the user's language or the kickoff file's language. Exception: user-facing UI copy for a non-English target audience follows the product's language; surrounding documentation stays English.
 
 6. **Session log** — update the phase's session log (`kit/session-logging.md`) at each gate and at completion, not after every step.
+7. **Frontend dispatch** — every frontend implementation dispatch follows [Frontend dispatch contract](#frontend-dispatch-contract).
 
-7. **Frontend dispatch** — every `frontend-developer` dispatch follows [Frontend dispatch contract](#frontend-dispatch-contract).
+---
+
+## Frontend dispatch contract
+
+Applies to every frontend implementation dispatch, in any phase. Never dispatch a frontend task without `docs/DESIGN.md` and `docs/preview/` — the agent will otherwise invent its own visual language. Always include both in the dispatch brief, plus a per-screen visual reference resolved per screen:
+
+- `docs/designs/<feature-slug>/design-manifest.json` exists and the screen's `status` is:
+  - `mcp` → pass the design file URL, tool name, and frame/artboard name; the agent queries the artboard via MCP at implementation time
+  - `file_fallback` → include `docs/designs/<feature-slug>/<file>` as an image input
+  - `design_md_fallback` → `docs/DESIGN.md` + `docs/preview/` only
+- No manifest (designs delivered as file exports) → include the matching image from `docs/designs/<feature-slug>/` if one exists; otherwise `docs/DESIGN.md` + `docs/preview/` only.
+- No `docs/designs/<feature-slug>/` for this screen → `docs/DESIGN.md` + `docs/preview/` only.
+
+The agent implements a screen to match its provided design exactly. This is not optional, whether or not the task carries "visual quality" signals.
 
 ---
 
@@ -59,18 +73,3 @@ At every hard gate:
 
 **Poor** — no decision named:
 > **Gate:** The architecture step is done. Please review and approve.
-
----
-
-## Frontend dispatch contract
-
-Applies to every `frontend-developer` dispatch, in any phase. Never dispatch a frontend task without `docs/DESIGN.md` and `docs/preview/` — the agent will otherwise invent its own visual language. Always include both in the dispatch brief, plus a per-screen visual reference resolved per screen:
-
-- `docs/designs/<feature-slug>/design-manifest.json` exists and the screen's `status` is:
-  - `mcp` → pass the design file URL, tool name, and frame/artboard name; the agent queries the artboard via MCP at implementation time
-  - `file_fallback` → include `docs/designs/<feature-slug>/<file>` as an image input
-  - `design_md_fallback` → `docs/DESIGN.md` + `docs/preview/` only
-- No manifest (designs delivered as file exports) → include the matching image from `docs/designs/<feature-slug>/` if one exists; otherwise `docs/DESIGN.md` + `docs/preview/` only.
-- No `docs/designs/<feature-slug>/` for this screen → `docs/DESIGN.md` + `docs/preview/` only.
-
-The agent implements a screen to match its provided design exactly. This is not optional, whether or not the task carries "visual quality" signals.

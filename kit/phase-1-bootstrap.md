@@ -30,13 +30,13 @@ Before each step, read its step file; it is authoritative for that step's inputs
 | Step | Name | Gate | Model | Agent | Output | Step file |
 |---|---|---|---|---|---|---|
 | 1 | Product Ideation | `none` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
-| 2 | Market Research *(optional; the kickoff decides run/skip)* | `soft` | fast | `market-researcher` | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
+| 2 | Market Research *(optional; the kickoff decides run/skip)* | `soft` | fast | general-purpose agent | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
 | 3 | Prototype & Design | `hard` | balanced | general-purpose agent; orchestrator builds the HTML | `docs/prototype/`, `docs/DESIGN.md`, `docs/preview/` | `kit/steps/phase-1/p1-03-prototype-design.md` |
 | 4 | Roadmap (also sets Phase 2 scope) | `hard` | balanced | general-purpose agent | `docs/roadmap.md`, `docs/backlog.json`, `docs/backlog.html` | `kit/steps/phase-1/p1-04-roadmap.md` |
 | 5 | Full Screen Design *(skippable)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
-| 6 | Tech Stack & Architecture | `hard` | capable | `research-analyst` | `docs/architecture.md` | `kit/steps/phase-1/p1-06-architecture.md` |
+| 6 | Tech Stack & Architecture | `hard` | capable | general-purpose agent | `docs/architecture.md` | `kit/steps/phase-1/p1-06-architecture.md` |
 | 7 | Constitution | `soft` | fast | general-purpose agent | `docs/constitution.md` | `kit/steps/phase-1/p1-07-constitution.md` |
-| 8 | Scaffold | `none` | balanced | general-purpose agent or `frontend-developer` | runnable codebase, `AGENTS.md`, one commit | `kit/steps/phase-1/p1-08-scaffold.md` |
+| 8 | Scaffold | `none` | balanced | general-purpose agent | runnable codebase, `AGENTS.md`, one commit | `kit/steps/phase-1/p1-08-scaffold.md` |
 
 ## Phase 1 closeout
 

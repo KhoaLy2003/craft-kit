@@ -32,7 +32,7 @@
 | 2 | `writing-plans`; `kit/task-agent-rubric.md` | `plan.md` with `Specialist:` per task and parallel groups |
 | 3 | `subagent-driven-development` / `dispatching-parallel-agents` | Code on the feature branch |
 | 4 | `code-reviewer` | Acceptance-criteria coverage verdict; all findings fixed |
-| 5 | general-purpose agent, `ui-ux-tester` | `docs/E2E-TESTS.md`; test results |
+| 5 | general-purpose agent | `docs/E2E-TESTS.md`; test results |
 | 6 | Human | Approval |
 | 7 | `finishing-a-development-branch` + general-purpose agent | Commit, PR, shipped events recorded |
 
