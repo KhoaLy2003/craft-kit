@@ -11,8 +11,8 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 | Step | Name | Gate | Model | Agent | Output |
 |---|---|---|---|---|---|
 | 1 | Assess | hard | capable | general-purpose agent (read-only) + human | `docs/specs/bugs/<bug-slug>/assess.md` |
-| 2 | Fix | none | balanced | specialist matching the affected code (see `kit/task-agent-rubric.md`) | code on `fix/<bug-slug>` |
-| 3 | Verify | soft; hard if the symptom is UI-only or not agent-verifiable | balanced | `ui-ux-tester` (UI) / general-purpose agent (non-UI) | commit + PR |
+| 2 | Fix | none | balanced | general-purpose agent | code on `fix/<bug-slug>` |
+| 3 | Verify | soft; hard if the symptom is UI-only or not agent-verifiable | balanced | general-purpose agent | commit + PR |
 
 ---
 
@@ -90,7 +90,7 @@ Confirm the original symptom is gone and nothing nearby regressed; then commit a
 
 - Follow the exact reproduction steps from `assess.md` first. If the symptom persists, see "When the assessment is wrong".
 - Run the affected Phase 2 E2E flow, if one exists, to catch regressions.
-- UI symptoms: verify in the running browser with `ui-ux-tester`. Non-UI (data, API, error handling): dispatch a general-purpose agent.
+- UI symptoms: verify in the running browser with the general-purpose agent. Non-UI (data, API, error handling): dispatch a general-purpose agent.
 - **Gate type:** if the agent verified the symptom itself, present the result as a soft gate. If the symptom is UI-only or cannot be verified by an agent, it is a hard gate: the human confirms the symptom is gone and surrounding behavior is intact before committing.
 - Once verified: commit `fix(<scope>): <one-line description> — resolves <bug-slug>`, push the branch, and open a PR against main. Record status and PR link in `docs/bug-session.md`.
 - No further code changes in this step.

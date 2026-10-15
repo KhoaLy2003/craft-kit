@@ -183,18 +183,13 @@ Install these before starting Phase 1. `npx github:KhoaLy2003/craft-kit` prompts
 
 > Skills improve consistency, not possibility: without them your AI handles the same work from general capability.
 
-> Optional: `evon:ui-ux` builds admin site screens in the Admin Site workflow (`phase-admin.md`); without it `frontend-developer` builds them from the admin blueprint.
-
-**Agents** (downloaded as `.md` files into `.agents/agents/`):
+**Agent** (downloaded as `.md` file into `.agents/agents/`):
 
 | Agent | Role |
 |---|---|
-| `market-researcher` | Phase 1 Step 2 — market analysis |
-| `research-analyst` | Phase 1 Step 6 — stack research |
-| `frontend-developer` | Phase 1 Step 3, Phase 2 Step 3 — UI work |
-| `backend-developer` | Phase 2 Step 3 — API, data, business logic |
 | `code-reviewer` | Phase 2 Step 4 — code review |
-| `ui-ux-tester` | Phase 2 Step 5 — browser-driven UI testing |
+
+All other work uses your platform's general-purpose agent.
 
 ---
 

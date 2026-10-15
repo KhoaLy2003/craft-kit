@@ -3,7 +3,7 @@
 ## Overview
 
 - **Purpose**: Evaluate technology options against the approved roadmap and document the confirmed architecture for Phase 2.
-- **Agent/Skill**: `research-analyst` agent (research, analysis, recommendation); the human makes the final stack decision.
+- **Agent/Skill**: general-purpose agent (research, analysis, recommendation); the human makes the final stack decision.
 - **Model**: `capable` (a lighter model is fine for Stage 1 research)
 - **Trigger**: Step 5 gate approved, or Step 5 skipped.
 - **Inputs**: `docs/idea-brief.md`; `docs/market-notes.md` *(if Step 2 ran)*; `docs/DESIGN.md`; `docs/roadmap.md`; `kit/stack-catalog.md`.
@@ -29,7 +29,7 @@ Three stages. Never collapse them.
 
 ### Stage 2 — Analysis (chat only)
 
-`research-analyst` posts the full proposed stack in chat (baseline layer, deviations applied, additions included) with a one-line rationale per non-baseline choice, naming the stack explicitly. This is a chat message: do not write `docs/architecture.md` or set any approval status.
+The general-purpose agent posts the full proposed stack in chat (baseline layer, deviations applied, additions included) with a one-line rationale per non-baseline choice, naming the stack explicitly. This is a chat message: do not write `docs/architecture.md` or set any approval status.
 
 ### Stage 3 — Confirmation
 

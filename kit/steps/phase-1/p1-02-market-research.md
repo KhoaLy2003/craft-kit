@@ -3,7 +3,7 @@
 ## Overview
 
 - **Purpose**: Validate demand, map comparable products, and surface feature inspirations before committing to development.
-- **Agent/Skill**: `market-researcher` agent
+- **Agent/Skill**: general-purpose agent
 - **Model**: `fast` (read-heavy synthesis, not implementation judgment)
 - **Trigger**: Step 1 recorded "run" (from the kickoff or the user).
 - **Inputs**: `docs/idea-brief.md`
@@ -20,7 +20,7 @@
 
 ## Execution Rules
 
-1. Dispatch `market-researcher` with `docs/idea-brief.md` as the primary input.
+1. Dispatch the general-purpose agent with `docs/idea-brief.md` as the primary input.
 2. All seven sections of the template must be populated:
    - Comparable Products lists at least 2–3 products or alternatives.
    - **Feature Inspirations** lists at least 2–3 concrete features or patterns, each naming the feature, the product it comes from, and the specific benefit to this project's target user. "Better UX" or "notifications" is not an entry.

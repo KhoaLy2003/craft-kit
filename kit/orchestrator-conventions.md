@@ -34,7 +34,7 @@ Tiers are resolved once, in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers
 
 6. **Session log** — update the phase's session log (`kit/session-logging.md`) at each gate and at completion, not after every step.
 
-7. **Frontend dispatch** — every `frontend-developer` dispatch follows [Frontend dispatch contract](#frontend-dispatch-contract).
+7. **Design dispatch** — every dispatch that implements UI follows the [Design dispatch contract](#design-dispatch-contract).
 
 ---
 
@@ -62,15 +62,15 @@ At every hard gate:
 
 ---
 
-## Frontend dispatch contract
+## Design dispatch contract
 
-Applies to every `frontend-developer` dispatch, in any phase. Never dispatch a frontend task without `docs/DESIGN.md` and `docs/preview/` — the agent will otherwise invent its own visual language. Always include both in the dispatch brief, plus a per-screen visual reference resolved per screen:
+Applies to every dispatch that implements UI, in any phase. Never dispatch UI work without `docs/DESIGN.md` and `docs/preview/` — the implementing agent will otherwise invent its own visual language. Always include both in the dispatch brief, plus a per-screen visual reference resolved per screen:
 
 - `docs/designs/<feature-slug>/design-manifest.json` exists and the screen's `status` is:
-  - `mcp` → pass the design file URL, tool name, and frame/artboard name; the agent queries the artboard via MCP at implementation time
+  - `mcp` → pass the design file URL, tool name, and frame/artboard name; the implementing agent queries the artboard via MCP at implementation time
   - `file_fallback` → include `docs/designs/<feature-slug>/<file>` as an image input
   - `design_md_fallback` → `docs/DESIGN.md` + `docs/preview/` only
 - No manifest (designs delivered as file exports) → include the matching image from `docs/designs/<feature-slug>/` if one exists; otherwise `docs/DESIGN.md` + `docs/preview/` only.
 - No `docs/designs/<feature-slug>/` for this screen → `docs/DESIGN.md` + `docs/preview/` only.
 
-The agent implements a screen to match its provided design exactly. This is not optional, whether or not the task carries "visual quality" signals.
+The implementing agent builds each screen to match its provided design exactly. This is not optional, whether or not the task carries "visual quality" signals.

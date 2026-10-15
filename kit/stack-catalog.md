@@ -1,6 +1,6 @@
 # Stack Catalog — Canonical Baseline and Additions Reference
 
-Step 6 (Architecture) reads this file before any web search; the `research-analyst` derives the recommended stack from it. The catalog is read-only during a project run.
+Step 6 (Architecture) reads this file before any web search; the general-purpose agent derives the recommended stack from it. The catalog is read-only during a project run.
 
 **How to use this file:**
 1. Start from the Canonical Baseline: the default for every project.

@@ -95,7 +95,7 @@ Wait for the reply, then follow Path A ("files") or Path B ("mcp").
 - `design_tool`: `"figma"`, `"sketch"`, `"penpot"`, and so on; selects the MCP adapter at implement time.
 - `status`: `"mcp"` (read via MCP at implement time), `"file_fallback"` (image file used instead), `"design_md_fallback"` (no design; use `DESIGN.md` + `docs/preview/` only).
 
-Phase 2 resolves these statuses per screen under the Frontend dispatch contract in `kit/orchestrator-conventions.md`.
+Phase 2 resolves these statuses per screen under the Design dispatch contract in `kit/orchestrator-conventions.md`.
 
 ### Phase D — Hard gate
 
