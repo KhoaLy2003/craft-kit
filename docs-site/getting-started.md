@@ -10,7 +10,7 @@ You don't need to be a developer. Your job is to describe your idea and give fee
 
 - **Node.js 18 or later** — for the one-time install command below
 - **An AI assistant** you can have an extended conversation with, ideally one that can read files in your project folder
-- **A design-system file (`DESIGN.md`)** — Phase 1 Step 3 stops until you provide one. See [Prepare your DESIGN.md](#prepare-your-design-md)
+- **A design-system file (`DESIGN.md`)** — Phase 1 Step 3 stops until you provide one. See [Prepare your design-system file](#prepare-your-design-system-file)
 - **Optional: skills and agents** — add-ons that improve consistency; see [Skills and agents](#skills-and-agents)
 
 The kit tells the AI what to do; you don't need to figure out how to guide it.
@@ -146,7 +146,7 @@ Phase 2 specs, plans, builds, reviews, and tests the work. Small apps build ever
 
 ---
 
-## Prepare Your DESIGN.md
+## Prepare Your Design-System File
 
 Phase 1 Step 3 builds a prototype from a design-system file named `DESIGN.md` that you supply and save at `docs/DESIGN.md`. Get it ready before you start so the run does not stop halfway.
 
