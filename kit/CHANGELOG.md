@@ -7,10 +7,18 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.29] - 2026-10-15
+
+**Summary:** Clearer skill requirements · migration note for retired agents
+
 ### Changed — re-audit 0.0.28 follow-ups (N21, N23)
 
 - **`kit/phase-1-bootstrap.md`**, **`docs-site/reference/required-skills.md`**, **`docs-site/index.md`** — skills and agents are no longer called plain "optional": `design-taste-frontend` is stated as required for visual-quality work, matching `task-agent-rubric.md`.
 - **`kit/CHANGELOG.md`** — the 0.0.28 entry had two `Summary` lines; merged into one.
+
+---
 
 ---
 
