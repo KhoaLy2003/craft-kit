@@ -33,6 +33,8 @@ Works with any AI coding assistant. Phase 1 maps your available models to three 
 
 Phase 1 runs once and takes a raw idea to a working scaffold. Phase 2 builds the product — all Must features in one cycle, or one feature per cycle.
 
+[![CraftKit overview diagram](docs-site/public/diagrams/overview-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/overview.html)
+
 [![Phase 1 — Bootstrap workflow diagram](docs-site/public/diagrams/phase-1-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/phase-1-bootstrap.html)
 
 [![Phase 2 — Build workflow diagram](docs-site/public/diagrams/phase-2-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/phase-2.html)

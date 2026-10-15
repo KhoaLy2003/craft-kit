@@ -4,6 +4,8 @@
 
 You don't need to be a developer. Your job is to describe your idea and give feedback at the right moments. Plain terms such as *Must feature*, *gate*, or *scope* are explained in the [Glossary](/reference/glossary).
 
+New to the kit? The <a href="/craft-kit/diagrams/overview.html" target="_blank" rel="noopener">overview diagram</a> shows how the install, Phase 1, Phase 2, and the optional workflows fit together.
+
 ---
 
 ## What You Need

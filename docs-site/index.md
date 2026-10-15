@@ -60,6 +60,17 @@ features:
 
 ---
 
+## The Big Picture
+
+One install, one core path, and three experimental workflows you can reach once the app has shipped.
+
+<div style="margin:24px 0;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.12);">
+  <iframe src="/craft-kit/diagrams/overview.html?embed=1" width="100%" style="border:none;display:block;height:60vh;min-height:480px;" title="CraftKit overview — interactive diagram"></iframe>
+</div>
+<p style="margin-top:8px;font-size:0.85em;color:var(--vp-c-text-2);">Pan and zoom to explore. <a href="/craft-kit/diagrams/overview.html" target="_blank" rel="noopener">Open full screen ↗</a></p>
+
+---
+
 ## Two Phases, One Kit
 
 The kit has a hard split between *starting* a project and *building* it. Phase 1 runs once. Phase 2 builds what Phase 1 planned.

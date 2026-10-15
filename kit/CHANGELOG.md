@@ -37,6 +37,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 - **`kit/orchestrator-conventions.md`**, **`kit/steps/phase-1/p1-06-architecture.md`**, **`p1-08-scaffold.md`**, **`kit/task-agent-rubric.md`** — `hub`, `agent://`, `/init` and `librarian` replaced with platform-neutral instructions.
 
+### Added — overview diagram
+
+- **`docs-site/diagrams/overview.workflow.json`**, **`docs-site/public/diagrams/overview.html`**, **`overview-preview.png`** — high-level CraftKit overview: install, Phase 1, Phase 2, shipped release, Roadmap Migration, Phase 3, Bug Fix, Admin Site. Embedded on the site home page, linked from Getting Started, and shown first in the README "How It Works".
+
 ### Removed — redundant guide
 
 - **`kit/guides/interactive-prototype-process.md`** — removed. It was marked background only; its rules already live in `p1-03-prototype-design.md` and `templates/03b-prototype-brief.md`. The "what a prototype does not validate" and wireframe/mockup distinction now sit in `p1-03` Scope. References dropped from **`p1-03`**, **`README.md`**, **`AGENTS.md`**, **`docs-site/.vitepress/config.ts`**.
