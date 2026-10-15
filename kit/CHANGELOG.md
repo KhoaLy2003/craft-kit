@@ -7,9 +7,17 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.30] - 2026-10-15
+
+**Summary:** Clearer Phase 3 start · release slug explained with a worked example
+
 ### Changed — Phase 3 start instructions clarified
 
 - **`docs-site/getting-started.md`**, **`docs-site/guides/phase-3-iterate.md`**, **`docs-site/index.md`**, **`README.md`** — the Phase 3 prompt is explained: open a new session in the project root with the kit installed; the release slug is defined (lowercase, digits, hyphens; `r<number>-<theme>`) with a worked example (client follow-up requests → `r2-client-requests`); prerequisite files and the migration pointer are stated up front; the docs-site index shows a concrete slug instead of a placeholder.
+
+---
 
 ---
 
