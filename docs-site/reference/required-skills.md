@@ -4,9 +4,9 @@ For most users, getting started requires nothing beyond an AI assistant. Share t
 
 ---
 
-## Skills and Agents Are Optional Add-ons
+## Skills and Agents
 
-Some AI platforms can load *skills* (instruction sets for a specific task) and run specialist *agents* in parallel. The kit uses them when they exist and works from the AI's general capability when they do not. They live in per-tool locations (a plugin, a skills folder such as `.agents/skills/`, or an agents folder such as `.agents/agents/`); which one applies depends on your platform.
+Some AI platforms can load *skills* (instruction sets for a specific task) and run specialist *agents* in parallel. The kit uses them when they exist and works from the AI's general capability when they do not, with one exception: `design-taste-frontend` is required for visual-quality work (prototype build, "polish", "premium UI" tasks). They live in per-tool locations (a plugin, a skills folder such as `.agents/skills/`, or an agents folder such as `.agents/agents/`); which one applies depends on your platform.
 
 **Pre-flight.** When Phase 1 starts, the AI checks that the items below are available, using your platform's skill and agent list. If any are missing it tells you which ones and which step each affects, and continues with the closest built-in behavior only after you agree. You can also install them first and then continue. The check is defined in `kit/phase-1-bootstrap.md` (*Skills and agents pre-flight*).
 

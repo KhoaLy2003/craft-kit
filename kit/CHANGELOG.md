@@ -7,13 +7,16 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed — re-audit 0.0.28 follow-ups (N21, N23)
+
+- **`kit/phase-1-bootstrap.md`**, **`docs-site/reference/required-skills.md`**, **`docs-site/index.md`** — skills and agents are no longer called plain "optional": `design-taste-frontend` is stated as required for visual-quality work, matching `task-agent-rubric.md`.
+- **`kit/CHANGELOG.md`** — the 0.0.28 entry had two `Summary` lines; merged into one.
+
 ---
 
 ## [0.0.28] - 2026-10-15
 
-**Summary:** Review-report fixes · Ship safety · clearer setup · overview diagram
-
-**Summary:** Review-report fixes (`Craft-Kit-Review-Report.md`, kit 0.0.26) · preconditions · Ship safety · scope clarity · harness-neutral wording
+**Summary:** Review-report fixes (`Craft-Kit-Review-Report.md`, kit 0.0.26) · preconditions · Ship safety · scope clarity · harness-neutral wording · clearer setup · overview diagram
 
 ### Changed — preconditions and onboarding (N1, N3, N8, N12, N14, N17–N19, F1, F2, F4, F6, F8, F12, F13)
 
