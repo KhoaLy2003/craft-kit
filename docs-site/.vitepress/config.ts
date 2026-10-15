@@ -1,6 +1,9 @@
-import { readdirSync } from 'fs'
+import { readdirSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 import { defineConfig } from 'vitepress'
+
+// The root package version is the kit release shown on every page.
+const KIT_VERSION: string = JSON.parse(readFileSync(resolve(__dirname, '../../package.json'), 'utf8')).version
 
 // Resolve docs-site node_modules by absolute path. Needed because srcDir is '..'
 // which causes kit/ files to compile with physical paths outside this package.
@@ -21,9 +24,9 @@ const steps = (phase: string, rows: [string, string][]): Page[] =>
 
 const PHASES: Page[] = [
   kit('phase-1-bootstrap',      'phases/phase-1',        'Phase 1 — Bootstrap'),
-  kit('phase-2',                'phases/phase-2',        'Phase 2 — Build'),
+  kit('phase-2',                'phases/phase-2',        'Phase 2 — Build (workflow)'),
   kit('phase-bug-fix',          'phases/bug-fix',        'Bug Fix Workflow'),
-  kit('phase-3-iterate',        'phases/phase-3-iterate', 'Phase 3 — Iterate'),
+  kit('phase-3-iterate',        'phases/phase-3-iterate', 'Phase 3 — Iterate (workflow)'),
   kit('phase-admin',            'phases/admin',          'Admin Site Workflow'),
   kit('phase-roadmap-migrate',  'phases/roadmap-migrate', 'Roadmap Migration'),
 ]
@@ -51,13 +54,12 @@ const PHASE_2_STEPS = steps('phase-2', [
 
 const GUIDES: Page[] = [
   docs('guides/existing-projects',          'guides/existing-projects',          'Existing Projects'),
-  docs('guides/phase-2-build',              'guides/phase-2-build',              'Phase 2 — Build'),
-  docs('guides/phase-3-iterate',            'guides/phase-3-iterate',            'Phase 3 — Iterate'),
+  docs('guides/phase-2-build',              'guides/phase-2-build',              'Phase 2 — Build (guide)'),
+  docs('guides/phase-3-iterate',            'guides/phase-3-iterate',            'Phase 3 — Iterate (guide)'),
   docs('guides/adding-a-feature',           'guides/adding-a-feature',           'Adding a Single Feature'),
   docs('guides/resuming-a-session',         'guides/resuming-a-session',         'Resuming in a New Session'),
   kit('guides/evolving-specs',              'guides/evolving-specs',             'Evolving Specs'),
   kit('guides/session-handover',            'guides/session-handover',           'Session Handover'),
-  kit('guides/interactive-prototype-process', 'guides/interactive-prototype-process', 'Interactive Prototype Process'),
   kit('guides/design-reference',            'guides/design-reference',           'Design Reference'),
   kit('guides/admin-blueprint',             'guides/admin-blueprint',            'Admin Blueprint'),
 ]
@@ -65,6 +67,7 @@ const GUIDES: Page[] = [
 const REFERENCE_SETUP: Page[] = [
   docs('reference/required-skills', 'reference/required-skills', 'What You Need'),
   docs('reference/templates',       'reference/templates',       'Templates'),
+  docs('reference/glossary',        'reference/glossary',        'Glossary'),
 ]
 
 const REFERENCE_ORCHESTRATOR: Page[] = [
@@ -116,6 +119,11 @@ if (unmapped.length) {
 const phasesGroup = { text: 'Phases', items: PHASES.map(item) }
 const guidesGroup = { text: 'Guides', items: GUIDES.map(item) }
 
+// Pages whose H1 repeats another page's H1 get their nav label as the page title.
+const UNIQUE_TITLES = new Map(
+  [...PHASES, ...GUIDES].filter(p => /\((workflow|guide)\)$/.test(p.text)).map(p => [`${p.to}.md`, p.text]),
+)
+
 export default defineConfig({
   title: 'CraftKit',
   base: '/craft-kit/',
@@ -151,6 +159,11 @@ export default defineConfig({
 
   rewrites,
 
+  transformPageData(pageData) {
+    const title = UNIQUE_TITLES.get(pageData.relativePath)
+    if (title) pageData.title = title
+  },
+
   // Fix SSR build: alias Vue packages to absolute paths so Rollup can find them
   // when compiling pages from kit/ paths outside docs-site/.
   vite: {
@@ -172,7 +185,7 @@ export default defineConfig({
       { text: 'Phases', items: phasesGroup.items },
       { text: 'Guides', items: guidesGroup.items },
       { text: 'Reference', link: '/reference/required-skills' },
-      { text: 'Changelog', link: '/changelog' },
+      { text: `Changelog (v${KIT_VERSION})`, link: '/changelog' },
     ],
 
     sidebar: {

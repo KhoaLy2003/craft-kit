@@ -1,0 +1,230 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "CraftKit — Overview",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "core",
+      "label": "Core Path (validated)"
+    },
+    {
+      "id": "existing",
+      "label": "Existing Project (experimental)"
+    },
+    {
+      "id": "after",
+      "label": "After Release (experimental)"
+    }
+  ],
+  "phases": [
+    {
+      "id": "start",
+      "label": "Install",
+      "fromCol": 0,
+      "toCol": 0,
+      "variant": "dashed"
+    },
+    {
+      "id": "plan",
+      "label": "Plan once",
+      "fromCol": 1,
+      "toCol": 1,
+      "variant": "emphasis"
+    },
+    {
+      "id": "build",
+      "label": "Build",
+      "fromCol": 2,
+      "toCol": 2
+    },
+    {
+      "id": "evolve",
+      "label": "Ship and evolve",
+      "fromCol": 3,
+      "toCol": 5,
+      "variant": "dashed"
+    }
+  ],
+  "mainPath": [
+    "install",
+    "p1",
+    "p2",
+    "shipped"
+  ],
+  "nodes": [
+    {
+      "id": "install",
+      "lane": "core",
+      "col": 0,
+      "type": "external",
+      "label": "Install the kit",
+      "sublabel": "npx, one command",
+      "tag": "Start",
+      "width": 150
+    },
+    {
+      "id": "p1",
+      "lane": "core",
+      "col": 1,
+      "type": "backend",
+      "label": "Phase 1 — Bootstrap",
+      "sublabel": "idea to scaffold, 8 steps",
+      "tag": "Once",
+      "width": 170
+    },
+    {
+      "id": "p2",
+      "lane": "core",
+      "col": 2,
+      "type": "frontend",
+      "label": "Phase 2 — Build",
+      "sublabel": "spec to ship, 7 steps",
+      "tag": "Per scope",
+      "width": 160
+    },
+    {
+      "id": "shipped",
+      "lane": "core",
+      "col": 3,
+      "type": "messagebus",
+      "label": "Shipped release",
+      "sublabel": "branch + PR",
+      "width": 150
+    },
+    {
+      "id": "migrate",
+      "lane": "existing",
+      "col": 1,
+      "type": "external",
+      "label": "Roadmap Migration",
+      "sublabel": "existing roadmap to backlog",
+      "tag": "Once",
+      "width": 170
+    },
+    {
+      "id": "p3",
+      "lane": "after",
+      "col": 3,
+      "type": "cloud",
+      "label": "Phase 3 — Iterate",
+      "sublabel": "feedback to next release",
+      "width": 160
+    },
+    {
+      "id": "bugfix",
+      "lane": "after",
+      "col": 4,
+      "type": "cloud",
+      "label": "Bug Fix",
+      "sublabel": "assess, fix, verify",
+      "width": 150
+    },
+    {
+      "id": "admin",
+      "lane": "after",
+      "col": 5,
+      "type": "cloud",
+      "label": "Admin Site",
+      "sublabel": "scope to ship",
+      "width": 150
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "install",
+      "to": "p1",
+      "label": "new project",
+      "variant": "default"
+    },
+    {
+      "id": "e2",
+      "from": "p1",
+      "to": "p2",
+      "label": "handoff prompt",
+      "variant": "default"
+    },
+    {
+      "id": "e3",
+      "from": "p2",
+      "to": "shipped",
+      "variant": "default"
+    },
+    {
+      "id": "e4",
+      "from": "install",
+      "to": "migrate",
+      "label": "existing project",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e5",
+      "from": "migrate",
+      "to": "p2",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e6",
+      "from": "shipped",
+      "to": "p3",
+      "label": "feedback",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e7",
+      "from": "p3",
+      "to": "p2",
+      "label": "next release",
+      "variant": "dashed",
+      "role": "return"
+    },
+    {
+      "id": "e8",
+      "from": "shipped",
+      "to": "bugfix",
+      "label": "bug found",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e9",
+      "from": "shipped",
+      "to": "admin",
+      "label": "admin needed",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Gates",
+      "items": [
+        "Every workflow pauses at hard gates until you approve",
+        "Soft gates show a summary and advance unless you object"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Two Ways In",
+      "items": [
+        "New idea: Phase 1 builds every planning document",
+        "Existing project: skip Phase 1, migrate the roadmap, start at Phase 2"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Any Phase",
+      "items": [
+        "Session Handover continues a long run in a fresh AI session",
+        "Each workflow keeps its own session log in docs/"
+      ]
+    }
+  ]
+}

@@ -13,9 +13,11 @@
 - **Template**: `kit/templates/spec-screen.md`
 - **Gate**: `hard` — one sign-off covering all features; no per-feature partial approval.
 
+> **No designer? Start here.** This step does not require a human designer. A solo builder can decline designs: at the "files"/"mcp" reply (or the Path A "ready" prompt) declare every screen skipped, and each is recorded as `design_md_fallback` — Phase 2 then builds those screens from `docs/DESIGN.md` + `docs/preview/`. Briefs are still written; they feed the Phase 2 spec.
+
 ## Scope
 
-- **In**: Must and Should features only; screens (pages, modals, drawers, named views, empty/error states whose layout diverges); feature slugs; per-screen briefs; handoff; coverage validation.
+- **In**: Must and Should features only; screens (pages, modals, drawers, named views, empty/error states whose layout diverges); feature slugs; per-screen briefs; handoff; coverage validation. **Should rule (the one place it is stated):** designs cover Should features so later cycles and Phase 3 have them ready, but `scope: all` builds Must features only; Should features are built in a later cycle after the Must features ship.
 - **Out**: Could and Won't features at initial build (re-enter this step for them later, see "Re-entry for new features"); generating or critiquing designs; creating handoff files (the handoff is a printed message only); architecture.
 
 ## Execution Rules

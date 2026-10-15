@@ -14,14 +14,15 @@
   - `docs/preview/` — the HTML prototype (no real backend; opens as `file://`)
 - **Template**: `templates/03a-journey-map.md`, `templates/03b-prototype-brief.md`, `templates/03c-design-system.md` (skeleton for a user who writes their own `DESIGN.md`)
 - **Gate**: `hard` — one gate for flow and look together.
-- **Optional reference**: `kit/guides/interactive-prototype-process.md` (background only; this file is authoritative).
 
 ## Scope
 
 - **In**: one persona and scenario; all screens, interactions, mock data, state coverage, and faked parts; `DESIGN.md` validation; one HTML build applying it.
 - **Out**: generating `DESIGN.md` (it must come from the user); editing the user's `DESIGN.md`; real backend, API, database, or auth; production-quality code.
 
-> The prototype answers: *"Are we building the right product, and does the proposed workflow actually work for the people who will use it?"* It is a learning tool. Prototype code is disposable; do not refactor or optimise it.
+> **Before this step, prepare `docs/DESIGN.md`** (Phase B). Ideally have it ready before Phase 1 starts so the flow does not stop here.
+
+> The prototype answers: *"Are we building the right product, and does the proposed workflow actually work for the people who will use it?"* It is a learning tool. Prototype code is disposable; do not refactor or optimise it. It validates requirements, flows, business rules, and usability; it does **not** validate production architecture, backend, database, performance, security, or scalability, and it is not an MVP or the start of one. It is also not a wireframe (layout) or a mockup (look): it shows how the user experiences the flow.
 
 ## Execution Rules
 
@@ -44,7 +45,7 @@
 
 1. If `docs/DESIGN.md` exists and has content, go straight to validation. Otherwise tell the user (substitute the real project path):
 
-   > The prototype brief is ready. Before the prototype can be built, you need a design system file. Pick one from **getdesign.md** (https://getdesign.md/design-md, 73+ analyses of Stripe, Linear, Notion, Airbnb and others) or **freedesignmd.com** (https://freedesignmd.com, 121+ free design systems), download it, rename it `DESIGN.md`, and save it to `<project-root>/docs/DESIGN.md`. A custom file works too (`templates/03c-design-system.md`, format example in `kit/guides/design-reference.md`). Reply "ready" when it is in place.
+   > The prototype brief is ready. Before the prototype can be built, you need a design system file. Pick one from **getdesign.md** (https://getdesign.md/design-md, design systems modelled on well-known products) or **freedesignmd.com** (https://freedesignmd.com, free design systems), download it, rename it `DESIGN.md`, and save it to `<project-root>/docs/DESIGN.md`. If a site is unreachable or no longer offers this, search the web for another "DESIGN.md" design-system source, or use a custom file (`templates/03c-design-system.md` is the skeleton to fill in; `kit/guides/design-reference.md` shows a full example). No designer? Choose the downloaded file whose look is closest to what you want; a custom file is the route if none fits. Reply "ready" when it is in place.
 
    Wait for confirmation. If the user says it is placed but the file is missing, say so and wait; never assume another path.
 2. **Validate** by reading the file (no agent):
@@ -65,7 +66,7 @@
 
 Read `docs/DESIGN.md`, `docs/prototype/prototype-brief.md`, `docs/prototype/journey-map.md`, and `docs/idea-brief.md`. Build `docs/preview/` directly, with no subagent.
 
-- **Stack**: one `docs/preview/index.html` with JS-driven screen switching (or one file per screen if screens are complex). HTML5 + CDN Tailwind (`<script src="https://cdn.tailwindcss.com">`) with an inline `tailwind.config` mapping the `DESIGN.md` color and font tokens; CSS custom properties in a `<style>` block for anything Tailwind cannot express; vanilla JS only; Phosphor Icons via CDN (`https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css`), never hand-rolled SVG; fonts via `<link>`; `https://picsum.photos/seed/{descriptive-seed}/{w}/{h}` for image placeholders. No build step.
+- **Stack** (the prototype loads Tailwind, icons, fonts, and placeholder images from public CDNs, so opening it needs an internet connection; tell the user this): one `docs/preview/index.html` with JS-driven screen switching (or one file per screen if screens are complex). HTML5 + CDN Tailwind (`<script src="https://cdn.tailwindcss.com">`) with an inline `tailwind.config` mapping the `DESIGN.md` color and font tokens; CSS custom properties in a `<style>` block for anything Tailwind cannot express; vanilla JS only; Phosphor Icons via CDN (`https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css`), never hand-rolled SVG; fonts via `<link>`; `https://picsum.photos/seed/{descriptive-seed}/{w}/{h}` for image placeholders. No build step.
 - **Data**: only the mock data from `prototype-brief.md`; no API calls, fetch, or environment variables; treat the user as already logged in.
 - **Screens**: every screen in the primary flow, the empty state and at least one error/validation state for the main interaction, and one navigation component consistent across all screens. If `prototype-brief.md` is ambiguous, take the most conservative reading and note it in a comment.
 - **Fidelity**: map `DESIGN.md` tokens, typography, spacing, and component definitions exactly; invent no values. No three-equal-card rows, no AI-purple defaults, no Inter unless `DESIGN.md` specifies it, no centered layout unless the design system calls for it. Run the full `design-taste-frontend` pre-flight (zero em-dashes, color and shape consistency locks, button contrast, hero viewport fit, eyebrow count, section layout variety) before writing any file.

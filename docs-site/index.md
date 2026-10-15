@@ -60,13 +60,24 @@ features:
 
 ---
 
+## The Big Picture
+
+One install, one core path, and three experimental workflows you can reach once the app has shipped.
+
+<div style="margin:24px 0;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.12);">
+  <iframe src="/craft-kit/diagrams/overview.html?embed=1" width="100%" style="border:none;display:block;height:60vh;min-height:480px;" title="CraftKit overview — interactive diagram"></iframe>
+</div>
+<p style="margin-top:8px;font-size:0.85em;color:var(--vp-c-text-2);">Pan and zoom to explore. <a href="/craft-kit/diagrams/overview.html" target="_blank" rel="noopener">Open full screen ↗</a></p>
+
+---
+
 ## Two Phases, One Kit
 
 The kit has a hard split between *starting* a project and *building* it. Phase 1 runs once. Phase 2 builds what Phase 1 planned.
 
 ### Phase 1 — Bootstrap <span class="VPBadge tip" style="vertical-align:middle">once per project</span>
 
-Takes a raw idea through eight steps: ideation, market research (optional), a combined prototype and design step, feature roadmap, full screen design, tech choice, coding rules, and codebase setup. Each step produces a planning document that feeds the next. Four steps require your explicit approval before the next one runs.
+Takes a raw idea through eight steps (market research runs only if you choose it; full screen design is skipped when approved designs exist or the prototype already covers each feature's one simple screen): ideation, market research (optional), a combined prototype and design step, feature roadmap, full screen design, tech choice, coding rules, and codebase setup. Each step produces a planning document that feeds the next. Four steps require your explicit approval before the next one runs.
 
 **End state:** a runnable app with zero features yet, plus the approved planning documents in your project's `docs/` folder — everything Phase 2 needs to start building.
 
@@ -97,7 +108,7 @@ The Roadmap gate in Phase 1 sets the scope:
 
 **A real hands-on check before anything ships.** Before marking work complete, you walk through the working app yourself. If anything doesn't match what you asked for, the AI goes back and fixes it.
 
-**The kit folder is read-only.** The files in `kit/` are what the AI reads to know what to do. You never edit them. Your project's planning documents and code live in a separate folder.
+**Leave the kit folder alone.** The files in `kit/` are what the AI reads to know what to do. Don't edit them: `npx github:KhoaLy2003/craft-kit --force` overwrites them when you update. Your project's planning documents and code live in a separate folder.
 
 ---
 
@@ -114,7 +125,7 @@ This creates a `kit/` folder with all the phase files and templates. Run once pe
 **Step 2 — Share the relevant phase file** with your AI assistant and send a short message to begin. The AI reads the file and follows the workflow — creating documents, making decisions, and pausing to get your input at key moments. You don't run anything manually.
 
 **Your role:**
-1. Copy `kit/templates/phase-1-kickoff.md` to `docs/phase-1-kickoff.md` and fill it in
+1. Copy `kit/templates/phase-1-kickoff.md` to `docs/phase-1-kickoff.md` and fill it in (setup steps for Windows, macOS, and Linux are in [Getting Started](/getting-started))
 2. Read the brief summary the AI sends at each decision point
 3. Say yes to continue — or give feedback before it moves on
 
@@ -131,7 +142,7 @@ Run Phase 2 using kit/phase-2.md.
 ```
 
 ```text [Bug fix]
-Run the bug fix workflow for: [describe what's wrong and where it appears].
+Run the bug fix workflow using kit/phase-bug-fix.md. The problem is: [describe what's wrong and where it appears].
 ```
 
 ```text [Next release (Phase 3)]
@@ -144,7 +155,7 @@ Build the admin site using kit/phase-admin.md.
 
 :::::
 
-Everything the AI produces (documents, plans, code) lands in your **project folder**. The `kit/` folder is a guide the AI reads — you never edit it.
+Everything the AI produces (documents, plans, code) lands in your **project folder**. The `kit/` folder is a guide the AI reads — you never edit it; an update with `--force` overwrites it.
 
 ---
 
@@ -162,7 +173,9 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 
 [**Evolving Specs**<br>How to update your feature plan after something has shipped](/guides/evolving-specs)
 
-[**What You Need**<br>Skills and agents required before starting Phase 1](/reference/required-skills)
+[**What You Need**<br>Optional skills and agents the kit can use, and how it checks for them](/reference/required-skills)
+
+[**Glossary**<br>Must, gate, scope, domain, seam, and other terms in plain words](/reference/glossary)
 
 [**Session Handover**<br>Continue a long run in a fresh AI session](/guides/session-handover)
 

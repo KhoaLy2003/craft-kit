@@ -9,7 +9,7 @@
 - **Inputs**: the kickoff file, `phase-1-kickoff.md`, at the project root or at `docs/phase-1-kickoff.md` (idea, target user, constraints, Market Research run/skip decision). If absent or thin, fall back to conversational Q&A.
 - **Outputs**: `docs/idea-brief.md`; the kickoff file moved to `docs/phase-1-kickoff.md`.
 - **Template**: `templates/01-idea-brief.md`
-- **Gate**: `none`
+- **Gate**: `soft` — summary after the written brief is reviewed; advance unless the user objects.
 
 ## Scope
 
@@ -30,7 +30,7 @@
 ## Artifact Rules
 
 - Fill `templates/01-idea-brief.md` from the Q&A and save as `docs/idea-brief.md`.
-- Set `Status: approved` only after the user confirms the written file.
+- Set `Status: approved` only after the user confirms the written file (the review in Execution Rule 3). The `soft` gate summary then follows; advance unless the user objects.
 
 ## Completion Criteria
 

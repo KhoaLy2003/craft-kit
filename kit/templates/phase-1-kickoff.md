@@ -5,14 +5,15 @@
      Option A — AI-assisted (recommended):
        Open a fresh AI chat. Paste this file, describe your idea, and ask
        the AI to fill in each section from the conversation. Save the
-       result as `phase-1-kickoff.md` in your project root.
+       result as `docs/phase-1-kickoff.md` (create the `docs/` folder first
+       if it does not exist).
 
      Option B — Self-fill:
        Write rough notes in each section. Bullet points and half-formed
        sentences are fine. The orchestrating agent asks clarifying
        questions during Ideation and fills any gaps.
 
-     Once filled, place the file at your project root. Start Phase 1 by
+     Once filled, keep the file at `docs/phase-1-kickoff.md`. Start Phase 1 by
      giving your orchestrating agent this file and kit/phase-1-bootstrap.md.
      ─────────────────────────────────────────────────────────────────────
 -->

@@ -24,9 +24,9 @@ Tiers are resolved once, in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers
 
 2. **Fail-fast write instruction** — include this verbatim in every subagent dispatch that produces a file:
 
-   > *"If any file write fails on the first attempt, stop immediately. Do not try alternative write methods (REPL, base64, PowerShell, hub start, etc.). Yield the complete file content as your final result and notify the orchestrator via `hub`. The orchestrator handles file recovery from `agent://`."*
+   > *"If any file write fails on the first attempt, stop immediately. Do not try alternative write methods (REPL, base64, PowerShell, shell redirection, etc.). Yield the complete file content as your final result and report the failure to the orchestrator. The orchestrator handles file recovery."*
 
-3. **Verify every write** — after any subagent writes files, confirm each file exists at the expected path and its last line is complete (not cut mid-sentence). If absent, recover content from `agent://<id>` and write it directly. Do not trust the agent's reported status alone. For table-heavy or template-filled artifacts, also read the first 20 lines: confirm table separator rows (`|---|`) are present and no placeholders are left unfilled.
+3. **Verify every write** — after any subagent writes files, confirm each file exists at the expected path and its last line is complete (not cut mid-sentence). If absent, recover the content from the subagent's returned output or transcript if your platform exposes it; otherwise ask the subagent to resend the complete content. Then write the file directly. Do not trust the agent's reported status alone. For table-heavy or template-filled artifacts, also read the first 20 lines: confirm table separator rows (`|---|`) are present and no placeholders are left unfilled.
 
 4. **Write the file first, then ask for review** — never print a document's full content in the terminal for review. Sequence: write the file → tell the user the path → ask them to open and review it → wait. Terminal output is for summaries, key decisions, and gate prompts. If clarifying questions must come before the file can be written, print only the questions, never a draft of the document.
 
@@ -44,7 +44,7 @@ Every step declares one gate type.
 
 | Gate | Behavior |
 |---|---|
-| `none` | Auto-advance. No human decision required. |
+| `none` | Auto-advance. No human decision required. A `none` step never sets a user-approved status on its artifacts. |
 | `soft` | Present a short summary of what was produced (counts, key decisions, files). Advance unless the user asks for changes. |
 | `hard` | Stop. Wait for explicit approval. Silence or a generic "continue" counts only if the gate message already named the decision being approved. |
 

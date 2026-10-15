@@ -28,7 +28,7 @@
 - Every task carries one `Specialist:` line chosen with `kit/task-agent-rubric.md`. A task spanning two domains is split first, per the rubric.
 - Mark parallel groups in the format the rubric defines. Step 3 dispatches from these marks and does not re-decide them.
 - Validate the plan against `docs/architecture.md` and `docs/constitution.md` before presenting it.
-- **Scope check (`scope: all` only):** if more than 20% of tasks go to a minority specialist, recommend switching to `scope: feature` (selection criteria: `kit/steps/phase-1/p1-04-roadmap.md`). If the user confirms, set `Phase 2 Scope: feature` in `docs/roadmap.md` and `phase2_scope` to `feature` in `docs/backlog.json`, then follow the mid-cycle escape in `kit/phase-2.md`.
+- **Scope check (`scope: all` only):** count the plan's tasks per **domain**, using the definition in `kit/steps/phase-1/p1-04-roadmap.md` (a distinct area needing a different specialist skill or a separate deployable concern). The frontend/backend split of a normal UI + API app is one domain and does not trigger this check. If a second domain holds ≥ 20% of the tasks, tell the user the plan outgrew `scope: all` and recommend `scope: feature`, labelled **experimental — not yet validated**; staying on `scope: all` is a valid answer. Ask the user; never switch on your own. If the user confirms, set `Phase 2 Scope: feature` in `docs/roadmap.md` and `phase2_scope` to `feature` in `docs/backlog.json`, then follow the mid-cycle escape in `kit/phase-2.md`.
 - Present the summary — task count, files, key decisions, specialist split, parallel groups. After significant requested changes, re-run the self-review loop before advancing.
 
 ## Completion Criteria

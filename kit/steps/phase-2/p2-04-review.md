@@ -5,7 +5,7 @@
 - **Purpose**: One review pass that checks every acceptance criterion for coverage and the whole diff for quality, security, and compliance; fix everything found.
 - **Agent/Skill**: `code-reviewer` agent
 - **Model**: `balanced`
-- **Gate**: `none`
+- **Gate**: `none` — no human decision; the step advances only when its blocking condition clears: zero open findings and zero GAP rows in the latest review.
 - **Inputs**: full diff of the feature branch against its base; the spec; `docs/constitution.md`; `docs/architecture.md`
 - **Outputs**: findings and coverage gaps fixed on the branch; gap tasks appended to the plan
 - **Template**: none
@@ -28,8 +28,11 @@
 
 ## Completion Criteria
 
-- [ ] Every acceptance criterion marked COVERED
-- [ ] Every finding fixed; any constitution disagreement raised and resolved
+"Done" means the latest reviewer output, read in full, shows all of the following:
+
+- [ ] Zero GAP rows: every acceptance criterion in the spec is COVERED
+- [ ] Zero open findings of any severity (critical, important, minor), after the last reviewer re-run on the fix diff
+- [ ] Any constitution disagreement raised and resolved
 - [ ] Any decision the spec missed is recorded in the spec
 
 ## Transitions

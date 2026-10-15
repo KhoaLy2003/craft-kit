@@ -33,6 +33,8 @@ Works with any AI coding assistant. Phase 1 maps your available models to three 
 
 Phase 1 runs once and takes a raw idea to a working scaffold. Phase 2 builds the product — all Must features in one cycle, or one feature per cycle.
 
+[![CraftKit overview diagram](docs-site/public/diagrams/overview-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/overview.html)
+
 [![Phase 1 — Bootstrap workflow diagram](docs-site/public/diagrams/phase-1-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/phase-1-bootstrap.html)
 
 [![Phase 2 — Build workflow diagram](docs-site/public/diagrams/phase-2-preview.png)](https://khoaly2003.github.io/craft-kit/diagrams/phase-2.html)
@@ -45,7 +47,7 @@ Phase 1 runs once and takes a raw idea to a working scaffold. Phase 2 builds the
 
 ## Quick Start
 
-**Requirements:** Node.js ≥ 18, an AI agent harness, the skills and agents listed [below](#required-skills--agents).
+**Requirements:** Node.js ≥ 18 and an AI coding tool. The skills and agents listed [below](#required-skills--agents) are optional add-ons that improve consistency; Phase 1 checks for them at the start.
 
 ```bash
 # Install into ./kit
@@ -62,7 +64,7 @@ Then:
 
 ```
 1. Copy kit/templates/phase-1-kickoff.md → docs/phase-1-kickoff.md
-2. Fill it in with your idea, target user, and any constraints.
+2. Fill it in with your idea, target user, and any constraints. Have a `docs/DESIGN.md` design-system file ready too (Step 3 needs one; sources and a custom-file skeleton are in `kit/steps/phase-1/p1-03-prototype-design.md`).
 3. Open your AI session and say:
    "Start Phase 1 using kit/phase-1-bootstrap.md and docs/phase-1-kickoff.md."
 ```
@@ -75,7 +77,7 @@ Eight steps from raw idea to a running scaffold. Orchestration: `kit/phase-1-boo
 
 | # | Step | Gate |
 |---|---|---|
-| 1 | Ideation — problem, user, solution hypothesis | none |
+| 1 | Ideation — problem, user, solution hypothesis | soft |
 | 2 | Market Research — competitor map, reasons it might not work (run/skip chosen in the kickoff form) | soft |
 | 3 | Prototype & Design — journey map, `DESIGN.md`, one clickable HTML prototype built with it | **hard** |
 | 4 | Roadmap — MoSCoW feature list, build order, Phase 2 scope | **hard** |
@@ -165,9 +167,9 @@ Then start Phase 2 with the prompt above.
 
 ## Required Skills & Agents
 
-Install these before starting Phase 1. `npx github:KhoaLy2003/craft-kit` prompts you through setup interactively.
+Optional add-ons. Phase 1 starts with a pre-flight that checks which are available; if any are missing the AI names the affected steps and continues with built-in behavior only after you agree. `npx github:KhoaLy2003/craft-kit` prompts you through setup interactively. Besides `kit/`, setup may write `.agents/skills/`, `.agents/agents/`, `.claude/skills/`, and `skills-lock.json`; skills and agents are optional per-tool locations.
 
-**Skills** — loaded via your harness's skill manager (e.g. Superpowers on Claude Code, Cursor, and others):
+**Skills** — loaded via your platform's skill manager or plugin system:
 
 | Skill | Used in |
 |---|---|
@@ -176,7 +178,7 @@ Install these before starting Phase 1. `npx github:KhoaLy2003/craft-kit` prompts
 | `subagent-driven-development` | Phase 2 Step 3 |
 | `dispatching-parallel-agents` | Phase 2 Step 3 |
 | `using-git-worktrees` | Phase 2 Step 3 |
-| `design-taste-frontend` | Phase 2 Step 3 (UI work) |
+| `design-taste-frontend` | Phase 1 Step 3 (prototype), Phase 2 Step 3 (UI work) |
 | `requesting-code-review` | Phase 2 Step 4 |
 | `finishing-a-development-branch` | Phase 2 Step 7 |
 | `verification-before-completion` | All phases |
@@ -206,7 +208,7 @@ All other work uses your platform's general-purpose agent.
 | `task-agent-rubric.md` | Task type → specialist agent routing |
 | `steps/phase-1/`, `steps/phase-2/` | Step detail files `p1-01` … `p1-08`, `p2-01` … `p2-07` |
 | `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, admin scope |
-| `guides/` | `admin-blueprint.md`, `design-reference.md`, `evolving-specs.md`, `interactive-prototype-process.md`, `session-handover.md` |
+| `guides/` | `admin-blueprint.md`, `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
 | `CHANGELOG.md` | Kit change history — kept in this repo, not installed |
 
 ---

@@ -32,9 +32,11 @@
   | Dependency structure | Tight chain, each feature builds on the previous | Independent parallel streams |
   | Developers | Solo | Team |
 
+  **Domain** means a distinct area of work that needs a different specialist skill, or a separate deployable concern. A typical web app with UI and API is **one** domain (frontend/backend is not a domain split). A web app plus a mobile app plus an ML pipeline is three. Expected result for a typical full-stack MVP: one domain, so `scope: all`.
+
   Recommend `all` only if all five criteria point to it; **any one criterion pointing to `feature` overrides the rest.** Write the recommendation, the five criterion scores, and a one-line rationale in the roadmap's `Phase 2 Scope` section. The human confirms; it is never applied automatically.
 
-  **Mid-cycle escape:** if Phase 2 Plan (`kit/phase-2.md`) finds more than 20% of tasks going to a minority specialist under `scope: all`, it recommends switching to `scope: feature`. On user confirmation, update the `Phase 2 Scope` field in `docs/roadmap.md` and `phase2_scope` in `docs/backlog.json`.
+  **Mid-cycle escape:** if Phase 2 Plan (`kit/steps/phase-2/p2-02-plan.md`) finds, counting domains by the definition above, that a second domain holds ≥ 20% of the tasks under `scope: all`, it recommends switching to `scope: feature` (experimental) and asks the user. On user confirmation, update the `Phase 2 Scope` field in `docs/roadmap.md` and `phase2_scope` in `docs/backlog.json`.
 
 - **Admin Site** (`yes` | `no` | `later`): ask once, before presenting the draft: "Will this product need an administrator site (to manage users, content, payments, and so on)?" Record the answer in the roadmap metadata. It is a hint for `kit/phase-admin.md`, which runs after Phase 2. It is **never a feature row** and is **excluded from every Phase 2 Scope criterion**: counting it would inflate the Must count or the domain split and could flip the scope to `feature`. `no` and `later` need no further work in Phase 1.
 

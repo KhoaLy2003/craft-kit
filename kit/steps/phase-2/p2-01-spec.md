@@ -32,13 +32,14 @@
 - If per-screen briefs exist in `docs/specs/<feature-slug>/screens/`, fill each brief's Acceptance criteria section (section 8) with that screen's criteria, using the same IDs as `spec.md`; `spec.md` stays the complete index.
 - Check the spec against `docs/constitution.md` before presenting it.
 - Write the spec to disk, give the user the path, and ask them to review there. `scope: all`: review section by section and approve the whole document once, not per feature.
+- The spec's first lines carry `**Status:** draft | approved`. Write `draft`; change it to `approved` only after the user's explicit approval. Skip detection in `kit/phase-2.md` relies on this field.
 
 ## Completion Criteria
 
 - [ ] Spec file exists with acceptance criteria, edge cases, non-goals, and resolved open questions (`scope: all`: one section per Must feature in build order, cross-feature interactions explicit)
 - [ ] Spec mode applied: behavior-only with a `## Screens` list when designs exist or are coming; full UI behavior otherwise
 - [ ] Checked against `docs/constitution.md`
-- [ ] User has explicitly approved
+- [ ] User has explicitly approved and the spec's `Status` is `approved`
 
 ## Transitions
 

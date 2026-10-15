@@ -83,7 +83,7 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify
 | `kit/steps/phase-1/` | `p1-01-ideation.md` … `p1-08-scaffold.md` |
 | `kit/steps/phase-2/` | `p2-01-spec.md` … `p2-07-ship.md` |
 | `kit/templates/` | Fill-in output templates; copied to `<project>/docs/` — **never edit during a run** |
-| `kit/guides/` | `design-reference.md`, `evolving-specs.md`, `interactive-prototype-process.md`, `session-handover.md` |
+| `kit/guides/` | `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
 | `kit/guides/admin-blueprint.md` | Admin workflow's fixed stack, behavior contracts, module registry, backend conventions |
 | `kit/resource/` | `step-specification-template.md` — dev-only, **not installed** |
 | `testing/` | Narrative E2E validation rounds; each under `testing/round-NN/<project-slug>/` |

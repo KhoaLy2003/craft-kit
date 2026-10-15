@@ -31,7 +31,7 @@
 
 ## 3. Build Order
 
-<!-- The sequence Phase 2 actually processes, accounting for dependencies. Usually Must in dependency order, then Should, then Could. -->
+<!-- The sequence Phase 2 processes, accounting for dependencies. Must features first, in dependency order; Should and Could follow and are built in a later cycle, after the Must features ship. -->
 
 1. F01 —
 2. F02 —
@@ -55,7 +55,7 @@
 |---|---|
 | Must feature count | |
 | Feature sizes | |
-| Domains | |
+| Domains | <!-- count by the definition in p1-04: a typical UI + API web app is ONE domain --> |
 | Dependency structure | |
 | Developers | |
 
