@@ -7,13 +7,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
----
-
-## [0.0.31] - 2026-10-16
-
-**Summary:** Data model and flows documents · project upgrade entry point · Archify diagrams
-
-**Summary:** Data model and screen/data flow documents · backfill workflow for existing projects
+**Summary:** Document lifecycle: every generated doc is updated by a rule or deliberately frozen
 
 ### Fixed (document lifecycle)
 
@@ -25,6 +19,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`steps/phase-2/p2-03-implement.md`**, **`p2-04-review.md`** — approved-spec edits set `draft` and need re-approval; p2-03 adds the DESIGN.md token/component rule.
 - **`templates/07-constitution.md`**, **`steps/phase-1/p1-07-constitution.md`**, **`phase-3-iterate.md`** — `Spec Evolution` exception; `Last amended` and DESIGN.md metadata notes.
 - **`steps/phase-1/p1-03-prototype-design.md`** — DESIGN.md "never modified" reworded to allow approved later amendments.
+
+---
+
+## [0.0.31] - 2026-10-16
+
+**Summary:** Data model and flows documents · project upgrade entry point · Archify diagrams
+
+**Summary:** Data model and screen/data flow documents · backfill workflow for existing projects
 
 ### Added
 
