@@ -14,7 +14,7 @@
 ## Scope
 
 - **In**: concrete coding standards (naming, structure, module boundaries, forbidden patterns); architectural rules derived from `docs/architecture.md`; an Amendment Procedure; depth sized to the project.
-- **Out**: personal workflow preferences that do not change code or architecture output; roadmap decisions; deployment procedures; aspirational principles.
+- **Out**: personal workflow preferences that do not change code or architecture output (except the `Spec Evolution` section Phase 2 Ship adds); roadmap decisions; deployment procedures; aspirational principles.
 
 > Every principle must be concrete enough to change at least one downstream plan, diff, or agent output. If deleting a rule would change none, delete the rule.
 
@@ -32,7 +32,7 @@ Place the file where the harness reads it automatically; prefer `docs/constituti
 ## Completion Criteria
 
 - [ ] Every principle states at least one MUST rule in measurable terms and would change a real decision if removed.
-- [ ] No personal workflow preferences.
+- [ ] No personal workflow preferences (the Ship-added `Spec Evolution` section is exempt).
 - [ ] Amendment Procedure and versioning are filled in with an actionable process.
 - [ ] File saved at the correct path with `Status: approved`.
 

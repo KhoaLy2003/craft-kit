@@ -85,3 +85,5 @@ Record the decision in `docs/constitution.md` under a "Spec Evolution" section s
 ## Whichever Model You Choose
 
 Any spec change that results in code changes goes through Step 4 (Review) before shipping: its acceptance-criteria coverage check catches a new criterion that nobody implemented, exactly as it does on the first pass.
+
+Any edit to `spec.md` also updates its `## Data & Flow Impact` section and applies the resulting amendments to `docs/data-model.md` and `docs/flows.md` (rule in `kit/steps/phase-2/p2-01-spec.md`) before Step 2 starts; flow-forward does this through its new spec.

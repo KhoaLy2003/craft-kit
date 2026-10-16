@@ -15,6 +15,17 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 **Summary:** Data model and screen/data flow documents · backfill workflow for existing projects
 
+### Fixed (document lifecycle)
+
+- **`steps/phase-2/p2-02-plan.md`**, **`p2-04-review.md`**, **`phase-admin.md`** — plans end with `## Architecture Impact`; amendments go to `docs/architecture.md`, `ENV_SETUP.md`, `.env.example`; Review catches unlisted additions; Admin adds an `## Admin Site` architecture section.
+- **`steps/phase-2/p2-07-ship.md`** — project `AGENTS.md` sync rule; Spec Evolution persistence sets `Last amended`.
+- **`phase-bug-fix.md`** — `assess.md` gains `Docs impact`; Fix applies data-model, flows, spec, and E2E amendments.
+- **`steps/phase-2/p2-01-spec.md`**, **`guides/evolving-specs.md`** — Data & Flow Impact comparison is field-level; any spec edit re-applies amendments.
+- **`steps/phase-2/p2-05-e2e.md`**, **`templates/e2e-tests.md`** — changed specs edit the existing Feature block in place.
+- **`steps/phase-2/p2-03-implement.md`**, **`p2-04-review.md`** — approved-spec edits set `draft` and need re-approval; p2-03 adds the DESIGN.md token/component rule.
+- **`templates/07-constitution.md`**, **`steps/phase-1/p1-07-constitution.md`**, **`phase-3-iterate.md`** — `Spec Evolution` exception; `Last amended` and DESIGN.md metadata notes.
+- **`steps/phase-1/p1-03-prototype-design.md`** — DESIGN.md "never modified" reworded to allow approved later amendments.
+
 ### Added
 
 - **`templates/06b-data-model.md`**, **`templates/06c-flows.md`** — templates for `docs/data-model.md` (entities, relationships, feature × entity matrix) and `docs/flows.md` (screen inventory, screen flow, data flow, hand-offs, integrations).

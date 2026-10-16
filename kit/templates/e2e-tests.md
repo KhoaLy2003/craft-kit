@@ -4,7 +4,7 @@
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
-- **Based on**: <!-- path of the approved spec, e.g. docs/specs/spec.md or docs/specs/<feature-slug>/spec.md -->
+- **Based on**: <!-- paths of the approved spec(s); add each feature's spec when its block is added -->
 
 ---
 
