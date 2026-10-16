@@ -48,6 +48,8 @@ Reproduce the bug, diagnose the root cause, and bound the fix.
 
 **Fix scope:** [files/functions to change; what is explicitly out of scope]
 
+**Docs impact:** none | <list of docs/data-model.md, docs/flows.md, docs/specs/<slug>/spec.md, docs/E2E-TESTS.md sections to amend>
+
 **Risk:** [what could break if the fix is wrong]
 ```
 
@@ -56,6 +58,7 @@ Reproduce the bug, diagnose the root cause, and bound the fix.
 - [ ] Symptom reproduced reliably
 - [ ] Root cause identified to a specific location; causal chain and bounded fix scope in `assess.md`
 - [ ] Human confirmed the diagnosis
+- [ ] `assess.md` has a `Docs impact` value
 - [ ] `docs/bug-session.md` has a `## <bug-slug>` section with the Step 1 gate recorded
 
 **Gate summary:** *"The diagnosis is: [one-sentence root cause]. The fix will touch: [files/scope]. Does this match what you believe is broken?"*
@@ -73,6 +76,7 @@ Implement the fix, scoped strictly to the root cause in `assess.md`.
 - **Scope boundary:** no refactoring of adjacent code and no added features. Anything else found broken becomes a separate bug report.
 - Check the fix against `docs/constitution.md`; a fix that violates it creates a new problem.
 - Add a regression test that fails on the unfixed code and passes with the fix, if the project has a test runner. If it cannot be added, record why in `assess.md`.
+- Apply the `assess.md` `Docs impact` amendments with the fix: `docs/data-model.md` / `docs/flows.md` (keep `Status: approved`, refresh `Last updated`, re-render the ER diagram if an entity or relationship changed), correct a spec acceptance criterion the fix contradicts (set the spec `Status: draft`, get the user's explicit approval of the edit, restore `approved`), and add the regression case as a row in `docs/E2E-TESTS.md` Section 3 when that file exists. Anything not listed in `Docs impact` is out of scope.
 - Do not commit yet; Step 3 commits once the fix is confirmed. If the session hands over here, the handover makes a WIP commit of the fix on `fix/<bug-slug>` (`kit/guides/session-handover.md`); Step 3's commit follows it on the same branch.
 
 ### Completion criteria

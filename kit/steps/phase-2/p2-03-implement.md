@@ -24,7 +24,8 @@
 - Every UI dispatch follows the Design dispatch contract in `kit/orchestrator-conventions.md`. UI tasks with visual-quality signals also use `design-taste-frontend`, as the rubric requires.
 - Skip the skill's per-task and whole-branch review passes — Step 4 reviews the whole diff once.
 - Check each completed task against `docs/constitution.md` before starting the next.
-- Spec gap or contradiction found mid-task: pause and update the spec before continuing — do not guess.
+- Spec gap or contradiction found mid-task: pause and update the spec before continuing — do not guess. Set the spec `Status` to `draft`, show the user the edit, and restore `approved` only after their explicit confirmation; the step's gate otherwise does not change.
+- A screen that needs a token or component `docs/DESIGN.md` does not define: use the closest existing token or component, or, with the user's explicit approval, add the definition to `docs/DESIGN.md`; never invent an undocumented value. `docs/preview/` is not regenerated.
 - A foundational task fails or reveals complexity that invalidates later tasks: stop and re-evaluate scope; do not build on a broken foundation.
 - No per-task commits — commits happen at Ship, or at a session handover.
 - Put the branch name in the session log.

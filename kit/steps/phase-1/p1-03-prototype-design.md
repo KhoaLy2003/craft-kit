@@ -10,7 +10,7 @@
 - **Outputs**:
   - `docs/prototype/journey-map.md` — one persona, one scenario, end-to-end journey
   - `docs/prototype/prototype-brief.md` — screens, interactions, mock data, state coverage, faked parts
-  - `docs/DESIGN.md` — user-provided, validated, never modified
+  - `docs/DESIGN.md` — user-provided, validated, not modified by this step (later amendments only with explicit user approval: Phase 3 Step 3 or Phase 2 Step 3)
   - `docs/preview/` — the HTML prototype (no real backend; opens as `file://`)
 - **Template**: `templates/03a-journey-map.md`, `templates/03b-prototype-brief.md`, `templates/03c-design-system.md` (skeleton for a user who writes their own `DESIGN.md`)
 - **Gate**: `hard` — one gate for flow and look together.
@@ -18,7 +18,7 @@
 ## Scope
 
 - **In**: one persona and scenario; all screens, interactions, mock data, state coverage, and faked parts; `DESIGN.md` validation; one HTML build applying it.
-- **Out**: generating `DESIGN.md` (it must come from the user); editing the user's `DESIGN.md`; real backend, API, database, or auth; production-quality code.
+- **Out**: generating `DESIGN.md` (it must come from the user); editing the user's `DESIGN.md` in this step; real backend, API, database, or auth; production-quality code.
 
 > **Before this step, prepare `docs/DESIGN.md`** (Phase B). Ideally have it ready before Phase 1 starts so the flow does not stop here.
 
@@ -106,7 +106,7 @@ CSS is required for structural clarity: an unstyled prototype is often harder to
 
 ## Artifact Rules
 
-- `docs/DESIGN.md` is accepted as-is after validation and never modified by the orchestrator or any agent.
+- `docs/DESIGN.md` is accepted as-is after validation and not modified by this step or its agents (later amendments only with explicit user approval).
 - `docs/preview/` is a design-validation artifact, not production code.
 - The step is not complete until the user explicitly approves at the Phase D gate.
 

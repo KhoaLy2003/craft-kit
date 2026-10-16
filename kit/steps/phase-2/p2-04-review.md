@@ -24,7 +24,7 @@
 - Append each GAP to the plan as a task. Fix every finding of every severity and implement every gap task in one implementer dispatch, routed by specialist per the rubric.
 - Re-run the reviewer on the fix diff, and on any COVERED criteria the fixes touched. Repeat until there are zero findings and zero GAPs.
 - Disagreements with `docs/constitution.md` are called out explicitly, never silently fixed.
-- If the review shows the implementation decided something the spec did not cover, record the decision in the spec before advancing. For a data-model or flow divergence, apply the same direction: if the implementation decided something the spec missed, record it in the spec and amend the docs; otherwise fix the code.
+- If the review shows the implementation decided something the spec did not cover, record the decision in the spec before advancing. Set the spec `Status` to `draft`, show the user the edit, and restore `approved` only after their explicit confirmation; the step's gate otherwise does not change. For a data-model or flow divergence, apply the same direction: if the implementation decided something the spec missed, record it in the spec and amend the docs; otherwise fix the code. The same applies to `docs/architecture.md`: a dependency, service, or environment variable the implementation added that the plan's Architecture Impact did not list is recorded in the plan and amended into the docs (including `ENV_SETUP.md` and `.env.example`); otherwise fix the code.
 
 ## Completion Criteria
 

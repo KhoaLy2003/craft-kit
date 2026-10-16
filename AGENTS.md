@@ -38,7 +38,7 @@ There is no harness detection; install instructions for every supported harness 
 Phase 1 (Bootstrap, once per project) — 8 steps
   1 Ideation → 2 Market Research → 3 Prototype & Design → 4 Roadmap →
   5 Full Screen Design → 6 Architecture → 7 Constitution → 8 Scaffold
-  Output: docs/{idea-brief,market-notes,DESIGN,roadmap,architecture,constitution,
+  Output: docs/{idea-brief,market-notes,DESIGN,roadmap,architecture,data-model,flows,constitution,
                 scaffold-checklist,MODELS}.md (+ backlog.json, backlog.html); docs/prototype/, docs/preview/, docs/designs/
           docs/phase-1-session.md; one Phase 1 commit; Phase 2 handoff prompt
 
@@ -48,7 +48,7 @@ Phase 2 (Build) — one track, 7 steps, parameterised by scope
   scope feature = one feature per cycle (experimental)
   Scope is decided in p1-04-roadmap.md (the only place the selection rule lives)
   and recorded as `Phase 2 Scope: all | feature` in docs/roadmap.md.
-  Output: docs/specs/[<feature-slug>/]{spec,plan}.md + code on feature/<slug>
+  Output: docs/specs/[<feature-slug>/]{spec,plan}.md + docs/E2E-TESTS.md + code on feature/<slug>
           docs/phase-2-session.md (one section per feature)
 
 Other workflows (all experimental — not yet validated in a test round)
@@ -156,6 +156,8 @@ phase-1-kickoff.md     — user-filled intake form
 backlog.json           — Step 4 (→ docs/backlog.json; validated and rendered by kit/scripts/render-backlog.js)
 spec-screen.md         — Step 5 / Phase 2 specs (per-screen)
 06-architecture.md     — Step 6
+06b-data-model.md     — Step 6 (→ docs/data-model.md)
+06c-flows.md          — Step 6 (→ docs/flows.md)
 07-constitution.md     — Step 7
 08-scaffold-checklist.md — Step 8
 MODELS.md              — model tier map (→ docs/MODELS.md)
