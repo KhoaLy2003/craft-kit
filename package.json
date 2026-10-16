@@ -1,6 +1,6 @@
 {
   "name": "craft-kit",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "scripts": {
     "test": "node --test tests/cli.test.mjs"
   },
