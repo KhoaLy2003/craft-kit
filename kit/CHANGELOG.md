@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.31] - 2026-10-16
+
+**Summary:** Data model and flows documents · project upgrade entry point · Archify diagrams
+
 **Summary:** Data model and screen/data flow documents · backfill workflow for existing projects
 
 ### Added
@@ -23,6 +29,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`phase-1-bootstrap.md`**, **`steps/phase-1/p1-05-screen-design.md`**, **`steps/phase-1/p1-07-constitution.md`**, **`templates/spec-screen.md`** — Step 6 row, closeout checklist, handoff read-list; screen briefs feed flows; the constitution reads the data model; `Entity.field` column in screen briefs.
 - **`phase-2.md`** (Docs preflight), **`steps/phase-2/p2-01-spec.md`** (Data & Flow Impact), **`p2-02-plan.md`**, **`p2-04-review.md`**, **`p2-05-e2e.md`** — both documents are read and kept current through the build.
 - **`phase-3-iterate.md`**, **`phase-bug-fix.md`**, **`phase-admin.md`** — read both documents; Phase 3 Impact table gains data-model and flows columns; admin amends the data model.
+
+---
 
 ---
 
