@@ -1,18 +1,18 @@
 # Phase 1 — Bootstrap
 
 > **Run once per project, from raw idea to a ready-to-code codebase.**
-> Existing project: skip this phase and start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). To decide what to build next on a shipped product, use `kit/phase-3-iterate.md`.
+> Existing project: skip this phase and start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). If the project lacks documents this kit version expects (`docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`), run `kit/phase-upgrade.md` first. To decide what to build next on a shipped product, use `kit/phase-3-iterate.md`.
 
 Universal rules (step banner, gates, file verification, English-only, write-then-review) are in `kit/orchestrator-conventions.md`. In this phase, every subagent dispatch carries `PROJECT_ROOT` and, if it writes a file, the fail-fast write instruction; afterwards confirm each file exists on disk (conventions rules 1–3). Session log: `docs/phase-1-session.md` (`kit/session-logging.md`).
 
 ## Skills and agents pre-flight
 
-Run once, before Model tiers. Check that each skill and agent below is available in this session (consult your platform's skill or agent list; if it has no list, try to load the skill by name). Skills and agents are per-tool add-ons: the kit uses them where they exist and falls back to the AI's general capability where they do not, except `design-taste-frontend`, which is required for visual-quality work (see `kit/task-agent-rubric.md`). Where they live depends on your platform (often `.agents/` or a tool-specific skills folder, or a plugin). Full list and install notes: the site page *What You Need*.
+Run once, before Model tiers. Check that each skill and agent below is available in this session (consult your platform's skill or agent list; if it has no list, try to load the skill by name). Skills and agents are per-tool add-ons: the kit uses them where they exist and falls back to the AI's general capability where they do not, except `design-taste-frontend`, which is required for visual-quality work, and `archify`, which is required for rendering diagrams (see `kit/task-agent-rubric.md` and `kit/orchestrator-conventions.md` rule 8). Where they live depends on your platform (often `.agents/` or a tool-specific skills folder, or a plugin). Full list and install notes: the site page *What You Need*.
 
 | Needed in | Skills | Agent |
 |---|---|---|
-| Phase 1 | `brainstorming` (Step 1), `design-taste-frontend` (Step 3 prototype build), `verification-before-completion` (every step) | none beyond the general-purpose agent |
-| Phase 2 | `brainstorming`, `writing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees`, `design-taste-frontend`, `requesting-code-review`, `finishing-a-development-branch`, `verification-before-completion` | `code-reviewer` (Step 4) |
+| Phase 1 | `brainstorming` (Step 1), `design-taste-frontend` (Step 3 prototype build), `archify` (Step 6 diagram render), `verification-before-completion` (every step) | none beyond the general-purpose agent |
+| Phase 2 | `brainstorming`, `writing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees`, `design-taste-frontend`, `archify` (diagram re-render after amendments), `requesting-code-review`, `finishing-a-development-branch`, `verification-before-completion` | `code-reviewer` (Step 4) |
 
 If any skill or agent is missing: tell the user in one message which items are missing and name the step each one affects. Proceed with your closest built-in behavior for that step only after the user agrees; if they would rather install first, wait. Record what is missing and the user's decision in the session log. Phase 2 items may be checked again at the Phase 2 start.
 
@@ -45,7 +45,7 @@ Before each step, read its step file; it is authoritative for that step's inputs
 | 3 | Prototype & Design | `hard` | balanced | general-purpose agent; orchestrator builds the HTML | `docs/prototype/`, `docs/DESIGN.md`, `docs/preview/` | `kit/steps/phase-1/p1-03-prototype-design.md` |
 | 4 | Roadmap (also sets Phase 2 scope) | `hard` | balanced | general-purpose agent | `docs/roadmap.md`, `docs/backlog.json`, `docs/backlog.html` | `kit/steps/phase-1/p1-04-roadmap.md` |
 | 5 | Full Screen Design *(skippable only when approved designs exist, or every feature has one simple screen already covered by `docs/preview/`)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
-| 6 | Tech Stack & Architecture | `hard` | capable | general-purpose agent | `docs/architecture.md` | `kit/steps/phase-1/p1-06-architecture.md` |
+| 6 | Tech Stack, Architecture & Data | `hard` | capable | general-purpose agent | `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md` | `kit/steps/phase-1/p1-06-architecture.md` |
 | 7 | Constitution | `soft` | fast | general-purpose agent | `docs/constitution.md` | `kit/steps/phase-1/p1-07-constitution.md` |
 | 8 | Scaffold | `none` | balanced | general-purpose agent | runnable codebase, `AGENTS.md`, one commit | `kit/steps/phase-1/p1-08-scaffold.md` |
 
@@ -60,7 +60,7 @@ The single closeout checklist. Step 8 runs it; every item must pass before the P
 - [ ] `docs/prototype/` (journey-map.md and prototype-brief.md, Definition of Done checked), `docs/DESIGN.md`, and `docs/preview/index.html` (the approved prototype)
 - [ ] `docs/roadmap.md` is `approved`, `Phase 2 Scope` recorded; `docs/backlog.json` validates (all features `pending`) and `docs/backlog.html` is rendered
 - [ ] `docs/specs/*/screens/*.md` and `docs/designs/` *(skip if Step 5 was skipped)*
-- [ ] `docs/architecture.md` and `docs/constitution.md` are `approved`
+- [ ] `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md` and `docs/constitution.md` are `approved`
 - [ ] Scaffold: every item in `kit/templates/08-scaffold-checklist.md` is checked; the app builds and runs; the smoke test passes
 - [ ] `ENV_SETUP.md` at the project root, and `.env` valid with no placeholders and a clean start *(skip if no environment variables)*
 - [ ] `AGENTS.md` at the project root with a meaningful project summary
@@ -75,6 +75,8 @@ Before closing, emit this prompt to the user with every bracket filled: scope fr
 ```
 Read these files before starting:
 - docs/architecture.md
+- docs/data-model.md
+- docs/flows.md
 - docs/constitution.md
 - docs/roadmap.md
 - docs/backlog.json

@@ -20,6 +20,8 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/04-roadmap.md` | `docs/roadmap.md` | Agent | Phase 1 Step 4 |
 | `templates/spec-screen.md` | `docs/specs/<slug>/screens/<screen-name>.md` | Agent | Phase 1 Step 5 |
 | `templates/06-architecture.md` | `docs/architecture.md` | Agent | Phase 1 Step 6 |
+| `templates/06b-data-model.md` | `docs/data-model.md` | Agent | Phase 1 Step 6 (Stage 4); Docs Backfill |
+| `templates/06c-flows.md` | `docs/flows.md` | Agent | Phase 1 Step 6 (Stage 4); Docs Backfill |
 | `templates/07-constitution.md` | `docs/constitution.md` | Agent | Phase 1 Step 7 |
 | `templates/08-scaffold-checklist.md` | Used as a checklist in the session | Agent | Phase 1 Step 8 |
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |

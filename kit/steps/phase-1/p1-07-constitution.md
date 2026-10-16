@@ -6,7 +6,7 @@
 - **Agent/Skill**: general-purpose agent (all project types; no specialist needed)
 - **Model**: `fast`
 - **Trigger**: `docs/architecture.md` exists and is `approved`.
-- **Inputs**: `docs/architecture.md`; `docs/DESIGN.md`; `docs/roadmap.md`.
+- **Inputs**: `docs/architecture.md`; `docs/data-model.md` (the constitution's naming and database rules must agree with its Conventions section); `docs/DESIGN.md`; `docs/roadmap.md`.
 - **Outputs**: `docs/constitution.md` (or `CLAUDE.md` / `AGENTS.md` at the project root if the agent harness requires rules there; update downstream references accordingly).
 - **Template**: `templates/07-constitution.md`
 - **Gate**: `soft` — present the summary; set approval when the user accepts. If the user accepted defaults at the Step 6 gate, set `Status: approved` on writing and still show the summary.

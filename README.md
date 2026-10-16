@@ -159,9 +159,11 @@ Skip Phase 1. Create these files in `docs/` — Phase 2 reads them on every cycl
 | `docs/DESIGN.md` | `templates/03c-design-system.md` | Design tokens and component list. `guides/design-reference.md` shows the expected format. |
 | `docs/roadmap.md` | `templates/04-roadmap.md` | Build order, deferrals, and `Phase 2 Scope`; the feature table is generated from `docs/backlog.json`. |
 | `docs/backlog.json` | `templates/backlog.json` | Features, status, and dated events. Phase 2 appends events as features start and ship; `kit/scripts/render-backlog.js` renders `docs/backlog.html`. |
+| `docs/data-model.md` | `templates/06b-data-model.md` | Entities, relationships, feature × entity matrix. Generate it from code with `kit/phase-upgrade.md`. |
+| `docs/flows.md` | `templates/06c-flows.md` | Screen inventory, screen flow, data flow. Generate it with `kit/phase-upgrade.md`. |
 | `docs/MODELS.md` | `templates/MODELS.md` | Tier → model map. Run the "Model tiers" section of `phase-1-bootstrap.md` to produce it. |
 
-Then start Phase 2 with the prompt above.
+Projects built on an older kit version (no `backlog.json`, `data-model.md` or `flows.md`): say `Run the project upgrade using kit/phase-upgrade.md.` first. Then start Phase 2 with the prompt above.
 
 ---
 
@@ -179,6 +181,7 @@ Optional add-ons. Phase 1 starts with a pre-flight that checks which are availab
 | `dispatching-parallel-agents` | Phase 2 Step 3 |
 | `using-git-worktrees` | Phase 2 Step 3 |
 | `design-taste-frontend` | Phase 1 Step 3 (prototype), Phase 2 Step 3 (UI work) |
+| `archify` | Phase 1 Step 6 (diagram render), Phase 2 Step 1 (re-render after amendments) |
 | `requesting-code-review` | Phase 2 Step 4 |
 | `finishing-a-development-branch` | Phase 2 Step 7 |
 | `verification-before-completion` | All phases |

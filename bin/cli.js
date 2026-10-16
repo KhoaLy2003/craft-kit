@@ -39,7 +39,8 @@ const HR = dim('─'.repeat(52))
 // Superpowers skills (8):  https://github.com/obra/superpowers
 //   → installed as a plugin inside your AI harness; not a shell command.
 //
-// Skill (1 via npx): design-taste-frontend https://github.com/Leonxlnx/taste-skill
+// Skills (2 via npx): design-taste-frontend https://github.com/Leonxlnx/taste-skill
+//                     archify (diagram generation) https://github.com/tt-a1i/archify
 //   → installed via `npx skills add` (cross-harness).
 //
 // Agents (1):       https://github.com/VoltAgent/awesome-claude-code-subagents
@@ -48,6 +49,9 @@ const HR = dim('─'.repeat(52))
 const TASTE_SKILL_REPO = 'https://github.com/Leonxlnx/taste-skill'
 const TASTE_SKILL_NAME = 'design-taste-frontend'
 const TASTE_SKILL_CMD  = `npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SKILL_NAME}" --yes`
+const ARCHIFY_SKILL_REPO = 'https://github.com/tt-a1i/archify'
+const ARCHIFY_SKILL_NAME = 'archify'
+const ARCHIFY_SKILL_CMD  = `npx skills add ${ARCHIFY_SKILL_REPO} --skill "${ARCHIFY_SKILL_NAME}" --yes`
 const VOLTAGENT_RAW    = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
 
 const REQUIRED_AGENTS = [
@@ -239,6 +243,7 @@ function printQuickStart (rel) {
 
   ${SYM.dot} ${bold('Existing project')}  ${dim('(skip Phase 1)')}
     Share  ${yellow(rel + '/phase-2.md')}  and say:  ${yellow('"Run Phase 2 using ' + rel + '/phase-2.md."')}
+    If the project predates this kit version (missing docs/backlog.json, docs/data-model.md or docs/flows.md), first say:  ${yellow('"Run the project upgrade using ' + rel + '/phase-upgrade.md."')}
 
   ${SYM.dot} ${bold('Bug fix')}
     Share  ${yellow(rel + '/phase-bug-fix.md')}  and describe the problem
@@ -293,6 +298,13 @@ async function interactiveSetup () {
     repo: TASTE_SKILL_REPO,
     name: TASTE_SKILL_NAME,
     cmd: TASTE_SKILL_CMD,
+  })
+  await offerSkill(yes, {
+    question: 'Install archify (diagram generation) now via npx?',
+    display: 'archify',
+    repo: ARCHIFY_SKILL_REPO,
+    name: ARCHIFY_SKILL_NAME,
+    cmd: ARCHIFY_SKILL_CMD,
   })
 
   section(3, 'Code reviewer agent')
@@ -406,6 +418,20 @@ ${versionLine}
     console.log(`  ${dim('No install manifest found: files renamed or removed since an older version may linger — delete the kit folder and reinstall for a clean copy.')}\n`)
   }
 
+  // Existing project missing documents the current kit expects: point at the single upgrade entry point.
+  // Keep this list in step with the registry in kit/phase-upgrade.md. File-existence checks only.
+  // Assumes the kit sits directly under the project root (default ./kit); a deeper custom target yields no hint.
+  const docsDir = path.join(path.resolve(target, '..'), 'docs')
+  const has = f => fs.existsSync(path.join(docsDir, f))
+  const missing = []
+  if (has('roadmap.md') && !has('backlog.json')) missing.push('docs/backlog.json')
+  if (has('architecture.md')) {
+    for (const f of ['data-model.md', 'flows.md']) if (!has(f)) missing.push('docs/' + f)
+  }
+  if (missing.length > 0) {
+    console.log(`  ${dim('Existing project detected: missing ' + missing.join(', ') + '. Run: "Run the project upgrade using ' + rel + '/phase-upgrade.md."')}\n`)
+  }
+
   // Post-install: skills and agents
   if (!skipSetup) {
     if (process.stdin.isTTY) {
@@ -415,6 +441,7 @@ ${versionLine}
       printSuperpowers()
       section(2, 'Design skills')
       console.log(`  Run in your terminal:\n    ${TASTE_SKILL_CMD}`)
+      console.log(`\n  Diagram generation (archify):\n    ${ARCHIFY_SKILL_CMD}`)
       section(3, 'Code reviewer agent')
       printAgentManualInstructions()
     }

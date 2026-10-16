@@ -34,7 +34,7 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 
 Decide which modules the admin site manages, who can do what, and what the build will touch.
 
-**Inputs:** `docs/architecture.md`, the data model, `docs/specs/`, `docs/roadmap.md` (including `Admin Site`), the auth code, any payment, contract, upload, notification, or moderation code. **Template:** `kit/templates/admin-scope.md`.
+**Inputs:** `docs/architecture.md`, `docs/data-model.md`, `docs/specs/`, `docs/roadmap.md` (including `Admin Site`), the auth code, any payment, contract, upload, notification, or moderation code. **Template:** `kit/templates/admin-scope.md`.
 
 ### Rules
 
@@ -46,7 +46,7 @@ Decide which modules the admin site manages, who can do what, and what the build
 - **Roles and permissions.** Once the module list is stable, fill Section 2: the roles and a permission matrix using ids of the form `<module>:<action>`.
 - **Identity check.** Fill Section 3: whether the main app has a role model, and how admins would authenticate (existing credential login, OAuth-only, other). Record the plan consequence: a missing role model or credential login becomes task group 0 in Step 2.
 - **Open-branch check.** Fill Section 4. If a `feature/*` branch touches the backend areas the admin routes will use, stop: finish or merge it first.
-- **Main-codebase impact.** Fill Section 5: the `/api/admin/*` routes per module, the guard, the `admin_audit_log` table, and any role field or credential login. State plainly that the single PR will change the main application as well as add `admin/`.
+- **Main-codebase impact.** Fill Section 5: the `/api/admin/*` routes per module, the guard, the `admin_audit_log` table, and any role field or credential login. State plainly that the single PR will change the main application as well as add `admin/`. When the plan is approved, add the `admin_audit_log` table and any role field to `docs/data-model.md` (same amendment rule as Phase 2 Step 1: keep `Status: approved`, refresh `Last updated`).
 - `Status: approved` and a refreshed `Last updated` only after the user approves.
 
 ### Completion criteria

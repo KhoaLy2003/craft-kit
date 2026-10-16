@@ -224,6 +224,50 @@ describe('--skip-setup', () => {
   })
 })
 
+describe('docs backfill hint', () => {
+  const HINT = 'Existing project detected'
+  const project = docs => {
+    const base = tempDir()
+    if (docs.length) mkdirSync(join(base, 'docs'))
+    for (const d of docs) writeFileSync(join(base, 'docs', d), '')
+    return base
+  }
+
+  test('architecture.md without data-model/flows prints the backfill command', () => {
+    const base = project(['architecture.md'])
+    const { status, stdout } = run([join(base, 'kit'), '--skip-setup'], { cwd: base })
+    assert.equal(status, 0)
+    assert.ok(stdout.includes(HINT))
+    assert.match(stdout, /Run the project upgrade using kit\/phase-upgrade\.md/)
+  })
+
+  test('roadmap.md without backlog.json is reported as missing docs/backlog.json', () => {
+    const base = project(['roadmap.md', 'architecture.md', 'data-model.md', 'flows.md'])
+    const { stdout } = run([join(base, 'kit'), '--skip-setup'], { cwd: base })
+    assert.ok(stdout.includes(HINT))
+    assert.ok(stdout.includes('missing docs/backlog.json'))
+  })
+
+  test('only one of the two docs present still prints the hint', () => {
+    const base = project(['architecture.md', 'flows.md'])
+    const { stdout } = run([join(base, 'kit'), '--skip-setup'], { cwd: base })
+    assert.ok(stdout.includes(HINT))
+  })
+
+  test('both docs present: no hint, also on --force reinstall', () => {
+    const base = project(['architecture.md', 'data-model.md', 'flows.md'])
+    const target = join(base, 'kit')
+    assert.ok(!run([target, '--skip-setup'], { cwd: base }).stdout.includes(HINT))
+    assert.ok(!run([target, '--skip-setup', '--force'], { cwd: base }).stdout.includes(HINT))
+  })
+
+  test('no docs/ folder (new project): no hint', () => {
+    const base = project([])
+    const { stdout } = run([join(base, 'kit'), '--skip-setup'], { cwd: base })
+    assert.ok(!stdout.includes(HINT))
+  })
+})
+
 describe('non-TTY output (piped stdin prints all setup instructions)', () => {
   test('prints Superpowers, design-taste-frontend and agent instructions, then the quick start', () => {
     const { status, stdout } = run([tempDir()])
@@ -231,6 +275,7 @@ describe('non-TTY output (piped stdin prints all setup instructions)', () => {
     assert.match(stdout, /obra\/superpowers/)
     assert.match(stdout, /\/plugin install superpowers/)
     assert.match(stdout, /npx skills add .*Leonxlnx\/taste-skill.*design-taste-frontend/)
+    assert.match(stdout, /npx skills add .*tt-a1i\/archify.*--skill "archify"/)
     assert.match(stdout, /VoltAgent\/awesome-claude-code-subagents/)
     assert.match(stdout, /Quick start/)
   })

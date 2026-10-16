@@ -26,8 +26,8 @@ Single command, no subcommands. Execution order:
 4. With `--force` and a previous `<target>/.craft-kit-manifest.json`: delete files in the old manifest that the new kit no longer ships, then prune emptied directories. Files not in the manifest (user-added) are never touched, and manifest entries resolving outside the target are ignored. With no previous manifest, print a one-line note that renamed files from older versions may linger
 5. Write `.craft-kit-version` and `.craft-kit-manifest.json` (sorted relative file list) on every install; print the upgrade message when `--force` crosses versions
 6. If `--skip-setup`: print quick-start and exit
-7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend` command + agent download instructions, then quick-start
-8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` → `.agents/skills/`, (b) download of the `code-reviewer` VoltAgent agent `.md` file to `.agents/agents/` (`httpsGet` has a 15 s timeout and a 5-redirect limit)
+7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend` and `archify` commands + agent download instructions, then quick-start
+8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` and `npx skills add archify` → `.agents/skills/`, (b) download of the `code-reviewer` VoltAgent agent `.md` file to `.agents/agents/` (`httpsGet` has a 15 s timeout and a 5-redirect limit)
 9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`)
 
 There is no harness detection; install instructions for every supported harness are always printed.
@@ -52,7 +52,8 @@ Phase 2 (Build) — one track, 7 steps, parameterised by scope
           docs/phase-2-session.md (one section per feature)
 
 Other workflows (all experimental — not yet validated in a test round)
-  Roadmap Migration (existing projects, once): Preflight → Evidence → Review dates → Write & render   kit/phase-roadmap-migrate.md
+  Project Upgrade (existing projects, once): detect missing docs → run modules   kit/phase-upgrade.md
+    modules: Roadmap Migration (kit/phase-roadmap-migrate.md), Docs Backfill (kit/phase-docs-backfill.md)
   Bug Fix: Assess → Fix → Verify         docs/specs/bugs/<bug-slug>/assess.md, fix/<bug-slug> → PR
   Phase 3: Discover → Prioritise → Handoff
   Admin Site: Scope → Spec & Plan → Implement → Review & E2E → Ship
@@ -177,7 +178,8 @@ admin-scope.md         — Admin Step 1 (→ docs/admin/scope.md)
 | `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`), single closeout checklist, Phase 2 handoff |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
 | `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md` | Other workflows |
-| `kit/phase-roadmap-migrate.md` | One-time roadmap migration for existing projects (interactive, git-evidence hints) |
+| `kit/phase-upgrade.md` | Single entry point for existing projects; registry of one-time modules (`phase-roadmap-migrate.md`, `phase-docs-backfill.md`) — add a row here for every future migration |
+| `kit/phase-roadmap-migrate.md`, `kit/phase-docs-backfill.md` | Upgrade modules: roadmap table → `backlog.json`; reverse-engineered `data-model.md` / `flows.md` |
 | `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |
 | `kit/stack-catalog.md` | Architecture-step stack reference: Canonical Baseline, Deviation Triggers, Additions Catalog |

@@ -7,7 +7,7 @@
 - **Model**: `capable`
 - **Gate**: `hard` — approval of the spec
 - **Inputs**:
-  - `docs/backlog.json` (the feature entry, or all Must entries), `docs/roadmap.md` (build-order context), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`
+  - `docs/backlog.json` (the feature entry, or all Must entries), `docs/roadmap.md` (build-order context), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`, `docs/data-model.md`, `docs/flows.md`
   - `docs/designs/<feature-slug>/` and `docs/specs/<feature-slug>/screens/*.md` — designs and briefs from Phase 1 Step 5 (including a re-entry for new features), if they exist
 - **Outputs**:
   - `scope: feature` → `docs/specs/<feature-slug>/spec.md`
@@ -33,6 +33,9 @@
 - Check the spec against `docs/constitution.md` before presenting it.
 - Write the spec to disk, give the user the path, and ask them to review there. `scope: all`: review section by section and approve the whole document once, not per feature.
 - The spec's first lines carry `**Status:** draft | approved`. Write `draft`; change it to `approved` only after the user's explicit approval. Skip detection in `kit/phase-2.md` relies on this field.
+- **Data & Flow Impact.** Every spec (or `scope: all` section) ends with `## Data & Flow Impact`: entities/fields added or changed (name, type, relationship), screens and transitions added or changed, or the literal line `none`. The user approves it with the spec. Immediately after approval, apply the described amendments to `docs/data-model.md` and `docs/flows.md` (keep `Status: approved`, refresh `Last updated`, extend the §4 matrix and the screen inventory). A spec that needs an entity or screen not in the docs without listing it is incomplete. When Skip detection finds the spec already approved, its impact section already exists: apply only the amendments for entities and screens absent from the docs (compare names against `data-model.md` and `flows.md`); never duplicate rows.
+- When the amendments change a flow or the system overview, re-render only those diagrams per `kit/orchestrator-conventions.md` rule 8; an added or changed entity or relationship re-renders the ER diagram.
+- Amendments that add or change an entity or relationship also update the `data-model.md` §2 `erDiagram` in the same edit (completion check (e) in `kit/steps/phase-1/p1-06-architecture.md`).
 
 ## Completion Criteria
 
@@ -40,6 +43,7 @@
 - [ ] Spec mode applied: behavior-only with a `## Screens` list when designs exist or are coming; full UI behavior otherwise
 - [ ] Checked against `docs/constitution.md`
 - [ ] User has explicitly approved and the spec's `Status` is `approved`
+- [ ] Every spec section ends with `## Data & Flow Impact`, and its amendments are applied to `docs/data-model.md` and `docs/flows.md`
 
 ## Transitions
 

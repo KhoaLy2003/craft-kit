@@ -36,6 +36,21 @@ Tiers are resolved once, in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers
 
 7. **Design dispatch** — every dispatch that implements UI follows the [Design dispatch contract](#design-dispatch-contract).
 
+8. **Diagrams** — project diagrams live in the markdown document (Mermaid where the template has a diagram block, otherwise the text description): the diffable source of truth that renders anywhere. Rendering to interactive HTML costs real tokens, so render only the diagrams that earn it. When the `archify` skill is available, render a diagram only if it passes the filter below; everything else stays as Mermaid or text. Name the output location explicitly, because Archify otherwise writes under `.archify/`: HTML at `docs/diagrams/<doc>-<name>.html`, with its typed JSON source kept beside it as `docs/diagrams/<doc>-<name>.json` (that file is what a later re-render edits). Link the HTML under the document's `Diagrams` line. Follow the skill's own workflow (typed JSON from the Mermaid or text, then `finalize`); never hand-write the HTML. Archify does not parse Mermaid mechanically: the agent reads it for meaning and authors fresh JSON, so check the rendered result against the document.
+
+   | Candidate | Archify type | Render only when |
+   |---|---|---|
+   | System overview (`architecture.md` §5) | `architecture` | always (exactly 1) |
+   | Screen flow (`flows.md` §2) | `workflow` | the role or area has 5 or more screens or a guarded branch; at most 1 per role |
+   | Core journey (`flows.md` §3) | `sequence` if it crosses an external service, otherwise `dataflow` | the journey is a Core User Flow from `roadmap.md` or `journey-map.md`, with 4 or more steps; one diagram per journey, never both types |
+   | Entity-relationship diagram (`data-model.md` §2) | `erd` | always (exactly 1 per project); needs Archify 3 or later, which lists `erd` in its type router; with an older copy the Mermaid `erDiagram` stays the only version |
+
+   Entity lifecycles are never rendered: they stay as the state list and transitions in `data-model.md` §3 (a Mermaid `stateDiagram` there is optional for 4 or more states).
+
+   **Budget: at most 6 rendered diagrams per project, not counting the ER diagram.** If more candidates pass the filter, keep them in this order until the budget is full: system overview, screen flow of the primary role, core journeys by build order, other screen flows. The rest stay Mermaid. The ER diagram is always required in `data-model.md` §2 as a Mermaid `erDiagram` (the diffable source) and is always rendered with the `erd` type. Give it one table per entity with every field from §3, key roles (`pk`/`fk`/unique) with `references` on foreign keys, and a functional-domain `tag` per entity when the model has more than 8 entities.
+
+   Render after the document is `approved`. Phase 2 amendments re-render only a diagram that is already rendered and whose source changed; they never add a new one unless the filter and budget allow it. `archify` is required for the HTML render (see the Phase 1 pre-flight); if it is missing and the user agreed to proceed without it, skip the HTML and record that in the session log. The document is complete without the HTML, so a missing skill never blocks a gate.
+
 ---
 
 ## Gates

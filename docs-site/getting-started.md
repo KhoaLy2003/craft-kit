@@ -184,6 +184,7 @@ Skills are instruction sets and agents are specialist workers that some AI tools
 | `dispatching-parallel-agents` | Phase 2 Step 3 |
 | `using-git-worktrees` | Phase 2 Step 3 |
 | `design-taste-frontend` | Phase 1 Step 3 and Phase 2 Step 3 (UI work) |
+| `archify` | Phase 1 Step 6 and Phase 2 Step 1 (diagrams rendered to `docs/diagrams/`) |
 | `requesting-code-review` | Phase 2 Step 4 |
 | `finishing-a-development-branch` | Phase 2 Step 7 |
 | `verification-before-completion` | All phases |
@@ -199,6 +200,7 @@ When Phase 1 starts, the AI checks which of these your tool has. If something is
 | `kit/` | always | The workflow files, templates, and guides |
 | `kit/.craft-kit-version`, `kit/.craft-kit-manifest.json` | always | Installed version and the list of files shipped, used by `--force` upgrades |
 | `.agents/skills/design-taste-frontend/` | if you accept the skill prompt | Optional skill, installed by the `skills` command |
+| `.agents/skills/archify/` | if you accept the skill prompt | Diagram skill, installed by the `skills` command |
 | `.claude/skills/`, `skills-lock.json` | if the `skills` command creates them | Per-tool skill locations and a lock file made by that command, not by CraftKit. A tool that does not use these locations ignores them |
 | `.agents/agents/code-reviewer.md` | if you accept the agent prompt | Optional agent definition downloaded from the VoltAgent repository |
 
