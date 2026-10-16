@@ -24,6 +24,7 @@ Reproduce the bug, diagnose the root cause, and bound the fix.
 
 - **Reproduce first.** Trigger the symptom reliably before reading any code; an unreproducible bug cannot be verified fixed. If it cannot be reproduced, record the attempts in `assess.md`, report to the human, and stop.
 - Dispatch a general-purpose agent to locate the code, read-only. Ask where the reported behavior originates, not for a fix. Make no code edits in this step.
+- When present, give the agent `docs/data-model.md` and `docs/flows.md` as orientation for entities, screens, and data paths. Their absence never blocks a bug fix, and Assess does not run the Docs preflight.
 - Document the causal chain: what the user does → what the system does → where it goes wrong → why. A symptom ("button doesn't work") is not a root cause.
 - Bound the fix scope explicitly: which files and functions are in, what is out.
 

@@ -13,6 +13,7 @@ Used in **Phase 2, Step 2 — Plan**. Give every task one `Specialist:` line usi
 | Code review, spec and constitution compliance | `code-reviewer` | — |
 | Everything else: frontend, backend, database, auth, infrastructure, tests, research, visual design | `task` (general-purpose agent) | — |
 | UI visual quality: "visual quality", "design upgrade", "polish", "premium UI" | `task` | `design-taste-frontend` skill (**required** for these signals) |
+| Diagrams: entity-relationship, architecture, screen flow, data flow, sequence | `task` | `archify` skill (**required** for the HTML render; see `kit/orchestrator-conventions.md` rule 8) |
 | Admin site screens under `admin/` | `task` | — (build from `kit/guides/admin-blueprint.md` §3 and §6) |
 
 Every UI dispatch follows the Design dispatch contract in `kit/orchestrator-conventions.md`.

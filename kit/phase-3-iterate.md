@@ -4,7 +4,7 @@
 >
 > **Use after a release has shipped and you want to improve the product — with ideas or without.** Output is a new release in `docs/backlog.json` plus a release block in `docs/roadmap.md`; features are then built from `docs/backlog.json` with Phase 2 (`kit/phase-2.md`, `scope: feature`). Phase 3 never writes feature code.
 >
-> Prerequisites: a shipped (or runnable) application; `docs/backlog.json`, `docs/roadmap.md`, `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`.
+> Prerequisites: a shipped (or runnable) application; `docs/backlog.json`, `docs/roadmap.md`, `docs/constitution.md`, `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md`, `docs/DESIGN.md`. A missing data-model or flows document: see "Docs preflight" in `kit/phase-2.md`.
 
 Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`. Session log: `docs/phase-3-session.md`, one section per release (`kit/session-logging.md`). Agree `<release-slug>` with the user before Step 1 (e.g. `r2-growth`); it names the folder `docs/iterations/<release-slug>/`.
 
@@ -107,7 +107,7 @@ Check whether the new features invalidate the existing foundations, then hand of
 ### Rules
 
 - Dispatch a general-purpose agent read-only to check each new feature for: a new dependency, service, data-model or auth change, a new design component, or a rule exception.
-- Record the result as an **Impact** section inside the release block of `docs/roadmap.md`: a table of feature × {architecture, constitution, design} with `none | amend` and a one-line reason. No separate file.
+- Record the result as an **Impact** section inside the release block of `docs/roadmap.md`: a table of feature × {architecture, constitution, design, data-model, flows} with `none | amend` and a one-line reason. No separate file.
 - If any verdict is `amend`: present the minimal amendments, each tagged with the feature requiring it; apply only after explicit user approval; keep `Status: approved` and refresh `Last updated`. Amend only what a selected feature cannot be built without. A new stack choice follows `kit/stack-catalog.md` and `kit/steps/phase-1/p1-06-architecture.md`.
 - Large impact (new stack, new auth model, data migration): make the foundation change its own feature at the head of the build order, with its own spec and migration plan.
 - An amendment that contradicts a constitutional rule fundamental to the product: stop and surface it; the user chooses between dropping the feature and amending the constitution explicitly.

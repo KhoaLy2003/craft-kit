@@ -44,6 +44,8 @@ why (e.g. "No data: static informational screen."). Remove this comment block be
 
 ## 3. Entry and Exit
 
+<!-- Must agree with `docs/flows.md` screen flow. -->
+
 | Direction | Screen / event | Trigger |
 |---|---|---|
 | In | [previous screen, redirect, or deep link] | [what the user did or what happened] |
@@ -55,9 +57,9 @@ why (e.g. "No data: static informational screen."). Remove this comment block be
 
 <!-- WHAT is displayed, not how it is fetched. Include any business rule that changes what is shown, and any derived value with its rule (e.g. "Progress % = completed / total, rounded; 0% when empty"). -->
 
-| # | Content | Notes / rules |
-|---|---|---|
-| 1 | [e.g. "List of projects, each with name, status badge, last-updated date"] | [e.g. "Archived items hidden unless the filter is active"] |
+| # | Content | Entity.field | Notes / rules |
+|---|---|---|---|
+| 1 | [e.g. "List of projects, each with name, status badge, last-updated date"] | [name from `docs/data-model.md`, or `n/a: derived`] | [e.g. "Archived items hidden unless the filter is active"] |
 
 ---
 

@@ -28,7 +28,9 @@ const PHASES: Page[] = [
   kit('phase-bug-fix',          'phases/bug-fix',        'Bug Fix Workflow'),
   kit('phase-3-iterate',        'phases/phase-3-iterate', 'Phase 3 — Iterate (workflow)'),
   kit('phase-admin',            'phases/admin',          'Admin Site Workflow'),
+  kit('phase-upgrade',          'phases/upgrade',        'Project Upgrade'),
   kit('phase-roadmap-migrate',  'phases/roadmap-migrate', 'Roadmap Migration'),
+  kit('phase-docs-backfill',    'phases/docs-backfill',  'Docs Backfill'),
 ]
 
 const PHASE_1_STEPS = steps('phase-1', [
@@ -37,7 +39,7 @@ const PHASE_1_STEPS = steps('phase-1', [
   ['p1-03-prototype-design', 'Step 3 — Prototype & Design'],
   ['p1-04-roadmap',          'Step 4 — Roadmap'],
   ['p1-05-screen-design',    'Step 5 — Full Screen Design'],
-  ['p1-06-architecture',     'Step 6 — Architecture'],
+  ['p1-06-architecture',     'Step 6 — Architecture & Data'],
   ['p1-07-constitution',     'Step 7 — Constitution'],
   ['p1-08-scaffold',         'Step 8 — Scaffold'],
 ])

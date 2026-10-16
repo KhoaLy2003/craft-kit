@@ -5,6 +5,7 @@
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
 - **Based on**: `idea-brief.md`, `market-notes.md` *(if market research ran)*, `DESIGN.md`, `roadmap.md`
+- **Diagrams**: <!-- link to docs/diagrams/architecture-overview.html, or `none` -->
 
 > This is the final decision. Stack research happened before this document; it commits.
 

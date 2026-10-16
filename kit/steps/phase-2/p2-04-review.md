@@ -6,7 +6,7 @@
 - **Agent/Skill**: `code-reviewer` agent
 - **Model**: `balanced`
 - **Gate**: `none` — no human decision; the step advances only when its blocking condition clears: zero open findings and zero GAP rows in the latest review.
-- **Inputs**: full diff of the feature branch against its base; the spec; `docs/constitution.md`; `docs/architecture.md`
+- **Inputs**: full diff of the feature branch against its base; the spec; `docs/constitution.md`; `docs/architecture.md`; `docs/data-model.md`; `docs/flows.md`
 - **Outputs**: findings and coverage gaps fixed on the branch; gap tasks appended to the plan
 - **Template**: none
 
@@ -20,11 +20,11 @@
 
 - One `code-reviewer` dispatch with the full branch diff, spec, constitution, and architecture; `scope: all` reviews all features in the same pass. The brief asks for two outputs:
   - **Coverage** — for each acceptance criterion in the spec: COVERED (evidence in the diff: function, component, validation logic, test) or GAP (none found).
-  - **Findings** — code quality, security, and architectural compliance, each rated critical / important / minor.
+  - **Findings** — code quality, security, and architectural compliance, each rated critical / important / minor. Findings also include any divergence between migrations/schema code and `docs/data-model.md`, or between routes/navigation and `docs/flows.md`.
 - Append each GAP to the plan as a task. Fix every finding of every severity and implement every gap task in one implementer dispatch, routed by specialist per the rubric.
 - Re-run the reviewer on the fix diff, and on any COVERED criteria the fixes touched. Repeat until there are zero findings and zero GAPs.
 - Disagreements with `docs/constitution.md` are called out explicitly, never silently fixed.
-- If the review shows the implementation decided something the spec did not cover, record the decision in the spec before advancing.
+- If the review shows the implementation decided something the spec did not cover, record the decision in the spec before advancing. For a data-model or flow divergence, apply the same direction: if the implementation decided something the spec missed, record it in the spec and amend the docs; otherwise fix the code.
 
 ## Completion Criteria
 

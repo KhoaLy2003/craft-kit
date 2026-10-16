@@ -26,6 +26,8 @@ Create a `docs/` folder at your project root and produce these files:
 | `docs/roadmap.md` | `kit/templates/04-roadmap.md` | Lists features in MoSCoW priority with build order and Phase 2 scope. |
 | `docs/backlog.json` | `kit/templates/backlog.json` | Source of feature status and dates. Phase 2 reads it. Render it with `node kit/scripts/render-backlog.js`. |
 | `docs/MODELS.md` | `kit/templates/MODELS.md` | Maps your AI models to capability tiers. Run the "Model tiers" section of `kit/phase-1-bootstrap.md` to produce it. |
+| `docs/data-model.md` | `kit/templates/06b-data-model.md` | Entities, relationships, feature × entity matrix. Phase 2 plans validate schema tasks against it. Generate it from your code with the project upgrade (below). |
+| `docs/flows.md` | `kit/templates/06c-flows.md` | Screen inventory, screen flow, data flow. Generate it with the project upgrade (below). |
 
 Phase 2 writes per-feature specs and plans into `docs/specs/` — no separate root-level `specs/` directory is needed.
 
@@ -113,6 +115,18 @@ The orchestrator reads `Phase 2 Scope` from the roadmap and runs either the sing
 
 ---
 
+## Upgrading a Project Built on an Older Kit
+
+If the project lacks `docs/backlog.json`, `docs/data-model.md` or `docs/flows.md`, one prompt covers all of them:
+
+```text
+Run the project upgrade using kit/phase-upgrade.md.
+```
+
+The AI checks which documents are missing and runs the matching one-time module in order: the roadmap migration (described above) and the docs backfill, which reverse-engineers the data model and flows from your code (schema, migrations, routes) and asks you to keep, correct or drop every item it is not sure about before anything is written. Phase 2 stops at its Docs preflight and points here if either document is missing.
+
+---
+
 ## What You Don't Need
 
 You don't need:
@@ -120,4 +134,4 @@ You don't need:
 - `docs/market-notes.md` — Phase 2 never reads it
 - `docs/prototype/` — Phase 2 never reads it
 
-Phase 2 reads `docs/constitution.md`, `docs/architecture.md`, `docs/backlog.json`, `docs/roadmap.md`, `docs/MODELS.md`, and — for UI work — `docs/DESIGN.md` and `docs/preview/`. Nothing else from `docs/` is required.
+Phase 2 reads `docs/constitution.md`, `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md`, `docs/backlog.json`, `docs/roadmap.md`, `docs/MODELS.md`, and — for UI work — `docs/DESIGN.md` and `docs/preview/`. Nothing else from `docs/` is required.
