@@ -251,6 +251,9 @@ function printQuickStart (rel) {
   ${SYM.dot} ${bold('Admin site')}  ${dim('(after Phase 2 has shipped)')}
     Share  ${yellow(rel + '/phase-admin.md')}  and say:  ${yellow('"Build the admin site using ' + rel + '/phase-admin.md."')}
 
+  ${SYM.dot} ${bold('Developer onboarding')}  ${dim('(any time)')}
+    Share  ${yellow(rel + '/phase-onboarding.md')}  and say:  ${yellow('"Run developer onboarding using ' + rel + '/phase-onboarding.md."')}
+
   ${SYM.dot} ${bold('Docs')}  ${dim('https://khoaly2003.github.io/craft-kit')}
   ${HR}
 `)

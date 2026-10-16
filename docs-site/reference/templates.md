@@ -26,6 +26,7 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/08-scaffold-checklist.md` | Used as a checklist in the session | Agent | Phase 1 Step 8 |
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |
 | `templates/admin-scope.md` | `docs/admin/scope.md` | Agent | Admin workflow Step 1 |
+| `templates/onboarding.html` | `docs/ONBOARDING.html` | Agent | Developer Onboarding workflow |
 
 ---
 

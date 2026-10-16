@@ -31,6 +31,7 @@ const PHASES: Page[] = [
   kit('phase-upgrade',          'phases/upgrade',        'Project Upgrade'),
   kit('phase-roadmap-migrate',  'phases/roadmap-migrate', 'Roadmap Migration'),
   kit('phase-docs-backfill',    'phases/docs-backfill',  'Docs Backfill'),
+  kit('phase-onboarding',       'phases/onboarding',     'Developer Onboarding'),
 ]
 
 const PHASE_1_STEPS = steps('phase-1', [

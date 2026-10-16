@@ -153,6 +153,10 @@ Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth.
 Build the admin site using kit/phase-admin.md.
 ```
 
+```text [Developer onboarding]
+Run developer onboarding using kit/phase-onboarding.md.
+```
+
 :::::
 
 Everything the AI produces (documents, plans, code) lands in your **project folder**. The `kit/` folder is a guide the AI reads — you never edit it; an update with `--force` overwrites it.

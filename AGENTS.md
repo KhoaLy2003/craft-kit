@@ -28,7 +28,7 @@ Single command, no subcommands. Execution order:
 6. If `--skip-setup`: print quick-start and exit
 7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend` and `archify` commands + agent download instructions, then quick-start
 8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` and `npx skills add archify` → `.agents/skills/`, (b) download of the `code-reviewer` VoltAgent agent `.md` file to `.agents/agents/` (`httpsGet` has a 15 s timeout and a 5-redirect limit)
-9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`)
+9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`, developer onboarding = `phase-onboarding.md`)
 
 There is no harness detection; install instructions for every supported harness are always printed.
 
@@ -58,6 +58,8 @@ Other workflows (all experimental — not yet validated in a test round)
   Phase 3: Discover → Prioritise → Handoff
   Admin Site: Scope → Spec & Plan → Implement → Review & E2E → Ship
               docs/admin/scope.md, docs/specs/admin/{spec,plan}.md, feature/admin → one PR (main-backend changes + admin/)
+  Developer Onboarding (on demand, re-runnable): Gather → Draft → Review → Write & verify   kit/phase-onboarding.md
+              docs/ONBOARDING.html (self-contained page, light/dark)
   Session Handover: guides/session-handover.md
 ```
 
@@ -71,7 +73,7 @@ Session logs, one per phase, never per project folder: `docs/phase-1-session.md`
 | `soft` | Orchestrator presents summary; advances unless user objects |
 | `hard` | Full stop — emit a Gate Summary naming the decision, wait for explicit approval |
 
-Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Phase 3 Prioritise; Admin Scope, Admin Ship. Full definition: `kit/orchestrator-conventions.md` → Gates.
+Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Phase 3 Prioritise; Admin Scope, Admin Ship; Onboarding Review. Full definition: `kit/orchestrator-conventions.md` → Gates.
 
 ---
 
@@ -163,6 +165,7 @@ spec-screen.md         — Step 5 / Phase 2 specs (per-screen)
 MODELS.md              — model tier map (→ docs/MODELS.md)
 e2e-tests.md           — Phase 2 Step 5 (→ docs/E2E-TESTS.md)
 admin-scope.md         — Admin Step 1 (→ docs/admin/scope.md)
+onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
 ```
 
 ### Bug Fix Scope Discipline
@@ -179,10 +182,11 @@ admin-scope.md         — Admin Step 1 (→ docs/admin/scope.md)
 | `kit/orchestrator-conventions.md` | Universal rules + gate definitions (absorbed `gate-management.md`) |
 | `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`), single closeout checklist, Phase 2 handoff |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
-| `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md` | Other workflows |
+| `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows |
 | `kit/phase-upgrade.md` | Single entry point for existing projects; registry of one-time modules (`phase-roadmap-migrate.md`, `phase-docs-backfill.md`) — add a row here for every future migration |
 | `kit/phase-roadmap-migrate.md`, `kit/phase-docs-backfill.md` | Upgrade modules: roadmap table → `backlog.json`; reverse-engineered `data-model.md` / `flows.md` |
 | `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
+| `kit/templates/onboarding.html` | Developer-onboarding page template; filled by the agent (no render script), light/dark via `prefers-color-scheme` like `backlog.html` |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |
 | `kit/stack-catalog.md` | Architecture-step stack reference: Canonical Baseline, Deviation Triggers, Additions Catalog |
 | `kit/session-logging.md` | Session log format and conventions |

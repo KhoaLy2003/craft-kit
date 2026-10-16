@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Replace every {{...}} placeholder and delete every guide comment. HTML-escape all inserted text (&lt; &gt; &amp;), especially commands.
+     Keep the style block and section ids unchanged. Delete placeholder rows that stay empty. -->
+<meta name="craft-kit-provenance" content="generated from docs and code on {{YYYY-MM-DD}}">
+<title>{{PROJECT}} · developer onboarding</title>
+<style>
+  :root { --bg:#fafafa; --fg:#1d1d1f; --muted:#6e6e73; --border:#d2d2d7; --card:#ffffff; --code:#f0f0f3; --warn:#b26a00; --accent:#0a66c2; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#161618; --fg:#f5f5f7; --muted:#98989d; --border:#3a3a3c; --card:#1f1f22; --code:#26262a; --warn:#ffb340; --accent:#4da3ff; }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font: 15px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--fg); }
+  .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 32px; max-width: 1100px; margin: 0 auto; padding: 24px; }
+  nav { position: sticky; top: 24px; align-self: start; font-size: 13px; }
+  nav h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+  nav a { display: block; padding: 3px 0; color: var(--muted); text-decoration: none; }
+  nav a:hover { color: var(--accent); }
+  header h1 { font-size: 26px; margin: 0 0 4px; }
+  .meta { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+  .meta span { margin-right: 16px; }
+  .badge { font-size: 11px; border: 1px solid var(--border); border-radius: 999px; padding: 1px 8px; color: var(--muted); }
+  section { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 4px 20px 16px; margin: 20px 0; scroll-margin-top: 16px; }
+  section h2 { font-size: 17px; margin: 16px 0 8px; }
+  h2 .num { color: var(--muted); font-weight: normal; margin-right: 6px; }
+  code, pre { font: 13px/1.5 ui-monospace, "Cascadia Code", Consolas, monospace; background: var(--code); border-radius: 6px; }
+  code { padding: 1px 5px; }
+  pre { padding: 10px 12px; overflow-x: auto; margin: 8px 0; }
+  pre code { padding: 0; background: none; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 8px 0; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  a { color: var(--accent); }
+  .unknown { color: var(--warn); font-style: italic; }
+  ul.checklist { list-style: none; padding-left: 0; }
+  ul.checklist li { padding: 3px 0; }
+  ul.checklist input { margin-right: 8px; }
+  @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } nav { position: static; } }
+  @media print { nav { display: none; } .layout { display: block; } section { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav aria-label="Sections">
+  <h2>On this page</h2>
+  <a href="#what">1. What this project is</a>
+  <a href="#prereq">2. Prerequisites</a>
+  <a href="#setup">3. Setup &amp; run</a>
+  <a href="#env">4. Environment variables</a>
+  <a href="#repo">5. Repo map</a>
+  <a href="#arch">6. Architecture in 10 minutes</a>
+  <a href="#rules">7. Conventions &amp; rules</a>
+  <a href="#work">8. How work happens here</a>
+  <a href="#testing">9. Testing</a>
+  <a href="#week1">10. First-week checklist</a>
+  <a href="#open">11. Open questions</a>
+</nav>
+<main>
+<header>
+  <h1>{{PROJECT}} · developer onboarding</h1>
+  <p class="meta">
+    <span><span class="badge">{{draft | approved}}</span></span>
+    <span>Last updated: {{YYYY-MM-DD}}</span>
+    <span>Based on: {{real files read, e.g. README.md, package.json, docs/architecture.md}}</span>
+  </p>
+  <p class="meta">Generated from the project's docs and code. Anything that could not be determined is marked <span class="unknown">unknown</span> and listed in section 11.</p>
+</header>
+
+<section id="what">
+  <h2><span class="num">1.</span>What this project is</h2>
+  <!-- 3-5 sentences, from docs/idea-brief.md or the README. -->
+  <p>{{...}}</p>
+</section>
+
+<section id="prereq">
+  <h2><span class="num">2.</span>Prerequisites</h2>
+  <!-- Runtimes with versions (.nvmrc, engines, CI config), package manager, services (database, Docker), accounts or access to request. Use <span class="unknown">unknown</span> when not determinable. -->
+  <ul><li>{{...}}</li></ul>
+</section>
+
+<section id="setup">
+  <h2><span class="num">3.</span>Setup &amp; run</h2>
+  <!-- Ordered steps: clone -> install -> env -> migrate/seed -> run -> open URL.
+       Every command verbatim from package.json scripts, Makefile, README, or docs/scaffold-checklist.md. Never reconstruct a command. -->
+  <ol>
+    <li>{{what this step does}}<pre><code>{{command}}</code></pre></li>
+  </ol>
+</section>
+
+<section id="env">
+  <h2><span class="num">4.</span>Environment variables</h2>
+  <!-- Names only. NEVER write values, not even example values taken from a real .env file. -->
+  <table>
+    <thead><tr><th>Name</th><th>Purpose</th><th>Where to get it</th></tr></thead>
+    <tbody><tr><td><code>{{NAME}}</code></td><td>{{...}}</td><td>{{...}}</td></tr></tbody>
+  </table>
+</section>
+
+<section id="repo">
+  <h2><span class="num">5.</span>Repo map</h2>
+  <!-- Directory tree, 2 levels, one line per directory. -->
+  <pre><code>{{tree}}</code></pre>
+</section>
+
+<section id="arch">
+  <h2><span class="num">6.</span>Architecture in 10 minutes</h2>
+  <!-- 5-8 lines. Link to deeper documents that exist (relative links from docs/), do not copy them. Omit links to missing documents. -->
+  <ul>
+    <li>{{...}}</li>
+  </ul>
+  <p>Go deeper: <a href="architecture.md">architecture</a> · <a href="data-model.md">data model</a> · <a href="flows.md">flows</a> · <a href="DESIGN.md">design system</a></p>
+</section>
+
+<section id="rules">
+  <h2><span class="num">7.</span>Conventions &amp; rules</h2>
+  <!-- Digest of docs/constitution.md, at most 10 bullets; link to it. -->
+  <ul><li>{{...}}</li></ul>
+  <p>Full text: <a href="constitution.md">constitution</a></p>
+</section>
+
+<section id="work">
+  <h2><span class="num">8.</span>How work happens here</h2>
+  <!-- Kit workflow in brief: spec -> plan -> implement -> review -> E2E -> ship.
+       Branch naming (feature/<slug>, fix/<bug-slug>), specs in docs/specs/, backlog in docs/backlog.html, session logs. -->
+  <ul><li>{{...}}</li></ul>
+</section>
+
+<section id="testing">
+  <h2><span class="num">9.</span>Testing</h2>
+  <!-- Commands for unit and E2E tests (see docs/E2E-TESTS.md) and what must pass before a PR. -->
+  <pre><code>{{command}}</code></pre>
+  <p>{{what must pass before a PR}}</p>
+</section>
+
+<section id="week1">
+  <h2><span class="num">10.</span>First-week checklist</h2>
+  <!-- 5-8 items: run the app, run the tests, read the three core docs, pick a pending Should/Could backlog item or a small bug, open the first PR. -->
+  <ul class="checklist">
+    <li><label><input type="checkbox"> {{...}}</label></li>
+  </ul>
+</section>
+
+<section id="open">
+  <h2><span class="num">11.</span>Open questions</h2>
+  <!-- Every unknown item, for the team lead to answer. -->
+  <ul><li>{{...}}</li></ul>
+</section>
+</main>
+</div>
+</body>
+</html>
