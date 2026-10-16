@@ -261,3 +261,15 @@ Build the admin site using kit/phase-admin.md.
 ```
 
 Before you start, the app must have shipped through Phase 2, and no unfinished `feature/*` branch may touch the backend areas the admin site needs. The AI proposes modules in `docs/admin/scope.md` and asks you to edit it. You approve at two hard gates: Scope, and Ship. Before Ship, you sign in as each role and walk through the modules yourself. See [Admin Site Workflow](/phases/admin) for the full process. This workflow is experimental.
+
+---
+
+## Onboarding a New Developer
+
+When someone joins the project, share `kit/phase-onboarding.md` with your AI and send:
+
+```text
+Run developer onboarding using kit/phase-onboarding.md.
+```
+
+It works for any project, built with the kit or not. The AI reads your README, setup scripts, `.env.example` (variable names only, never values) and the kit documents that exist, then drafts the guide and marks every fact it could not confirm as `unknown`. You decide at one hard gate: keep, correct, drop, or mark unknown for each doubtful item and each conflict between code and docs. The result is `docs/ONBOARDING.html`, one self-contained page you open in a browser (light and dark mode, side navigation, printable). To update it, send the same prompt again and choose "refresh": your earlier answers are carried over and only changed or new items are asked again. Refresh after a feature changes setup, structure, or conventions, and before each new developer starts. See [Developer Onboarding](/phases/onboarding) for the full process. This workflow is experimental.

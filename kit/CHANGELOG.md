@@ -7,6 +7,11 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Added (developer onboarding workflow, experimental)
+
+- **`phase-onboarding.md`**, **`templates/onboarding.html`** — new on-demand workflow Gather → Draft → Review (hard) → Write that generates a single self-contained `docs/ONBOARDING.html` from existing docs and code; re-runnable (refresh carries over earlier answers); never overwrites a hand-written file. Template is HTML for readability. Registered in `README.md`.
+- Docs: `docs-site/.vitepress/config.ts` page table (new page `/phases/onboarding`), `getting-started.md`, `index.md`, `reference/templates.md`, `guides/existing-projects.md`; `bin/cli.js` quick-start lists the on-demand prompt.
+
 ---
 
 ## [0.0.32] - 2026-10-16

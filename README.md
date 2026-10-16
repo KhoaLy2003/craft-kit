@@ -126,6 +126,7 @@ All experimental — not yet validated in a test round.
 | Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess (hard) → Fix → Verify. Reproduce first; the fix stays inside the assessed scope. |
 | Phase 3 — Iterate | `phase-3-iterate.md` | Discover → Prioritise (hard) → Handoff: turn real-world feedback into the next roadmap release. |
 | Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). Fixed Next.js stack; the admin app only calls `/api/admin/*` on your backend. Run after Phase 2. |
+| Developer Onboarding | `phase-onboarding.md` | A new developer is joining: Gather → Draft → Review (hard) → Write. Produces `docs/ONBOARDING.html` (one self-contained page; re-run to refresh) from your docs and code. |
 | Session Handover | `guides/session-handover.md` | A long run must continue in a fresh session. |
 
 To start the Admin Site workflow (after Phase 2 has shipped), share `kit/phase-admin.md` with your agent and say:
@@ -135,6 +136,8 @@ To start the Admin Site workflow (after Phase 2 has shipped), share `kit/phase-a
 ```
 
 The agent drafts `docs/admin/scope.md` and asks you to edit it; the two hard gates (Scope, Ship) need your approval.
+
+To produce a guide for a developer joining the project (any time, new or existing project), say `"Run developer onboarding using kit/phase-onboarding.md."`. The agent drafts `docs/ONBOARDING.html` from your docs and code and asks you to review it at one hard gate; re-run the same prompt to refresh it.
 
 To plan the next release after Phase 2 has shipped, open a new session in the project root and say (the slug is a short lowercase-hyphen name you choose, e.g. a client's follow-up requests become `r2-client-requests`):
 
@@ -205,7 +208,7 @@ All other work uses your platform's general-purpose agent.
 | `orchestrator-conventions.md` | Universal rules: step banner, PROJECT_ROOT, write verification, gates |
 | `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers, closeout checklist, Phase 2 handoff |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
-| `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md` | Other workflows (experimental) |
+| `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md` | Other workflows (experimental) |
 | `session-logging.md` | Session log format |
 | `stack-catalog.md` | Stack baseline and deviation model for the Architecture step |
 | `task-agent-rubric.md` | Task type → specialist agent routing |

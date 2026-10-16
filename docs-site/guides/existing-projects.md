@@ -127,6 +127,12 @@ The AI checks which documents are missing and runs the matching one-time module 
 
 ---
 
+## Onboarding a New Developer
+
+Once the project's docs are in place, `Run developer onboarding using kit/phase-onboarding.md.` produces `docs/ONBOARDING.html`, a single page a new developer can open in a browser: setup commands, environment variable names, repo map, conventions, and a first-week checklist. It is not part of the upgrade; run it on demand and re-run to refresh. See [Developer Onboarding](/phases/onboarding).
+
+---
+
 ## What You Don't Need
 
 You don't need:
