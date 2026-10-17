@@ -3,7 +3,8 @@
   "diagram_type": "workflow",
   "meta": {
     "title": "CraftKit — Overview",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs-site/public/diagrams/overview.html"
   },
   "lanes": [
     {
@@ -92,7 +93,7 @@
       "type": "messagebus",
       "label": "Shipped release",
       "sublabel": "branch + PR",
-      "width": 150
+      "width": 140
     },
     {
       "id": "migrate",
@@ -102,7 +103,7 @@
       "label": "Roadmap Migration",
       "sublabel": "existing roadmap to backlog",
       "tag": "Once",
-      "width": 170
+      "width": 160
     },
     {
       "id": "p3",
@@ -110,8 +111,8 @@
       "col": 3,
       "type": "cloud",
       "label": "Phase 3 — Iterate",
-      "sublabel": "feedback to next release",
-      "width": 160
+      "sublabel": "requirements to design",
+      "width": 150
     },
     {
       "id": "bugfix",
@@ -120,7 +121,7 @@
       "type": "cloud",
       "label": "Bug Fix",
       "sublabel": "assess, fix, verify",
-      "width": 150
+      "width": 140
     },
     {
       "id": "admin",
@@ -129,7 +130,7 @@
       "type": "cloud",
       "label": "Admin Site",
       "sublabel": "scope to ship",
-      "width": 150
+      "width": 140
     }
   ],
   "edges": [
@@ -172,7 +173,7 @@
       "id": "e6",
       "from": "shipped",
       "to": "p3",
-      "label": "feedback",
+      "label": "new requirements",
       "variant": "dashed",
       "role": "branch"
     },
@@ -180,7 +181,7 @@
       "id": "e7",
       "from": "p3",
       "to": "p2",
-      "label": "next release",
+      "label": "parallel features",
       "variant": "dashed",
       "role": "return"
     },
@@ -223,7 +224,8 @@
       "title": "Any Phase",
       "items": [
         "Session Handover continues a long run in a fresh AI session",
-        "Each workflow keeps its own session log in docs/"
+        "Each workflow keeps its own session log in docs/",
+        "Phase 3 designs a whole release once; Phase 2 then builds its features, in parallel where independent"
       ]
     }
   ]

@@ -39,7 +39,7 @@ features:
       src: /icons/phase-3.svg
       alt: Phase 3 Iterate
     title: Phase 3 — Iterate
-    details: After release, turn real-world feedback into the next roadmap release — discover what to change, prioritise it, and hand it to Phase 2. Experimental.
+    details: After release, turn customer requirements into one approved design for the whole release, split into work packages that Phase 2 builds, in parallel where independent. Experimental.
     link: /phases/phase-3-iterate
     linkText: Iterate
   - icon:

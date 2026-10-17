@@ -3,7 +3,8 @@
   "diagram_type": "workflow",
   "meta": {
     "title": "Phase 2 — Build",
-    "quality_profile": "showcase"
+    "quality_profile": "showcase",
+    "output": "docs-site/public/diagrams/phase-2.html"
   },
   "lanes": [
     {
@@ -161,7 +162,8 @@
       "title": "Two Scopes, One Track",
       "items": [
         "scope all: every Must feature in one cycle (validated)",
-        "scope feature: one feature per cycle, repeated (experimental)"
+        "scope feature: one feature per cycle, repeated (experimental)",
+        "Phase 3 release: features in the same work-package group run in parallel sessions, each on its own branch"
       ]
     },
     {

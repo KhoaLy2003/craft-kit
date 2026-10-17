@@ -401,3 +401,34 @@ describe('render-backlog: short title and description', () => {
     assert.match(result.stderr, /F01: description must be a string when present/);
   });
 });
+
+describe('render-backlog: cancelled features', () => {
+  const cancelledEvents = (note) => [
+    { at: '2026-09-02T08:00:00Z', type: 'created', source: 'live', by: 'orchestrator', evidence: null, note: '' },
+    { at: '2026-10-01T08:00:00Z', type: 'cancelled', source: 'live', by: 'user', evidence: null, note },
+  ];
+
+  it('accepts a cancelled feature that keeps its release and renders it in a Cancelled column', () => {
+    const root = tempProject({
+      backlog: backlog([baseFeature({ status: 'cancelled', events: cancelledEvents('client dropped the requirement') })]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    const html = fs.readFileSync(path.join(root, 'docs', 'backlog.html'), 'utf8');
+    assert.ok(html.includes('Cancelled<span class="count">1</span>'));
+    assert.ok(html.includes('client dropped the requirement'));
+    const md = fs.readFileSync(path.join(root, 'docs', 'roadmap.md'), 'utf8');
+    assert.ok(md.includes('| F01 | Sign in | Must | M |  | cancelled |'));
+  });
+
+  it('rejects a cancelled event without a reason', () => {
+    const root = tempProject({
+      backlog: backlog([baseFeature({ status: 'cancelled', events: cancelledEvents('  ') })]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /a cancelled event needs a note giving the reason/);
+  });
+});

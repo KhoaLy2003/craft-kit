@@ -29,6 +29,7 @@
 - A foundational task fails or reveals complexity that invalidates later tasks: stop and re-evaluate scope; do not build on a broken foundation.
 - No per-task commits — commits happen at Ship, or at a session handover.
 - Put the branch name in the session log.
+- Features of a Phase 3 release: create `feature/<slug>` from `main` after the `design/<release-slug>` PR is merged (from `design/<release-slug>` when it was kept local-only), so the branch contains the wave design. Do not start Step 3 until every feature in earlier Work Packages groups has `shipped`.
 
 ## Completion Criteria
 

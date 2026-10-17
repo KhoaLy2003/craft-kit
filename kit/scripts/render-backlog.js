@@ -12,16 +12,16 @@ const path = require('path');
 const SUPPORTED_SCHEMA = [1];
 const SCOPES = ['all', 'feature'];
 const ADMIN_SITE = ['yes', 'no', 'later'];
-const RELEASE_STATUS = ['planned', 'in-progress', 'shipped'];
+const RELEASE_STATUS = ['planned', 'in-progress', 'shipped', 'cancelled'];
 const PRIORITIES = ['Must', 'Should', 'Could', "Won't"];
 const SIZES = ['S', 'M', 'L'];
-const FEATURE_STATUS = ['pending', 'in-progress', 'shipped', 'deferred'];
-const EVENT_TYPES = ['created', 'approved', 'started', 'shipped', 'deferred', 'note'];
+const FEATURE_STATUS = ['pending', 'in-progress', 'shipped', 'deferred', 'cancelled'];
+const EVENT_TYPES = ['created', 'approved', 'started', 'shipped', 'deferred', 'cancelled', 'note'];
 const EVENT_SOURCES = ['live', 'backfill-confirmed', 'backfill-unverified', 'unknown'];
 const EVENT_BY = ['orchestrator', 'user', 'migration'];
-const STATUS_OF_EVENT = { created: 'pending', started: 'in-progress', shipped: 'shipped', deferred: 'deferred' };
+const STATUS_OF_EVENT = { created: 'pending', started: 'in-progress', shipped: 'shipped', deferred: 'deferred', cancelled: 'cancelled' };
 const STATUS_EVENT_TYPES = Object.keys(STATUS_OF_EVENT);
-const UNASSIGNED_RELEASE_ALLOWED = ['pending', 'deferred'];
+const UNASSIGNED_RELEASE_ALLOWED = ['pending', 'deferred', 'cancelled'];
 const SHARED_TIMESTAMP_WARN = 3;
 const SHORT_NAME_MAX = 80;
 const BEGIN = '<!-- BEGIN FEATURES -->';
@@ -124,6 +124,7 @@ function validateEvents(f, err) {
       err(`${where}: evidence must be a string or null`);
     }
     if (typeof e.note !== 'string') err(`${where}: note must be a string`);
+    else if (e.type === 'cancelled' && e.note.trim() === '') err(`${where}: a cancelled event needs a note giving the reason`);
 
     if (e.at === null) {
       if (e.source !== 'unknown') err(`${where}: at may be null only when source is unknown`);
@@ -260,6 +261,7 @@ const STATUS_COLUMNS = [
   ['in-progress', 'In progress'],
   ['shipped', 'Shipped'],
   ['deferred', 'Deferred'],
+  ['cancelled', 'Cancelled'],
 ];
 
 function renderBoard(doc) {
