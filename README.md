@@ -124,7 +124,7 @@ All experimental — not yet validated in a test round.
 | Workflow | File | Use when |
 |---|---|---|
 | Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess (hard) → Fix → Verify. Reproduce first; the fix stays inside the assessed scope. |
-| Phase 3 — Iterate | `phase-3-iterate.md` | Discover → Prioritise (hard) → Handoff: turn real-world feedback into the next roadmap release. |
+| Phase 3 — Iterate | `phase-3-iterate.md` | Discover → Prioritise (hard) → Design (hard) → Handoff → Closeout: turn customer requirements into one approved design for the whole wave, split into work packages built in parallel by Phase 2; handles scope changes after approval. Repeats for every new batch of requirements. |
 | Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). Fixed Next.js stack; the admin app only calls `/api/admin/*` on your backend. Run after Phase 2. |
 | Developer Onboarding | `phase-onboarding.md` | A new developer is joining: Gather → Draft → Review (hard) → Write. Produces `docs/ONBOARDING.html` (one self-contained page; re-run to refresh) from your docs and code. |
 | Session Handover | `guides/session-handover.md` | A long run must continue in a fresh session. |

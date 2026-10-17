@@ -248,7 +248,7 @@ The **release slug** is a short name you choose for this release: lowercase lett
 Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-client-requests.
 ```
 
-The AI asks what the release should achieve, what evidence you have, and whether you have ideas. Answer "yes" and paste the client's requests; each one is kept only if it states the problem it solves. Nothing is written to the backlog until you approve the scope. At the end, the AI gives you a prompt to start Phase 2 in a fresh session. Phase 3 needs `docs/backlog.json`, `roadmap.md`, `constitution.md`, `architecture.md` and `DESIGN.md`; if `backlog.json` is missing, run `kit/phase-roadmap-migrate.md` first. See [Phase 3 — Iterate](/guides/phase-3-iterate) for each step and gate.
+The AI asks what the release should achieve, whether customers have sent requirements (paste them, with who asked), what other evidence you have, and whether you have ideas; each candidate is kept only if it states the problem it solves. You approve the scope, then approve one design for the whole release (data model, flows, architecture, screens, and the data features share). Nothing is written to the backlog or your design documents before those approvals. At the end, the AI splits the release into work packages and gives you a Phase 2 prompt per feature that can start now, so features can be built in parallel. Phase 3 needs `docs/backlog.json`, `roadmap.md`, `constitution.md`, `architecture.md`, `data-model.md`, `flows.md` and `DESIGN.md`; if `backlog.json` is missing, run `kit/phase-roadmap-migrate.md` first. See [Phase 3 — Iterate](/guides/phase-3-iterate) for each step and gate.
 
 ---
 
