@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.34] - 2026-10-17
+
+**Summary:** Phase 3 recurring change cycle · wave design · parallel features
+
 ### Changed (Phase 3 as a recurring change cycle, experimental)
 
 - **`phase-3-iterate.md`** — five steps. Step 1 takes customer/stakeholder requirements first (Path R, `Requested by`). New Step 3 Design (hard): one wave-wide design (`design.md`) for data model, flows, architecture, and screens, a Shared Surface table with one owner per shared data point, applied once to the foundation documents after approval, every item logged in an Amendment log. Step 4 Handoff: Work Packages with parallel groups, design commit on `design/<release-slug>`, one Phase 2 prompt per feature, design change requests. Step 5 Closeout (Outcome). New "Change control" section: cancel a feature, reverse its logged items (shared items stay with a surviving user), park or discard its branch, re-check dependents and groups.
@@ -15,6 +21,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`steps/phase-1/p1-05-screen-design.md`** — screen re-entry for a Phase 3 release takes its `## Screens` list from `design.md`.
 - Docs: `README.md`, `docs-site/guides/phase-3-iterate.md`, `docs-site/getting-started.md`, `docs-site/index.md`; `tests/render-backlog.test.mjs` covers cancelled features.
 - **`docs-site/diagrams/overview.workflow.json`**, **`phase-2.workflow.json`**, **`docs-site/public/diagrams/overview.html`**, **`phase-2.html`** — regenerated: Phase 3 node and edges reflect requirements-to-design and parallel features; the Phase 2 diagram notes parallel features of a release. Preview PNGs are not regenerated.
+
+---
 
 ---
 
