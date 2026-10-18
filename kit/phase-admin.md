@@ -129,6 +129,7 @@ Build `feature/admin` from the plan.
   5. list endpoints whitelist `sort` and `filter` keys and cap `pageSize`
   6. audit `payload` carries no secrets or credentials
 - **E2E.** Add an "Admin" feature block to `docs/E2E-TESTS.md` (copy `kit/templates/e2e-tests.md` first if the file does not exist). Playwright covers the permission matrix — each role × each module action, allowed and denied — plus one happy path per module. A general-purpose agent writes and runs it; do not run the exhaustive UI pass.
+- Admin role accounts follow the registry rules (`kit/orchestrator-conventions.md` → Test account registry).
 - Run every case first and mark PASS, FAIL, or BLOCKED. Fix nothing inline. Send all failures and review findings to the implementer in one dispatch, have the reviewer check the fix diff, and re-run only the affected scope.
 
 ### Completion criteria
@@ -145,7 +146,7 @@ Manual check by the user, then commit and open the PR.
 
 ### Rules
 
-- **Manual check (the hard gate).** Start the main app and `admin/`. Ask the user to sign in as each role and walk through the modules. Give the credentials and URLs; do not commit before they approve.
+- **Manual check (the hard gate).** Start the main app and `admin/`. Ask the user to sign in as each role and walk through the modules. Give the account ids from `.test-accounts.json` (read the passwords from it for the user; do not write them into docs) and URLs; do not commit before they approve.
 - After approval, use the `finishing-a-development-branch` skill: commit everything on `feature/admin` as `feat(admin): add admin site — <module list>`, push, and open one PR against `main` containing the main-backend changes and `admin/`. Never merge it and never push to `main`.
 - Update `docs/admin-session.md` to show every step complete, with the PR link.
 

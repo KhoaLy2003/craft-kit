@@ -1,0 +1,5 @@
+{
+  "_warning": "LOCAL ONLY. Holds raw test passwords. Git-ignored; never commit, paste into docs, or log. Test accounts only, never production credentials.",
+  "_statuses": "unverified = recorded, sign-in not yet confirmed | valid = sign-in confirmed, reusable | invalid = sign-in fails, reprovision or fix | retired = intentionally no longer used",
+  "accounts": []
+}

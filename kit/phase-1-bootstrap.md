@@ -64,7 +64,7 @@ The single closeout checklist. Step 8 runs it; every item must pass before the P
 - [ ] Scaffold: every item in `kit/templates/08-scaffold-checklist.md` is checked; the app builds and runs; the smoke test passes
 - [ ] `ENV_SETUP.md` at the project root, and `.env` valid with no placeholders and a clean start *(skip if no environment variables)*
 - [ ] `AGENTS.md` at the project root with a meaningful project summary
-- [ ] `kit/` is in `.gitignore`, and `git log` shows the single Phase 1 commit capturing all of the above
+- [ ] `kit/` and `.test-accounts.json` are in `.gitignore`, and `git log` shows the single Phase 1 commit capturing all of the above
 
 ## Phase handoff
 

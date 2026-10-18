@@ -16,7 +16,8 @@
 
 - [ ] `src/` (or `app/`, `lib/`, per architecture.md) created
 - [ ] `test/` (or `tests/`, `spec/`) created
-- [ ] `.gitignore` configured for the stack, with the `kit/` entry from Ideation kept
+- [ ] `.gitignore` configured for the stack, with the `kit/` and `.test-accounts.json` entries from Ideation kept
+- [ ] `.test-accounts.json` created from `kit/templates/test-accounts.json` and git-ignored (`git check-ignore` passes)
 - [ ] `LICENSE` added <!-- required if this project may be open-sourced -->
 - [ ] Folder structure matches the components in `architecture.md` § System Overview
 

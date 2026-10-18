@@ -7,6 +7,15 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Added (central test account registry, git hygiene)
+
+- `templates/test-accounts.json` (new): registry template, installed as git-ignored `.test-accounts.json`.
+- `orchestrator-conventions.md`: Universal Rule 9 (git hygiene: `kit/` and `.test-accounts.json` ignored, verified, for every workflow) and a `Test account registry` section (reuse first, statuses, idempotent seeds, dispatch line, ids only in committed docs).
+- `steps/phase-2/p2-05-e2e.md`, `templates/e2e-tests.md`: credentials come from the registry; E2E doc lists account ids and roles only; accounts verified before each run; `E2E_*` env keys removed.
+- `steps/phase-2/p2-07-ship.md`, `phase-admin.md`: registry must stay out of commits; admin accounts follow the registry.
+- `steps/phase-1/p1-01-ideation.md`, `p1-08-scaffold.md`, `phase-1-bootstrap.md`, `templates/08-scaffold-checklist.md`: `.test-accounts.json` ignore and creation wording.
+- `phase-test-accounts-backfill.md` (new) and a `phase-upgrade.md` registry row: one-time module that records an existing project's test credentials in `.test-accounts.json`, verified by sign-in. A failed sign-in marks the account `invalid` and is reported, never blocking; unreachable app leaves `unverified`.
+
 ---
 
 ## [0.0.34] - 2026-10-17

@@ -25,6 +25,7 @@
    - Hosted stacks (Supabase, Neon, Firebase, Expo EAS, ...): confirm the user has created the account/project and has the keys and URLs. The scaffold agent cannot retrieve credentials itself. Check the free tier and pricing in `kit/stack-catalog.md` before creating accounts.
    - Git remote: optional now, needed before Phase 2 Ship. Ship pushes to a remote; if you have none, set one up before Ship or accept the local-only fallback in p2-07.
    - Confirm a git repo exists (`git rev-parse --git-dir`); Step 1 should have created it. If missing, `git init`. Make no commits here.
+     - Ensure `.test-accounts.json` exists per `kit/orchestrator-conventions.md` → Test account registry (only after `git check-ignore` passes for it).
 2. Dispatch the scaffold agent with `docs/architecture.md`, `docs/constitution.md`, and `templates/08-scaffold-checklist.md` as the completion checklist. If it fails mid-run (missing tool or credential discovered late), do not continue from the partial state: fix the root cause, clean the output, re-run from scratch.
 3. **Environment Variables Gate** (skip if the project has no external services or secrets):
    1. Read `.env.example` to list the required keys; if the scaffold did not produce one, generate it from `docs/architecture.md`, one `KEY=` line per variable.

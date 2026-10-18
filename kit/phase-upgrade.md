@@ -29,6 +29,7 @@ Order matters: a later module may read what an earlier one writes.
 |---|---|---|---|
 | 1 | `docs/backlog.json` (+ `backlog.html`) | `docs/roadmap.md` exists and `docs/backlog.json` does not | `kit/phase-roadmap-migrate.md` |
 | 2 | `docs/data-model.md`, `docs/flows.md` | `docs/architecture.md` exists and either file is missing | `kit/phase-docs-backfill.md` |
+| 3 | `.test-accounts.json` | the project has test credentials (`.env` keys, `docs/E2E-TESTS.md` credential table, or a seed script that creates users) and `.test-accounts.json` does not exist | `kit/phase-test-accounts-backfill.md` |
 
 ## Adding a document in a future kit version
 
