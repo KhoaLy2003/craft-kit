@@ -20,7 +20,7 @@
 
 ## Execution Rules
 
-1. **Git first.** Before any Q&A or file write, confirm a repo exists (`git rev-parse --git-dir`); if not, `git init`. Make no commits: Phase 1 ends with a single commit (Step 8). Ensure `.gitignore` exists with `kit/` as an entry (the kit is a development tool, not application code); append it if missing.
+1. **Git first.** Before any Q&A or file write, confirm a repo exists (`git rev-parse --git-dir`); if not, `git init`. Make no commits: Phase 1 ends with a single commit (Step 8). Ensure `.gitignore` exists with `kit/` and `.test-accounts.json` as entries (the kit is a development tool, not application code; the registry holds raw test passwords); append missing ones and verify per `kit/orchestrator-conventions.md` rule 9.
 2. Ask only clarifying questions: problem today, who has it, existing alternatives, what is out of scope. Print only the questions, never draft document content.
 3. Sequence: questions → answers → write `docs/idea-brief.md` → user opens and reviews the file → approval. Writing before the answers produces a brief built on assumptions.
 4. If the user names a target platform, record it verbatim under Known Constraints as a preliminary signal. Platform is decided in Step 6.
@@ -34,7 +34,7 @@
 
 ## Completion Criteria
 
-- [ ] Git repository exists; `kit/` is in `.gitignore`.
+- [ ] Git repository exists; `kit/` and `.test-accounts.json` are in `.gitignore` (convention rule 9).
 - [ ] All clarifying questions answered.
 - [ ] `docs/idea-brief.md` written and `Status: approved`. The problem is something users already have today (not hypothetical); at least one target user is concrete enough to picture; the solution stays a hypothesis; out-of-scope items are explicit.
 - [ ] `phase-1-kickoff.md` moved to `docs/phase-1-kickoff.md`.
