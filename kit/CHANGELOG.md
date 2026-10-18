@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.35] - 2026-10-18
+
+**Summary:** Central test account registry · reuse across features · backfill for existing projects
+
 ### Added (central test account registry, git hygiene)
 
 - `templates/test-accounts.json` (new): registry template, installed as git-ignored `.test-accounts.json`.
@@ -15,6 +21,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - `steps/phase-2/p2-07-ship.md`, `phase-admin.md`: registry must stay out of commits; admin accounts follow the registry.
 - `steps/phase-1/p1-01-ideation.md`, `p1-08-scaffold.md`, `phase-1-bootstrap.md`, `templates/08-scaffold-checklist.md`: `.test-accounts.json` ignore and creation wording.
 - `phase-test-accounts-backfill.md` (new) and a `phase-upgrade.md` registry row: one-time module that records an existing project's test credentials in `.test-accounts.json`, verified by sign-in. A failed sign-in marks the account `invalid` and is reported, never blocking; unreachable app leaves `unverified`.
+
+---
 
 ---
 
