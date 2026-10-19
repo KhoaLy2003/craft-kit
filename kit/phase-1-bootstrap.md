@@ -12,7 +12,7 @@ Run once, before Model tiers. Check that each skill and agent below is available
 | Needed in | Skills | Agent |
 |---|---|---|
 | Phase 1 | `brainstorming` (Step 1), `design-taste-frontend` (Step 3 prototype build), `archify` (Step 6 diagram render), `verification-before-completion` (every step) | none beyond the general-purpose agent |
-| Phase 2 | `brainstorming`, `writing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees`, `design-taste-frontend`, `archify` (diagram re-render after amendments), `requesting-code-review`, `finishing-a-development-branch`, `verification-before-completion` | `code-reviewer` (Step 4) |
+| Phase 2 | `brainstorming`, `writing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees`, `design-taste-frontend`, `archify` (diagram re-render after amendments), `requesting-code-review`, `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization` (Step 4), `finishing-a-development-branch`, `verification-before-completion` | none beyond the general-purpose agent |
 
 If any skill or agent is missing: tell the user in one message which items are missing and name the step each one affects. Proceed with your closest built-in behavior for that step only after the user agrees; if they would rather install first, wait. Record what is missing and the user's decision in the session log. Phase 2 items may be checked again at the Phase 2 start.
 

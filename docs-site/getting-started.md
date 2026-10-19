@@ -186,10 +186,14 @@ Skills are instruction sets and agents are specialist workers that some AI tools
 | `design-taste-frontend` | Phase 1 Step 3 and Phase 2 Step 3 (UI work) |
 | `archify` | Phase 1 Step 6 and Phase 2 Step 1 (diagrams rendered to `docs/diagrams/`) |
 | `requesting-code-review` | Phase 2 Step 4 |
+| `code-review-and-quality` | Phase 2 Step 4 (five-axis review) |
+| `security-and-hardening` | Phase 2 Step 4 (security axis) |
+| `performance-optimization` | Phase 2 Step 4 (performance axis) |
+| `code-simplification` | Phase 2 Step 4 (applying review fixes) |
 | `finishing-a-development-branch` | Phase 2 Step 7 |
 | `verification-before-completion` | All phases |
 
-Agent: `code-reviewer` (Phase 2 Step 4). All other work uses your tool's general-purpose agent.
+All work uses your tool's general-purpose agent.
 
 When Phase 1 starts, the AI checks which of these your tool has. If something is missing it tells you which step is affected and continues with the closest built-in behavior only after you agree. Details and install notes: [What You Need](/reference/required-skills).
 
@@ -202,7 +206,7 @@ When Phase 1 starts, the AI checks which of these your tool has. If something is
 | `.agents/skills/design-taste-frontend/` | if you accept the skill prompt | Optional skill, installed by the `skills` command |
 | `.agents/skills/archify/` | if you accept the skill prompt | Diagram skill, installed by the `skills` command |
 | `.claude/skills/`, `skills-lock.json` | if the `skills` command creates them | Per-tool skill locations and a lock file made by that command, not by CraftKit. A tool that does not use these locations ignores them |
-| `.agents/agents/code-reviewer.md` | if you accept the agent prompt | Optional agent definition downloaded from the VoltAgent repository |
+| `.agents/skills/code-review-and-quality/`, `code-simplification/`, `security-and-hardening/`, `performance-optimization/` | if you accept the skill prompt | Review skills from addyosmani/agent-skills, installed by the `skills` command |
 
 Skills such as `brainstorming` come from a plugin installed inside your AI tool; the installer prints the instructions but writes nothing for them. Use `--skip-setup` to install `kit/` only.
 

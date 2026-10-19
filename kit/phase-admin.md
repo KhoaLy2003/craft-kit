@@ -15,7 +15,7 @@ Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verificatio
 | 1 | Scope | hard | capable | general-purpose agent (read-only) + user | `docs/admin/scope.md` |
 | 2 | Spec & Plan | soft | balanced | orchestrator; `writing-plans` | `docs/specs/admin/spec.md`, `docs/specs/admin/plan.md` |
 | 3 | Implement | none | balanced | specialists per `kit/task-agent-rubric.md` | code on `feature/admin` |
-| 4 | Review & E2E | none | capable | `code-reviewer`; general-purpose agent | findings fixed, E2E suite green |
+| 4 | Review & E2E | none | capable | general-purpose agent with `code-review-and-quality`, `security-and-hardening`; Playwright | findings fixed, E2E suite green |
 | 5 | Ship | hard | balanced | orchestrator + user; `finishing-a-development-branch` | commit and PR |
 
 ## When to Use
@@ -121,7 +121,7 @@ Build `feature/admin` from the plan.
 
 ### Rules
 
-- **Security review.** Dispatch `code-reviewer` over the full branch diff with this checklist, in addition to its normal spec and constitution check:
+- **Security review.** Dispatch the general-purpose agent, loading `code-review-and-quality` and `security-and-hardening`, over the full branch diff with this checklist, in addition to its normal spec and constitution check:
   1. every route under `/api/admin/` except `POST /api/admin/auth/login` calls the guard; the login route is the only unauthenticated one
   2. deny by default: a role lacking a permission is refused (`403`)
   3. every mutation other than the login route writes an audit row in the same transaction

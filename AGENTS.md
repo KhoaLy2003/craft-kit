@@ -26,8 +26,8 @@ Single command, no subcommands. Execution order:
 4. With `--force` and a previous `<target>/.craft-kit-manifest.json`: delete files in the old manifest that the new kit no longer ships, then prune emptied directories. Files not in the manifest (user-added) are never touched, and manifest entries resolving outside the target are ignored. With no previous manifest, print a one-line note that renamed files from older versions may linger
 5. Write `.craft-kit-version` and `.craft-kit-manifest.json` (sorted relative file list) on every install; print the upgrade message when `--force` crosses versions
 6. If `--skip-setup`: print quick-start and exit
-7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend` and `archify` commands + agent download instructions, then quick-start
-8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` and `npx skills add archify` → `.agents/skills/`, (b) download of the `code-reviewer` VoltAgent agent `.md` file to `.agents/agents/` (`httpsGet` has a 15 s timeout and a 5-redirect limit)
+7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend`, `archify` and the four review-skill commands, then quick-start
+8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` and `npx skills add archify` → `.agents/skills/`, (b) the four review skills (`code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`) from addyosmani/agent-skills via `npx skills add`
 9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`, developer onboarding = `phase-onboarding.md`)
 
 There is no harness detection; install instructions for every supported harness are always printed.
@@ -131,7 +131,7 @@ Step files (`kit/steps/`) follow the 8-section skeleton in `kit/resource/step-sp
 
 ### Agent Routing (`kit/task-agent-rubric.md`)
 
-Routing (`kit/task-agent-rubric.md`) sends implementation tasks to the general-purpose agent and review to `code-reviewer`; UI-quality and admin-screen tasks also use their skills. Phase 2 Step 2 (Plan) assigns `Specialist:` per task and marks parallel groups.
+Routing (`kit/task-agent-rubric.md`) sends all tasks to the general-purpose agent; review tasks also load `code-review-and-quality`, `security-and-hardening`, `performance-optimization` (and `code-simplification` for fixes); UI-quality and admin-screen tasks also use their skills. Phase 2 Step 2 (Plan) assigns `Specialist:` per task and marks parallel groups.
 
 ### Artifact Metadata Headers
 
@@ -228,7 +228,7 @@ CLI tests spawn the real CLI via `spawnSync` with `input: ''` (piped stdin → n
 | fresh install | Key files present; default `./kit`; installed tree == `kit/` minus `resource/` and `CHANGELOG.md`; version stamp + sorted manifest |
 | non-empty target | Exit 1 without `--force`; `--force` installs; stale manifest files removed, emptied dirs pruned, user files kept; manifest path escape ignored; no-manifest note; file-as-target fails cleanly |
 | `--skip-setup` | Quick-start only, no setup instructions |
-| non-TTY output | Setup instructions printed; exactly one required agent (`code-reviewer`) |
+| non-TTY output | Setup instructions printed; install commands for the four review skills; no agent download |
 | quick start paths | Use the installed dir name, not a hardcoded `kit/` |
 | kit link integrity | Backticked / markdown-link `.md` references to kit files in `kit/**/*.md` (excluding `CHANGELOG.md`, `resource/`) and `README.md` all resolve |
 
