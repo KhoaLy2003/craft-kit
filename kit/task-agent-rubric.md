@@ -2,7 +2,7 @@
 
 Used in **Phase 2, Step 2 — Plan**. Give every task one `Specialist:` line using this table.
 
-> `task` below means your platform's general-purpose agent; `code-reviewer` is the review agent. Update this file if your harness names them differently.
+> `task` below means your platform's general-purpose agent. Update this file if your harness names it differently.
 
 ---
 
@@ -10,7 +10,7 @@ Used in **Phase 2, Step 2 — Plan**. Give every task one `Specialist:` line usi
 
 | Task involves... | Specialist | Also use |
 |---|---|---|
-| Code review, spec and constitution compliance | `code-reviewer` | — |
+| Code review, spec and constitution compliance | `task` | `code-review-and-quality`, `security-and-hardening`, `performance-optimization` skills; `code-simplification` when applying review fixes |
 | Everything else: frontend, backend, database, auth, infrastructure, tests, research, visual design | `task` (general-purpose agent) | — |
 | UI visual quality: "visual quality", "design upgrade", "polish", "premium UI" | `task` | `design-taste-frontend` skill (**required** for these signals) |
 | Diagrams: entity-relationship, architecture, screen flow, data flow, sequence | `task` | `archify` skill (**required** for the HTML render; see `kit/orchestrator-conventions.md` rule 8) |

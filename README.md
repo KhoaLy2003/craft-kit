@@ -172,7 +172,7 @@ Projects built on an older kit version (no `backlog.json`, `data-model.md` or `f
 
 ## Required Skills & Agents
 
-Optional add-ons. Phase 1 starts with a pre-flight that checks which are available; if any are missing the AI names the affected steps and continues with built-in behavior only after you agree. `npx github:KhoaLy2003/craft-kit` prompts you through setup interactively. Besides `kit/`, setup may write `.agents/skills/`, `.agents/agents/`, `.claude/skills/`, and `skills-lock.json`; skills and agents are optional per-tool locations.
+Optional add-ons. Phase 1 starts with a pre-flight that checks which are available; if any are missing the AI names the affected steps and continues with built-in behavior only after you agree. `npx github:KhoaLy2003/craft-kit` prompts you through setup interactively. Besides `kit/`, setup may write `.agents/skills/`, `.claude/skills/`, and `skills-lock.json`; skills are optional per-tool locations.
 
 **Skills** — loaded via your platform's skill manager or plugin system:
 
@@ -186,18 +186,16 @@ Optional add-ons. Phase 1 starts with a pre-flight that checks which are availab
 | `design-taste-frontend` | Phase 1 Step 3 (prototype), Phase 2 Step 3 (UI work) |
 | `archify` | Phase 1 Step 6 (diagram render), Phase 2 Step 1 (re-render after amendments) |
 | `requesting-code-review` | Phase 2 Step 4 |
+| `code-review-and-quality` | Phase 2 Step 4 (five-axis review) |
+| `security-and-hardening` | Phase 2 Step 4 (security axis) |
+| `performance-optimization` | Phase 2 Step 4 (performance axis) |
+| `code-simplification` | Phase 2 Step 4 (applying review fixes) |
 | `finishing-a-development-branch` | Phase 2 Step 7 |
 | `verification-before-completion` | All phases |
 
 > Skills improve consistency, not possibility: without them your AI handles the same work from general capability.
 
-**Agent** (downloaded as `.md` file into `.agents/agents/`):
-
-| Agent | Role |
-|---|---|
-| `code-reviewer` | Phase 2 Step 4 — code review |
-
-All other work uses your platform's general-purpose agent.
+All work uses your platform's general-purpose agent.
 
 ---
 

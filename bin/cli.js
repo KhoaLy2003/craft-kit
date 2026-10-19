@@ -4,7 +4,6 @@
 
 const fs        = require('fs')
 const path      = require('path')
-const https     = require('https')
 const readline  = require('readline')
 const { spawnSync } = require('child_process')
 
@@ -28,7 +27,6 @@ const SYM = {
   check : bGreen('✔'),
   cross : red('✖'),
   arrow : cyan('›'),
-  down  : cyan('↓'),
   dot   : dim('·'),
 }
 
@@ -43,8 +41,9 @@ const HR = dim('─'.repeat(52))
 //                     archify (diagram generation) https://github.com/tt-a1i/archify
 //   → installed via `npx skills add` (cross-harness).
 //
-// Agents (1):       https://github.com/VoltAgent/awesome-claude-code-subagents
-//   → downloaded as .md files into <cwd>/.agents/agents/ (project-scoped).
+// Skills (4 via npx): code-review-and-quality, code-simplification, security-and-hardening,
+//                     performance-optimization — https://github.com/addyosmani/agent-skills
+//   → installed via `npx skills add` (cross-harness).
 
 const TASTE_SKILL_REPO = 'https://github.com/Leonxlnx/taste-skill'
 const TASTE_SKILL_NAME = 'design-taste-frontend'
@@ -52,11 +51,9 @@ const TASTE_SKILL_CMD  = `npx skills add ${TASTE_SKILL_REPO} --skill "${TASTE_SK
 const ARCHIFY_SKILL_REPO = 'https://github.com/tt-a1i/archify'
 const ARCHIFY_SKILL_NAME = 'archify'
 const ARCHIFY_SKILL_CMD  = `npx skills add ${ARCHIFY_SKILL_REPO} --skill "${ARCHIFY_SKILL_NAME}" --yes`
-const VOLTAGENT_RAW    = 'https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main'
-
-const REQUIRED_AGENTS = [
-  { name: 'code-reviewer', path: 'categories/04-quality-security/code-reviewer.md' },
-]
+const REVIEW_SKILLS_REPO = 'https://github.com/addyosmani/agent-skills'
+const REVIEW_SKILL_NAMES = ['code-review-and-quality', 'code-simplification', 'security-and-hardening', 'performance-optimization']
+const REVIEW_SKILLS_CMD  = REVIEW_SKILL_NAMES.map(n => `npx skills add ${REVIEW_SKILLS_REPO} --skill "${n}" --yes`).join('\n    ')
 
 const VERSION_FILE  = '.craft-kit-version'
 const MANIFEST_FILE = '.craft-kit-manifest.json'
@@ -71,29 +68,6 @@ function die (msg) {
 
 const readKitFile = (target, name) => { try { return fs.readFileSync(path.join(target, name), 'utf8') } catch { return null } }
 
-function httpsGet (url, redirectsLeft = 5) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, { headers: { 'User-Agent': 'craft-kit-installer' }, timeout: 15_000 }, res => {
-      const { statusCode, headers } = res
-      if (statusCode >= 300 && statusCode < 400 && headers.location) {
-        res.resume()
-        if (redirectsLeft <= 0) return reject(new Error(`Too many redirects fetching ${url}`))
-        return httpsGet(new URL(headers.location, url).href, redirectsLeft - 1).then(resolve, reject)
-      }
-      if (statusCode !== 200) {
-        res.resume()
-        return reject(new Error(`HTTP ${statusCode} fetching ${url}`))
-      }
-      const chunks = []
-      res.on('data', c => chunks.push(c))
-      res.on('end',  () => resolve(Buffer.concat(chunks).toString('utf8')))
-      res.on('error', reject)
-    })
-    req.on('timeout', () => req.destroy(new Error(`Timed out fetching ${url}`)))
-    req.on('error', reject)
-  })
-}
-
 function installSkill (repo, name) {
   // shell: true is required on Windows (npx resolves to npx.cmd).
   // On Unix it triggers DEP0190 because args are concatenated, not escaped.
@@ -106,10 +80,11 @@ function installSkill (repo, name) {
 }
 
 // Prompt for one optional `npx skills add` install; `yes` is the Y/n prompt from interactiveSetup.
-async function offerSkill (yes, { question, display, repo, name, cmd }) {
+async function offerSkill (yes, { question, display, repo, names, cmd }) {
   if (await yes(question)) {
     console.log('')
-    if (installSkill(repo, name)) {
+    const results = names.map(n => installSkill(repo, n))
+    if (results.every(Boolean)) {
       console.log(`\n  ${SYM.check}  ${bGreen(display)} installed.\n`)
     } else {
       console.log(`\n  ${SYM.cross}  Install failed. Run manually:\n     ${dim(cmd)}\n`)
@@ -119,22 +94,6 @@ async function offerSkill (yes, { question, display, repo, name, cmd }) {
   }
 }
 
-async function installAgents (agentsDir) {
-  fs.mkdirSync(agentsDir, { recursive: true })
-  let ok = true
-  for (const agent of REQUIRED_AGENTS) {
-    process.stdout.write(`    ${SYM.down} ${agent.name.padEnd(22)}`)
-    try {
-      const content = await httpsGet(`${VOLTAGENT_RAW}/${agent.path}`)
-      fs.writeFileSync(path.join(agentsDir, `${agent.name}.md`), content, 'utf8')
-      console.log(SYM.check)
-    } catch (err) {
-      console.log(`${SYM.cross}  ${dim(err.message)}`)
-      ok = false
-    }
-  }
-  return ok
-}
 
 // ─── Kit files, manifest, stale cleanup ──────────────────────────────────────
 
@@ -193,25 +152,6 @@ function printSuperpowers () {
   console.log(`  Install from INSIDE your AI coding session. Command varies by harness:\n`)
   for (const [name, how] of HARNESS_INSTALL) console.log(`    ${name.padEnd(11)}  ${SYM.arrow}  ${how}`)
   console.log(`\n  Full guide: ${dim('https://github.com/obra/superpowers#installation')}`)
-}
-
-function printAgentManualInstructions () {
-  const names = REQUIRED_AGENTS.map(a => a.name).join(', ')
-  console.log(`
-  ${bold('Agents')} — https://github.com/VoltAgent/awesome-claude-code-subagents
-
-  Required: ${dim(names)}
-
-  Option A — Claude Code (recommended):
-    ${dim('claude plugin marketplace add VoltAgent/awesome-claude-code-subagents')}
-
-  Option B — Interactive installer (no clone required):
-    ${dim('curl -sO https://raw.githubusercontent.com/VoltAgent/awesome-claude-code-subagents/main/install-agents.sh')}
-    ${dim('chmod +x install-agents.sh && ./install-agents.sh')}
-
-  Option C — Manual copy to ${dim('.agents/agents/')}:
-    Copy the relevant .md files from the VoltAgent repo into your agents directory.
-`)
 }
 
 function printBanner () {
@@ -299,31 +239,25 @@ async function interactiveSetup () {
     question: 'Install design-taste-frontend now via npx?',
     display: 'design-taste-frontend',
     repo: TASTE_SKILL_REPO,
-    name: TASTE_SKILL_NAME,
+    names: [TASTE_SKILL_NAME],
     cmd: TASTE_SKILL_CMD,
   })
   await offerSkill(yes, {
     question: 'Install archify (diagram generation) now via npx?',
     display: 'archify',
     repo: ARCHIFY_SKILL_REPO,
-    name: ARCHIFY_SKILL_NAME,
+    names: [ARCHIFY_SKILL_NAME],
     cmd: ARCHIFY_SKILL_CMD,
   })
 
-  section(3, 'Code reviewer agent')
-  const agentsDir = path.join(process.cwd(), '.agents', 'agents')
-  const agentsRel = path.relative(process.cwd(), agentsDir)
-  if (await yes(`Download agents to ${bold(agentsRel + '/')}?`)) {
-    console.log('')
-    if (await installAgents(agentsDir)) {
-      console.log(`\n  ${SYM.check}  All agents installed to ${bold(agentsRel + '/')}\n`)
-    } else {
-      console.log(`\n  ${SYM.cross}  Some agents failed. Install the rest manually:\n`)
-      printAgentManualInstructions()
-    }
-  } else {
-    printAgentManualInstructions()
-  }
+  section(3, 'Review skills', '(installed via npx)')
+  await offerSkill(yes, {
+    question: 'Install the 4 review skills (code-review-and-quality, code-simplification, security-and-hardening, performance-optimization) now via npx?',
+    display: 'Review skills',
+    repo: REVIEW_SKILLS_REPO,
+    names: REVIEW_SKILL_NAMES,
+    cmd: REVIEW_SKILLS_CMD,
+  })
   rl.close()
 }
 
@@ -435,7 +369,7 @@ ${versionLine}
     console.log(`  ${dim('Existing project detected: missing ' + missing.join(', ') + '. Run: "Run the project upgrade using ' + rel + '/phase-upgrade.md."')}\n`)
   }
 
-  // Post-install: skills and agents
+  // Post-install: skills
   if (!skipSetup) {
     if (process.stdin.isTTY) {
       await interactiveSetup()
@@ -445,8 +379,8 @@ ${versionLine}
       section(2, 'Design skills')
       console.log(`  Run in your terminal:\n    ${TASTE_SKILL_CMD}`)
       console.log(`\n  Diagram generation (archify):\n    ${ARCHIFY_SKILL_CMD}`)
-      section(3, 'Code reviewer agent')
-      printAgentManualInstructions()
+      section(3, 'Review skills')
+      console.log(`  Run in your terminal:\n    ${REVIEW_SKILLS_CMD}`)
     }
   }
   printQuickStart(rel)

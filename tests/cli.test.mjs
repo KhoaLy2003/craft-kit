@@ -269,21 +269,23 @@ describe('docs backfill hint', () => {
 })
 
 describe('non-TTY output (piped stdin prints all setup instructions)', () => {
-  test('prints Superpowers, design-taste-frontend and agent instructions, then the quick start', () => {
+  test('prints Superpowers, design-taste-frontend and review-skill instructions, then the quick start', () => {
     const { status, stdout } = run([tempDir()])
     assert.equal(status, 0)
     assert.match(stdout, /obra\/superpowers/)
     assert.match(stdout, /\/plugin install superpowers/)
     assert.match(stdout, /npx skills add .*Leonxlnx\/taste-skill.*design-taste-frontend/)
     assert.match(stdout, /npx skills add .*tt-a1i\/archify.*--skill "archify"/)
-    assert.match(stdout, /VoltAgent\/awesome-claude-code-subagents/)
+    assert.match(stdout, /npx skills add .*addyosmani\/agent-skills.*--skill "code-review-and-quality"/)
+    assert.doesNotMatch(stdout, /VoltAgent|Required:/)
     assert.match(stdout, /Quick start/)
   })
 
-  test('requires only the code-reviewer agent', () => {
+  test('prints an install command for each of the four review skills', () => {
     const { stdout } = run([tempDir()])
-    const required = stdout.match(/Required:\s*(.+)/)?.[1].split(',').map(s => s.trim())
-    assert.deepEqual(required, ['code-reviewer'])
+    for (const name of ['code-review-and-quality', 'code-simplification', 'security-and-hardening', 'performance-optimization']) {
+      assert.match(stdout, new RegExp(`npx skills add .*addyosmani/agent-skills.*--skill "${name}"`))
+    }
   })
 })
 

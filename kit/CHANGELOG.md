@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed (code-reviewer agent replaced by review skills)
+
+- `bin/cli.js`: VoltAgent `code-reviewer` download and `https` code removed; installer now installs/prints four skills from addyosmani/agent-skills (`code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`) via `npx skills add`.
+- `steps/phase-2/p2-04-review.md`, `phase-2.md`, `task-agent-rubric.md`, `phase-1-bootstrap.md`, `phase-admin.md`: review is a general-purpose agent dispatch loading those skills; severities map Critical → critical, required → important, Optional/Nit → minor.
+- `tests/cli.test.mjs`, `README.md`, `AGENTS.md`, `docs-site/`: updated to match.
+
 ---
 
 ## [0.0.35] - 2026-10-18

@@ -10,7 +10,7 @@ Some AI platforms can load *skills* (instruction sets for a specific task) and r
 
 **Pre-flight.** When Phase 1 starts, the AI checks that the items below are available, using your platform's skill and agent list. If any are missing it tells you which ones and which step each affects, and continues with the closest built-in behavior only after you agree. You can also install them first and then continue. The check is defined in `kit/phase-1-bootstrap.md` (*Skills and agents pre-flight*).
 
-**Installer.** `npx github:KhoaLy2003/craft-kit` copies `kit/`, then prints install instructions for the plugin skills and, in an interactive terminal, offers to install `design-taste-frontend`, `archify` and the `code-reviewer` agent. The full list of paths it writes is in [Getting Started](/getting-started#what-the-installer-writes).
+**Installer.** `npx github:KhoaLy2003/craft-kit` copies `kit/`, then prints install instructions for the plugin skills and, in an interactive terminal, offers to install `design-taste-frontend`, `archify` and the four review skills. The full list of paths it writes is in [Getting Started](/getting-started#what-the-installer-writes).
 
 ---
 
@@ -26,6 +26,10 @@ Some AI platforms can load *skills* (instruction sets for a specific task) and r
 | `design-taste-frontend` | Phase 1 Step 3 — prototype build; Phase 2 Step 3 — UI quality for new UI work |
 | `archify` | Phase 1 Step 6 — renders the entity-relationship diagram plus a small, filtered set of other diagrams (system overview, large screen flows, core journeys; at most 6) to `docs/diagrams/*.html`; Phase 2 Step 1 — re-renders those an amendment changed. Needs Archify 3 or later for the ER type. Source: [tt-a1i/archify](https://github.com/tt-a1i/archify) |
 | `requesting-code-review` | Phase 2 Step 4 — code quality check |
+| `code-review-and-quality` | Phase 2 Step 4 and Admin Step 4 — five-axis review. Source: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) |
+| `security-and-hardening` | Phase 2 Step 4 and Admin Step 4 — security axis of the review |
+| `performance-optimization` | Phase 2 Step 4 — performance axis of the review |
+| `code-simplification` | Phase 2 Step 4 — applying readability/simplicity review fixes without changing behavior |
 | `finishing-a-development-branch` | Phase 2 Step 7 — shipping |
 | `verification-before-completion` | All phases — confirming files were created correctly |
 
@@ -33,13 +37,7 @@ Some AI platforms can load *skills* (instruction sets for a specific task) and r
 
 ## Agents
 
-Agents are specialized AI workers. The kit uses two kinds: `code-reviewer` for review, and your platform's general-purpose agent for everything else. You never address them directly.
-
-| Agent | Role | Used in |
-|---|---|---|
-| `code-reviewer` | Code review with spec and constitution compliance | Phase 2 Step 4 |
-
-For all other tasks — implementation, research, UI, testing, infrastructure — the kit uses your platform's **general-purpose agent**.
+The kit uses your platform's **general-purpose agent** for all tasks — implementation, review (loading the review skills above), research, UI, testing, infrastructure. You never address it directly.
 
 ::: tip Different agent names?
 If your platform uses different names for these agents, update `kit/task-agent-rubric.md` to match. That's the only file in the kit that maps tasks to agent names.
@@ -53,4 +51,4 @@ If you are building alone on a small app, you can use a smaller set:
 
 **Skills:** `brainstorming`, `writing-plans`, `subagent-driven-development`, `design-taste-frontend`, `verification-before-completion`
 
-**Agents:** the general-purpose agent handles all implementation; `code-reviewer` handles review.
+**Agents:** the general-purpose agent handles all implementation and review.
