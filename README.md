@@ -67,6 +67,10 @@ Then:
 2. Fill it in with your idea, target user, and any constraints. Have a `docs/DESIGN.md` design-system file ready too (Step 3 needs one; sources and a custom-file skeleton are in `kit/steps/phase-1/p1-03-prototype-design.md`).
 3. Open your AI session and say:
    "Start Phase 1 using kit/phase-1-bootstrap.md and docs/phase-1-kickoff.md."
+
+Already have requirements (BRD, PRD, SRS, tickets)? Put them in docs/requirements/ and set the kickoff's Source Mode to `requirements`: Step 1 reads them first and asks only about gaps.
+Already have a codebase? Say: "Run Adopt using kit/phase-adopt.md."
+Not sure where to start? Say: "Start using kit/START.md." It inspects the project and prints the workflow and the exact prompt to run.
 ```
 
 ---
@@ -77,14 +81,14 @@ Eight steps from raw idea to a running scaffold. Orchestration: `kit/phase-1-boo
 
 | # | Step | Gate |
 |---|---|---|
-| 1 | Ideation — problem, user, solution hypothesis | soft |
+| 1 | Ideation — problem, user, solution hypothesis (or Requirements Intake when the kickoff supplies a BRD/PRD/tickets) | soft |
 | 2 | Market Research — competitor map, reasons it might not work (run/skip chosen in the kickoff form) | soft |
 | 3 | Prototype & Design — journey map, `DESIGN.md`, one clickable HTML prototype built with it | **hard** |
-| 4 | Roadmap — MoSCoW feature list, build order, Phase 2 scope | **hard** |
+| 4 | Roadmap — MoSCoW feature list, build order, Phase 2 scope, non-functional requirements | **hard** |
 | 5 | Full Screen Design — every screen for Must + Should features (skippable when designs exist) | **hard** |
 | 6 | Architecture — stack research, analysis, stack decision | **hard** |
-| 7 | Constitution — coding rules for every AI agent on the project | soft |
-| 8 | Scaffold — folder structure, CI, smoke test, one commit, Phase 2 handoff prompt | none |
+| 7 | Constitution — coding rules and Verification Commands (build, lint, test commands) for every AI agent on the project | soft |
+| 8 | Scaffold — folder structure, CI, smoke test, version record (`docs/.craft-kit.json`), one commit, Phase 2 handoff prompt | none |
 
 **End state:** a running "hello world" scaffold, one commit, and approved artifacts in `docs/` that Phase 2 reads.
 
@@ -104,10 +108,10 @@ One track, seven steps, run at one of two scopes. The scope is decided at the Ph
 | 1 | Spec — behaviour and acceptance criteria | **hard** |
 | 2 | Plan — ordered tasks, `Specialist:` per task, parallel groups | soft |
 | 3 | Implement — branch `feature/<slug>`, specialist subagents | none |
-| 4 | Review — code review plus acceptance-criteria coverage | none |
+| 4 | Review — code review, acceptance-criteria coverage, NFR compliance, Verification Commands pass | none |
 | 5 | E2E — write the E2E plan, run it, batch failures into one fix pass | soft |
 | 6 | Manual Check — you walk through the running app | **hard** |
-| 7 | Ship — commit, PR, shipped events recorded | none |
+| 7 | Ship — commit, PR from a structured template, CI status recorded, shipped events recorded | none |
 
 Start it:
 
@@ -123,6 +127,8 @@ All experimental — not yet validated in a test round.
 
 | Workflow | File | Use when |
 |---|---|---|
+| Adopt | `phase-adopt.md` | An existing codebase has no kit documents: Survey → Architecture as-is (hard) → Constitution from observed conventions (hard) → Baseline roadmap (hard) → Backfill modules → DESIGN.md → MODELS.md → AGENTS.md → Closeout. Reads the code, never modifies it, labels every fact `from-code`, `from-docs` or `unknown`. |
+| Project Upgrade | `phase-upgrade.md` | Documents come from an older kit: detects what is missing and runs the one-time modules (roadmap migration, docs backfill, test accounts backfill, verification backfill). |
 | Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess (hard) → Fix → Verify. Reproduce first; the fix stays inside the assessed scope. |
 | Phase 3 — Iterate | `phase-3-iterate.md` | Discover → Prioritise (hard) → Design (hard) → Handoff → Closeout: turn customer requirements into one approved design for the whole wave, split into work packages built in parallel by Phase 2; handles scope changes after approval. Repeats for every new batch of requirements. |
 | Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). Fixed Next.js stack; the admin app only calls `/api/admin/*` on your backend. Run after Phase 2. |
@@ -203,15 +209,18 @@ All work uses your platform's general-purpose agent.
 
 | Path | Purpose |
 |---|---|
-| `orchestrator-conventions.md` | Universal rules: step banner, PROJECT_ROOT, write verification, gates |
+| `START.md` | Entry router: inspects the project and prints the workflow and prompt to run |
+| `orchestrator-conventions.md` | Universal rules: step banner, PROJECT_ROOT, write verification, gates, Definition of Done, version record, docs lint |
 | `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers, closeout checklist, Phase 2 handoff |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
-| `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md` | Other workflows (experimental) |
+| `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
+| `phase-upgrade.md`, `phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md` | Project upgrade entry point and its one-time modules |
+| `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`) |
 | `session-logging.md` | Session log format |
 | `stack-catalog.md` | Stack baseline and deviation model for the Architecture step |
 | `task-agent-rubric.md` | Task type → specialist agent routing |
 | `steps/phase-1/`, `steps/phase-2/` | Step detail files `p1-01` … `p1-08`, `p2-01` … `p2-07` |
-| `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, admin scope |
+| `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, admin scope, adopt survey, PR description, kit version record |
 | `guides/` | `admin-blueprint.md`, `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
 | `CHANGELOG.md` | Kit change history — kept in this repo, not installed |
 

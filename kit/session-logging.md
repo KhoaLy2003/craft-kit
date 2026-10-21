@@ -12,6 +12,7 @@
 | Bug fix | `docs/bug-session.md` | one section per bug (`## <bug-slug>`) |
 | Phase 3 | `docs/phase-3-session.md` | one section per release (`## <release-slug>`) |
 | Admin site | `docs/admin-session.md` | one table |
+| Adopt | `docs/adopt-session.md` | one table |
 
 ## Format
 

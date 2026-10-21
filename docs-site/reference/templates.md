@@ -27,18 +27,21 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |
 | `templates/admin-scope.md` | `docs/admin/scope.md` | Agent | Admin workflow Step 1 |
 | `templates/onboarding.html` | `docs/ONBOARDING.html` | Agent | Developer Onboarding workflow |
+| `templates/craft-kit.json` | `docs/.craft-kit.json` | Agent | Phase 1 Step 8, Adopt closeout, Project Upgrade report (records the kit version) |
+| `templates/adopt-survey.md` | `docs/adopt/survey.md` | Agent | Adopt Step 1 |
+| `templates/pr-description.md` | The pull request body | Agent | Phase 2 Step 7 (Ship) |
 
 ---
 
 ## Kickoff Template
 
-The only template you fill in yourself. Copy it to `docs/phase-1-kickoff.md` before starting Phase 1. It asks for the idea, the target user, what you already have (a design file, a tech preference, prior research), whether to run market research, and any hard constraints. Rough notes are fine.
+The only template you fill in yourself. Copy it to `docs/phase-1-kickoff.md` before starting Phase 1. It asks for the idea, the target user, what you already have (a design file, a tech preference, prior research), the source mode (`idea`, or `requirements` when you already have a BRD, PRD, SRS or tickets), whether to run market research, and any hard constraints. Rough notes are fine.
 
 ---
 
 ## For Existing Projects
 
-When adopting the kit on an existing project, use the templates for the required files and fill them in manually (or ask the agent to extract from your existing codebase):
+The fastest route is the Adopt workflow (`kit/phase-adopt.md`), which reads your code and writes these documents for you; see [Adopt](/phases/adopt). To do it by hand instead, use the templates for the required files and fill them in manually (or ask the agent to extract from your existing codebase):
 
 - `templates/07-constitution.md` → `docs/constitution.md`
 - `templates/06-architecture.md` → `docs/architecture.md`

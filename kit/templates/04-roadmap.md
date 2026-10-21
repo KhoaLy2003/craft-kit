@@ -69,4 +69,14 @@
 
 -
 
+---
+
+## 7. Non-functional Requirements
+
+<!-- Asked in one combined round at Step 4, with defaults by project type (kit/steps/phase-1/p1-04-roadmap.md). Small projects are not forced: use `n/a — <reason>` in the Requirement cell. Every row with a measurable target is mapped to a MUST in constitution.md or a row in its Verification Commands (Step 7). Suggested categories: security and privacy, performance, accessibility, i18n/l10n, availability and observability, compliance. -->
+
+| Category | Requirement | Measurable target | Applies to | Verified by |
+|---|---|---|---|---|
+| | | | <!-- all features, or feature ids --> | <!-- Review, E2E case, or a Verification Commands row --> |
+
 <!-- Phase 3 appends `## Release <slug>` blocks below this line. Shipped features in docs/backlog.json are never edited or removed. -->

@@ -2,11 +2,11 @@
 
 ## Overview
 
-- **Purpose**: Clarify the problem, target user, and solution hypothesis.
+- **Purpose**: Clarify the problem, target user, and solution hypothesis; in `requirements` mode, read the supplied requirements first (Requirements Intake) and ask only about gaps and conflicts.
 - **Agent/Skill**: `brainstorming` skill (Architectural path)
 - **Model**: `capable`
-- **Trigger**: New project, no existing codebase.
-- **Inputs**: the kickoff file, `phase-1-kickoff.md`, at the project root or at `docs/phase-1-kickoff.md` (idea, target user, constraints, Market Research run/skip decision). If absent or thin, fall back to conversational Q&A.
+- **Trigger**: New project, no existing codebase. The kickoff's `Source Mode` is `idea` (default) or `requirements`.
+- **Inputs**: the kickoff file, `phase-1-kickoff.md`, at the project root or at `docs/phase-1-kickoff.md` (idea, target user, constraints, Source Mode, Market Research run/skip decision). In `requirements` mode also every listed requirement source (files in `docs/requirements/`, or ticket IDs). If absent or thin, fall back to conversational Q&A.
 - **Outputs**: `docs/idea-brief.md`; the kickoff file moved to `docs/phase-1-kickoff.md`.
 - **Template**: `templates/01-idea-brief.md`
 - **Gate**: `soft` — summary after the written brief is reviewed; advance unless the user objects.
@@ -25,7 +25,8 @@
 3. Sequence: questions → answers → write `docs/idea-brief.md` → user opens and reviews the file → approval. Writing before the answers produces a brief built on assumptions.
 4. If the user names a target platform, record it verbatim under Known Constraints as a preliminary signal. Platform is decided in Step 6.
 5. After the brief is written (this creates `docs/`), move `phase-1-kickoff.md` from the project root to `docs/phase-1-kickoff.md`. If it is already in `docs/`, leave it there.
-6. **Market Research decision.** Honour the kickoff's "Market Research" run/skip decision and state it in one line. Only if the kickoff leaves it blank, ask once: *"Step 2 (Market Research) validates demand and finds competitive risks. Run it, or skip because you already have evidence or are building for yourself?"* Record the decision in the session log.
+6. **Market Research decision.** Honour the kickoff's "Market Research" run/skip decision and state it in one line. Only if the kickoff leaves it blank, ask once: *"Step 2 (Market Research) validates demand and finds competitive risks. Run it, or skip because you already have evidence or are building for yourself?"* Record the decision in the session log. In `requirements` mode a blank decision defaults to `skip` without asking (rule 7).
+7. **Requirements mode.** If the kickoff says `Mode: requirements`, read every listed source before asking anything. Write `docs/idea-brief.md` from the sources with `Provenance: requirements`. Add `Source Trace` (each statement mapped to its source and location) and `Gaps and conflicts`. Ask clarifying questions only about those items; never re-ask a fact the sources state. Market Research defaults to `skip` unless the kickoff says `run`; record `skipped (requirements supplied)` in the session log.
 
 ## Artifact Rules
 
@@ -35,8 +36,8 @@
 ## Completion Criteria
 
 - [ ] Git repository exists; `kit/` and `.test-accounts.json` are in `.gitignore` (convention rule 9).
-- [ ] All clarifying questions answered.
-- [ ] `docs/idea-brief.md` written and `Status: approved`. The problem is something users already have today (not hypothetical); at least one target user is concrete enough to picture; the solution stays a hypothesis; out-of-scope items are explicit.
+- [ ] All clarifying questions answered (`requirements` mode: every item in `Gaps and conflicts` resolved or listed under Open Questions).
+- [ ] `docs/idea-brief.md` written and `Status: approved`. The problem is something users already have today (not hypothetical); at least one target user is concrete enough to picture; the solution stays a hypothesis; out-of-scope items are explicit. `requirements` mode: `Provenance: requirements`, every statement in the brief appears in `Source Trace`, and nothing the sources state was asked again.
 - [ ] `phase-1-kickoff.md` moved to `docs/phase-1-kickoff.md`.
 - [ ] Step 2 run/skip decision recorded.
 

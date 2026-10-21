@@ -303,6 +303,23 @@ describe('quick start paths', () => {
     const { stdout } = run(['--skip-setup'], { cwd: tempDir() })
     assert.match(stdout, /kit[/\\]phase-1-bootstrap\.md/)
   })
+
+  test('lead with START.md under the installed directory name, and install the file', () => {
+    const base = tempDir()
+    const target = join(base, 'ck-smoke')
+    const { stdout } = run([target, '--skip-setup'], { cwd: base })
+    assert.match(stdout, /Start using ck-smoke[/\\]START\.md/)
+    assert.ok(existsSync(join(target, 'START.md')))
+    assert.ok(stdout.indexOf('START.md') < stdout.indexOf('phase-1-bootstrap.md'))
+  })
+
+  test('print the Adopt path for a codebase with no kit documents', () => {
+    const base = tempDir()
+    const { stdout } = run([join(base, 'my-kit'), '--skip-setup'], { cwd: base })
+    assert.match(stdout, /Run Adopt using my-kit[/\\]phase-adopt\.md/)
+    assert.ok(existsSync(join(base, 'my-kit', 'phase-adopt.md')))
+    assert.ok(existsSync(join(base, 'my-kit', 'templates', 'adopt-survey.md')))
+  })
 })
 
 // ─── Kit link integrity ──────────────────────────────────────────────────────
@@ -359,5 +376,39 @@ describe('kit link integrity', () => {
     }
     assert.ok(checked > 20, `scanner found only ${checked} references — the patterns are probably broken`)
     assert.deepEqual(broken, [], `Broken kit references:\n  ${broken.join('\n  ')}`)
+  })
+})
+
+// ─── Release and verification contracts ──────────────────────────────────────
+
+describe('release and verification contracts', () => {
+  test('package.json version equals the first released version in kit/CHANGELOG.md', () => {
+    const changelog = readFileSync(join(KIT, 'CHANGELOG.md'), 'utf8')
+    const first = changelog.match(/^## \[(\d+\.\d+\.\d+)\]/m)
+    assert.ok(first, 'no released version heading found in kit/CHANGELOG.md')
+    assert.equal(PKG.version, first[1])
+  })
+
+  test('constitution template has a Verification Commands section', () => {
+    assert.match(readFileSync(join(KIT, 'templates', '07-constitution.md'), 'utf8'), /^## Verification Commands\s*$/m)
+  })
+
+  test('phase-upgrade registry has row #4 pointing to an existing module', () => {
+    const upgrade = readFileSync(join(KIT, 'phase-upgrade.md'), 'utf8')
+    const row = upgrade.split(/\r?\n/).find(l => /^\|\s*4\s*\|/.test(l))
+    assert.ok(row, 'registry row #4 not found')
+    const module = row.match(/`(kit\/[^`]+\.md)`/)
+    assert.ok(module, 'row #4 names no module file')
+    assert.ok(existsSync(join(ROOT, module[1])), `${module[1]} does not exist`)
+  })
+
+  test('an existing constitution without Verification Commands is reported in the upgrade hint', () => {
+    const base = tempDir()
+    mkdirSync(join(base, 'docs'))
+    writeFileSync(join(base, 'docs', 'constitution.md'), '# constitution\n')
+    const { stdout } = run([join(base, 'kit'), '--skip-setup'], { cwd: base })
+    assert.ok(stdout.includes('Verification Commands section in docs/constitution.md'))
+    writeFileSync(join(base, 'docs', 'constitution.md'), '# constitution\n\n## Verification Commands\n')
+    assert.ok(!run([join(base, 'kit'), '--skip-setup', '--force'], { cwd: base }).stdout.includes('Existing project detected'))
   })
 })

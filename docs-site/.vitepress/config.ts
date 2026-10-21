@@ -23,15 +23,18 @@ const steps = (phase: string, rows: [string, string][]): Page[] =>
   rows.map(([file, text]) => kit(`steps/${phase}/${file}`, `phases/steps/${file}`, text))
 
 const PHASES: Page[] = [
+  kit('START',                  'start',                 'Start — Entry Router'),
   kit('phase-1-bootstrap',      'phases/phase-1',        'Phase 1 — Bootstrap'),
   kit('phase-2',                'phases/phase-2',        'Phase 2 — Build (workflow)'),
   kit('phase-bug-fix',          'phases/bug-fix',        'Bug Fix Workflow'),
   kit('phase-3-iterate',        'phases/phase-3-iterate', 'Phase 3 — Iterate (workflow)'),
   kit('phase-admin',            'phases/admin',          'Admin Site Workflow'),
+  kit('phase-adopt',            'phases/adopt',          'Adopt — Existing Codebase'),
   kit('phase-upgrade',          'phases/upgrade',        'Project Upgrade'),
   kit('phase-roadmap-migrate',  'phases/roadmap-migrate', 'Roadmap Migration'),
   kit('phase-docs-backfill',    'phases/docs-backfill',  'Docs Backfill'),
   kit('phase-test-accounts-backfill', 'phases/test-accounts-backfill', 'Test Accounts Backfill'),
+  kit('phase-verification-backfill',  'phases/verification-backfill',  'Verification Backfill'),
   kit('phase-onboarding',       'phases/onboarding',     'Developer Onboarding'),
 ]
 

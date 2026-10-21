@@ -7,6 +7,56 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Added (U7 — docs lint for projects; kit consistency test)
+
+- **`scripts/lint-docs.js`** (new) — read-only lint for a project's `docs/*.md`: valid `Status` for the file type, `Last updated` (or `Last amended`) in `YYYY-MM-DD`, `stale` warning when a `Based on` file is dated strictly later than an `approved` file, and the `docs/.craft-kit.json` schema (missing is a warning, malformed an error). Files without a metadata header are ignored. Output is a `file | severity | message` table; exit 1 on errors, 0 on warnings only.
+- **`orchestrator-conventions.md`** Rule 11 — run the docs lint at the Phase 2 Docs preflight and before the Ship commit; errors are fixed, warnings never block. Called from **`phase-2.md`**, **`steps/phase-2/p2-07-ship.md`**, **`phase-upgrade.md`** (Report), **`phase-adopt.md`** (Closeout).
+- `tests/kit-consistency.test.mjs`, `tests/lint-docs.test.mjs`, `tests/fixtures/lint-docs/` (dev only) — step `Gate`/`Model` match the phase tables, the `Hard gates:` list in `AGENTS.md` matches the step files, no orphan step files or templates, template metadata headers; four lint fixture cases.
+
+### Changed (U7)
+
+- **`steps/phase-1/p1-08-scaffold.md`** — added the missing `## Transitions` section. **`templates/01-idea-brief.md`**, **`templates/MODELS.md`** — added the `Based on` metadata line. **`AGENTS.md`** (repo, not shipped) — step-file skeleton corrected to match `resource/step-specification-template.md`; hard-gate list now includes Phase 3 Design and Adopt.
+
+### Added (U8 — early non-functional requirements)
+
+- `Non-functional Requirements` table in **`templates/04-roadmap.md`** (Category, Requirement, Measurable target, Applies to, Verified by; `n/a — <reason>` allowed); **`steps/phase-1/p1-04-roadmap.md`** asks one combined question with defaults by project type.
+
+### Changed (U8)
+
+- **`templates/06-architecture.md`** (`NFR served`), **`templates/07-constitution.md`** (`NFR Mapping`), **`steps/phase-1/p1-07-constitution.md`** — each NFR with a measurable target maps to a MUST or a Verification Commands row.
+- **`steps/phase-2/p2-01-spec.md`** (`NFR applicable` by reference), **`p2-02-plan.md`** (tasks marked `NFR:`), **`p2-04-review.md`** (`NFR compliance` axis), **`p2-05-e2e.md`** (testable NFR becomes a test case), **`phase-3-iterate.md`** (NFR column in the Impact table), **`templates/pr-description.md`**, **`phase-adopt.md`** (NFR table `unknown` when nothing is found).
+- **Status:** not yet validated in a test round.
+
+### Added (U4, U5, U6 — Adopt, requirements intake, Ship hardening)
+
+- **`phase-adopt.md`**, **`templates/adopt-survey.md`** — one-time workflow for a codebase with no kit documents: Survey, Architecture (as-is), Constitution from observed conventions, Baseline roadmap, Backfill modules, DESIGN.md (UI only), MODELS.md, AGENTS.md, Closeout. Hard gates at Steps 2, 3 and 4 (Steps 2 and 3 may be approved together with "defaults"). Writes `docs/adopt-session.md`, `docs/.craft-kit.json`, and opens a PR from `chore/adopt-craftkit`; source code is never modified. Baseline backlog events use `source: unknown` with `at: null` (or `backfill-confirmed` for a date you supply), because `scripts/render-backlog.js` has no `backfill` source value.
+- **`templates/pr-description.md`** — structured PR description used by Ship; Migration and rollback is required when the plan has schema tasks.
+- Kickoff `Source Mode` (`idea` | `requirements`); Phase 1 Step 1 becomes Requirements Intake in `requirements` mode, with `Source Trace` and `Gaps and conflicts` in the idea brief; Market Research defaults to `skip` in that mode.
+- Ship: CI status (`passing` | `failing` | `pending` | `not-checked`) in the session log, at most one return to Step 4 per cycle, never merge, never deploy; product `CHANGELOG.md` entry when one exists.
+
+### Changed (U4, U5, U6)
+
+- **`steps/phase-1/p1-01-ideation.md`**, **`p1-04-roadmap.md`** (`[Src: ...]` at the start of a feature `description`; schema unchanged), **`templates/01-idea-brief.md`**, **`templates/phase-1-kickoff.md`**, **`phase-1-bootstrap.md`** — requirements mode.
+- **`templates/06-architecture.md`**, **`templates/07-constitution.md`** — `Provenance` line (`reverse-engineered (Adopt)`).
+- **`steps/phase-2/p2-07-ship.md`** — CI status, PR template, product changelog, no deploy.
+- **`session-logging.md`**, **`phase-upgrade.md`**, **`phase-1-bootstrap.md`**, **`phase-2.md`** (Docs preflight points to Adopt when the constitution or architecture is missing), **`START.md`** (routes existing code to Adopt; asks about requirements documents for a new product), **`bin/cli.js`** (Adopt line in the quick-start).
+- **Status:** not yet validated in a test round.
+
+### Added (U1, U2, U3 — entry router, Verification Commands, kit version record)
+
+- **`START.md`** — minimal read-only router: detects the project's state (resume, new product, existing code, older kit, complete documents) and prints the workflow and prompt to run. The CLI quick-start prints it first.
+- **`templates/craft-kit.json`**, **`orchestrator-conventions.md`** Rule 10 — `docs/.craft-kit.json` records the kit version that produced or last upgraded a project's documents; preflights and START.md warn on a mismatch and never block. The Phase 1, Adopt, and Upgrade handoffs print the pinned command `npx github:KhoaLy2003/craft-kit#v<kit_version>`.
+- **`phase-verification-backfill.md`** and `phase-upgrade.md` registry row #4 — one-time module that adds `## Verification Commands` to an existing constitution. **`bin/cli.js`** names the missing section in the post-install hint.
+
+### Changed (U1, U2, U3)
+
+- **`templates/07-constitution.md`**, **`steps/phase-1/p1-07-constitution.md`**, **`p1-08-scaffold.md`**, **`templates/08-scaffold-checklist.md`** — the constitution gains `Verification Commands` (including a `CI` row); Scaffold runs each command and marks it `verified`, and writes the version record in the Phase 1 commit.
+- **`orchestrator-conventions.md`** — new `Definition of Done`: baseline, pass before leaving Review, rerun before Ship.
+- **`steps/phase-2/p2-03-implement.md`**, **`p2-04-review.md`**, **`p2-05-e2e.md`**, **`p2-07-ship.md`**, **`templates/e2e-tests.md`** — baseline run, Verification Commands in Review criteria, `Verification type` and `Command` in the E2E plan, wording "through the system's real interface" for non-browser projects.
+- **`phase-1-bootstrap.md`**, **`phase-2.md`**, **`phase-upgrade.md`** — version record written and checked; Phase 2 Docs preflight sends a constitution without `Verification Commands` to the upgrade.
+- **`AGENTS.md`** (repo, not shipped) — Release process: bump `package.json`, turn `[Unreleased]` into `[x.y.z] - date`, create and push tag `vx.y.z`. README, docs-site and the `--force` hint stay unpinned.
+- **Status:** not yet validated in a test round.
+
 ---
 
 ## [0.0.36] - 2026-10-19

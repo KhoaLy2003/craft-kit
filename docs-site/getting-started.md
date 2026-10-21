@@ -4,7 +4,7 @@
 
 You don't need to be a developer. Your job is to describe your idea and give feedback at the right moments. Plain terms such as *Must feature*, *gate*, or *scope* are explained in the [Glossary](/reference/glossary).
 
-New to the kit? The <a href="/craft-kit/diagrams/overview.html" target="_blank" rel="noopener">overview diagram</a> shows how the install, Phase 1, Phase 2, and the optional workflows fit together.
+New to the kit? The <a href="/craft-kit/diagrams/overview.html" target="_blank" rel="noopener">overview diagram</a> shows how the install, Phase 1, Phase 2, and the optional workflows fit together. Not sure which workflow fits your situation? After installing, say `Start using kit/START.md.` and the AI inspects your project and tells you which workflow to run and the exact prompt for it (see [Start](/start)).
 
 ---
 
@@ -110,6 +110,7 @@ Then fill in `docs/phase-1-kickoff.md`. It asks for:
 - What problem you're solving and for whom
 - Who the target user is
 - Anything you already have (a rough design, a preference for certain tools, existing code)
+- Whether you already have requirements documents (a BRD, PRD, SRS or tickets): set the source mode to `requirements`, put the files in `docs/requirements/`, and Phase 1 Step 1 reads them first and asks only about gaps and conflicts instead of re-asking what they say. Market research then defaults to skipped
 - Whether to run the optional market research step
 - Any hard limits (budget, deadline, things that must or must not be included)
 
@@ -220,7 +221,7 @@ Hosted services that a stack may need (databases, hosting, authentication) can c
 
 ## Already Have a Project?
 
-Skip Phase 1. Install the kit (`npx github:KhoaLy2003/craft-kit`), then create a few planning documents in a `docs/` folder. See [Existing Projects](/guides/existing-projects) for what to include in each one.
+Skip Phase 1. Install the kit (`npx github:KhoaLy2003/craft-kit`), then say `Run Adopt using kit/phase-adopt.md.`: the AI reads your code and writes the planning documents Phase 2 needs, and you approve three decisions along the way (architecture, coding rules, baseline feature list). Prefer to write them yourself, or the project already has some kit documents? See [Existing Projects](/guides/existing-projects).
 
 ---
 

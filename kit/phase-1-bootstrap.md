@@ -1,7 +1,7 @@
 # Phase 1 — Bootstrap
 
 > **Run once per project, from raw idea to a ready-to-code codebase.**
-> Existing project: skip this phase and start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). If the project lacks documents this kit version expects (`docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`), run `kit/phase-upgrade.md` first. To decide what to build next on a shipped product, use `kit/phase-3-iterate.md`.
+> Existing project: skip this phase and start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). If the codebase has no kit documents at all (no constitution or architecture), run `kit/phase-adopt.md` first. If the project lacks documents this kit version expects (`docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`), run `kit/phase-upgrade.md` first. To decide what to build next on a shipped product, use `kit/phase-3-iterate.md`. Not sure which workflow fits? Say "Start using `kit/START.md`" and it routes you.
 
 Universal rules (step banner, gates, file verification, English-only, write-then-review) are in `kit/orchestrator-conventions.md`. In this phase, every subagent dispatch carries `PROJECT_ROOT` and, if it writes a file, the fail-fast write instruction; afterwards confirm each file exists on disk (conventions rules 1–3). Session log: `docs/phase-1-session.md` (`kit/session-logging.md`).
 
@@ -40,8 +40,8 @@ Before each step, read its step file; it is authoritative for that step's inputs
 
 | Step | Name | Gate | Model | Agent | Output | Step file |
 |---|---|---|---|---|---|---|
-| 1 | Product Ideation | `soft` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
-| 2 | Market Research *(optional; runs if the kickoff says run, or if you answer "run" to the one question Step 1 asks when the kickoff is blank)* | `soft` | fast | general-purpose agent | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
+| 1 | Product Ideation *(kickoff `Mode: idea`)* or Requirements Intake *(kickoff `Mode: requirements`: reads the supplied BRD, PRD, SRS or tickets first and asks only about gaps and conflicts)* | `soft` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
+| 2 | Market Research *(optional; runs if the kickoff says run, or if you answer "run" to the one question Step 1 asks when the kickoff is blank; in requirements mode a blank decision means skip)* | `soft` | fast | general-purpose agent | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
 | 3 | Prototype & Design | `hard` | balanced | general-purpose agent; orchestrator builds the HTML | `docs/prototype/`, `docs/DESIGN.md`, `docs/preview/` | `kit/steps/phase-1/p1-03-prototype-design.md` |
 | 4 | Roadmap (also sets Phase 2 scope) | `hard` | balanced | general-purpose agent | `docs/roadmap.md`, `docs/backlog.json`, `docs/backlog.html` | `kit/steps/phase-1/p1-04-roadmap.md` |
 | 5 | Full Screen Design *(skippable only when approved designs exist, or every feature has one simple screen already covered by `docs/preview/`)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
@@ -63,6 +63,7 @@ The single closeout checklist. Step 8 runs it; every item must pass before the P
 - [ ] `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md` and `docs/constitution.md` are `approved`
 - [ ] Scaffold: every item in `kit/templates/08-scaffold-checklist.md` is checked; the app builds and runs; the smoke test passes
 - [ ] `ENV_SETUP.md` at the project root, and `.env` valid with no placeholders and a clean start *(skip if no environment variables)*
+- [ ] `docs/.craft-kit.json` written from `kit/templates/craft-kit.json` with `recorded_by: phase-1` and `kit_version` copied from `.craft-kit-version` in the installed kit directory (conventions rule 10)
 - [ ] `AGENTS.md` at the project root with a meaningful project summary
 - [ ] `kit/` and `.test-accounts.json` are in `.gitignore`, and `git log` shows the single Phase 1 commit capturing all of the above
 
@@ -88,7 +89,7 @@ Then run Phase 2 (scope: [all | feature]) for [project-name].
 
 The new session has no memory of Phase 1; these files are all it needs.
 
-`kit/` is in `.gitignore`, so a fresh clone or a new machine does not have it. Before the handoff prompt works there, reinstall the kit in the project root (`npx github:KhoaLy2003/craft-kit`) so `kit/phase-2.md` exists. The `docs/` files are committed and travel with the repo.
+`kit/` is in `.gitignore`, so a fresh clone or a new machine does not have it. Before the handoff prompt works there, reinstall the kit in the project root with the pinned command `npx github:KhoaLy2003/craft-kit#v<kit_version>`, where `<kit_version>` is read from `docs/.craft-kit.json` (substitute the real value when emitting the prompt), so `kit/phase-2.md` exists and matches the version that produced the docs. The `docs/` files are committed and travel with the repo.
 
 ## Flow
 

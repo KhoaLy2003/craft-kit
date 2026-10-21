@@ -28,7 +28,7 @@ Single command, no subcommands. Execution order:
 6. If `--skip-setup`: print quick-start and exit
 7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend`, `archify` and the four review-skill commands, then quick-start
 8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` and `npx skills add archify` → `.agents/skills/`, (b) the four review skills (`code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`) from addyosmani/agent-skills via `npx skills add`
-9. Print quick-start with the relative kit path (Phase 1 = `phase-1-bootstrap.md`, Phase 2 = `phase-2.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`, developer onboarding = `phase-onboarding.md`)
+9. Print quick-start with the relative kit path, led by "Not sure where to start? Say: Start using `<rel>/START.md`" (then Phase 1 = `phase-1-bootstrap.md`, existing project = `phase-2.md`, with the Adopt path `phase-adopt.md` for a codebase with no kit documents and the upgrade path `phase-upgrade.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`, developer onboarding = `phase-onboarding.md`). The post-install missing-docs hint also names the constitution's `Verification Commands` section
 
 There is no harness detection; install instructions for every supported harness are always printed.
 
@@ -40,7 +40,9 @@ Phase 1 (Bootstrap, once per project) — 8 steps
   5 Full Screen Design → 6 Architecture → 7 Constitution → 8 Scaffold
   Output: docs/{idea-brief,market-notes,DESIGN,roadmap,architecture,data-model,flows,constitution,
                 scaffold-checklist,MODELS}.md (+ backlog.json, backlog.html); docs/prototype/, docs/preview/, docs/designs/
-          docs/phase-1-session.md; one Phase 1 commit; Phase 2 handoff prompt
+          docs/.craft-kit.json (kit version record, committed); docs/phase-1-session.md; one Phase 1 commit; Phase 2 handoff prompt (pinned install command)
+  Step 1 has two modes (kickoff `Source Mode`): idea, or requirements (reads a BRD/PRD/tickets first; Source Trace; [Src: ...] on features)
+  Step 4 also records the Non-functional Requirements table; Step 7 maps each NFR to a MUST or a Verification Commands row
 
 Phase 2 (Build) — one track, 7 steps, parameterised by scope
   1 Spec → 2 Plan → 3 Implement → 4 Review → 5 E2E → 6 Manual Check → 7 Ship
@@ -52,10 +54,14 @@ Phase 2 (Build) — one track, 7 steps, parameterised by scope
           docs/phase-2-session.md (one section per feature)
 
 Other workflows (all experimental — not yet validated in a test round)
+  START (read-only router, no banner, no session log): inspects the project → prints workflow + prompt   kit/START.md
+  Adopt (existing codebase without kit docs, once, 9 steps): Survey → Architecture as-is → Constitution → Baseline roadmap → Backfill modules → DESIGN.md → MODELS.md → AGENTS.md → Closeout   kit/phase-adopt.md
+              docs/adopt/survey.md, docs/adopt-session.md, chore/adopt-craftkit → PR; source code never modified
   Project Upgrade (existing projects, once): detect missing docs → run modules   kit/phase-upgrade.md
-    modules: Roadmap Migration (kit/phase-roadmap-migrate.md), Docs Backfill (kit/phase-docs-backfill.md)
+    modules: Roadmap Migration (kit/phase-roadmap-migrate.md), Docs Backfill (kit/phase-docs-backfill.md),
+             Test Accounts Backfill (kit/phase-test-accounts-backfill.md), Verification Backfill (kit/phase-verification-backfill.md)
   Bug Fix: Assess → Fix → Verify         docs/specs/bugs/<bug-slug>/assess.md, fix/<bug-slug> → PR
-  Phase 3: Discover → Prioritise → Handoff
+  Phase 3: Discover → Prioritise → Design → Handoff → Closeout
   Admin Site: Scope → Spec & Plan → Implement → Review & E2E → Ship
               docs/admin/scope.md, docs/specs/admin/{spec,plan}.md, feature/admin → one PR (main-backend changes + admin/)
   Developer Onboarding (on demand, re-runnable): Gather → Draft → Review → Write & verify   kit/phase-onboarding.md
@@ -63,7 +69,7 @@ Other workflows (all experimental — not yet validated in a test round)
   Session Handover: guides/session-handover.md
 ```
 
-Session logs, one per phase, never per project folder: `docs/phase-1-session.md`, `docs/phase-2-session.md`, `docs/bug-session.md`, `docs/phase-3-session.md`, `docs/admin-session.md`. Updated at gates and at completion, not after every step.
+Session logs, one per phase, never per project folder: `docs/phase-1-session.md`, `docs/phase-2-session.md`, `docs/bug-session.md`, `docs/phase-3-session.md`, `docs/admin-session.md`, `docs/adopt-session.md`. Updated at gates and at completion, not after every step. START.md is a read-only router and keeps no log.
 
 ### Gate System
 
@@ -73,7 +79,7 @@ Session logs, one per phase, never per project folder: `docs/phase-1-session.md`
 | `soft` | Orchestrator presents summary; advances unless user objects |
 | `hard` | Full stop — emit a Gate Summary naming the decision, wait for explicit approval |
 
-Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Phase 3 Prioritise; Admin Scope, Admin Ship; Onboarding Review. Full definition: `kit/orchestrator-conventions.md` → Gates.
+Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Phase 3 Prioritise, Design; Admin Scope, Admin Ship; Onboarding Review. Full definition: `kit/orchestrator-conventions.md` → Gates.
 
 ---
 
@@ -89,6 +95,7 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Bug Fix Assess (Verify
 | `kit/guides/` | `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
 | `kit/guides/admin-blueprint.md` | Admin workflow's fixed stack, behavior contracts, module registry, backend conventions |
 | `kit/resource/` | `step-specification-template.md` — dev-only, **not installed** |
+| `tests/` | `cli.test.mjs`, `render-backlog.test.mjs`, `kit-consistency.test.mjs`, `lint-docs.test.mjs`; `tests/fixtures/lint-docs/` holds the lint fixture projects |
 | `testing/` | Narrative E2E validation rounds; each under `testing/round-NN/<project-slug>/` |
 | `docs-site/` | VitePress site; `srcDir: '..'` reads directly from `kit/` |
 
@@ -127,7 +134,7 @@ Banner (one line, defined only in that file):
 
 ### Step File Structure
 
-Step files (`kit/steps/`) follow the 8-section skeleton in `kit/resource/step-specification-template.md` (`Overview → Scope → Execution Rules → Artifact Rules → Completion Criteria → Transition Rules → Exceptions → References`). Sections that carry no content are shortened or omitted.
+Step files (`kit/steps/`) follow the skeleton in `kit/resource/step-specification-template.md`: Overview, Scope, Rules, Artifacts, Completion Criteria, Transitions, Exceptions (sections that carry no content are omitted). A step file's Overview carries `Gate` and `Model` bullets that must match the phase table; `tests/kit-consistency.test.mjs` checks this.
 
 ### Agent Routing (`kit/task-agent-rubric.md`)
 
@@ -182,9 +189,13 @@ onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
 | `kit/orchestrator-conventions.md` | Universal rules + gate definitions (absorbed `gate-management.md`) |
 | `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`), single closeout checklist, Phase 2 handoff |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
+| `kit/START.md` | Entry router (read-only): Detect → workflow + prompt; reuses the Detect step of `phase-upgrade.md` |
 | `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows |
-| `kit/phase-upgrade.md` | Single entry point for existing projects; registry of one-time modules (`phase-roadmap-migrate.md`, `phase-docs-backfill.md`) — add a row here for every future migration |
-| `kit/phase-roadmap-migrate.md`, `kit/phase-docs-backfill.md` | Upgrade modules: roadmap table → `backlog.json`; reverse-engineered `data-model.md` / `flows.md` |
+| `kit/phase-adopt.md` | Adopt: brings a codebase with no kit documents into the kit (9 steps, hard gates 2, 3, 4); writes `docs/adopt-session.md` |
+| `kit/phase-upgrade.md` | Single entry point for existing projects; registry of one-time modules (`phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`) — add a row here for every future migration |
+| `kit/phase-roadmap-migrate.md`, `kit/phase-docs-backfill.md`, `kit/phase-verification-backfill.md` | Upgrade modules: roadmap table → `backlog.json`; reverse-engineered `data-model.md` / `flows.md`; constitution `Verification Commands` table from scripts and CI config |
+| `kit/scripts/lint-docs.js` | Read-only docs lint shipped with the kit: valid `Status`, `Last updated` format, `stale` warnings, `.craft-kit.json` schema (conventions rule 11) |
+| `kit/templates/craft-kit.json`, `kit/templates/pr-description.md`, `kit/templates/adopt-survey.md` | Kit version record; Ship's PR body; Adopt survey (metadata-header rule exempts the first two) |
 | `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
 | `kit/templates/onboarding.html` | Developer-onboarding page template; filled by the agent (no render script), light/dark via `prefers-color-scheme` like `backlog.html` |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |
@@ -210,13 +221,17 @@ onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
 
 Published package files: `kit/` and `bin/` (`LICENSE` and `README.md` are included by npm automatically). The docs-site and testing directories are dev-only.
 
+### Release process
+
+Every version cut in `kit/CHANGELOG.md` needs matching state in three places: (1) set `version` in `package.json`; (2) turn `## [Unreleased]` into `## [x.y.z] - YYYY-MM-DD`; (3) create and push the git tag `vx.y.z` (`git tag vx.y.z && git push origin vx.y.z`). The Phase 1, Adopt, and Upgrade handoffs print `npx github:KhoaLy2003/craft-kit#v<kit_version>`, which only works once the tag exists, so tag before announcing a release. Check the command with `#` on Windows PowerShell and cmd. A test asserts that `package.json` `version` equals the first released version in the CHANGELOG; the tag is checked by hand. README, docs-site, and the CLI's `--force` hint stay unpinned.
+
 ---
 
 ## Testing & QA
 
 ### Framework
 
-`node:test` with `node:assert/strict`. No external libraries. Two files: `tests/cli.test.mjs` (installer) and `tests/render-backlog.test.mjs` (backlog validator and renderer, run against the real script).
+`node:test` with `node:assert/strict`. No external libraries. Four files: `tests/cli.test.mjs` (installer), `tests/render-backlog.test.mjs` (backlog validator and renderer, run against the real script), `tests/kit-consistency.test.mjs` (the kit's own drift lint), and `tests/lint-docs.test.mjs` (the shipped docs lint, run against fixtures in `tests/fixtures/lint-docs/`).
 
 ### Test Strategy
 
@@ -229,8 +244,11 @@ CLI tests spawn the real CLI via `spawnSync` with `input: ''` (piped stdin → n
 | non-empty target | Exit 1 without `--force`; `--force` installs; stale manifest files removed, emptied dirs pruned, user files kept; manifest path escape ignored; no-manifest note; file-as-target fails cleanly |
 | `--skip-setup` | Quick-start only, no setup instructions |
 | non-TTY output | Setup instructions printed; install commands for the four review skills; no agent download |
-| quick start paths | Use the installed dir name, not a hardcoded `kit/` |
+| quick start paths | Use the installed dir name, not a hardcoded `kit/`; lead with the START.md line; print the Adopt path |
 | kit link integrity | Backticked / markdown-link `.md` references to kit files in `kit/**/*.md` (excluding `CHANGELOG.md`, `resource/`) and `README.md` all resolve |
+| release and verification contracts | `package.json` version == first released CHANGELOG version; template 07 has `## Verification Commands`; `phase-upgrade.md` registry row #4 names an existing module; the install hint reports a constitution without that section |
+| kit consistency (`kit-consistency.test.mjs`) | Step files have Overview, Completion Criteria, Transitions; Gate and Model bullets in Overview match the phase tables; the `Hard gates:` list in this file matches `Gate: hard` steps; no orphan step files or templates; template metadata headers (exceptions listed in the test) |
+| docs lint (`lint-docs.test.mjs`) | Valid headers pass; invalid `Status`, malformed date → exit 1; stale `Based on` → warning, exit 0 |
 
 ### Cross-Platform Notes
 

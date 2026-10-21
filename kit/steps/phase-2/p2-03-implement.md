@@ -17,6 +17,7 @@
 - **In**: dispatching each task to its specialist; checking each task against the constitution.
 - **Out**: re-deciding parallel groups or specialists (Step 2 did); spec coverage and code review (Step 4); commits (Step 7).
 - **Boundary**: **BLOCK — create the branch before any code.** `git checkout -b feature/<slug>` if it does not already exist, then confirm it is checked out. `<slug>` is the feature slug (`scope: feature`) or the project slug (`scope: all`). Never implement on `main`. If no git repository exists, that is a Phase 1 gap — stop and resolve it. When the branch is created, append a `started` event (`source: live`, `by: orchestrator`, `evidence`: the branch name) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built in this pass); if the feature's release is `planned`, set it to `in-progress` in the same write. Then run `node kit/scripts/render-backlog.js`.
+- **Baseline**: after the branch exists and before any code, run the build, lint, typecheck, and test commands from `docs/constitution.md` → Verification Commands once (Definition of Done step 1 in `kit/orchestrator-conventions.md`). Record the results in the session log; failures that exist before any change are logged as `pre-existing`. A `unknown` command is reported to the user, never skipped silently.
 
 ## Rules
 
@@ -34,6 +35,7 @@
 ## Completion Criteria
 
 - [ ] Every plan task implemented by its assigned specialist
+- [ ] Baseline run recorded in the session log (`pre-existing` failures listed)
 - [ ] All changes on `feature/<slug>`, none on `main`
 - [ ] Each task checked against `docs/constitution.md`; no unresolved spec gaps
 

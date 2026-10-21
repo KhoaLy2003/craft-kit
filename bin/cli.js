@@ -176,6 +176,9 @@ function printQuickStart (rel) {
   ${bCyan('Quick start')}
   ${HR}
 
+  ${SYM.dot} ${bold('Not sure where to start?')}
+    Say:  ${yellow('"Start using ' + rel + '/START.md."')}
+
   ${SYM.dot} ${bold('New project')}
     ${cyan('1.')} Copy ${yellow(rel + '/templates/phase-1-kickoff.md')} to ${yellow('docs/phase-1-kickoff.md')} and fill it in with your idea
     ${cyan('2.')} Open your AI assistant with this folder as the working directory
@@ -184,6 +187,7 @@ function printQuickStart (rel) {
   ${SYM.dot} ${bold('Existing project')}  ${dim('(skip Phase 1)')}
     Share  ${yellow(rel + '/phase-2.md')}  and say:  ${yellow('"Run Phase 2 using ' + rel + '/phase-2.md."')}
     If the project predates this kit version (missing docs/backlog.json, docs/data-model.md or docs/flows.md), first say:  ${yellow('"Run the project upgrade using ' + rel + '/phase-upgrade.md."')}
+    If the codebase has no kit documents yet (no docs/constitution.md or docs/architecture.md), first say:  ${yellow('"Run Adopt using ' + rel + '/phase-adopt.md."')}
 
   ${SYM.dot} ${bold('Bug fix')}
     Share  ${yellow(rel + '/phase-bug-fix.md')}  and describe the problem
@@ -356,7 +360,7 @@ ${versionLine}
   }
 
   // Existing project missing documents the current kit expects: point at the single upgrade entry point.
-  // Keep this list in step with the registry in kit/phase-upgrade.md. File-existence checks only.
+  // Keep this list in step with the registry in kit/phase-upgrade.md. File-existence checks only, except the constitution's `## Verification Commands` heading.
   // Assumes the kit sits directly under the project root (default ./kit); a deeper custom target yields no hint.
   const docsDir = path.join(path.resolve(target, '..'), 'docs')
   const has = f => fs.existsSync(path.join(docsDir, f))
@@ -364,6 +368,10 @@ ${versionLine}
   if (has('roadmap.md') && !has('backlog.json')) missing.push('docs/backlog.json')
   if (has('architecture.md')) {
     for (const f of ['data-model.md', 'flows.md']) if (!has(f)) missing.push('docs/' + f)
+  }
+  if (has('constitution.md')) {
+    const constitution = fs.readFileSync(path.join(docsDir, 'constitution.md'), 'utf8')
+    if (!/^## Verification Commands\s*$/m.test(constitution)) missing.push('the Verification Commands section in docs/constitution.md')
   }
   if (missing.length > 0) {
     console.log(`  ${dim('Existing project detected: missing ' + missing.join(', ') + '. Run: "Run the project upgrade using ' + rel + '/phase-upgrade.md."')}\n`)
