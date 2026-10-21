@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.37] - 2026-10-21
+
+**Summary:** Entry router · Adopt · Verification Commands · version record · requirements intake · Ship hardening · NFRs · docs lint
+
 ### Added (U7 — docs lint for projects; kit consistency test)
 
 - **`scripts/lint-docs.js`** (new) — read-only lint for a project's `docs/*.md`: valid `Status` for the file type, `Last updated` (or `Last amended`) in `YYYY-MM-DD`, `stale` warning when a `Based on` file is dated strictly later than an `approved` file, and the `docs/.craft-kit.json` schema (missing is a warning, malformed an error). Files without a metadata header are ignored. Output is a `file | severity | message` table; exit 1 on errors, 0 on warnings only.
@@ -56,6 +62,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`phase-1-bootstrap.md`**, **`phase-2.md`**, **`phase-upgrade.md`** — version record written and checked; Phase 2 Docs preflight sends a constitution without `Verification Commands` to the upgrade.
 - **`AGENTS.md`** (repo, not shipped) — Release process: bump `package.json`, turn `[Unreleased]` into `[x.y.z] - date`, create and push tag `vx.y.z`. README, docs-site and the `--force` hint stay unpinned.
 - **Status:** not yet validated in a test round.
+
+---
 
 ---
 
