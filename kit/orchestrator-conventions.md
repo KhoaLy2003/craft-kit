@@ -53,6 +53,22 @@ Tiers are resolved once, in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers
 
 9. **Git hygiene** — before any workflow writes its first file in a repo, ensure a git repo exists and `.gitignore` contains the lines `kit/` and `.test-accounts.json` (append each only if missing; create `.gitignore` if absent). Verify: `git check-ignore -q kit/x` and `git check-ignore -q .test-accounts.json` both exit 0. If verification fails, stop and fix before continuing. Applies to every phase file, so upgrade, bug-fix, admin, and Phase 3 do not depend on Phase 1 Step 1.
 
+10. **Kit version record** — `docs/.craft-kit.json` records the kit version that produced or last upgraded the project's documents. Workflows that finish a one-time setup (Phase 1 closeout, Adopt closeout, Project Upgrade report) write it from `.craft-kit-version` in the installed kit directory. Preflights compare it with the installed version, warn on a mismatch, and never block.
+
+11. **Docs lint** — run `node kit/scripts/lint-docs.js` at the Phase 2 Docs preflight and before the Ship commit. Errors (invalid `Status`, malformed `Last updated`) are fixed before continuing. Warnings (`stale: <based-on file> was updated after <this file>`) are shown to the user and never block.
+
+---
+
+## Definition of Done
+
+Commands come from `docs/constitution.md` → Verification Commands. A check whose status is `unknown` is reported to the user, never skipped silently.
+
+1. **Baseline** (start of Phase 2 Step 3): run build, lint, typecheck and tests once and record the results in the session log. Failures that exist before any change are logged as `pre-existing` and are not attributed to this cycle.
+2. **Before leaving Review** (Step 4): build, lint, typecheck and tests pass on the final fix diff. Only `pre-existing` failures may remain, each listed in the session log.
+3. **Before Ship** (Step 7): if code changed since the last run (for example a fix from Manual Check), run them again.
+
+Commands with side effects (database, network, deploy) are not run without asking the user.
+
 ---
 
 ## Gates

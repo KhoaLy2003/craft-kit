@@ -67,6 +67,18 @@
 
 ---
 
+## Source Mode
+
+<!-- idea: you describe the idea and the orchestrator asks questions (default).
+     requirements: you already have requirements documents or tickets; the orchestrator
+     reads them first and asks only about gaps and conflicts.
+
+     Mode: idea / requirements
+     Requirement sources (paths in docs/requirements/, or ticket IDs): ___ -->
+
+
+---
+
 ## Existing Context
 
 <!-- Anything already in place that Phase 1 should know about.

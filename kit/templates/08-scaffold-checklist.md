@@ -29,6 +29,7 @@
 - [ ] Formatter configured
 - [ ] Test framework installed and a placeholder test passes
 - [ ] Package manager / dependency file initialized (`package.json`, `pyproject.toml`, ...)
+- [ ] Every command in `constitution.md` → Verification Commands has been run and marked `verified` (or `unknown` / `n/a — <reason>`), and `Last amended` updated
 - [ ] Environment variable handling set up (e.g. `.env.example`)
 
 ---

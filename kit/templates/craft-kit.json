@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "kit_version": "<value of .craft-kit-version in the installed kit directory>",
+  "recorded_at": "YYYY-MM-DD",
+  "recorded_by": "phase-1 | adopt | upgrade"
+}

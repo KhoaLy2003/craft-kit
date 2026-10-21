@@ -133,8 +133,16 @@ This creates a `kit/` folder with all the phase files and templates. Run once pe
 
 ::::: code-group
 
+```text [Not sure where to start]
+Start using kit/START.md.
+```
+
 ```text [New project]
 Start Phase 1 using the kickoff form I've shared.
+```
+
+```text [Existing code, no kit docs (Adopt)]
+Run Adopt using kit/phase-adopt.md.
 ```
 
 ```text [Build (Phase 2)]
@@ -173,7 +181,7 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 
 [**Bug Fix Workflow**<br>Diagnose the cause, fix only that, verify it's gone](/phases/bug-fix)
 
-[**Existing Projects**<br>Already have a codebase? Start at Phase 2 with a few setup files](/guides/existing-projects)
+[**Existing Projects**<br>Already have a codebase? Run Adopt, or set up a few files by hand and start at Phase 2](/guides/existing-projects)
 
 [**Evolving Specs**<br>How to update your feature plan after something has shipped](/guides/evolving-specs)
 

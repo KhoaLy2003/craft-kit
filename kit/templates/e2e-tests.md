@@ -15,7 +15,9 @@
 - **Total acceptance criteria**:
 - **Test cases planned**:
 - **Coverage**: <!-- X of Y acceptance criteria covered; flag any intentionally skipped and why -->
-- **Framework**: <!-- e.g. Playwright, Cypress -->
+- **Framework**: <!-- e.g. Playwright, Cypress; for API, CLI or other non-browser projects, the runner or script tool -->
+- **Verification type**: <!-- browser | API | CLI | mobile | other -->
+- **Command**: <!-- the E2E command, copied from docs/constitution.md → Verification Commands (E2E row) -->
 - **Estimated run time**:
 - **External dependencies**: <!-- list every external service the tests rely on (auth, database, payments, etc.) -->
 

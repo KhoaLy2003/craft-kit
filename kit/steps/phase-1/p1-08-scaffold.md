@@ -49,10 +49,11 @@
 
    **Hard gate:** do not close Phase 1 while `.env` is missing, holds placeholders, or causes env-related startup errors. Wrong credentials found during E2E force costly reruns; this is the cheapest moment to fix them.
 4. **Smoke test.** Run the start command from the generated `README.md` and confirm the app launches with no errors (browser shows a working "hello world" state; for a static site, open `index.html`). If an error names a missing or invalid environment variable, return to the gate above. On Windows, if your platform's background-process tool cannot launch `.cmd` wrappers such as `npm` and `npx`, launch the underlying `node` entry file directly (for Vite: `node node_modules/vite/bin/vite.js`) or run the command in a normal terminal; on macOS/Linux `npm run dev` works directly.
+   After the start command works, run every command in the constitution's `Verification Commands` table (install, build, lint, typecheck, tests, E2E, start) that can run on a fresh scaffold. Mark each `verified` in `docs/constitution.md`, or `unknown` / `n/a — <reason>` when it cannot run, and update the constitution's `Last amended` date. Commands with side effects are not run without asking the user (see `Definition of Done` in `kit/orchestrator-conventions.md`).
 5. **Closeout.**
    1. Use your tool's project-init command if it has one (it generates `AGENTS.md` or equivalent); otherwise write `AGENTS.md` by hand from `docs/architecture.md` and `docs/constitution.md`. Check it holds a meaningful project summary, not a stub.
    2. Run the Phase 1 closeout checklist in `kit/phase-1-bootstrap.md`; every item except the commit must pass.
-   3. Commit everything in one commit, the only commit of Phase 1:
+   3. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json`: `kit_version` from `.craft-kit-version` in the installed kit directory, `recorded_at` today, `recorded_by: phase-1`. Then commit everything in one commit, the only commit of Phase 1:
       ```
       git add -A
       git commit -m "phase 1 complete: bootstrap docs, scaffold, and project conventions"
@@ -69,8 +70,13 @@
 - [ ] Pre-flight checks passed; hosted-stack accounts confirmed (if applicable).
 - [ ] Every item in `templates/08-scaffold-checklist.md` is checked, including the Environment Variables section when applicable.
 - [ ] Smoke test passes with the project's start command and zero startup errors.
-- [ ] `AGENTS.md` generated; the Phase 1 closeout checklist passes; the single Phase 1 commit exists.
-- [ ] Phase 2 handoff prompt emitted.
+- [ ] `AGENTS.md` generated; the Phase 1 closeout checklist passes; the single Phase 1 commit exists and includes `docs/.craft-kit.json`.
+- [ ] Every `Verification Commands` row is `verified`, `unknown`, or `n/a — <reason>`; none is still `planned`.
+- [ ] Phase 2 handoff prompt emitted (pinned install command included).
+
+## Transitions
+
+- **Next**: Phase 2 (`kit/phase-2.md`), in a new session, via the handoff prompt from `kit/phase-1-bootstrap.md`.
 
 ## Exceptions / Special Cases
 

@@ -5,6 +5,8 @@
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
 - **Owner**: <!-- who this project belongs to -->
+- **Based on**: `phase-1-kickoff.md`; in requirements mode also the files in `docs/requirements/`
+- **Provenance**: `conversation (idea mode)` | `requirements`
 
 ---
 
@@ -67,3 +69,23 @@
 <!-- What this brief does NOT answer, carried forward to market research or architecture. -->
 
 -
+
+---
+
+## 7. Source Trace
+
+<!-- Requirements mode only; delete in idea mode. Map each statement of this brief to where the requirement source says it. Quote at most a short passage; keep proper names. -->
+
+| Brief statement | Source | Location (section, page, or ticket ID) |
+|---|---|---|
+| | | |
+
+---
+
+## 8. Gaps and conflicts
+
+<!-- Requirements mode only; delete in idea mode. Anything the sources do not say is a gap and becomes a question, never a guess. Two sources that disagree are a conflict; record both locations. -->
+
+| Item | Type (gap / conflict) | Sources and locations | Resolution |
+|---|---|---|---|
+| | | | |

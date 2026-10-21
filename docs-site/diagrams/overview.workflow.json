@@ -62,7 +62,7 @@
       "col": 0,
       "type": "external",
       "label": "Install the kit",
-      "sublabel": "npx, one command",
+      "sublabel": "npx, then Start using START.md",
       "tag": "Start",
       "width": 150
     },
@@ -72,7 +72,7 @@
       "col": 1,
       "type": "backend",
       "label": "Phase 1 — Bootstrap",
-      "sublabel": "idea to scaffold, 8 steps",
+      "sublabel": "idea or requirements to scaffold, 8 steps",
       "tag": "Once",
       "width": 170
     },
@@ -96,12 +96,22 @@
       "width": 140
     },
     {
-      "id": "migrate",
+      "id": "adopt",
       "lane": "existing",
       "col": 1,
       "type": "external",
-      "label": "Roadmap Migration",
-      "sublabel": "existing roadmap to backlog",
+      "label": "Adopt",
+      "sublabel": "existing codebase to kit docs",
+      "tag": "Once",
+      "width": 160
+    },
+    {
+      "id": "upgrade",
+      "lane": "existing",
+      "col": 2,
+      "type": "external",
+      "label": "Project Upgrade",
+      "sublabel": "older kit docs to current",
       "tag": "Once",
       "width": 160
     },
@@ -157,14 +167,29 @@
     {
       "id": "e4",
       "from": "install",
-      "to": "migrate",
-      "label": "existing project",
+      "to": "adopt",
+      "label": "existing code, no kit docs",
       "variant": "dashed",
       "role": "branch"
     },
     {
       "id": "e5",
-      "from": "migrate",
+      "from": "adopt",
+      "to": "p2",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e10",
+      "from": "install",
+      "to": "upgrade",
+      "label": "older kit docs",
+      "variant": "dashed",
+      "role": "branch"
+    },
+    {
+      "id": "e11",
+      "from": "upgrade",
       "to": "p2",
       "variant": "dashed",
       "role": "branch"
@@ -213,10 +238,12 @@
     },
     {
       "dot": "emerald",
-      "title": "Two Ways In",
+      "title": "Three Ways In",
       "items": [
-        "New idea: Phase 1 builds every planning document",
-        "Existing project: skip Phase 1, migrate the roadmap, start at Phase 2"
+        "New idea or existing requirements: Phase 1 builds every planning document",
+        "Existing code with no kit docs: Adopt writes them from the code, then Phase 2",
+        "Docs from an older kit: Project Upgrade fills the gaps, then Phase 2",
+        "Not sure which: say \"Start using kit/START.md\""
       ]
     },
     {

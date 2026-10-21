@@ -21,6 +21,7 @@
 - One review dispatch to the general-purpose agent, which loads `code-review-and-quality` (five-axis review), `security-and-hardening` and `performance-optimization` (applied to the security and performance axes), with the full branch diff, spec, constitution, and architecture; `scope: all` reviews all features in the same pass. The brief asks for two outputs:
   - **Coverage** — for each acceptance criterion in the spec: COVERED (evidence in the diff: function, component, validation logic, test) or GAP (none found).
   - **Findings** — code quality, security, and architectural compliance, each rated critical / important / minor. Map skill severities: `Critical:` → critical; unprefixed (required) → important; `Optional:` / `Consider:` / `Nit:` → minor; `FYI` is not a finding. Findings also include any divergence between migrations/schema code and `docs/data-model.md`, or between routes/navigation and `docs/flows.md`.
+    - **NFR compliance** — an axis of the Findings: check the diff against every row of `docs/roadmap.md` → Non-functional Requirements that the spec marks applicable (and the plan's `NFR:` tasks). A missed or unmet measurable target is a finding, rated like any other; list `NFR compliance: none` when every applicable row is met or none applies.
 - Append each GAP to the plan as a task. Fix every finding of every severity and implement every gap task in one implementer dispatch, routed by specialist per the rubric. The fix dispatch also loads `code-simplification` for every finding on the readability/simplicity axis; it must not change behavior.
 - Re-run the review dispatch on the fix diff, and on any COVERED criteria the fixes touched. Repeat until there are zero findings and zero GAPs.
 - Disagreements with `docs/constitution.md` are called out explicitly, never silently fixed.
@@ -33,6 +34,8 @@
 - [ ] Zero GAP rows: every acceptance criterion in the spec is COVERED
 - [ ] Zero open findings of any severity (critical, important, minor), after the last review re-run on the fix diff
 - [ ] Any constitution disagreement raised and resolved
+- [ ] `NFR compliance` reported in the Findings; every applicable NFR is met or its finding is fixed
+- [ ] Build, lint, typecheck, and tests from `docs/constitution.md` → Verification Commands pass on the final fix diff; only `pre-existing` failures remain, each listed in the session log (Definition of Done step 2)
 - [ ] Any decision the spec missed is recorded in the spec
 
 ## Transitions

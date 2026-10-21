@@ -39,6 +39,8 @@
   **Mid-cycle escape:** if Phase 2 Plan (`kit/steps/phase-2/p2-02-plan.md`) finds, counting domains by the definition above, that a second domain holds ≥ 20% of the tasks under `scope: all`, it recommends switching to `scope: feature` (experimental) and asks the user. On user confirmation, update the `Phase 2 Scope` field in `docs/roadmap.md` and `phase2_scope` in `docs/backlog.json`.
 
 - **Admin Site** (`yes` | `no` | `later`): ask once, before presenting the draft: "Will this product need an administrator site (to manage users, content, payments, and so on)?" Record the answer in the roadmap metadata. It is a hint for `kit/phase-admin.md`, which runs after Phase 2. It is **never a feature row** and is **excluded from every Phase 2 Scope criterion**: counting it would inflate the Must count or the domain split and could flip the scope to `feature`. `no` and `later` need no further work in Phase 1.
+- **Source references** (`requirements` mode, `docs/idea-brief.md` has `Provenance: requirements`): a feature derived from a requirement records its source at the start of its `description` in `docs/backlog.json` as `[Src: BRD §3.2]`, copied from the brief's `Source Trace`. A feature that needs no `description` otherwise gets one containing only the tag. The `backlog.json` schema is unchanged. A feature with no source requirement (added by the team or from market research) carries no tag.
+- **Non-functional requirements** (`## 7. Non-functional Requirements` in the template): ask once, in one combined round, never item by item, before presenting the draft. Offer defaults by project type and let the user answer "defaults", edit rows, or mark a category `n/a — <reason>`. Categories: security and privacy, performance, accessibility, i18n/l10n, availability and observability, compliance. Defaults: *web app with accounts* — security (authentication on every non-public route, no secrets in the repo, input validation), performance (main page interactive under 3 s on a mid-range device), accessibility (WCAG 2.1 AA, no critical violations in an automated scan), observability (errors logged); *API or backend service* — security, performance (p95 latency target), availability and observability (health endpoint, structured logs); *CLI or library* — mostly `n/a`; *internal tool* — accessibility and i18n `n/a`. Each row needs a measurable target, or the cell says `n/a — <reason>`. Fill the table (it may be all `n/a`), and set `Applies to` and `Verified by` (Review, an E2E case, or a Verification Commands row). Step 7 maps each row with a measurable target to a constitution MUST or Verification Commands row.
 
 ## Artifact Rules
 
@@ -53,7 +55,9 @@
 - [ ] `docs/backlog.json` validates and the render script exits 0.
 - [ ] `Phase 2 Scope` written with criterion scores.
 - [ ] `Admin Site` answered and recorded in the roadmap metadata; no admin feature row added.
+- [ ] `requirements` mode: every Must feature derived from a requirement has `[Src: ...]` at the start of its `description`.
 - [ ] Human confirmed the feature scope and `Phase 2 Scope`.
+- [ ] The `Non-functional Requirements` table is filled from one combined question (all `n/a` is valid); every row has a measurable target or `n/a — <reason>`.
 
 Gate summary: *"The feature roadmap is set: [N] Must features in build order, [X] items explicitly deferred, Phase 2 will run as scope [all|feature]. Does this scope match what you want to ship for the MVP?"*
 

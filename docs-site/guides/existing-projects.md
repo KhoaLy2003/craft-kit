@@ -1,5 +1,21 @@
 # Existing Projects
 
+The fastest way to bring an existing codebase into the kit is **Adopt**: one run-once workflow that reads your code and writes the documents Phase 2 needs. Doing it by hand with the templates (below) is the fallback. Not sure which path fits? Install the kit and say `Start using kit/START.md.`; it inspects the project and tells you.
+
+## Adopt — the main path
+
+Use it when your codebase has no kit documents yet (no `docs/constitution.md` or `docs/architecture.md`). Send this to your AI, from the project root:
+
+```text
+Run Adopt using kit/phase-adopt.md.
+```
+
+The AI surveys the repository read-only, then writes the architecture as it is, a constitution from the conventions it can see in your tooling and code, a baseline roadmap and backlog (features inferred from routes and screens, each confirmed by you), the data model and flows, `DESIGN.md` when there is a UI, `docs/MODELS.md`, and a root `AGENTS.md`. Every fact is labelled `from-code`, `from-docs` or `unknown`; a rule becomes MUST only when a config file enforces it or the code shows it consistently. You approve at three hard gates (architecture, constitution, baseline roadmap), and can answer the first two together with "defaults". Source code is never modified; the result lands as one commit on a branch `chore/adopt-craftkit` and a PR. See [Adopt](/phases/adopt) for the full process. This workflow is experimental.
+
+If your project already has kit documents from an older kit version, use the [project upgrade](#upgrading-a-project-built-on-an-older-kit) instead.
+
+## The manual way
+
 Skip Phase 1. Phase 2 reads a small set of files on every run — if those files exist, it works regardless of how the project was started.
 
 ## Install the Kit
@@ -43,6 +59,7 @@ What it must contain:
 - **Testing standard** — what coverage level is required, what test framework is used, what kinds of tests exist
 - **Architectural boundaries** — what lives where; what is allowed to import what
 - **Formatting and lint** — which formatter, which linter, any rules with non-default config
+- **Verification Commands** — a table of the exact commands that install, build, lint, typecheck, test and start the project (copied from your scripts, Makefile or CI config, never reconstructed). Review, E2E and Ship run them under one Definition of Done. If your constitution lacks this section, the project upgrade adds it from your scripts (`kit/phase-verification-backfill.md`).
 
 Every principle must be concrete enough to change at least one plan or diff. Vague principles ("keep code clean") are dropped when the constitution is reviewed.
 
@@ -117,13 +134,13 @@ The orchestrator reads `Phase 2 Scope` from the roadmap and runs either the sing
 
 ## Upgrading a Project Built on an Older Kit
 
-If the project lacks `docs/backlog.json`, `docs/data-model.md` or `docs/flows.md`, one prompt covers all of them:
+If the project lacks `docs/backlog.json`, `docs/data-model.md` or `docs/flows.md`, or its constitution has no `## Verification Commands` section, one prompt covers all of them:
 
 ```text
 Run the project upgrade using kit/phase-upgrade.md.
 ```
 
-The AI checks which documents are missing and runs the matching one-time module in order: the roadmap migration (described above) and the docs backfill, which reverse-engineers the data model and flows from your code (schema, migrations, routes) and asks you to keep, correct or drop every item it is not sure about before anything is written. Phase 2 stops at its Docs preflight and points here if either document is missing.
+The AI checks which documents are missing and runs the matching one-time module in order: the roadmap migration (described above), the docs backfill, which reverse-engineers the data model and flows from your code (schema, migrations, routes) and asks you to keep, correct or drop every item it is not sure about before anything is written, the test accounts backfill, and the verification backfill, which proposes the Verification Commands table from your scripts and CI config for you to review. Phase 2 stops at its Docs preflight and points here if a document is missing. At the end the upgrade writes `docs/.craft-kit.json`, which records the kit version the documents were produced with; Phase 2 and `kit/START.md` warn (never block) when it is older than the installed kit.
 
 ---
 

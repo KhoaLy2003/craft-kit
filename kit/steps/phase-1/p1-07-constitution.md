@@ -23,7 +23,9 @@
 1. Read `docs/architecture.md`, `docs/DESIGN.md`, and `docs/roadmap.md` before drafting.
 2. Use `templates/07-constitution.md` as the scaffold. Apply the test above to every principle; rewrite or remove any that fail.
 3. Fill the Amendment Procedure with a real process. For a solo developer with ≤ 15 S/M features it can be one line ("update this file directly") and the constitution can be minimal (3–5 rules).
-4. Write the file to disk, give the user its path, and present a short summary (principle count, the most consequential MUST rules).
+4. Fill the `Verification Commands` table from the approved stack in `docs/architecture.md`: one command per row, status `planned`, `n/a — <reason>` where the stack has no such step. Step 8 runs each command and marks it `verified`.
+5. **NFR mapping.** For every row of `docs/roadmap.md` → Non-functional Requirements with a measurable target, add a MUST to a principle or a row to Verification Commands, and list the pair in the template's `NFR Mapping` table. A row with no mapping is resolved before the file is written. Rows marked `n/a` need no mapping.
+6. Write the file to disk, give the user its path, and present a short summary (principle count, the most consequential MUST rules).
 
 ## Artifact Rules
 
@@ -34,6 +36,8 @@ Place the file where the harness reads it automatically; prefer `docs/constituti
 - [ ] Every principle states at least one MUST rule in measurable terms and would change a real decision if removed.
 - [ ] No personal workflow preferences (the Ship-added `Spec Evolution` section is exempt).
 - [ ] Amendment Procedure and versioning are filled in with an actionable process.
+- [ ] `Verification Commands` table filled: every row has a command or `n/a — <reason>`, status `planned`.
+- [ ] Every Non-functional Requirement with a measurable target is listed in `NFR Mapping` with a MUST or Verification Commands row.
 - [ ] File saved at the correct path with `Status: approved`.
 
 Gate summary: *"The working rules for all Phase 2 code are set; every AI agent on this project will follow them. Does anything need to change before we start building?"*

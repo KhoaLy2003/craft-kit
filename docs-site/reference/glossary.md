@@ -52,3 +52,19 @@ A mandatory check in the Admin Site workflow, made before any module is built: t
 ## Constitution
 
 A short list of coding rules the AI follows for the whole project, written in Phase 1 Step 7.
+
+## Verification Commands
+
+A table in the constitution listing the exact commands that install, build, lint, typecheck, test and start the project. Review, E2E and Ship run them; a command that cannot be determined is marked `unknown` and reported to you, never skipped silently. Together with the baseline, review and pre-ship runs, this is the Definition of Done.
+
+## Non-functional requirements (NFR)
+
+Qualities the product must have regardless of features: security, performance, accessibility, language support, availability, compliance. Phase 1 Step 4 records them in one combined question, each with a measurable target (or `n/a` with a reason), and later steps trace them to the architecture, the constitution, review and tests.
+
+## Adopt
+
+A run-once workflow that brings an existing codebase into the kit by reading the code and writing the planning documents, with you approving the decisions. See [Adopt](/phases/adopt).
+
+## Kit version record
+
+`docs/.craft-kit.json`, committed with your documents, says which kit version produced them. Workflows warn when it differs from the installed kit and never block.

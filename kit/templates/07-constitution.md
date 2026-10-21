@@ -8,6 +8,7 @@
 - **Ratified**: <!-- YYYY-MM-DD, original adoption date -->
 - **Last amended**: <!-- YYYY-MM-DD; same as Ratified for the first version -->
 - **Based on**: `architecture.md`, `DESIGN.md`, `roadmap.md`
+- **Provenance**: `designed (Phase 1 Step 7)` | `reverse-engineered (Adopt)`
 
 > Read by every Phase 2 step. Every principle must be concrete enough to change at least one downstream plan or diff; remove any that wouldn't. Personal workflow preferences (branching habits, PR etiquette) do not belong here, only rules that shape code and architecture output. The one exception is the `Spec Evolution` section added at Ship.
 
@@ -53,6 +54,35 @@ Common categories: type safety, testing standard, architectural boundaries (tie 
 <!-- Binding rules not phrased as principles: required stack elements from architecture.md, compliance requirements, deployment constraints. -->
 
 -
+
+---
+
+## NFR Mapping
+
+> Every row of `roadmap.md` → Non-functional Requirements with a measurable target maps to a MUST rule in a principle above, or to a row in Verification Commands. A row with no mapping is a gap to resolve before approval.
+
+| NFR (category and target) | Mapped to (principle MUST, or Verification Commands row) |
+|---|---|
+| | |
+
+---
+
+## Verification Commands
+
+> Single source for how this project is built and checked. Review, E2E and Ship run these. Copy commands verbatim from scripts, Makefile, or CI config; never reconstruct one.
+
+| Check | Command | Status | Notes |
+|---|---|---|---|
+| Install | `<command>` | planned | |
+| Build | `<command>` | planned | |
+| Lint | `<command>` | planned | |
+| Typecheck | `<command>` | planned | `n/a — <reason>` when the language has no separate step |
+| Unit / integration tests | `<command>` | planned | |
+| E2E | `<command>` | planned | Verification type: browser, API, CLI or mobile |
+| Start | `<command>` | planned | |
+| CI | `<pipeline or workflow name>` | planned | `n/a — <reason>` when no CI |
+
+Status values: `planned` (not yet run), `verified` (ran successfully), `unknown` (not determinable), `n/a — <reason>`.
 
 ---
 
