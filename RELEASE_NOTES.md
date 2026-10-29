@@ -1,3 +1,4 @@
-## What's new
-
-- **Smoother feature-by-feature builds:** after a feature ships under `scope: feature`, the kit now stops and asks before starting the next one. Reply "start" to continue in the same session, "hand over" to continue in a fresh session (useful when the context window is large), name a different pending feature, or "stop".
+<!-- Write user-facing release notes here before triggering release-trigger.yml.
+     This file becomes the GitHub release body. Keep it concise and user-focused —
+     what improved for kit users, not which files changed (kit/CHANGELOG.md tracks that).
+     After the release workflow runs, this file resets automatically. -->
