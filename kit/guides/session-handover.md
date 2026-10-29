@@ -21,7 +21,7 @@ Natural seams (nothing mid-flight, state is on disk):
 | Phase | Seam steps |
 |---|---|
 | Phase 1 | Any step whose hard gate has just cleared |
-| Phase 2 | After Step 2 (Plan: spec and plan on disk, no code), Step 3 (Implement: code on the feature branch; the handover commits it), Step 4 (Review: findings fixed; the handover commits it) |
+| Phase 2 | After Step 2 (Plan: spec and plan on disk, no code), Step 3 (Implement: code on the feature branch; the handover commits it), Step 4 (Review: findings fixed; the handover commits it), Step 7 (Ship, `scope: feature` with `pending` features left: everything committed; the Unit is the next feature and the resume step is Step 1) |
 | Phase 3 / bug fix / admin site | After any hard gate (admin: after the Scope gate, or after the shell checkpoint passes) |
 
 Offer format (blockquote, then wait for the reply). Do not offer at other steps.
