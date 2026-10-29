@@ -7,6 +7,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed (post-Ship handover seam)
+
+- **`steps/phase-2/p2-07-ship.md`** (Transitions), **`guides/session-handover.md`** (seams table) — under `scope: feature`, Ship no longer restarts at Step 1 on its own: it asks the user to confirm the next feature (start here, hand over to a new session, pick another `pending` feature, or stop) and waits for an explicit reply, so a large session can continue in a new one. Prompted by a question about starting F02 after F01 in a fresh session.
+
 ---
 
 ## [0.0.37] - 2026-10-21
