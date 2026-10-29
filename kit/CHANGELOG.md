@@ -7,6 +7,11 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed (Ship step cleanup)
+
+- **`steps/phase-2/p2-07-ship.md`** — restructured for readability with no change to what Ship does: Rules are grouped in run order (before the commit, commit, push and PR, record shipped features, CI status, other rules) as short bullets and numbered steps instead of single lines over 700 characters; Transitions use a quote and a reply table. New Completion Criteria item: under `scope: feature` the user was asked what to do next and no next feature was started unprompted.
+- **`phase-2.md`** (Run State and Handover) — the clean-seam list now includes Step 7 (Ship) under `scope: feature`, matching `guides/session-handover.md` and `p2-07-ship.md`.
+
 ---
 
 ## [0.0.38] - 2026-10-29
