@@ -6,7 +6,7 @@
 >
 > Output: a `## Verification Commands` section in `docs/constitution.md`, reviewed by you. Nothing else in `docs/` is touched except the constitution's `Last amended` date.
 
-Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`.
+Universal rules: `kit/orchestrator-conventions.md`.
 
 ## Limitations (read before running)
 

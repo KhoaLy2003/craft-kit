@@ -2,7 +2,7 @@
   "name": "craft-kit",
   "version": "0.0.39",
   "scripts": {
-    "test": "node --test tests/cli.test.mjs"
+    "test": "node --test tests/cli.test.mjs tests/kit-consistency.test.mjs tests/lint-docs.test.mjs tests/render-backlog.test.mjs"
   },
   "description": "AI-agent workflow kit for crafting software products — Phase 1 bootstrap, a unified Phase 2 build cycle, bug fix workflow, templates, and step guides.",
   "author": "Khoa Ly",

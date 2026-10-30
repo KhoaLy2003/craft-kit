@@ -7,7 +7,7 @@
 - **Model**: `fast`
 - **Trigger**: `docs/architecture.md` exists and is `approved`.
 - **Inputs**: `docs/architecture.md`; `docs/data-model.md` (the constitution's naming and database rules must agree with its Conventions section); `docs/DESIGN.md`; `docs/roadmap.md`.
-- **Outputs**: `docs/constitution.md` (or `CLAUDE.md` / `AGENTS.md` at the project root if the agent harness requires rules there; update downstream references accordingly).
+- **Outputs**: `docs/constitution.md` (always this path: the Phase 2 preflight, the docs lint and the upgrade detection look for it; if the harness reads rules from the project root, Step 8's `AGENTS.md` points to it).
 - **Template**: `templates/07-constitution.md`
 - **Gate**: `soft` — present the summary; set approval when the user accepts. If the user accepted defaults at the Step 6 gate, set `Status: approved` on writing and still show the summary.
 
@@ -29,7 +29,7 @@
 
 ## Artifact Rules
 
-Place the file where the harness reads it automatically; prefer `docs/constitution.md`. Set `Status: approved` after the user accepts.
+Write the file to `docs/constitution.md`. Set `Status: approved` after the user accepts.
 
 ## Completion Criteria
 

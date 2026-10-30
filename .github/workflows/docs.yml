@@ -8,6 +8,11 @@ on:
     paths:
       - 'kit/**'
       - 'docs-site/**'
+  # Build only (no deploy) on PRs, so a kit file with no docs mapping fails before merge.
+  pull_request:
+    paths:
+      - 'kit/**'
+      - 'docs-site/**'
   workflow_dispatch:
 
 permissions:
@@ -45,15 +50,18 @@ jobs:
         working-directory: docs-site
 
       - name: Setup Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
 
       - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: docs-site/.vitepress/dist
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

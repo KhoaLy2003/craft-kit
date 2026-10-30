@@ -22,16 +22,16 @@
 
 > **Before this step, prepare `docs/DESIGN.md`** (Phase B). Ideally have it ready before Phase 1 starts so the flow does not stop here.
 
-> The prototype answers: *"Are we building the right product, and does the proposed workflow actually work for the people who will use it?"* It is a learning tool. Prototype code is disposable; do not refactor or optimise it. It validates requirements, flows, business rules, and usability; it does **not** validate production architecture, backend, database, performance, security, or scalability, and it is not an MVP or the start of one. It is also not a wireframe (layout) or a mockup (look): it shows how the user experiences the flow.
+> The prototype validates requirements, flows, business rules, and usability. It is disposable: never refactor it, and it validates nothing about architecture, backend, performance, security, or scale.
 
 ## Execution Rules
 
 ### Phase A — Journey map and prototype brief
 
 1. **Platform acknowledgment (first action).** Read `docs/idea-brief.md` Known Constraints and apply the matching case:
-   - *None declared, or web only*: proceed silently.
-   - *Single non-web platform* (mobile, iOS, Android, desktop): say *"Your idea brief notes [platform]. The prototype is HTML to validate flows; that does not commit you to a web product. Platform is confirmed in Step 6 (Architecture)."* Build for that viewport.
-   - *Multiple platforms*: ask which is primary if not explicit, then say *"The prototype covers [primary] only; secondary platforms share the same flows and are deferred to Step 6."* Name the secondary platforms under **Deferred platforms** in `prototype-brief.md` Section 5.
+   - *None, or web only*: proceed silently.
+   - *Single non-web platform*: tell the user the HTML prototype validates flows only and does not commit to a web product (platform is confirmed in Step 6); build for that viewport.
+   - *Multiple platforms*: ask which is primary if not explicit; say the prototype covers it only. List the others under **Deferred platforms** in `prototype-brief.md` Section 5.
 2. **Viewport**: mobile → `max-width: 390px`, centered, touch targets ≥ 44px, no hover-only states; desktop → `max-width: 1280px`; web → default browser width.
 3. **Priority order**: Flow → Function → Usability → Data → Visual polish.
 4. Dispatch the general-purpose agent for `journey-map.md` and `prototype-brief.md` (include `PROJECT_ROOT` and the fail-fast write instruction per `kit/orchestrator-conventions.md`). Required content:
@@ -45,9 +45,9 @@
 
 1. If `docs/DESIGN.md` exists and has content, go straight to validation. Otherwise tell the user (substitute the real project path):
 
-   > The prototype brief is ready. Before the prototype can be built, you need a design system file. Pick one from **getdesign.md** (https://getdesign.md/design-md, design systems modelled on well-known products) or **freedesignmd.com** (https://freedesignmd.com, free design systems), download it, rename it `DESIGN.md`, and save it to `<project-root>/docs/DESIGN.md`. If a site is unreachable or no longer offers this, search the web for another "DESIGN.md" design-system source, or use a custom file (`templates/03c-design-system.md` is the skeleton to fill in; `kit/guides/design-reference.md` shows a full example). No designer? Choose the downloaded file whose look is closest to what you want; a custom file is the route if none fits. Reply "ready" when it is in place.
+   > The prototype brief is ready. Before building, I need a design system file: pick one from **getdesign.md** (https://getdesign.md/design-md) or **freedesignmd.com** (https://freedesignmd.com), rename it `DESIGN.md`, and save it to `<project-root>/docs/DESIGN.md`. If those sites fail, search the web for another "DESIGN.md" source, or write your own (`templates/03c-design-system.md` is the skeleton, `kit/guides/design-reference.md` a full example). Reply "ready" when it is in place.
 
-   Wait for confirmation. If the user says it is placed but the file is missing, say so and wait; never assume another path.
+   Wait. If the file is still missing, say so and wait; never assume another path.
 2. **Validate** by reading the file (no agent):
 
    | # | Criterion | Pass condition |
@@ -66,29 +66,11 @@
 
 Read `docs/DESIGN.md`, `docs/prototype/prototype-brief.md`, `docs/prototype/journey-map.md`, and `docs/idea-brief.md`. Build `docs/preview/` directly, with no subagent.
 
-- **Stack** (the prototype loads Tailwind, icons, fonts, and placeholder images from public CDNs, so opening it needs an internet connection; tell the user this): one `docs/preview/index.html` with JS-driven screen switching (or one file per screen if screens are complex). HTML5 + CDN Tailwind (`<script src="https://cdn.tailwindcss.com">`) with an inline `tailwind.config` mapping the `DESIGN.md` color and font tokens; CSS custom properties in a `<style>` block for anything Tailwind cannot express; vanilla JS only; Phosphor Icons via CDN (`https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css`), never hand-rolled SVG; fonts via `<link>`; `https://picsum.photos/seed/{descriptive-seed}/{w}/{h}` for image placeholders. No build step.
+- **Stack** (CDN-loaded, so the user needs internet; tell them): one `docs/preview/index.html` with JS screen switching (one file per screen if complex). CDN Tailwind (`<script src="https://cdn.tailwindcss.com">`) with an inline `tailwind.config` mapping the `DESIGN.md` color and font tokens; a `<style>` block for the rest; vanilla JS; Phosphor Icons via CDN (`https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css`), no hand-rolled SVG; fonts via `<link>`; `https://picsum.photos/seed/{seed}/{w}/{h}` for images. No build step.
 - **Data**: only the mock data from `prototype-brief.md`; no API calls, fetch, or environment variables; treat the user as already logged in.
 - **Screens**: every screen in the primary flow, the empty state and at least one error/validation state for the main interaction, and one navigation component consistent across all screens. If `prototype-brief.md` is ambiguous, take the most conservative reading and note it in a comment.
-- **Fidelity**: map `DESIGN.md` tokens, typography, spacing, and component definitions exactly; invent no values. No three-equal-card rows, no AI-purple defaults, no Inter unless `DESIGN.md` specifies it, no centered layout unless the design system calls for it. Run the full `design-taste-frontend` pre-flight (zero em-dashes, color and shape consistency locks, button contrast, hero viewport fit, eyebrow count, section layout variety) before writing any file.
+- **Fidelity**: use `DESIGN.md` tokens, typography, spacing, and components exactly; invent no values and add no decoration it does not call for. Run the full `design-taste-frontend` pre-flight before writing any file. Add structural CSS (layout, grouping, hierarchy, clickable-looking buttons, distinct errors, state feedback) until a new user can complete a task unaided; stop before it is over-designed.
 - **Verify**: `docs/preview/index.html` exists and its first 20 lines contain the Tailwind CDN script tag (not a stub). On a build error, report it and retry with a targeted fix; never advance with a broken prototype.
-
-#### CSS Fidelity Rules
-
-CSS is required for structural clarity: an unstyled prototype is often harder to use than the final product.
-
-**Use CSS for:**
-- Basic layout: readable max-width, margin, padding, so content is not wall-to-wall.
-- Section grouping: borders or whitespace to separate screen areas and form groups.
-- Visual hierarchy: consistent heading sizes; body text readable without effort.
-- Interactive clarity: buttons look clickable, inputs look fillable, errors are visually distinct.
-- State feedback: completed items clearly marked (for example strikethrough and muted color).
-
-**Do not:**
-- Use any color, font, spacing, radius, or shadow value that is not in `DESIGN.md`.
-- Add decoration `DESIGN.md` does not call for (extra shadows, gradients, animation beyond state feedback).
-- Build production-quality component systems.
-
-**The test:** a new user who has never seen the product can open the prototype, understand what each screen is for, and complete a task without help. Add structural CSS until they can; stop before it is over-designed.
 
 ### Phase D — Review, feedback, and hard gate
 

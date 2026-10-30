@@ -22,7 +22,7 @@ Four stages. Never collapse them.
 
 ### Stage 1 — Research (catalog-first)
 
-1. Read `kit/stack-catalog.md` before any web search. Follow its analysis protocol: start from the Canonical Baseline; apply a Deviation Trigger only when the roadmap's requirements match it; walk the Additions Catalog domain by domain and add only what the roadmap requires.
+1. Consult `kit/stack-catalog.md` before any web search, reading selectively: Section 1 (Baseline) in full; the Section 2 trigger headings (`### D1`…`### D6`), then the body of a trigger only if the roadmap matches it; the Section 3 domain headings (`### Auth`, `### Payments`, …), then the body of a domain only if the roadmap requires it. Apply the catalog's analysis protocol.
 2. Web-search only for a required service or library missing from the catalog, or for a volatile fact (pricing, free-tier limits) whose `Last verified` date is over 3 months old.
 3. Use a research or general-purpose agent only when a specific library needs source-verified confirmation.
 4. Any subagent dispatch that writes a file follows the fail-fast write instruction in `kit/orchestrator-conventions.md`.
@@ -48,7 +48,7 @@ The general-purpose agent posts the full proposed stack in chat (baseline layer,
    - (d) every Must feature appears in at least one flow in `flows.md` §3.
    - (e) the `data-model.md` §2 entity-relationship diagram shows every entity in the table and every relationship in §3, with cardinality.
 4. Present a chat summary (entity count, relationship count, screen count, flow count, open questions). Ask for approval of both documents together: *"The data model has [N] entities and the flows cover [M] screens and [K] journeys. This is the structure Phase 2 builds against; a wrong entity here propagates into every feature. Approve both documents?"* Set both to `Status: approved` only after explicit approval and refresh `Last updated`.
-5. After approval, render the diagrams that pass the filter and budget in `kit/orchestrator-conventions.md` rule 8 (not every diagram). Write them to `docs/diagrams/` and add the links to the `Diagrams` line of each document; a document with none rendered says `none`.
+5. After approval, render the diagrams that pass the filter and budget in `kit/guides/diagrams.md` (not every diagram). Write them to `docs/diagrams/` and add the links to the `Diagrams` line of each document; a document with none rendered says `none`.
 
 ## Artifact Rules
 
@@ -58,10 +58,10 @@ The general-purpose agent posts the full proposed stack in chat (baseline layer,
 
 ## Completion Criteria
 
-- [ ] `kit/stack-catalog.md` was read before any web search; baseline, deviations, and additions were walked as described.
+- [ ] `kit/stack-catalog.md` was consulted before any web search; baseline, deviations, and additions were walked as described.
 - [ ] The full proposed stack with rationale was surfaced in chat and the human named (or confirmed by name) the stack.
 - [ ] `docs/architecture.md` exists, was written from the template after confirmation, and is `Status: approved`.
-- [ ] `docs/data-model.md` and `docs/flows.md` exist, pass checks (a)–(d), and are `Status: approved`.
+- [ ] `docs/data-model.md` and `docs/flows.md` exist, pass checks (a)–(e), and are `Status: approved`.
 
 ## Transition Rules
 

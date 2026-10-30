@@ -4,7 +4,7 @@
 >
 > Output: `docs/data-model.md` and `docs/flows.md`, reverse-engineered from the code, reviewed by you, and marked `approved`. Nothing else in `docs/` is touched.
 
-Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`.
+Universal rules: `kit/orchestrator-conventions.md`.
 
 ## Limitations (read before running)
 
@@ -80,7 +80,7 @@ Gate summary: *"The data model has [N] entities ([a] as-built, [p] planned, [u] 
 2. Feature × Entity matrix: fill it from `docs/backlog.json` when it exists; otherwise replace the whole §4 content with the single line `no backlog.json; matrix not derivable`. Do not guess.
 3. Run checks (b) and (c) from Stage 4 of `kit/steps/phase-1/p1-06-architecture.md`, reading (c) as "every screen found in Step 2 appears in the `flows.md` §1 inventory": every entity named in `flows.md` exists in `data-model.md`, and every screen found appears in the inventory. Also check (e): the `data-model.md` §2 `erDiagram` covers every entity written, with its foreign-key relationships as edges.
 4. Verify both files exist on disk (conventions rule on write verification).
-5. Render only the diagrams that pass the filter and budget in `kit/orchestrator-conventions.md` rule 8, and add the links to each document's `Diagrams` line. Items labelled `planned` or `unknown` are never rendered.
+5. Render only the diagrams that pass the filter and budget in `kit/guides/diagrams.md`, and add the links to each document's `Diagrams` line. Items labelled `planned` or `unknown` are never rendered.
 
 ## Completion criteria
 

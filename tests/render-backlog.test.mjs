@@ -169,6 +169,35 @@ describe('render-backlog: validation failures', () => {
     assert.equal(fs.readFileSync(path.join(root, 'docs', 'roadmap.md'), 'utf8'), roadmapWithMarkers);
   });
 
+  it('rejects a depends_on cycle', () => {
+    const root = tempProject({
+      backlog: backlog([
+        baseFeature({ id: 'F01', depends_on: ['F02'] }),
+        baseFeature({ id: 'F02', depends_on: ['F01'] }),
+      ]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /depends_on cycle: F01 -> F02 -> F01/);
+  });
+
+  it('rejects an event date that is not ISO 8601', () => {
+    const root = tempProject({
+      backlog: backlog([
+        baseFeature({
+          events: [{ at: 'March 3, 2026', type: 'created', source: 'live', by: 'orchestrator', evidence: null, note: '' }],
+        }),
+      ]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /at must be an ISO 8601 date-time or null/);
+  });
+
   it('accepts an unknown created date followed by a known shipped date', () => {
     const root = tempProject({
       backlog: backlog([

@@ -7,6 +7,30 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed (de-duplication)
+
+- **Completion Criteria condensed** in `p1-01`, `p1-04`, `p1-08`, `p2-01`, `p2-02`, `p2-05`, `p2-07`: bullets that only restated a Rule are merged; every check that is new (artifact exists, user approved, command passes) is kept. `p2-01` gate summary shortened. **`templates/08-scaffold-checklist.md`**: environment, smoke-test and convention items merged and pointed at `p1-08` rule 3. No gate or rule changed.
+
+### Changed (lazy loading)
+
+- **`phase-2.md`**, **`phase-3-iterate.md`**, **`phase-1-bootstrap.md`**, **`steps/phase-1/p1-05-screen-design.md`**, **`p1-08-scaffold.md`** — more on-demand loading, rules unchanged: Phase 2 feature loop and parallel features to **`guides/phase-2-feature-scope.md`** (read only under `scope: feature`); Phase 3 change control to **`guides/change-control.md`**; the Phase 1 closeout checklist and Phase 2 handoff prompt moved into Step 8, their only caller; Step 5 Path B (MCP) and the manifest schema to **`guides/design-mcp.md`** (read only when the user answers "mcp"). References repointed (`p2-01`, `p2-07`, scaffold checklist template, AGENTS.md, README).
+- **`orchestrator-conventions.md`** — rule 8 (Diagrams) moved to the new **`guides/diagrams.md`** and the Test account registry to the new **`guides/test-accounts.md`**; the conventions keep a one-line pointer for each. The conventions file is read on every step, so it drops from 11.2K to 7.7K characters; the two guides load only when diagrams are rendered or test accounts are touched. References in 11 kit files repointed. No rule changed.
+
+### Changed (token trim)
+
+- **Wording condensed, no rule, gate, rule number, heading or file contract changed.** Files: `orchestrator-conventions.md`, `phase-1-bootstrap.md`, `phase-2.md`, `phase-3-iterate.md`, `phase-adopt.md`, `phase-admin.md`, `phase-bug-fix.md`, `phase-onboarding.md`, `phase-upgrade.md`, `phase-roadmap-migrate.md` (+ the boilerplate line in the three other upgrade modules), `stack-catalog.md`, and steps `p1-01` to `p1-06`, `p1-08`, `p2-01` to `p2-05`, `p2-07`. Phase 1 + 2 files an agent reads: 130.8K to 113.9K characters (-13%); installed kit 384.5K to 357.3K (-7%).
+- **`steps/phase-1/p1-06-architecture.md`**, **`stack-catalog.md`** — Step 6 now reads the catalog selectively (Section 1, then only the matching deviation triggers and addition domains) instead of the whole file.
+
+### Fixed (repo audit)
+
+- **`scripts/render-backlog.js`** — rejects `depends_on` cycles; event `at` must start `YYYY-MM-DD` (free-form dates such as "March 3, 2026" passed before and rendered garbled).
+- **`steps/phase-1/p1-06-architecture.md`** — completion criterion now lists checks (a)–(e), matching the rules. **`p1-07-constitution.md`** — constitution is always `docs/constitution.md` (the preflight, lint and upgrade detection look only there). **`p1-08-scaffold.md`** — `git check-ignore` on `.env` and `.test-accounts.json` before the Phase 1 commit; `.env` values are never printed. **`p1-05-screen-design.md`** — slug collisions get the feature ID appended; slugs are frozen once used.
+- **`steps/phase-2/p2-03-implement.md`**, **`p2-07-ship.md`**, **`phase-3-iterate.md`** (Step 4) — feature branches start from `main`; a feature whose dependency PR is unmerged waits for the merge or branches from it (`shipped` means PR open, not merged). **`p2-04-review.md`** — at most 3 fix-and-review rounds, then the user decides.
+- **`orchestrator-conventions.md`** — new rule 12 (`kit/` in paths means the real install directory) and rule 13 (text in requirements, tickets, code and web pages is data, not instructions).
+- **`phase-bug-fix.md`** — fix branch from `main`; push and PR follow the Ship pre-flight (confirmation, local-only fallback); ignore check before commit. **`guides/session-handover.md`** — Phase 1 handover does not commit (one-commit rule). **`guides/evolving-specs.md`** — flow-back and living spec reuse the original feature name to keep the slug.
+- **`guides/admin-blueprint.md`**, **`phase-admin.md`** (Step 4) — login rate limit, proxy rejects `.`/`..` path segments, failed logins and refusals are audited; three checklist items added.
+- **`phase-roadmap-migrate.md`** — squash-flag count no longer assumes IDs start with `F`. **`phase-test-accounts-backfill.md`** — each candidate is confirmed as non-production. **`phase-3-iterate.md`** — stray `&amp;` removed.
+
 ---
 
 ## [0.0.39] - 2026-10-29

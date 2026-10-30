@@ -16,7 +16,7 @@
 - **In**: comparable products and alternatives, trends, gaps, feature inspirations, reasons the idea might not work.
 - **Out**: making the pivot decision for the user, implementation decisions.
 
-> Present findings neutrally: evidence for the user's decision, not a decision. Feature Inspirations expand what the project could become; they do not replace the user's idea.
+> Present findings neutrally, as evidence for the user's decision. Feature Inspirations expand the idea; they do not replace it.
 
 ## Execution Rules
 
@@ -31,7 +31,7 @@
 
 ## Artifact Rules
 
-`docs/market-notes.md` is written from the template. It carries no approval status; the user's proceed / pivot / stop decision replaces it.
+`docs/market-notes.md` is written from the template and carries no approval status; the proceed / pivot / stop decision replaces it.
 
 ## Completion Criteria
 

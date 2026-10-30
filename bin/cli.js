@@ -232,7 +232,15 @@ function usage () {
 
 async function interactiveSetup () {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
-  const ask = question => new Promise(resolve => rl.question(`  ${bYellow('?')}  ${question} ${dim('[Y/n]')} `, resolve))
+  // Ctrl+D closes readline and would leave a pending question unanswered, so the process exits
+  // before the quick start prints. A closed input answers "n".
+  let closed = false
+  rl.on('close', () => { closed = true })
+  const ask = question => new Promise(resolve => {
+    if (closed) return resolve('n')
+    rl.once('close', () => resolve('n'))
+    rl.question(`  ${bYellow('?')}  ${question} ${dim('[Y/n]')} `, resolve)
+  })
   const yes = async question => (await ask(question)).trim().toLowerCase() !== 'n'
 
   console.log(`  ${dim('Three quick steps to unlock the full Phase 1–2 workflow.')}`)

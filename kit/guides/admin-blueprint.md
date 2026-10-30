@@ -25,7 +25,7 @@
 
 - The admin app lives in `admin/` at the repository root, in the same repo as the main app. It has its own `package.json` and its own Vercel project (root directory `admin/`).
 - One environment variable: `ADMIN_API_BASE_URL` (origin of the main backend, no trailing slash). Document it in `ENV_SETUP.md` and `.env.example` of `admin/`.
-- Proxy route: `admin/app/api/proxy/[...path]/route.ts` forwards `/api/proxy/<path>` to `${ADMIN_API_BASE_URL}/api/admin/<path>`.
+- Proxy route: `admin/app/api/proxy/[...path]/route.ts` forwards `/api/proxy/<path>` to `${ADMIN_API_BASE_URL}/api/admin/<path>`. It rejects (`400`) any path segment that is `.` or `..` after URL-decoding, so a request cannot leave `/api/admin/`.
 - Backend additions (guard, `/api/admin/*` routes, audit table, role field if missing) are made inside the main app's existing structure and ship in the same PR.
 
 ## 3. Screen archetypes — behavior contract
@@ -96,7 +96,7 @@ type AdminModule = {
 These live in the main app. They are the security-critical part of the workflow and are specified exactly.
 
 ### 5.1 Guard
-Every route under `/api/admin/` except the login route (§5.5) passes through one guard that takes the required permission. No valid admin token → `401`. Valid token whose role lacks the permission → `403`. `POST /api/admin/auth/login` is the only unauthenticated route. A route under `/api/admin/` other than the login route that does not call the guard is a defect.
+Every route under `/api/admin/` except the login route (§5.5) passes through one guard that takes the required permission. No valid admin token → `401`. Valid token whose role lacks the permission → `403`. `POST /api/admin/auth/login` is the only unauthenticated route. A route under `/api/admin/` other than the login route that does not call the guard is a defect. The login route is rate-limited per account and per source address (for example 5 failures in 15 minutes → refuse with `429` for 15 minutes).
 
 ### 5.2 RBAC
 - Roles and their permission sets are defined in **one place** in the backend. Permissions come from the approved matrix in `docs/admin/scope.md`.
@@ -124,7 +124,7 @@ Every successful mutation under `/api/admin/` other than `POST /api/admin/auth/l
 | `payload` | JSON of the change; secrets and credentials are redacted |
 | `ip` | request origin address |
 
-Only successful mutations are audited. The Audit Log screen reads this table.
+Every successful mutation is audited. Failed logins and `401`/`403` refusals are also written as rows (`event` such as `auth.login_failed` or `access.denied`, `payload` without the submitted password). The Audit Log screen reads this table.
 
 ### 5.5 Token handling
 - `POST /api/admin/auth/login` with `{ "email", "password" }` verifies against the main app's existing user credentials. Responses: `200 { "token", "expiresAt", "role", "permissions": [] }`; `401` bad credentials; `403` account has no admin role. If the main app has no credential login (for example OAuth-only), `docs/admin/scope.md` records it and task group 0 adds one for admin accounts.
