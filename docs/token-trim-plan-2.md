@@ -37,16 +37,16 @@
 
 ## Phase B: Behavior changes (need R06). Highest saving, highest risk
 
-- [ ] **B1 Make Market Research opt-in by default.** Today it is optional but has its own step file, template, gate, and Step 1 question. Option A: remove the step and fold its output (comparable products, feature inspirations) into the idea brief as an optional section when the user asks. Option B: keep the step, drop the question (default skip, user says "run"). B is a smaller change. Touches: bootstrap table, p1-01, p1-02, p1-04 (feature inspirations rule), kickoff template, tests (step list), docs-site, AGENTS.md gate list.
-- [ ] **B2 Merge Constitution into Architecture.** Step 7 is `soft`, `fast`, 3.7K plus a 4K template. Fold it into Step 6 as a final section so the architecture gate approves both. Risk: Step 6 grows; the constitution is read by every Phase 2 agent, so it must stay a separate file (`docs/constitution.md` path unchanged).
-- [ ] **B3 Drop the Phase 1 Step 3 / Step 5 split for single-screen apps.** Step 5 already has a skip condition; make it automatic when the prototype covers every screen, instead of a step the orchestrator reads and then skips.
-- [ ] **B4 Optional: collapse Phase 2 Steps 4 and 5.** Review and E2E run back to back with the same agent and a shared fix loop. Merging removes one step file and one handover seam. Risk: seam loss; only do it if R06 shows handovers are rarely used at Step 4.
+- [x] **B1 (assessed, NOT done: an optional step that is skipped is never read, so removing it saves ~4.6K only for projects that run it) Make Market Research opt-in by default.** Today it is optional but has its own step file, template, gate, and Step 1 question. Option A: remove the step and fold its output (comparable products, feature inspirations) into the idea brief as an optional section when the user asks. Option B: keep the step, drop the question (default skip, user says "run"). B is a smaller change. Touches: bootstrap table, p1-01, p1-02, p1-04 (feature inspirations rule), kickoff template, tests (step list), docs-site, AGENTS.md gate list.
+- [x] **B2 (assessed, NOT done: ~1.5K of boilerplate saved, heavier architecture gate) Merge Constitution into Architecture.** Step 7 is `soft`, `fast`, 3.7K plus a 4K template. Fold it into Step 6 as a final section so the architecture gate approves both. Risk: Step 6 grows; the constitution is read by every Phase 2 agent, so it must stay a separate file (`docs/constitution.md` path unchanged).
+- [x] **B3 (assessed, NOT done: the skip condition already exists in the bootstrap table) Drop the Phase 1 Step 3 / Step 5 split for single-screen apps.** Step 5 already has a skip condition; make it automatic when the prototype covers every screen, instead of a step the orchestrator reads and then skips.
+- [x] **B4 (assessed, NOT done: ~1K saved, loses a handover seam) Optional: collapse Phase 2 Steps 4 and 5.** Review and E2E run back to back with the same agent and a shared fix loop. Merging removes one step file and one handover seam. Risk: seam loss; only do it if R06 shows handovers are rarely used at Step 4.
 
 ## Phase M: Measure and validate
 
 - [x] **M0 Baseline script (before any item).** Done: `node tests/measure-reading-set.mjs`; baseline 415,610 chars per full Phase 1 + 2 run (every step re-reads conventions + phase file). Add a dev-only script (not shipped, under `tests/` or `testing/`) that sums characters of the files each step reads: conventions + phase file + step file + its template. Record per-step numbers here so S/D/B savings are real, not estimated.
 - [ ] **M1 R06 run.** Run a full Phase 1 → Phase 2 round on a small project with the modified kit. Pass bar: 100% generated E2E pass, every hard gate reached in order, all expected artifacts present, no step skipped by mistake. Compare tokens and credits against R05 if recorded.
-- [ ] **M2 Decide.** Keep B items only if R06 passes and the saving is at least 10% of total tokens; otherwise revert them and keep S and D.
+- [x] **M2 Decide.** Decision: no B items. The M0 metric counts a worst case where every step re-reads the conventions and phase file. Realistic cost is each file read once: about 106K chars (~26K tokens) of kit files for Phase 1 + 2, plus templates. B items are worth ~5K for real behavior risk. Keep B items only if R06 passes and the saving is at least 10% of total tokens; otherwise revert them and keep S and D.
 - [ ] **M3 Release.** Bump version, CHANGELOG, tag per the release process in `AGENTS.md`.
 
 ## Suggested order
@@ -72,3 +72,7 @@ Do S and D first: they keep every rule and gate, and S1 alone should save more t
 | S1 | 415,610 | 365,107 | conventions 11,167 → 7,700; guides read on demand add ~2K to the steps that need them |
 | S2-S5 | 365,107 | 340,466 | -6.7% on top of S1; total -18% vs M0 baseline. Hot path file set 113.9K → 108.4K |
 | D1-D5 | 340,466 | 337,922 | D1 -2.2K, D2 ~-0.6K; D3-D5 nothing worth the risk |
+
+## Outcome
+- Phase S and D done and committed (`dba1dbe`, `eeb3bf5`). M0 worst-case metric 415.6K → 337.9K (-18.7%); files read once, Phase 1 + 2: 130.8K → ~106K (-19%).
+- Phase B not worth doing. Remaining open items: M1 (R06 round, to confirm agents follow the on-demand guides and behave the same) and M3 (release).
