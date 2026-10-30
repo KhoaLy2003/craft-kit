@@ -4,7 +4,7 @@
 >
 > Output: `.test-accounts.json` at the project root, git-ignored, holding every test account found, each verified by sign-in where possible. Nothing in `docs/` is touched.
 
-Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`. Registry format and rules: `kit/orchestrator-conventions.md` → Test account registry.
+Universal rules: `kit/orchestrator-conventions.md`. Registry format and rules: `kit/orchestrator-conventions.md` → Test account registry.
 
 ## Limitations (read before running)
 

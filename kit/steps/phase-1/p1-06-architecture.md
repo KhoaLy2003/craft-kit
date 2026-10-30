@@ -22,7 +22,7 @@ Four stages. Never collapse them.
 
 ### Stage 1 — Research (catalog-first)
 
-1. Read `kit/stack-catalog.md` before any web search. Follow its analysis protocol: start from the Canonical Baseline; apply a Deviation Trigger only when the roadmap's requirements match it; walk the Additions Catalog domain by domain and add only what the roadmap requires.
+1. Consult `kit/stack-catalog.md` before any web search, reading selectively: Section 1 (Baseline) in full; the Section 2 trigger headings (`### D1`…`### D6`), then the body of a trigger only if the roadmap matches it; the Section 3 domain headings (`### Auth`, `### Payments`, …), then the body of a domain only if the roadmap requires it. Apply the catalog's analysis protocol.
 2. Web-search only for a required service or library missing from the catalog, or for a volatile fact (pricing, free-tier limits) whose `Last verified` date is over 3 months old.
 3. Use a research or general-purpose agent only when a specific library needs source-verified confirmation.
 4. Any subagent dispatch that writes a file follows the fail-fast write instruction in `kit/orchestrator-conventions.md`.
@@ -58,7 +58,7 @@ The general-purpose agent posts the full proposed stack in chat (baseline layer,
 
 ## Completion Criteria
 
-- [ ] `kit/stack-catalog.md` was read before any web search; baseline, deviations, and additions were walked as described.
+- [ ] `kit/stack-catalog.md` was consulted before any web search; baseline, deviations, and additions were walked as described.
 - [ ] The full proposed stack with rationale was surfaced in chat and the human named (or confirmed by name) the stack.
 - [ ] `docs/architecture.md` exists, was written from the template after confirmation, and is `Status: approved`.
 - [ ] `docs/data-model.md` and `docs/flows.md` exist, pass checks (a)–(e), and are `Status: approved`.

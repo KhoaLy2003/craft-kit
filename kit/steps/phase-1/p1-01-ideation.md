@@ -6,7 +6,7 @@
 - **Agent/Skill**: `brainstorming` skill (Architectural path)
 - **Model**: `capable`
 - **Trigger**: New project, no existing codebase. The kickoff's `Source Mode` is `idea` (default) or `requirements`.
-- **Inputs**: the kickoff file, `phase-1-kickoff.md`, at the project root or at `docs/phase-1-kickoff.md` (idea, target user, constraints, Source Mode, Market Research run/skip decision). In `requirements` mode also every listed requirement source (files in `docs/requirements/`, or ticket IDs). If absent or thin, fall back to conversational Q&A.
+- **Inputs**: the kickoff file `phase-1-kickoff.md` (project root or `docs/`; idea, target user, constraints, Source Mode, Market Research decision); in `requirements` mode also every listed source (`docs/requirements/` files or ticket IDs). Absent or thin: fall back to Q&A.
 - **Outputs**: `docs/idea-brief.md`; the kickoff file moved to `docs/phase-1-kickoff.md`.
 - **Template**: `templates/01-idea-brief.md`
 - **Gate**: `soft` — summary after the written brief is reviewed; advance unless the user objects.
@@ -16,22 +16,21 @@
 - **In**: what problem exists today, who has it, what alternatives people use, what is out of scope.
 - **Out**: tech stack, architecture, platform selection, data models (all Step 6); UI design (Step 3).
 
-> The Architectural path drives toward stacks, data models, and components. Stop after the clarifying questions, as soon as the problem, target user, and solution hypothesis can fill the brief. Do not invoke `writing-plans`.
+> Stop after the clarifying questions, once the problem, target user, and solution hypothesis can fill the brief; the Architectural path otherwise drifts to stacks and components. Do not invoke `writing-plans`.
 
 ## Execution Rules
 
-1. **Git first.** Before any Q&A or file write, confirm a repo exists (`git rev-parse --git-dir`); if not, `git init`. Make no commits: Phase 1 ends with a single commit (Step 8). Ensure `.gitignore` exists with `kit/` and `.test-accounts.json` as entries (the kit is a development tool, not application code; the registry holds raw test passwords); append missing ones and verify per `kit/orchestrator-conventions.md` rule 9.
-2. Ask only clarifying questions: problem today, who has it, existing alternatives, what is out of scope. Print only the questions, never draft document content.
-3. Sequence: questions → answers → write `docs/idea-brief.md` → user opens and reviews the file → approval. Writing before the answers produces a brief built on assumptions.
+1. **Git first.** Before any Q&A or file write, confirm a repo exists (`git rev-parse --git-dir`); if not, `git init`. Make no commits (Step 8 makes the only one). Apply conventions rule 9 (`.gitignore` with `kit/` and `.test-accounts.json`).
+2. Ask only clarifying questions: problem today, who has it, existing alternatives, what is out of scope. Print only questions, no draft content.
+3. Sequence: questions → answers → write `docs/idea-brief.md` → user reviews the file → approval.
 4. If the user names a target platform, record it verbatim under Known Constraints as a preliminary signal. Platform is decided in Step 6.
-5. After the brief is written (this creates `docs/`), move `phase-1-kickoff.md` from the project root to `docs/phase-1-kickoff.md`. If it is already in `docs/`, leave it there.
-6. **Market Research decision.** Honour the kickoff's "Market Research" run/skip decision and state it in one line. Only if the kickoff leaves it blank, ask once: *"Step 2 (Market Research) validates demand and finds competitive risks. Run it, or skip because you already have evidence or are building for yourself?"* Record the decision in the session log. In `requirements` mode a blank decision defaults to `skip` without asking (rule 7).
-7. **Requirements mode.** If the kickoff says `Mode: requirements`, read every listed source before asking anything. Write `docs/idea-brief.md` from the sources with `Provenance: requirements`. Add `Source Trace` (each statement mapped to its source and location) and `Gaps and conflicts`. Ask clarifying questions only about those items; never re-ask a fact the sources state. Market Research defaults to `skip` unless the kickoff says `run`; record `skipped (requirements supplied)` in the session log.
+5. After the brief is written, move `phase-1-kickoff.md` to `docs/phase-1-kickoff.md` (leave it if already there).
+6. **Market Research decision.** Honour the kickoff's run/skip decision and state it in one line. If blank, ask once whether to run Step 2 (validates demand, finds competitive risks) or skip (evidence exists, or building for yourself). Log it. In `requirements` mode blank means `skip` (rule 7).
+7. **Requirements mode.** If the kickoff says `Mode: requirements`, read every listed source before asking anything. Write `docs/idea-brief.md` with `Provenance: requirements`, a `Source Trace` (each statement mapped to source and location) and `Gaps and conflicts`. Ask only about those; never re-ask a stated fact. Market Research is `skip` unless the kickoff says `run`; log `skipped (requirements supplied)`.
 
 ## Artifact Rules
 
-- Fill `templates/01-idea-brief.md` from the Q&A and save as `docs/idea-brief.md`.
-- Set `Status: approved` only after the user confirms the written file (the review in Execution Rule 3). The `soft` gate summary then follows; advance unless the user objects.
+- Fill `templates/01-idea-brief.md` from the Q&A into `docs/idea-brief.md`; set `Status: approved` only after the user confirms the written file (rule 3).
 
 ## Completion Criteria
 

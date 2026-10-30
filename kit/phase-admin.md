@@ -6,7 +6,7 @@
 >
 > Prerequisites: a runnable application with Phase 2 shipped; `docs/architecture.md`, `docs/constitution.md`, `docs/DESIGN.md`, `docs/roadmap.md`; no open `feature/*` branch touching the backend areas the admin routes will use.
 
-Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification, frontend dispatch) are in `kit/orchestrator-conventions.md`. Session log: `docs/admin-session.md`, one table (`kit/session-logging.md`).
+Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/admin-session.md`, one table (`kit/session-logging.md`).
 
 ## Steps
 
@@ -39,14 +39,13 @@ Decide which modules the admin site manages, who can do what, and what the build
 ### Rules
 
 - Create `docs/admin-session.md` first. Copy `kit/templates/admin-scope.md` to `docs/admin/scope.md` and fill it round by round.
-- **Proposal.** Dispatch a general-purpose agent, read-only, to read the built application and propose modules. Ask where entities and features live, not for code. The agent also walks this baseline prompt list so common modules are not silently missed: users and roles, audit log, settings, dashboard; and "is there payment, contracts, uploads, notifications, moderation?". Every proposed module names its source entity or feature, its admin actions, and a sensitivity note. A module with no source is not proposed.
-- **User edit.** Write `scope.md` to disk, give the user the path, and ask them to open it and add, change, or remove modules.
-- **Re-review.** After each edit round, run **one** agent re-review of the edited list: flag gaps, conflicts, and dependencies (for example "Contracts depends on Users, which you removed") and issue a final recommendation. Record the round in Section 6.
-- **Loop.** Repeat user edit and re-review until the user explicitly approves the whole list. Nothing advances before that.
-- **Roles and permissions.** Once the module list is stable, fill Section 2: the roles and a permission matrix using ids of the form `<module>:<action>`.
-- **Identity check.** Fill Section 3: whether the main app has a role model, and how admins would authenticate (existing credential login, OAuth-only, other). Record the plan consequence: a missing role model or credential login becomes task group 0 in Step 2.
-- **Open-branch check.** Fill Section 4. If a `feature/*` branch touches the backend areas the admin routes will use, stop: finish or merge it first.
-- **Main-codebase impact.** Fill Section 5: the `/api/admin/*` routes per module, the guard, the `admin_audit_log` table, and any role field or credential login. State plainly that the single PR will change the main application as well as add `admin/`. When the plan is approved, add the `admin_audit_log` table and any role field to `docs/data-model.md` (same amendment rule as Phase 2 Step 1: keep `Status: approved`, refresh `Last updated`); also add an `## Admin Site` section to `docs/architecture.md` (the `admin/` app, `/api/admin/*` routes, guard, and audit log; keep `Status: approved`, refresh `Last updated`) and any new environment variable to `ENV_SETUP.md` and `.env.example`.
+- **Proposal.** Dispatch a general-purpose agent, read-only, to read the built app and propose modules (where entities and features live, not code). It also walks the baseline: users and roles, audit log, settings, dashboard, and "is there payment, contracts, uploads, notifications, moderation?". Each module names its source entity or feature, admin actions, and a sensitivity note; no source, no module.
+- **User edit.** Write `scope.md`, give the path, and ask the user to add, change, or remove modules.
+- **Re-review.** After each edit round run **one** agent re-review of the list (gaps, conflicts, dependencies such as "Contracts depends on Users, which you removed") with a final recommendation; record the round in Section 6. Repeat until the user explicitly approves the whole list.
+- **Roles and permissions.** Fill Section 2 once the list is stable: roles and a permission matrix with ids `<module>:<action>`.
+- **Identity check.** Fill Section 3: whether the main app has a role model and how admins authenticate. A missing role model or credential login becomes task group 0 in Step 2.
+- **Open-branch check.** Fill Section 4. If a `feature/*` branch touches backend areas the admin routes will use, stop until it is merged.
+- **Main-codebase impact.** Fill Section 5: `/api/admin/*` routes per module, the guard, the `admin_audit_log` table, any role field or credential login. State that the single PR changes the main app as well as adding `admin/`. On approval, add the audit table and any role field to `docs/data-model.md`, an `## Admin Site` section to `docs/architecture.md` (the `admin/` app, routes, guard, audit log), and new env variables to `ENV_SETUP.md` and `.env.example` (keep `Status: approved`, refresh `Last updated`).
 - `Status: approved` and a refreshed `Last updated` only after the user approves.
 
 ### Completion criteria
@@ -97,9 +96,9 @@ Build `feature/admin` from the plan.
 
 ### Rules
 
-- Create the branch `feature/admin`, using `using-git-worktrees` as in Phase 2 Step 3. Do not commit until Step 5.
-- Dispatch per the plan: sequential chains with `subagent-driven-development`, parallel groups with `dispatching-parallel-agents`. Follow the universal dispatch rules in `kit/orchestrator-conventions.md` (PROJECT_ROOT, fail-fast write, verify every write).
-- **UI dispatches** follow the Design dispatch contract in `kit/orchestrator-conventions.md`: include `docs/DESIGN.md` and `docs/preview/`; admin screens have no `docs/designs/` entries. Pass the matching archetype contract from `kit/guides/admin-blueprint.md` §3 as the brief, and build per blueprint §6.
+- Create `feature/admin` (`using-git-worktrees`, as Phase 2 Step 3). No commits until Step 5.
+- Dispatch per the plan: chains with `subagent-driven-development`, parallel groups with `dispatching-parallel-agents`.
+- **UI dispatches** follow the Design dispatch contract (admin screens have no `docs/designs/` entries); pass the matching archetype contract from `kit/guides/admin-blueprint.md` §3 as the brief and build per §6.
 - **Shell checkpoint — mandatory before any module starts.** Verify, against the running application:
   1. an admin signs in and sees a role-filtered menu
   2. a signed-in non-admin cannot reach the admin API: login returns `403`, and `/api/admin/*` called with a non-admin token returns `401`; an admin whose role lacks the permission gets `403`
@@ -121,7 +120,7 @@ Build `feature/admin` from the plan.
 
 ### Rules
 
-- **Security review.** Dispatch the general-purpose agent, loading `code-review-and-quality` and `security-and-hardening`, over the full branch diff with this checklist, in addition to its normal spec and constitution check:
+- **Security review.** A general-purpose agent loading `code-review-and-quality` and `security-and-hardening` reviews the full branch diff against the spec, constitution, and this checklist:
   1. every route under `/api/admin/` except `POST /api/admin/auth/login` calls the guard; the login route is the only unauthenticated one
   2. deny by default: a role lacking a permission is refused (`403`)
   3. every mutation other than the login route writes an audit row in the same transaction
@@ -130,9 +129,9 @@ Build `feature/admin` from the plan.
   6. audit `payload` carries no secrets or credentials
   7. the login route is rate-limited (repeated failures return `429`) and failed logins and refusals (`401`/`403`) write audit rows
   8. the proxy rejects `.` and `..` path segments, including URL-encoded ones
-- **E2E.** Add an "Admin" feature block to `docs/E2E-TESTS.md` (copy `kit/templates/e2e-tests.md` first if the file does not exist). Playwright covers the permission matrix — each role × each module action, allowed and denied — plus one happy path per module. A general-purpose agent writes and runs it; do not run the exhaustive UI pass.
-- Admin role accounts follow the registry rules (`kit/orchestrator-conventions.md` → Test account registry).
-- Run every case first and mark PASS, FAIL, or BLOCKED. Fix nothing inline. Send all failures and review findings to the implementer in one dispatch, have the reviewer check the fix diff, and re-run only the affected scope.
+- **E2E.** Add an "Admin" feature block to `docs/E2E-TESTS.md` (from `kit/templates/e2e-tests.md` if absent). Playwright, written and run by a general-purpose agent, covers the permission matrix (each role × each module action, allowed and denied) plus one happy path per module; no exhaustive UI pass.
+- Admin accounts follow conventions → Test account registry.
+- Run every case first (PASS, FAIL, BLOCKED); fix nothing inline. Send all failures and findings to the implementer in one dispatch, have the reviewer check the fix diff, and re-run the affected scope only.
 
 ### Completion criteria
 
@@ -148,7 +147,7 @@ Manual check by the user, then commit and open the PR.
 
 ### Rules
 
-- **Manual check (the hard gate).** Start the main app and `admin/`. Ask the user to sign in as each role and walk through the modules. Give the account ids from `.test-accounts.json` (read the passwords from it for the user; do not write them into docs) and URLs; do not commit before they approve.
+- **Manual check (the hard gate).** Start the main app and `admin/`; the user signs in as each role and walks the modules. Give account ids and URLs (read passwords from `.test-accounts.json` for them; never write them into docs). No commit before approval.
 - After approval, use the `finishing-a-development-branch` skill: commit everything on `feature/admin` as `feat(admin): add admin site — <module list>`, push, and open one PR against `main` containing the main-backend changes and `admin/`. Never merge it and never push to `main`.
 - Update `docs/admin-session.md` to show every step complete, with the PR link.
 

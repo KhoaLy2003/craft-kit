@@ -13,11 +13,11 @@
 - **Template**: `kit/templates/spec-screen.md`
 - **Gate**: `hard` — one sign-off covering all features; no per-feature partial approval.
 
-> **No designer? Start here.** This step does not require a human designer. A solo builder can decline designs: at the "files"/"mcp" reply (or the Path A "ready" prompt) declare every screen skipped, and each is recorded as `design_md_fallback` — Phase 2 then builds those screens from `docs/DESIGN.md` + `docs/preview/`. Briefs are still written; they feed the Phase 2 spec.
+> **No designer?** At the "files"/"mcp" reply (or the Path A "ready" prompt) declare every screen skipped; each is recorded as `design_md_fallback` and Phase 2 builds from `docs/DESIGN.md` + `docs/preview/`. Briefs are still written.
 
 ## Scope
 
-- **In**: Must and Should features only; screens (pages, modals, drawers, named views, empty/error states whose layout diverges); feature slugs; per-screen briefs; handoff; coverage validation. **Should rule (the one place it is stated):** designs cover Should features so later cycles and Phase 3 have them ready, but `scope: all` builds Must features only; Should features are built in a later cycle after the Must features ship.
+- **In**: Must and Should features only; screens (pages, modals, drawers, named views, empty/error states whose layout diverges); feature slugs; per-screen briefs; handoff; coverage validation. **Should rule:** designs cover Should features so later cycles are ready, but `scope: all` builds Must only.
 - **Out**: Could and Won't features at initial build (re-enter this step for them later, see "Re-entry for new features"); generating or critiquing designs; creating handoff files (the handoff is a printed message only); architecture.
 
 ## Execution Rules
@@ -25,14 +25,14 @@
 ### Phase A — Screen list and briefs
 
 1. Read the feature list from `docs/backlog.json`; take every feature with priority Must or Should, in build order from `docs/roadmap.md` Section 3. Derive each slug: lowercase kebab-case of the feature name; if two features give the same slug, append the later one's ID (`login-f07`). A slug is never changed once a folder uses it. Phase 2 reuses these slugs for `docs/specs/<slug>/` and `docs/designs/<slug>/`.
-2. **Skip the whole step** only if every feature has one simple screen already covered by `docs/preview/`: record the reason in the session log and wait for user confirmation. Never permitted if any feature has two or more non-trivial screens.
+2. **Skip the whole step** only if every feature has one simple screen covered by `docs/preview/`: log the reason and wait for user confirmation. Never if any feature has two or more non-trivial screens.
 3. For each slug:
    - If `docs/designs/<slug>/` already holds design files or a valid `design-manifest.json`, record `skipped, designs_exist` and leave the feature out of the handoff. If the feature's one simple screen is covered by `docs/preview/` and the user confirms, record `skipped, preview_sufficient`.
    - Otherwise read `prototype-brief.md` and `DESIGN.md`, list every distinct screen with a kebab-case filename (`item-list`, `delete-confirm`), and write one brief per screen to `docs/specs/<slug>/screens/<screen-name>.md` from the template: fill sections 1, 2, 6, 7 (and 3–5 where the prototype brief already answers them); leave section 8 (Acceptance criteria) blank for Phase 2 Spec. Section 3 (Entry and Exit) of each brief feeds `docs/flows.md` in Step 6; fill it fully.
 
 ### Phase B — Designer handoff
 
-Print this to the terminal, with the real grouped screen list. It is what the user sends to their designer; no file is created.
+Print this (no file), with the real grouped screen list; the user sends it to their designer.
 
 ```
 --- Designer Handoff: All Features ---
@@ -72,7 +72,7 @@ Wait for the reply, then follow Path A ("files") or Path B ("mcp").
 
 #### Path B — Design tool via MCP
 
-1. Ask for the design file URL (Figma link, Penpot project URL, or whatever the MCP server uses to identify the file) and the tool name; the file must hold artboards for all features and the MCP connection must be active. If designers use separate files per feature, collect and verify each URL.
+1. Ask for the design file URL and tool name (one URL per file if designers use separate files); the MCP connection must be active.
 2. Attempt to read the file via MCP. On failure, report the error and offer fix-and-retry or Path A; after one failed retry, fall back to Path A for all remaining features.
 3. **Coverage check**, per feature and per screen: find the matching artboard or frame (case-insensitive; hyphens = spaces). Found and readable → covered (`mcp`); otherwise add to the file-fallback list.
 4. **Resolve fallbacks**: the user either fixes the artboard name or access and retries, or exports the file to `docs/designs/<feature-slug>/<screen-name>.png`. Repeat until none remain.
@@ -93,8 +93,7 @@ Wait for the reply, then follow Path A ("files") or Path B ("mcp").
 }
 ```
 
-- `design_url`: URL the MCP server uses to identify the design file.
-- `design_tool`: `"figma"`, `"sketch"`, `"penpot"`, and so on; selects the MCP adapter at implement time.
+- `design_tool`: `figma`, `sketch`, `penpot`, …; selects the MCP adapter at implement time.
 - `status`: `"mcp"` (read via MCP at implement time), `"file_fallback"` (image file used instead), `"design_md_fallback"` (no design; use `DESIGN.md` + `docs/preview/` only).
 
 Phase 2 resolves these statuses per screen under the Design dispatch contract in `kit/orchestrator-conventions.md`.
@@ -108,9 +107,7 @@ Gate summary, naming the decision and the delivery path:
 
 ## Artifact Rules
 
-- Per-screen briefs are written by the orchestrator from the template.
-- Path A image files are user-provided and never modified by the orchestrator or any agent.
-- Path B manifests are written by the orchestrator; image files exist alongside for file-fallback screens.
+- The orchestrator writes briefs and manifests; Path A image files are user-provided and never modified.
 - Record `design_path: file | mcp`, `design_url`/`design_tool` (Path B), and every `design_md_fallback` screen as notes in the session log.
 
 ## Completion Criteria
@@ -128,6 +125,6 @@ Next: Step 6 — Architecture, only after the gate. Skippable per the Phase A sk
 ## Exceptions / Special Cases
 
 - **Designer iterates after delivery**: the user re-places the file (Path A) or updates the artboard (Path B) and replies "ready"; re-validate only the changed screens.
-- **Partial delivery**: accept features as they arrive and record coverage per feature, but do not close the gate until every feature passes.
+- **Partial delivery**: record coverage per feature as it arrives; the gate closes only when every feature passes.
 - **Re-opening after approval**: record it in the session log and repeat from Phase A for the affected features only; Step 6 cannot proceed until the gate is re-approved.
-- **Re-entry for new features** (Phase 3 releases, or features added after Phase 1 that have no designs): run Phases A–D again for the given feature set only, in place of "every Must and Should feature". The existing `docs/designs/<slug>/` skip rule and the one-hard-gate-for-the-batch rule apply unchanged, and the same handoff covers all the new features at once. The briefs need each feature's `## Screens` list: for a Phase 3 release take it from the screens section of `docs/iterations/<release-slug>/design.md` (`kit/phase-3-iterate.md` Step 3), which also gives the data-model and flow changes, so Phase 2 Step 1 only checks each feature's slice of that design; for a feature added outside Phase 3, write its behavior-only spec first (Phase 2 Step 1, "Spec mode") and Phase 2 then resumes at Step 2 (Plan), where Step 1's Data & Flow Impact rule applies the change to `docs/flows.md`. Log the re-entry under `docs/phase-1-session.md` as `Step 5 (re-entry: <release-slug>)`. The Step 6 hand-off in Transition Rules does not apply.
+- **Re-entry for new features** (Phase 3 releases, or features added after Phase 1 that have no designs): run Phases A–D for the given feature set only; the skip rule and the single batch gate apply unchanged, with one handoff for all. Each feature's `## Screens` list comes from `docs/iterations/<release-slug>/design.md` (`kit/phase-3-iterate.md` Step 3) for a Phase 3 release (Phase 2 Step 1 then only checks its slice), or, for a feature added outside Phase 3, from its behavior-only spec written first (Phase 2 Step 1, "Spec mode"), after which Phase 2 resumes at Step 2 (Plan), where Step 1's Data & Flow Impact rule applies the change to `docs/flows.md`. Log the re-entry under `docs/phase-1-session.md` as `Step 5 (re-entry: <release-slug>)`. The Step 6 hand-off in Transition Rules does not apply.

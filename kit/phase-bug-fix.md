@@ -6,7 +6,7 @@
 >
 > Prerequisites: a runnable application; `docs/constitution.md`.
 
-Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`. Session log: `docs/bug-session.md`, one section per bug (`kit/session-logging.md`). `<bug-slug>` is a short kebab-case name agreed with the user.
+Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/bug-session.md`, one section per bug (`kit/session-logging.md`). `<bug-slug>` is a short kebab-case name agreed with the user.
 
 | Step | Name | Gate | Model | Agent | Output |
 |---|---|---|---|---|---|
@@ -22,9 +22,9 @@ Reproduce the bug, diagnose the root cause, and bound the fix.
 
 ### Rules
 
-- **Reproduce first.** Trigger the symptom reliably before reading any code; an unreproducible bug cannot be verified fixed. If it cannot be reproduced, record the attempts in `assess.md`, report to the human, and stop.
-- Dispatch a general-purpose agent to locate the code, read-only. Ask where the reported behavior originates, not for a fix. Make no code edits in this step.
-- When present, give the agent `docs/data-model.md` and `docs/flows.md` as orientation for entities, screens, and data paths. Their absence never blocks a bug fix, and Assess does not run the Docs preflight.
+- **Reproduce first**, before reading code; an unreproducible bug cannot be verified fixed. If it cannot be reproduced, record the attempts in `assess.md`, report, and stop.
+- Dispatch a general-purpose agent, read-only, to find where the behavior originates (not a fix); no code edits here.
+- Give it `docs/data-model.md` and `docs/flows.md` when present; their absence never blocks, and Assess skips the Docs preflight.
 - Document the causal chain: what the user does → what the system does → where it goes wrong → why. A symptom ("button doesn't work") is not a root cause.
 - Bound the fix scope explicitly: which files and functions are in, what is out.
 
@@ -71,13 +71,13 @@ Implement the fix, scoped strictly to the root cause in `assess.md`.
 
 ### Rules
 
-- Create the branch first, from `main`: `git checkout main`, then `git checkout -b fix/<bug-slug>`. Stash or commit unrelated work before switching, so the fix PR carries only the fix.
-- Dispatch the specialist matched to the affected code. Keep changes within the files and functions listed in the fix scope.
+- Branch first, from `main`: `git checkout main`, `git checkout -b fix/<bug-slug>` (stash or commit unrelated work first, so the PR carries only the fix).
+- Dispatch the specialist for the affected code; stay within the fix scope.
 - **Scope boundary:** no refactoring of adjacent code and no added features. Anything else found broken becomes a separate bug report.
 - Check the fix against `docs/constitution.md`; a fix that violates it creates a new problem.
 - Add a regression test that fails on the unfixed code and passes with the fix, if the project has a test runner. If it cannot be added, record why in `assess.md`.
-- Apply the `assess.md` `Docs impact` amendments with the fix: `docs/data-model.md` / `docs/flows.md` (keep `Status: approved`, refresh `Last updated`, re-render the ER diagram if an entity or relationship changed), correct a spec acceptance criterion the fix contradicts (set the spec `Status: draft`, get the user's explicit approval of the edit, restore `approved`), and add the regression case as a row in `docs/E2E-TESTS.md` Section 3 when that file exists. Anything not listed in `Docs impact` is out of scope.
-- Do not commit yet; Step 3 commits once the fix is confirmed. If the session hands over here, the handover makes a WIP commit of the fix on `fix/<bug-slug>` (`kit/guides/session-handover.md`); Step 3's commit follows it on the same branch.
+- Apply the `Docs impact` amendments with the fix: `docs/data-model.md` / `docs/flows.md` (keep `approved`, refresh `Last updated`, re-render the ER diagram if an entity or relationship changed); a spec criterion the fix contradicts (set `Status: draft`, get explicit approval of the edit, restore `approved`); the regression case as a row in `docs/E2E-TESTS.md` Section 3 if it exists. Anything not in `Docs impact` is out of scope.
+- Do not commit yet; Step 3 commits once confirmed (a handover makes a WIP commit, `kit/guides/session-handover.md`).
 
 ### Completion criteria
 
@@ -95,9 +95,9 @@ Confirm the original symptom is gone and nothing nearby regressed; then commit a
 
 - Follow the exact reproduction steps from `assess.md` first. If the symptom persists, see "When the assessment is wrong".
 - Run the affected Phase 2 E2E flow, if one exists, to catch regressions.
-- UI symptoms: verify in the running browser with the general-purpose agent. Non-UI (data, API, error handling): dispatch a general-purpose agent.
-- **Gate type:** if the agent verified the symptom itself, present the result as a soft gate. If the symptom is UI-only or cannot be verified by an agent, it is a hard gate: the human confirms the symptom is gone and surrounding behavior is intact before committing.
-- Once verified: confirm `.env` and `.test-accounts.json` are git-ignored (`git check-ignore -q`), then commit `fix(<scope>): <one-line description> — resolves <bug-slug>`. Push and open the PR against main following the pre-flight, explicit confirmation, local-only fallback, and never-merge rules in `kit/steps/phase-2/p2-07-ship.md` (section 3). Record status and PR link (or `local-only: not pushed`) in `docs/bug-session.md`.
+- Verify UI symptoms in the running browser; non-UI (data, API, errors) with a general-purpose agent.
+- **Gate type:** soft if the agent verified the symptom itself; hard if it is UI-only or not agent-verifiable (the human confirms the symptom is gone and nothing nearby broke before committing).
+- Once verified: confirm `.env` and `.test-accounts.json` are git-ignored, then commit `fix(<scope>): <one-line description> — resolves <bug-slug>`. Push and open the PR against main per `p2-07-ship.md` section 3 (pre-flight, confirmation, local-only fallback, never merge). Record status and PR link (or `local-only: not pushed`) in `docs/bug-session.md`.
 - No further code changes in this step.
 
 ### Completion criteria

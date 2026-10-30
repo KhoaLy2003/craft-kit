@@ -19,17 +19,17 @@
 
 ## Execution Rules
 
-1. **Pre-flight, before dispatching the agent.** A scaffold started with missing tooling fails mid-run and leaves a partial state.
-   - Read the stack from `docs/architecture.md`. Identify every runtime it needs (language, CLI tools, platform SDKs), cross-referencing the `Minimum local toolchain` and `Requires:` fields in `kit/stack-catalog.md` for the chosen stack and each addition.
-   - Run `<tool> --version` (or the catalog's check command) for each via `bash`; `git` is always required, check it first. For each failure give the tool name, install URL, and a one-line install instruction, and wait until the user confirms and the check passes.
-   - Hosted stacks (Supabase, Neon, Firebase, Expo EAS, ...): confirm the user has created the account/project and has the keys and URLs. The scaffold agent cannot retrieve credentials itself. Check the free tier and pricing in `kit/stack-catalog.md` before creating accounts.
-   - Git remote: optional now, needed before Phase 2 Ship. Ship pushes to a remote; if you have none, set one up before Ship or accept the local-only fallback in p2-07.
-   - Confirm a git repo exists (`git rev-parse --git-dir`); Step 1 should have created it. If missing, `git init`. Make no commits here.
-     - Ensure `.test-accounts.json` exists per `kit/orchestrator-conventions.md` → Test account registry (only after `git check-ignore` passes for it).
-2. Dispatch the scaffold agent with `docs/architecture.md`, `docs/constitution.md`, and `templates/08-scaffold-checklist.md` as the completion checklist. If it fails mid-run (missing tool or credential discovered late), do not continue from the partial state: fix the root cause, clean the output, re-run from scratch.
+1. **Pre-flight, before dispatching the agent** (missing tooling fails mid-run and leaves a partial state).
+   - From `docs/architecture.md`, list every runtime needed (language, CLIs, platform SDKs), using the `Minimum local toolchain` and `Requires:` fields in `kit/stack-catalog.md` for the stack and each addition.
+   - Run `<tool> --version` (or the catalog's check command) for each; `git` first. For each failure give the tool, install URL, and a one-line instruction, and wait until the check passes.
+   - Hosted stacks (Supabase, Neon, Firebase, Expo EAS, ...): confirm the user created the account/project and has the keys and URLs (the agent cannot fetch credentials); check free-tier limits in the catalog first.
+   - Git remote: optional now, needed before Ship (or accept its local-only fallback).
+   - Confirm a git repo exists (`git rev-parse --git-dir`), else `git init`. Make no commits here.
+   - Ensure `.test-accounts.json` exists per conventions → Test account registry (only after `git check-ignore` passes).
+2. Dispatch the scaffold agent with `docs/architecture.md`, `docs/constitution.md`, and `templates/08-scaffold-checklist.md` as the completion checklist. If it fails mid-run, do not continue from the partial state: fix the cause, clean the output, re-run from scratch.
 3. **Environment Variables Gate** (skip if the project has no external services or secrets):
-   1. Read `.env.example` to list the required keys; if the scaffold did not produce one, generate it from `docs/architecture.md`, one `KEY=` line per variable.
-   2. Write `ENV_SETUP.md` to the project root (never print it to the terminal), one section per key, with realistic example values and service URLs taken from `docs/architecture.md`:
+   1. List the keys from `.env.example`; if missing, generate it from `docs/architecture.md`, one `KEY=` line per variable.
+   2. Write `ENV_SETUP.md` to the project root (never print it), one section per key, with realistic examples and service URLs from `docs/architecture.md`:
 
       ```markdown
       # Environment Setup — <project-name>
@@ -44,22 +44,21 @@
       - **Where to get it**: <exact dashboard path, e.g. "Supabase Dashboard → Project Settings → API → Project URL">
       - **Expected format**: `<KEY_NAME>=<realistic-example-value>`
       ```
-   3. Tell the user: *"`ENV_SETUP.md` is ready at the project root. Open it next to your editor, copy `.env.example` to `.env`, fill in every value, and reply when done."* Wait.
-   4. Validate: `.env` exists and every key from `.env.example` is present with a non-empty, non-placeholder value (reject `<...>`, `your-key-here`, `TODO`, `""`). Check by pattern; never print, log, or quote a value. For any bad key, name it, restate where to get it, and wait. Repeat until all are valid.
+   3. Tell the user to copy `.env.example` to `.env`, fill in every value using `ENV_SETUP.md`, and reply. Wait.
+   4. Validate: every `.env.example` key is present in `.env` with a non-empty, non-placeholder value (reject `<...>`, `your-key-here`, `TODO`, `""`). Check by pattern; never print or quote a value. Name any bad key, restate where to get it, and wait until all are valid.
 
-   **Hard gate:** do not close Phase 1 while `.env` is missing, holds placeholders, or causes env-related startup errors. Wrong credentials found during E2E force costly reruns; this is the cheapest moment to fix them.
-4. **Smoke test.** Run the start command from the generated `README.md` and confirm the app launches with no errors (browser shows a working "hello world" state; for a static site, open `index.html`). If an error names a missing or invalid environment variable, return to the gate above. On Windows, if your platform's background-process tool cannot launch `.cmd` wrappers such as `npm` and `npx`, launch the underlying `node` entry file directly (for Vite: `node node_modules/vite/bin/vite.js`) or run the command in a normal terminal; on macOS/Linux `npm run dev` works directly.
-   After the start command works, run every command in the constitution's `Verification Commands` table (install, build, lint, typecheck, tests, E2E, start) that can run on a fresh scaffold. Mark each `verified` in `docs/constitution.md`, or `unknown` / `n/a — <reason>` when it cannot run, and update the constitution's `Last amended` date. Commands with side effects are not run without asking the user (see `Definition of Done` in `kit/orchestrator-conventions.md`).
+   **Hard gate:** do not close Phase 1 while `.env` is missing, holds placeholders, or causes env startup errors (wrong credentials found in E2E force costly reruns).
+4. **Smoke test.** Run the start command from the generated `README.md` and confirm the app launches with no errors (a working "hello world"; for a static site, open `index.html`). An error naming an environment variable returns you to the gate above. On Windows, if the background-process tool cannot launch `.cmd` wrappers (`npm`, `npx`), run the underlying `node` entry file (Vite: `node node_modules/vite/bin/vite.js`) or a normal terminal.
+   Then run every constitution `Verification Commands` row that can run on a fresh scaffold; mark each `verified`, or `unknown` / `n/a — <reason>`, and update `Last amended`. Side-effect commands need user approval (conventions → Definition of Done).
 5. **Closeout.**
-   1. Use your tool's project-init command if it has one (it generates `AGENTS.md` or equivalent); otherwise write `AGENTS.md` by hand from `docs/architecture.md` and `docs/constitution.md`. Check it holds a meaningful project summary, not a stub.
+   1. Use your tool's project-init command if it has one (it generates `AGENTS.md`); otherwise write `AGENTS.md` from `docs/architecture.md` and `docs/constitution.md`. It must hold a real project summary, not a stub.
    2. Run the Phase 1 closeout checklist in `kit/phase-1-bootstrap.md`; every item except the commit must pass.
-   3. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json`: `kit_version` from `.craft-kit-version` in the installed kit directory, `recorded_at` today, `recorded_by: phase-1`. Before staging, run `git check-ignore -q .env` and `git check-ignore -q .test-accounts.json` (skip `.env` when the project has none); both must exit 0, otherwise fix `.gitignore` first. Then commit everything in one commit, the only commit of Phase 1:
+   3. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` (`kit_version` from `.craft-kit-version`, `recorded_at` today, `recorded_by: phase-1`). Before staging, `git check-ignore -q .env` and `.test-accounts.json` must both exit 0 (skip `.env` if none), else fix `.gitignore`. Then make the only Phase 1 commit:
       ```
       git add -A
       git commit -m "phase 1 complete: bootstrap docs, scaffold, and project conventions"
       ```
-      Phase 2 branches off this commit.
-   4. Emit the Phase 2 handoff prompt from `kit/phase-1-bootstrap.md` ("Phase handoff") with every bracket filled in so the user can copy it unedited.
+   4. Emit the Phase 2 handoff prompt from `kit/phase-1-bootstrap.md` ("Phase handoff"), brackets filled in.
 
 ## Artifact Rules
 
@@ -80,5 +79,5 @@
 
 ## Exceptions / Special Cases
 
-- **iOS needs macOS.** Simulator and Xcode are macOS-only. On Windows or Linux, state this in the pre-flight output and proceed Android-only locally, or use EAS Build (Expo cloud compilation) or a remote Mac.
-- **Android emulator not running.** `adb --version` passing only proves `adb` is on `PATH`. If `adb devices` is empty at smoke-test time, have the user create and start a virtual device in Android Studio's AVD Manager, then re-run the start command.
+- **iOS needs macOS.** On Windows or Linux say so in the pre-flight and proceed Android-only, or use EAS Build or a remote Mac.
+- **Android emulator not running.** If `adb devices` is empty at smoke test, have the user start a virtual device in AVD Manager, then re-run the start command.

@@ -1,26 +1,26 @@
 # Phase 1 — Bootstrap
 
 > **Run once per project, from raw idea to a ready-to-code codebase.**
-> Existing project: skip this phase and start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). If the codebase has no kit documents at all (no constitution or architecture), run `kit/phase-adopt.md` first. If the project lacks documents this kit version expects (`docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`), run `kit/phase-upgrade.md` first. To decide what to build next on a shipped product, use `kit/phase-3-iterate.md`. Not sure which workflow fits? Say "Start using `kit/START.md`" and it routes you.
+> Existing project: start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). No kit documents at all: `kit/phase-adopt.md` first. Missing documents this version expects (`docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`): `kit/phase-upgrade.md` first. What to build next on a shipped product: `kit/phase-3-iterate.md`. Unsure: `kit/START.md` routes you.
 
-Universal rules (step banner, gates, file verification, English-only, write-then-review) are in `kit/orchestrator-conventions.md`. In this phase, every subagent dispatch carries `PROJECT_ROOT` and, if it writes a file, the fail-fast write instruction; afterwards confirm each file exists on disk (conventions rules 1–3). Session log: `docs/phase-1-session.md` (`kit/session-logging.md`).
+Universal rules are in `kit/orchestrator-conventions.md` (every dispatch: rules 1–3). Session log: `docs/phase-1-session.md` (`kit/session-logging.md`).
 
 ## Skills and agents pre-flight
 
-Run once, before Model tiers. Check that each skill and agent below is available in this session (consult your platform's skill or agent list; if it has no list, try to load the skill by name). Skills and agents are per-tool add-ons: the kit uses them where they exist and falls back to the AI's general capability where they do not, except `design-taste-frontend`, which is required for visual-quality work, and `archify`, which is required for rendering diagrams (see `kit/task-agent-rubric.md` and `kit/orchestrator-conventions.md` rule 8). Where they live depends on your platform (often `.agents/` or a tool-specific skills folder, or a plugin). Full list and install notes: the site page *What You Need*.
+Run once, before Model tiers. Check each skill below is available (platform skill list, else try loading it by name). The kit falls back to the AI's general capability for a missing skill, except `design-taste-frontend` (required for visual-quality work) and `archify` (required for diagram rendering; see `kit/task-agent-rubric.md`, conventions rule 8). Install notes: the site page *What You Need*.
 
 | Needed in | Skills | Agent |
 |---|---|---|
 | Phase 1 | `brainstorming` (Step 1), `design-taste-frontend` (Step 3 prototype build), `archify` (Step 6 diagram render), `verification-before-completion` (every step) | none beyond the general-purpose agent |
 | Phase 2 | `brainstorming`, `writing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `using-git-worktrees`, `design-taste-frontend`, `archify` (diagram re-render after amendments), `requesting-code-review`, `code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization` (Step 4), `finishing-a-development-branch`, `verification-before-completion` | none beyond the general-purpose agent |
 
-If any skill or agent is missing: tell the user in one message which items are missing and name the step each one affects. Proceed with your closest built-in behavior for that step only after the user agrees; if they would rather install first, wait. Record what is missing and the user's decision in the session log. Phase 2 items may be checked again at the Phase 2 start.
+If any is missing: tell the user in one message which items and which step each affects. Use the closest built-in behavior only after the user agrees (else wait). Record the decision in the session log. Phase 2 items may be re-checked at its start.
 
 ## Model tiers
 
-Resolve tiers once, before Step 1. If `docs/MODELS.md` exists with `Status: approved`, skip to step 4.
+Resolve once, before Step 1. If `docs/MODELS.md` is `Status: approved`, skip to step 4.
 
-1. **Identify**: state your provider and every model available in this session, including alternatives the user can switch to (for example a faster or cheaper variant).
+1. **Identify**: state your provider and every model available, including ones the user can switch to.
 2. **Map** one model to each tier. Two or three tiers may share a model if only one is available.
 
    | Tier | Use for |
@@ -29,14 +29,14 @@ Resolve tiers once, before Step 1. If `docs/MODELS.md` exists with `Status: appr
    | `balanced` | Your standard workhorse: code generation, planning, analysis. Most of Phase 2. |
    | `fast` | Your cheapest or fastest: mechanical steps (Ship, git operations, routing). May equal `balanced`. |
 
-3. **Write and confirm**: copy `kit/templates/MODELS.md` to `docs/MODELS.md` and fill in provider, today's date, and a model per tier; leave per-step overrides empty unless there is a reason. Read the file back in chat and ask *"This is how I have configured your models. Does it look right, or should I adjust a tier?"* Set `Status: approved` only after explicit confirmation.
-4. **Copy the map into the log header**: whenever a session log is created (`docs/phase-1-session.md` here; each later phase creates its own), copy the tier → model map from `docs/MODELS.md` into its header, with any per-step override. Steps use the map from the log header and never re-read `docs/MODELS.md`.
+3. **Write and confirm**: copy `kit/templates/MODELS.md` to `docs/MODELS.md`, fill in provider, date, and a model per tier (overrides only with a reason), read it back in chat, and ask whether it looks right. Set `Status: approved` only after explicit confirmation.
+4. **Copy the map into the log header** of every session log you create (conventions → Model tiers).
 
-Re-run (delete `docs/MODELS.md` and start fresh) when the provider or harness changes, the subscription adds models, or the cost/quality balance needs adjusting.
+Re-run (delete `docs/MODELS.md`) when the provider, harness, or available models change.
 
 ## Steps
 
-Before each step, read its step file; it is authoritative for that step's inputs, outputs, and rules. Update the session log at each gate and at completion.
+Read each step's file before running it; it is authoritative.
 
 | Step | Name | Gate | Model | Agent | Output | Step file |
 |---|---|---|---|---|---|---|
@@ -51,7 +51,7 @@ Before each step, read its step file; it is authoritative for that step's inputs
 
 ## Phase 1 closeout
 
-The single closeout checklist. Step 8 runs it; every item must pass before the Phase 1 commit and the handoff. Nothing else in the kit restates it.
+The single closeout checklist. Step 8 runs it; every item must pass before the Phase 1 commit and handoff.
 
 - [ ] `docs/MODELS.md` is `approved`; `docs/phase-1-session.md` shows every step `complete` or `skipped`
 - [ ] `docs/phase-1-kickoff.md`
@@ -69,9 +69,7 @@ The single closeout checklist. Step 8 runs it; every item must pass before the P
 
 ## Phase handoff
 
-After the closeout passes, **close this session and open a new one for Phase 2**. This session carries market-research debate, prototype feedback, and design discussion that Phase 2 does not need; carrying it forward raises per-message cost and lets stale Phase 1 reasoning leak in.
-
-Before closing, emit this prompt to the user with every bracket filled: scope from `Phase 2 Scope` in `docs/roadmap.md`, project name from the kickoff file. The user copies it into a new session whose working directory is the project root:
+After the closeout passes, **close this session and open a new one for Phase 2** (this one carries Phase 1 debate that raises cost and leaks stale reasoning). Emit this prompt with every bracket filled (scope from `Phase 2 Scope` in `docs/roadmap.md`, name from the kickoff); the user pastes it into a new session at the project root:
 
 ```
 Read these files before starting:
@@ -87,9 +85,7 @@ Read these files before starting:
 Then run Phase 2 (scope: [all | feature]) for [project-name].
 ```
 
-The new session has no memory of Phase 1; these files are all it needs.
-
-`kit/` is in `.gitignore`, so a fresh clone or a new machine does not have it. Before the handoff prompt works there, reinstall the kit in the project root with the pinned command `npx github:KhoaLy2003/craft-kit#v<kit_version>`, where `<kit_version>` is read from `docs/.craft-kit.json` (substitute the real value when emitting the prompt), so `kit/phase-2.md` exists and matches the version that produced the docs. The `docs/` files are committed and travel with the repo.
+`kit/` is git-ignored, so a fresh clone lacks it. There, first reinstall with the pinned command `npx github:KhoaLy2003/craft-kit#v<kit_version>` (`<kit_version>` from `docs/.craft-kit.json`; substitute the real value in the prompt). `docs/` is committed and travels with the repo.
 
 ## Flow
 

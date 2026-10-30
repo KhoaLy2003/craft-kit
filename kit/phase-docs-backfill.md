@@ -4,7 +4,7 @@
 >
 > Output: `docs/data-model.md` and `docs/flows.md`, reverse-engineered from the code, reviewed by you, and marked `approved`. Nothing else in `docs/` is touched.
 
-Universal rules (banner, gates, PROJECT_ROOT, fail-fast writes, file verification) are in `kit/orchestrator-conventions.md`.
+Universal rules: `kit/orchestrator-conventions.md`.
 
 ## Limitations (read before running)
 

@@ -16,21 +16,20 @@
 
 - **In**: dispatching each task to its specialist; checking each task against the constitution.
 - **Out**: re-deciding parallel groups or specialists (Step 2 did); spec coverage and code review (Step 4); commits (Step 7).
-- **Boundary**: **BLOCK — create the branch before any code.** `git checkout -b feature/<slug>` if it does not already exist, then confirm it is checked out. `<slug>` is the feature slug (`scope: feature`) or the project slug (`scope: all`). Create it from `main`. If a feature in `depends_on` is `shipped` but its PR is not merged yet, `main` lacks its code: ask the user to merge it first, or to branch from that feature's branch (the PR then targets that branch). Never implement on `main`. If no git repository exists, that is a Phase 1 gap — stop and resolve it. When the branch is created, append a `started` event (`source: live`, `by: orchestrator`, `evidence`: the branch name) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built in this pass); if the feature's release is `planned`, set it to `in-progress` in the same write. Then run `node kit/scripts/render-backlog.js`.
-- **Baseline**: after the branch exists and before any code, run the build, lint, typecheck, and test commands from `docs/constitution.md` → Verification Commands once (Definition of Done step 1 in `kit/orchestrator-conventions.md`). Record the results in the session log; failures that exist before any change are logged as `pre-existing`. A `unknown` command is reported to the user, never skipped silently.
+- **Boundary**: **BLOCK — create the branch before any code.** `git checkout -b feature/<slug>` if absent, and confirm it is checked out. `<slug>` is the feature slug (`scope: feature`) or project slug (`scope: all`); create it from `main`. If a `depends_on` feature is `shipped` but its PR is unmerged, ask the user to merge it or to branch from its branch (the PR then targets that branch). Never implement on `main`; no git repo is a Phase 1 gap, so stop. On creation, append a `started` event (`source: live`, `by: orchestrator`, `evidence`: branch name) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built), set a `planned` release to `in-progress` in the same write, then run `node kit/scripts/render-backlog.js`.
+- **Baseline**: after the branch exists and before any code, run the Verification Commands once (conventions → Definition of Done step 1) and log the results; failures that predate any change are `pre-existing`. Report any `unknown` command to the user.
 
 ## Rules
 
 - Dispatch each task to its `Specialist:`. Sequential chains use `subagent-driven-development`; groups marked parallel in the plan use `dispatching-parallel-agents`.
-- Every UI dispatch follows the Design dispatch contract in `kit/orchestrator-conventions.md`. UI tasks with visual-quality signals also use `design-taste-frontend`, as the rubric requires.
-- Skip the skill's per-task and whole-branch review passes — Step 4 reviews the whole diff once.
-- Check each completed task against `docs/constitution.md` before starting the next.
-- Spec gap or contradiction found mid-task: pause and update the spec before continuing — do not guess. Set the spec `Status` to `draft`, show the user the edit, and restore `approved` only after their explicit confirmation; the step's gate otherwise does not change.
-- A screen that needs a token or component `docs/DESIGN.md` does not define: use the closest existing token or component, or, with the user's explicit approval, add the definition to `docs/DESIGN.md`; never invent an undocumented value. `docs/preview/` is not regenerated.
-- A foundational task fails or reveals complexity that invalidates later tasks: stop and re-evaluate scope; do not build on a broken foundation.
-- No per-task commits — commits happen at Ship, or at a session handover.
-- Put the branch name in the session log.
-- Features of a Phase 3 release: create `feature/<slug>` from `main` after the `design/<release-slug>` PR is merged (from `design/<release-slug>` when it was kept local-only), so the branch contains the wave design. Do not start Step 3 until every feature in earlier Work Packages groups has `shipped`.
+- Every UI dispatch follows the Design dispatch contract (conventions); visual-quality tasks also use `design-taste-frontend` (rubric).
+- Skip the skill's per-task and whole-branch review passes; Step 4 reviews the whole diff once.
+- Check each completed task against `docs/constitution.md` before the next.
+- Spec gap or contradiction mid-task: pause, set the spec `Status` to `draft`, show the user the edit, and restore `approved` only on explicit confirmation. Never guess.
+- A token or component `docs/DESIGN.md` lacks: use the closest existing one, or add it to `docs/DESIGN.md` with the user's explicit approval; never invent undocumented values. `docs/preview/` is not regenerated.
+- A foundational task fails or invalidates later tasks: stop and re-evaluate scope.
+- No per-task commits (Ship, or a handover, commits). Log the branch name.
+- Phase 3 release features: create `feature/<slug>` from `main` after the `design/<release-slug>` PR is merged (from `design/<release-slug>` if local-only) so the branch has the wave design. Start only after every feature in earlier Work Packages groups has `shipped`.
 
 ## Completion Criteria
 

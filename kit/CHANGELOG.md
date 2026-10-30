@@ -7,6 +7,11 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed (token trim)
+
+- **Wording condensed, no rule, gate, rule number, heading or file contract changed.** Files: `orchestrator-conventions.md`, `phase-1-bootstrap.md`, `phase-2.md`, `phase-3-iterate.md`, `phase-adopt.md`, `phase-admin.md`, `phase-bug-fix.md`, `phase-onboarding.md`, `phase-upgrade.md`, `phase-roadmap-migrate.md` (+ the boilerplate line in the three other upgrade modules), `stack-catalog.md`, and steps `p1-01` to `p1-06`, `p1-08`, `p2-01` to `p2-05`, `p2-07`. Phase 1 + 2 files an agent reads: 130.8K to 113.9K characters (-13%); installed kit 384.5K to 357.3K (-7%).
+- **`steps/phase-1/p1-06-architecture.md`**, **`stack-catalog.md`** — Step 6 now reads the catalog selectively (Section 1, then only the matching deviation triggers and addition domains) instead of the whole file.
+
 ### Fixed (repo audit)
 
 - **`scripts/render-backlog.js`** — rejects `depends_on` cycles; event `at` must start `YYYY-MM-DD` (free-form dates such as "March 3, 2026" passed before and rendered garbled).
