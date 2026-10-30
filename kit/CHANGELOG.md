@@ -7,6 +7,15 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed (de-duplication)
+
+- **Completion Criteria condensed** in `p1-01`, `p1-04`, `p1-08`, `p2-01`, `p2-02`, `p2-05`, `p2-07`: bullets that only restated a Rule are merged; every check that is new (artifact exists, user approved, command passes) is kept. `p2-01` gate summary shortened. **`templates/08-scaffold-checklist.md`**: environment, smoke-test and convention items merged and pointed at `p1-08` rule 3. No gate or rule changed.
+
+### Changed (lazy loading)
+
+- **`phase-2.md`**, **`phase-3-iterate.md`**, **`phase-1-bootstrap.md`**, **`steps/phase-1/p1-05-screen-design.md`**, **`p1-08-scaffold.md`** — more on-demand loading, rules unchanged: Phase 2 feature loop and parallel features to **`guides/phase-2-feature-scope.md`** (read only under `scope: feature`); Phase 3 change control to **`guides/change-control.md`**; the Phase 1 closeout checklist and Phase 2 handoff prompt moved into Step 8, their only caller; Step 5 Path B (MCP) and the manifest schema to **`guides/design-mcp.md`** (read only when the user answers "mcp"). References repointed (`p2-01`, `p2-07`, scaffold checklist template, AGENTS.md, README).
+- **`orchestrator-conventions.md`** — rule 8 (Diagrams) moved to the new **`guides/diagrams.md`** and the Test account registry to the new **`guides/test-accounts.md`**; the conventions keep a one-line pointer for each. The conventions file is read on every step, so it drops from 11.2K to 7.7K characters; the two guides load only when diagrams are rendered or test accounts are touched. References in 11 kit files repointed. No rule changed.
+
 ### Changed (token trim)
 
 - **Wording condensed, no rule, gate, rule number, heading or file contract changed.** Files: `orchestrator-conventions.md`, `phase-1-bootstrap.md`, `phase-2.md`, `phase-3-iterate.md`, `phase-adopt.md`, `phase-admin.md`, `phase-bug-fix.md`, `phase-onboarding.md`, `phase-upgrade.md`, `phase-roadmap-migrate.md` (+ the boilerplate line in the three other upgrade modules), `stack-catalog.md`, and steps `p1-01` to `p1-06`, `p1-08`, `p2-01` to `p2-05`, `p2-07`. Phase 1 + 2 files an agent reads: 130.8K to 113.9K characters (-13%); installed kit 384.5K to 357.3K (-7%).

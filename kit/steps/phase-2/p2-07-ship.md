@@ -66,21 +66,17 @@ Push first: the PR reference is the shipped event's evidence. Then:
 
 ## Completion Criteria
 
-- [ ] All changes committed; remote confirmed by the user, branch pushed, and PR open against `main` with every section of the PR template filled — or the local-only fallback recorded in the session log
-- [ ] CI status (`passing`, `failing`, `pending`, or `not-checked`) recorded in the session log; a failing run returned to Step 4 at most once, and a second failure was put to the user
-- [ ] `docs/backlog.json` has a `shipped` event with PR (or local commit) evidence for every feature built; render script exits 0
-- [ ] Every release with no `pending` or `in-progress` Must feature has `status: shipped` in `docs/backlog.json`
-- [ ] Spec persistence decision recorded in `docs/constitution.md`
-- [ ] Project-root `AGENTS.md` matches the commands and layout after this cycle
-- [ ] `node kit/scripts/lint-docs.js` reports no errors before the commit; any warnings were shown to the user
-- [ ] If a root `CHANGELOG.md` exists, it has an entry for this cycle under Unreleased
-- [ ] `scope: feature` with `pending` features left: the user was asked what to do next (see Transitions) and answered; no next feature was started unprompted
+- [ ] Committed; user-confirmed remote pushed and PR open with the PR template filled, or the local-only fallback logged
+- [ ] CI status logged (a failing run returned to Step 4 at most once)
+- [ ] `shipped` events with PR (or local commit) evidence for every feature built; releases closed per rule 4; render script exits 0
+- [ ] Spec persistence decision recorded; `AGENTS.md` and root `CHANGELOG.md` (if any) updated; lint-docs reports no errors
+- [ ] `scope: feature` with `pending` features left: the user answered the next-step question; nothing started unprompted
 
 ## Transitions
 
 ### Next
 
-**`scope: feature`, `pending` features left.** Select the next feature (feature loop in `kit/phase-2.md`). Do not start it; this is a clean seam. Ask and wait:
+**`scope: feature`, `pending` features left.** Select the next feature (feature loop in `kit/guides/phase-2-feature-scope.md`). Do not start it; this is a clean seam. Ask and wait:
 
 > **Feature [slug] is shipped.** Next in build order is [next-slug] — [one-line name]. Reply **"start"** to begin Step 1 here (if its dependency's PR is not merged, Step 3 will ask you to merge it or branch from it), **"hand over"** to continue in a new session, name a different `pending` feature (its `depends_on` must be `shipped`), or **"stop"** to end here.
 

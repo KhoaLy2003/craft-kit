@@ -48,14 +48,10 @@
 
 ## Completion Criteria
 
-- [ ] All features listed and MoSCoW-prioritised; every Must feature traces to the Core User Flow; no tech-stack assumptions in feature descriptions.
-- [ ] Build order reflects the dependency chain; deferred features captured.
+- [ ] Features MoSCoW-prioritised; every Must traces to the Core User Flow; no tech-stack assumptions; build order follows dependencies; deferred features captured.
 - [ ] `docs/backlog.json` validates and the render script exits 0.
-- [ ] `Phase 2 Scope` written with criterion scores.
-- [ ] `Admin Site` answered and recorded in the roadmap metadata; no admin feature row added.
-- [ ] `requirements` mode: every Must feature derived from a requirement has `[Src: ...]` at the start of its `description`.
+- [ ] `Phase 2 Scope` (with scores), `Admin Site` (no admin row), and the Non-functional Requirements table are filled; `requirements` mode: `[Src: ...]` tags present.
 - [ ] Human confirmed the feature scope and `Phase 2 Scope`.
-- [ ] The `Non-functional Requirements` table is filled from one combined question (all `n/a` is valid); every row has a measurable target or `n/a — <reason>`.
 
 Gate summary: *"The feature roadmap is set: [N] Must features in build order, [X] items explicitly deferred, Phase 2 will run as scope [all|feature]. Does this scope match what you want to ship for the MVP?"*
 

@@ -34,11 +34,9 @@
 
 ## Completion Criteria
 
-- [ ] Git repository exists; `kit/` and `.test-accounts.json` are in `.gitignore` (convention rule 9).
-- [ ] All clarifying questions answered (`requirements` mode: every item in `Gaps and conflicts` resolved or listed under Open Questions).
-- [ ] `docs/idea-brief.md` written and `Status: approved`. The problem is something users already have today (not hypothetical); at least one target user is concrete enough to picture; the solution stays a hypothesis; out-of-scope items are explicit. `requirements` mode: `Provenance: requirements`, every statement in the brief appears in `Source Trace`, and nothing the sources state was asked again.
-- [ ] `phase-1-kickoff.md` moved to `docs/phase-1-kickoff.md`.
-- [ ] Step 2 run/skip decision recorded.
+- [ ] Git repo and `.gitignore` entries in place (rule 9); questions answered (`requirements` mode: every `Gaps and conflicts` item resolved or listed under Open Questions).
+- [ ] `docs/idea-brief.md` is `approved`: a problem users have today, a concrete target user, the solution as a hypothesis, explicit out-of-scope items. `requirements` mode: every statement is in `Source Trace`.
+- [ ] Kickoff moved to `docs/phase-1-kickoff.md`; Step 2 run/skip decision recorded.
 
 ## Transition Rules
 

@@ -48,7 +48,7 @@ The general-purpose agent posts the full proposed stack in chat (baseline layer,
    - (d) every Must feature appears in at least one flow in `flows.md` §3.
    - (e) the `data-model.md` §2 entity-relationship diagram shows every entity in the table and every relationship in §3, with cardinality.
 4. Present a chat summary (entity count, relationship count, screen count, flow count, open questions). Ask for approval of both documents together: *"The data model has [N] entities and the flows cover [M] screens and [K] journeys. This is the structure Phase 2 builds against; a wrong entity here propagates into every feature. Approve both documents?"* Set both to `Status: approved` only after explicit approval and refresh `Last updated`.
-5. After approval, render the diagrams that pass the filter and budget in `kit/orchestrator-conventions.md` rule 8 (not every diagram). Write them to `docs/diagrams/` and add the links to the `Diagrams` line of each document; a document with none rendered says `none`.
+5. After approval, render the diagrams that pass the filter and budget in `kit/guides/diagrams.md` (not every diagram). Write them to `docs/diagrams/` and add the links to the `Diagrams` line of each document; a document with none rendered says `none`.
 
 ## Artifact Rules
 

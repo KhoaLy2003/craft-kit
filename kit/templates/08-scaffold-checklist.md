@@ -6,7 +6,7 @@
 - **Last updated**: <!-- YYYY-MM-DD -->
 - **Based on**: `architecture.md`, `constitution.md`
 
-> The scaffold's output is the codebase, not a document. Check items off as the scaffold agent completes them. The Phase 1 closeout lives in `kit/phase-1-bootstrap.md`.
+> The scaffold's output is the codebase, not a document. Check items off as the scaffold agent completes them. The Phase 1 closeout lives in `kit/steps/phase-1/p1-08-scaffold.md`.
 
 ---
 
@@ -45,9 +45,7 @@
 
 <!-- Direct implementations of constitution.md principles, not new decisions. -->
 
-- [ ] Naming convention documented (file/folder naming)
-- [ ] Commit message convention configured (e.g. commitlint) or documented in `README.md` under Contributing
-- [ ] Test organization documented (where tests live relative to source)
+- [ ] Naming, commit message (e.g. commitlint, or `README.md` Contributing), and test-location conventions documented
 
 ---
 
@@ -66,8 +64,7 @@
 
 ## 6. Smoke Test
 
-- [ ] Project builds/runs with zero features implemented
-- [ ] A trivial "hello world" check passes (proves the scaffold is wired up, not just files on disk)
+- [ ] Project builds/runs with zero features, and a trivial "hello world" check passes (the scaffold is wired up, not just files on disk)
 
 ---
 
@@ -75,9 +72,6 @@
 
 <!-- Skip this section if the project has no environment variables (for example a static site with no external services). -->
 
-- [ ] `ENV_SETUP.md` at the project root, one `### KEY_NAME` section per variable
-- [ ] `.env.example` at the project root, one line per key with a descriptive placeholder (e.g. `SUPABASE_URL=https://<project-ref>.supabase.co`)
-- [ ] User supplied a value for every key (confirmed by the user, not assumed)
-- [ ] `.env` exists and is listed in `.gitignore`
-- [ ] Every `.env` key has a non-empty, non-placeholder value (no `<...>`, `your-key-here`, `TODO`, or empty string)
-- [ ] The app starts without any missing-env-var error in the startup log
+- [ ] `ENV_SETUP.md` (one `### KEY_NAME` section per variable) and `.env.example` (descriptive placeholders, e.g. `SUPABASE_URL=https://<project-ref>.supabase.co`) at the project root
+- [ ] `.env` is git-ignored, user-filled (not assumed), and every key is non-placeholder (`p1-08-scaffold.md` rule 3)
+- [ ] The app starts with no missing-env-var error

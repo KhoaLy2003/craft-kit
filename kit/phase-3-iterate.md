@@ -96,7 +96,7 @@ Choose, rank, and commit candidates as a new release in `docs/backlog.json`, wit
 
 - User wants everything: show the summed cost against the goal; if they insist, record the decision and split into sequential releases.
 - Zero features selected: end Phase 3 as `complete` with no roadmap change; record the reason in the session log.
-- The user later drops every feature of the release before any ships: set the release `status: cancelled` in `docs/backlog.json` and follow "Change control" below.
+- The user later drops every feature of the release before any ships: set the release `status: cancelled` in `docs/backlog.json` and follow `kit/guides/change-control.md`.
 
 ---
 
@@ -115,7 +115,7 @@ Design the whole wave before any feature is built, so every feature starts from 
 - Screens: features classified `screens` without designs go through Phase 1 Step 5 re-entry (`p1-05-screen-design.md`, "Re-entry for new features") as one batch before the gate; the user may accept the `docs/DESIGN.md` fallback for a simple feature (record it in Impact).
 - Large impact (new stack, auth model, data migration): make it its own feature at the head of the build order, with its own spec and migration plan.
 - A change contradicting a fundamental constitutional rule: stop; the user chooses to drop the feature or amend the constitution explicitly. A new stack follows `kit/stack-catalog.md` and `p1-06-architecture.md`.
-- **Write nothing to a foundation document before approval.** Then apply `design.md` to `docs/data-model.md`, `docs/flows.md`, `docs/architecture.md`, `docs/constitution.md`, and `docs/DESIGN.md` (keep `Status: approved`, refresh `Last updated`; `Last amended` for the constitution; `DESIGN.md` has no header), re-render affected diagrams (conventions rule 8), and set `design.md` to `approved`. Log every applied item in an **Amendment log** in the release block (feature(s), file, one-line change) so cancelling a feature can reverse it.
+- **Write nothing to a foundation document before approval.** Then apply `design.md` to `docs/data-model.md`, `docs/flows.md`, `docs/architecture.md`, `docs/constitution.md`, and `docs/DESIGN.md` (keep `Status: approved`, refresh `Last updated`; `Last amended` for the constitution; `DESIGN.md` has no header), re-render affected diagrams (`kit/guides/diagrams.md`), and set `design.md` to `approved`. Log every applied item in an **Amendment log** in the release block (feature(s), file, one-line change) so cancelling a feature can reverse it.
 - Phase 2 Step 1 then finds the wave design in the documents and only checks the feature's slice.
 
 ### Completion criteria
@@ -176,17 +176,7 @@ Runs when Phase 2 reports the release complete (its Ship step marked the release
 
 ## Change control — when scope changes after Step 2
 
-Applies at any point after the Prioritise gate, including mid-build. Approved amendments do not guarantee a feature ships, so each must be reversible.
-
-- **Decide on the backlog first.** Never delete a feature. To drop one, append a `cancelled` event (`by: user`, `note`: the reason; the validator rejects an empty note) and set `status: cancelled`; keep `release` so the history stays traceable. Run `node kit/scripts/render-backlog.js`.
-- **Reverse its amendments.** Collect the feature's changes to foundation documents: its Amendment log items, plus anything its spec's `## Data & Flow Impact` or plan's `## Architecture Impact` added beyond the wave design. Show the list; revert each item after approval. **Keep an item another non-cancelled feature also uses** (the Shared Surface table shows who); if the cancelled feature owned it, hand ownership to the surviving feature using it most and update the table. Refresh `Last updated`, re-render affected diagrams (conventions rule 8), and recheck the Work Packages groups.
-- **Spec, plan, designs.** Leave `docs/specs/<feature-slug>/` and `docs/designs/<feature-slug>/` for the record; set the spec `Status` to `cancelled` (skip detection never treats it as approved; a revived feature re-approves at Step 1).
-- **Code.** If `feature/<feature-slug>` exists, ask whether to discard or park it; never delete a branch unconfirmed.
-- **Dependents.** If a non-cancelled feature `depends_on` a cancelled one, offer: drop it too, drop the dependency, or build the missing piece. Then update the Build Order and confirm it before Phase 2 picks the next `pending` feature.
-- **Foundation work.** Cancel a foundation feature that only served the cancelled one; build no speculative schema or infrastructure.
-- **New requirements mid-build.** Park them for the next Phase 3 round, unless they change an existing feature's behavior (`kit/guides/evolving-specs.md`).
-- **Release status.** A release whose features are all cancelled gets `status: cancelled`. Otherwise Phase 2 Ship closes the release when no `Must` feature is `pending` or `in-progress`; cancelled features do not hold it open.
-- Record every cancellation, the reverted items, and the branch decision in `docs/phase-3-session.md`.
+When a feature is dropped, cancelled, or changed after the Prioritise gate (including mid-build), read and follow `kit/guides/change-control.md`.
 
 ---
 

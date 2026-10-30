@@ -7,7 +7,7 @@ Universal rules are in `kit/orchestrator-conventions.md` (every dispatch: rules 
 
 ## Skills and agents pre-flight
 
-Run once, before Model tiers. Check each skill below is available (platform skill list, else try loading it by name). The kit falls back to the AI's general capability for a missing skill, except `design-taste-frontend` (required for visual-quality work) and `archify` (required for diagram rendering; see `kit/task-agent-rubric.md`, conventions rule 8). Install notes: the site page *What You Need*.
+Run once, before Model tiers. Check each skill below is available (platform skill list, else try loading it by name). The kit falls back to the AI's general capability for a missing skill, except `design-taste-frontend` (required for visual-quality work) and `archify` (required for diagram rendering; see `kit/task-agent-rubric.md`, `kit/guides/diagrams.md`). Install notes: the site page *What You Need*.
 
 | Needed in | Skills | Agent |
 |---|---|---|
@@ -49,43 +49,9 @@ Read each step's file before running it; it is authoritative.
 | 7 | Constitution | `soft` | fast | general-purpose agent | `docs/constitution.md` | `kit/steps/phase-1/p1-07-constitution.md` |
 | 8 | Scaffold | `none` | balanced | general-purpose agent | runnable codebase, `AGENTS.md`, one commit | `kit/steps/phase-1/p1-08-scaffold.md` |
 
-## Phase 1 closeout
+## Closeout and handoff
 
-The single closeout checklist. Step 8 runs it; every item must pass before the Phase 1 commit and handoff.
-
-- [ ] `docs/MODELS.md` is `approved`; `docs/phase-1-session.md` shows every step `complete` or `skipped`
-- [ ] `docs/phase-1-kickoff.md`
-- [ ] `docs/idea-brief.md` is `approved`
-- [ ] `docs/market-notes.md` *(skip if Step 2 was skipped)*
-- [ ] `docs/prototype/` (journey-map.md and prototype-brief.md, Definition of Done checked), `docs/DESIGN.md`, and `docs/preview/index.html` (the approved prototype)
-- [ ] `docs/roadmap.md` is `approved`, `Phase 2 Scope` recorded; `docs/backlog.json` validates (all features `pending`) and `docs/backlog.html` is rendered
-- [ ] `docs/specs/*/screens/*.md` and `docs/designs/` *(skip if Step 5 was skipped)*
-- [ ] `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md` and `docs/constitution.md` are `approved`
-- [ ] Scaffold: every item in `kit/templates/08-scaffold-checklist.md` is checked; the app builds and runs; the smoke test passes
-- [ ] `ENV_SETUP.md` at the project root, and `.env` valid with no placeholders and a clean start *(skip if no environment variables)*
-- [ ] `docs/.craft-kit.json` written from `kit/templates/craft-kit.json` with `recorded_by: phase-1` and `kit_version` copied from `.craft-kit-version` in the installed kit directory (conventions rule 10)
-- [ ] `AGENTS.md` at the project root with a meaningful project summary
-- [ ] `kit/` and `.test-accounts.json` are in `.gitignore`, and `git log` shows the single Phase 1 commit capturing all of the above
-
-## Phase handoff
-
-After the closeout passes, **close this session and open a new one for Phase 2** (this one carries Phase 1 debate that raises cost and leaks stale reasoning). Emit this prompt with every bracket filled (scope from `Phase 2 Scope` in `docs/roadmap.md`, name from the kickoff); the user pastes it into a new session at the project root:
-
-```
-Read these files before starting:
-- docs/architecture.md
-- docs/data-model.md
-- docs/flows.md
-- docs/constitution.md
-- docs/roadmap.md
-- docs/backlog.json
-- docs/MODELS.md
-- kit/phase-2.md
-
-Then run Phase 2 (scope: [all | feature]) for [project-name].
-```
-
-`kit/` is git-ignored, so a fresh clone lacks it. There, first reinstall with the pinned command `npx github:KhoaLy2003/craft-kit#v<kit_version>` (`<kit_version>` from `docs/.craft-kit.json`; substitute the real value in the prompt). `docs/` is committed and travels with the repo.
+Step 8 (`p1-08-scaffold.md`) holds the single closeout checklist and the Phase 2 handoff prompt.
 
 ## Flow
 

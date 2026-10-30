@@ -31,18 +31,15 @@
 - Features from a Phase 3 release: tasks that create or alter a Shared Surface item exist only in the plan of its owner feature; every other plan consumes the owner's contract from `design.md` and `docs/data-model.md` and carries no migration or schema task for it.
 - **NFR tasks.** Each applicable NFR gets tasks that deliver or verify it (a rate limit, an index, an accessibility scan), marked `NFR: <category, row>`; an NFR with no task is a plan gap. Refer to the roadmap table, never copy it.
 - Validate the plan against `docs/architecture.md` and `docs/constitution.md` before presenting it.
-- **Architecture Impact.** Every plan ends with `## Architecture Impact`: new dependencies, external services, auth/model changes, route groups, or environment variables introduced, or the literal line `none`. After the user accepts the plan, apply the amendments to `docs/architecture.md` (keep `Status: approved`, refresh `Last updated`) and add each new environment variable to `ENV_SETUP.md` (one `### KEY_NAME` section) and `.env.example` (placeholder, never a value). Re-render the architecture diagram (conventions rule 8) only if the system overview changed.
+- **Architecture Impact.** Every plan ends with `## Architecture Impact`: new dependencies, external services, auth/model changes, route groups, or environment variables introduced, or the literal line `none`. After the user accepts the plan, apply the amendments to `docs/architecture.md` (keep `Status: approved`, refresh `Last updated`) and add each new environment variable to `ENV_SETUP.md` (one `### KEY_NAME` section) and `.env.example` (placeholder, never a value). Re-render the architecture diagram (`kit/guides/diagrams.md`) only if the system overview changed.
 - **Scope check (`scope: all` only):** count tasks per **domain** (definition in `p1-04-roadmap.md`; UI + API is one domain). If a second domain holds ≥ 20% of the tasks, tell the user the plan outgrew `scope: all` and recommend `scope: feature` (**experimental — not yet validated**); staying is valid. Ask; never switch on your own. If confirmed, follow the mid-cycle escape in `kit/phase-2.md`.
 - Present the summary (task count, files, key decisions, specialist split, parallel groups). After significant changes, re-run the self-review loop.
 
 ## Completion Criteria
 
-- [ ] Plan file exists with all tasks, each with exactly one `Specialist:` line
-- [ ] Parallel groups marked
-- [ ] Every NFR the spec marks applicable has at least one task marked `NFR:`
-- [ ] Validated against `docs/architecture.md` and `docs/constitution.md`; self-review loop complete
-- [ ] Validated against `docs/data-model.md` and `docs/flows.md`
-- [ ] Plan ends with `## Architecture Impact`; amendments applied to `docs/architecture.md`, `ENV_SETUP.md`, `.env.example`
+- [ ] Every task has one `Specialist:`; parallel groups marked; every applicable NFR has an `NFR:` task
+- [ ] Validated against architecture, constitution, data model, and flows; self-review loop complete
+- [ ] `## Architecture Impact` present and its amendments applied (`docs/architecture.md`, `ENV_SETUP.md`, `.env.example`)
 - [ ] Summary presented and requested changes incorporated
 
 ## Transitions

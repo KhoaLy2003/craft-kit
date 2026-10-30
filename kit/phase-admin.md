@@ -130,7 +130,7 @@ Build `feature/admin` from the plan.
   7. the login route is rate-limited (repeated failures return `429`) and failed logins and refusals (`401`/`403`) write audit rows
   8. the proxy rejects `.` and `..` path segments, including URL-encoded ones
 - **E2E.** Add an "Admin" feature block to `docs/E2E-TESTS.md` (from `kit/templates/e2e-tests.md` if absent). Playwright, written and run by a general-purpose agent, covers the permission matrix (each role × each module action, allowed and denied) plus one happy path per module; no exhaustive UI pass.
-- Admin accounts follow conventions → Test account registry.
+- Admin accounts follow `kit/guides/test-accounts.md`.
 - Run every case first (PASS, FAIL, BLOCKED); fix nothing inline. Send all failures and findings to the implementer in one dispatch, have the reviewer check the fix diff, and re-run the affected scope only.
 
 ### Completion criteria

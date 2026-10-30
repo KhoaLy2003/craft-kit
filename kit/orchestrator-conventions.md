@@ -36,16 +36,7 @@ Resolved once in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers"), which w
 
 7. **Design dispatch** — every dispatch that implements UI follows the [Design dispatch contract](#design-dispatch-contract).
 
-8. **Diagrams** — diagrams live in the markdown document (Mermaid where the template has a diagram block, else text). Render to interactive HTML with the `archify` skill only the diagrams in the table below, after the document is `approved`; everything else stays Mermaid or text. Output: `docs/diagrams/<doc>-<name>.html` plus its typed JSON source beside it as `.json`; link the HTML under the document's `Diagrams` line. Follow the skill's workflow (typed JSON, then `finalize`); never hand-write the HTML, and check the result against the document.
-
-   | Candidate | Archify type | Render only when |
-   |---|---|---|
-   | System overview (`architecture.md` §5) | `architecture` | always (exactly 1) |
-   | Screen flow (`flows.md` §2) | `workflow` | the role or area has 5+ screens or a guarded branch; at most 1 per role |
-   | Core journey (`flows.md` §3) | `sequence` if it crosses an external service, else `dataflow` | a Core User Flow with 4+ steps; one diagram per journey |
-   | ER diagram (`data-model.md` §2) | `erd` (Archify 3+; older copies keep the Mermaid `erDiagram` only) | always (exactly 1); one table per entity with every §3 field, `pk`/`fk`/unique roles with `references`, a domain `tag` per entity when the model has more than 8 |
-
-   `data-model.md` §2 always carries the Mermaid `erDiagram` as the diffable source. Entity lifecycles are never rendered. **Budget: at most 6 rendered diagrams, not counting the ER diagram**; when over, keep in this order: system overview, primary-role screen flow, core journeys by build order, other screen flows. Phase 2 amendments re-render only an already-rendered diagram whose source changed. If `archify` is missing and the user agreed to proceed without it, skip the HTML and note it in the session log; it never blocks a gate.
+8. **Diagrams** — diagrams live in the markdown document (Mermaid where the template has a diagram block, else text). Before rendering any to HTML with `archify`, read `kit/guides/diagrams.md` (filter, budget, output paths).
 
 9. **Git hygiene** — before any workflow writes its first file in a repo, ensure a git repo exists and `.gitignore` contains the lines `kit/` and `.test-accounts.json` (append each only if missing; create `.gitignore` if absent). Verify: `git check-ignore -q kit/x` and `git check-ignore -q .test-accounts.json` both exit 0. If verification fails, stop and fix before continuing. Applies to every phase file, so upgrade, bug-fix, admin, and Phase 3 do not depend on Phase 1 Step 1.
 
@@ -92,20 +83,7 @@ Example: "**Gate:** The recommended stack is React + Supabase. Confirm before we
 
 ## Test account registry
 
-Test accounts live in one git-ignored file, `.test-accounts.json` at PROJECT_ROOT, reused across the whole lifecycle. Entry shape:
-
-```json
-{ "id": "admin-1", "role": "admin", "email": "...", "password": "...", "status": "unverified|valid|invalid|retired", "environment": "local|staging", "provisioning": "how it was created (e.g. seed.mjs, Supabase dashboard)", "created_by": "<feature slug or phase>", "created_on": "YYYY-MM-DD", "last_verified": "YYYY-MM-DD or null", "used_by": ["<feature slug>"], "notes": "free text (invalid reason, data it holds)" }
-```
-
-`id` is `<role>-<n>`, unique, never reused. Statuses: `unverified` (recorded, sign-in not confirmed), `valid` (confirmed, reusable), `invalid` (sign-in fails), `retired` (intentionally unused).
-
-1. **Single source** — create the file from `kit/templates/test-accounts.json` if missing, only after rule 9 verification passes (fail-closed: never write it while it is not ignored).
-2. **Reuse first** — before creating any account, read the registry and pick an entry with the needed `role` and `status: valid`. If only `unverified` exists, sign in to verify: set `valid` + `last_verified` on success, `invalid` + reason in `notes` on failure. Create a new account ONLY when no `valid` entry has the role, or the test needs isolated state (say why in `notes`). A new feature gets new test data on shared accounts, not a new account.
-3. **Keep it current** — on creating an account, append an entry (`unverified`, then `valid` after a successful sign-in). On reuse, add the feature slug to `used_by`. On failure or discovered breakage, set `invalid`. Never delete entries; set `retired`. Update the file in the same step that changes reality.
-4. **Scripts** — seed scripts and E2E tests read credentials from the registry, not per-feature `.env` keys, and are idempotent: upsert the account by `email`, never duplicate.
-5. **Dispatch** — every subagent task touching sign-in, seeding, E2E, or manual-check instructions includes: `Test accounts: read PROJECT_ROOT/.test-accounts.json; follow kit/orchestrator-conventions.md → Test account registry; never copy passwords into committed files.`
-6. **Committed docs** refer to accounts by `id` and `role` only.
+Test accounts live in one git-ignored `.test-accounts.json` at PROJECT_ROOT, reused across the lifecycle. Before creating, seeding, signing in with, or documenting any account, read `kit/guides/test-accounts.md`. Every subagent task touching sign-in, seeding, E2E, or manual-check instructions includes: `Test accounts: read PROJECT_ROOT/.test-accounts.json; follow kit/guides/test-accounts.md; never copy passwords into committed files.`
 
 ---
 

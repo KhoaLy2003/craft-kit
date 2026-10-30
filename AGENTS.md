@@ -187,7 +187,7 @@ onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
 |------|------|
 | `bin/cli.js` | CLI entry point; entire installer implementation (CJS) |
 | `kit/orchestrator-conventions.md` | Universal rules + gate definitions (absorbed `gate-management.md`) |
-| `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`), single closeout checklist, Phase 2 handoff |
+| `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`) |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
 | `kit/START.md` | Entry router (read-only): Detect → workflow + prompt; reuses the Detect step of `phase-upgrade.md` |
 | `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows |

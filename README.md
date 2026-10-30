@@ -211,7 +211,7 @@ All work uses your platform's general-purpose agent.
 |---|---|
 | `START.md` | Entry router: inspects the project and prints the workflow and prompt to run |
 | `orchestrator-conventions.md` | Universal rules: step banner, PROJECT_ROOT, write verification, gates, Definition of Done, version record, docs lint |
-| `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers, closeout checklist, Phase 2 handoff |
+| `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
 | `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
 | `phase-upgrade.md`, `phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md` | Project upgrade entry point and its one-time modules |

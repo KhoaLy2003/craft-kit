@@ -68,6 +68,11 @@ const GUIDES: Page[] = [
   kit('guides/evolving-specs',              'guides/evolving-specs',             'Evolving Specs'),
   kit('guides/session-handover',            'guides/session-handover',           'Session Handover'),
   kit('guides/design-reference',            'guides/design-reference',           'Design Reference'),
+  kit('guides/diagrams',                    'guides/diagrams',                   'Diagram Rendering'),
+  kit('guides/test-accounts',               'guides/test-accounts',              'Test Accounts'),
+  kit('guides/phase-2-feature-scope',       'guides/phase-2-feature-scope',      'Phase 2 Feature Scope'),
+  kit('guides/change-control',              'guides/change-control',             'Change Control'),
+  kit('guides/design-mcp',                  'guides/design-mcp',                 'Designs via MCP'),
   kit('guides/admin-blueprint',             'guides/admin-blueprint',            'Admin Blueprint'),
 ]
 
