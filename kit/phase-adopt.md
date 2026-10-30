@@ -120,4 +120,3 @@ Done. Next: `kit/phase-2.md` (keep building), `kit/phase-3-iterate.md` (decide w
 - **Monorepo:** one app or package per run; list it in the survey.
 - **No tests, no CI, or no scripts:** the matching Verification Commands rows are `unknown` or `n/a — <reason>`; never guess common commands.
 - **Existing hand-written `docs/architecture.md` or `docs/constitution.md`:** never overwrite. Write the draft to a `.generated.md` sibling, say so, and let the user merge.
-
