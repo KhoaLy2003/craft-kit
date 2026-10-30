@@ -87,7 +87,7 @@ Push first: the PR reference is the shipped event's evidence. Then:
 
 **`scope: feature`, `pending` features left.** Select the next feature under the feature loop in `kit/phase-2.md`. Features of the same group may already be in flight in other sessions. Do not start it. This is a clean seam: the feature is committed and nothing is mid-flight. Stop, ask, and wait for an explicit reply:
 
-> **Feature [slug] is shipped.** Next in build order is [next-slug] — [one-line name]. Reply **"start"** to begin Step 1 here, **"hand over"** to continue in a new session, name a different `pending` feature (its `depends_on` must be `shipped`), or **"stop"** to end here.
+> **Feature [slug] is shipped.** Next in build order is [next-slug] — [one-line name]. Reply **"start"** to begin Step 1 here (if its dependency's PR is not merged, Step 3 will ask you to merge it or branch from it), **"hand over"** to continue in a new session, name a different `pending` feature (its `depends_on` must be `shipped`), or **"stop"** to end here.
 
 | Reply | Action |
 |---|---|

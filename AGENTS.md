@@ -22,7 +22,7 @@ Single command, no subcommands. Execution order:
 
 1. Parse `argv`. Unknown flags print usage and exit 1. Optional `[target-dir]` (default `./kit`)
 2. Preflight the target: a file where a directory is needed fails with a one-line error; a non-empty target without `--force` exits 1
-3. Copy every `kit/` file except `resource/` (dev-only) and the top-level `CHANGELOG.md` — pure file copy, zero network
+3. Copy every `kit/` file except `resource/` (dev-only) and the top-level `CHANGELOG.md` — pure file copy, zero network (only the optional skill installs in step 8 fetch unpinned code from GitHub via `npx skills add`)
 4. With `--force` and a previous `<target>/.craft-kit-manifest.json`: delete files in the old manifest that the new kit no longer ships, then prune emptied directories. Files not in the manifest (user-added) are never touched, and manifest entries resolving outside the target are ignored. With no previous manifest, print a one-line note that renamed files from older versions may linger
 5. Write `.craft-kit-version` and `.craft-kit-manifest.json` (sorted relative file list) on every install; print the upgrade message when `--force` crosses versions
 6. If `--skip-setup`: print quick-start and exit
@@ -105,7 +105,7 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; B
 
 ```bash
 # Run the test suite (no npm install needed — zero external deps)
-node --test tests/*.test.mjs
+npm test
 
 # Docs site
 cd docs-site
@@ -185,7 +185,7 @@ onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
 
 | File | Role |
 |------|------|
-| `bin/cli.js` | CLI entry point; entire installer implementation (~415 lines, CJS) |
+| `bin/cli.js` | CLI entry point; entire installer implementation (CJS) |
 | `kit/orchestrator-conventions.md` | Universal rules + gate definitions (absorbed `gate-management.md`) |
 | `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`), single closeout checklist, Phase 2 handoff |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |

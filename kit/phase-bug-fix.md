@@ -71,7 +71,7 @@ Implement the fix, scoped strictly to the root cause in `assess.md`.
 
 ### Rules
 
-- Create the branch first: `git checkout -b fix/<bug-slug>`.
+- Create the branch first, from `main`: `git checkout main`, then `git checkout -b fix/<bug-slug>`. Stash or commit unrelated work before switching, so the fix PR carries only the fix.
 - Dispatch the specialist matched to the affected code. Keep changes within the files and functions listed in the fix scope.
 - **Scope boundary:** no refactoring of adjacent code and no added features. Anything else found broken becomes a separate bug report.
 - Check the fix against `docs/constitution.md`; a fix that violates it creates a new problem.
@@ -97,7 +97,7 @@ Confirm the original symptom is gone and nothing nearby regressed; then commit a
 - Run the affected Phase 2 E2E flow, if one exists, to catch regressions.
 - UI symptoms: verify in the running browser with the general-purpose agent. Non-UI (data, API, error handling): dispatch a general-purpose agent.
 - **Gate type:** if the agent verified the symptom itself, present the result as a soft gate. If the symptom is UI-only or cannot be verified by an agent, it is a hard gate: the human confirms the symptom is gone and surrounding behavior is intact before committing.
-- Once verified: commit `fix(<scope>): <one-line description> — resolves <bug-slug>`, push the branch, and open a PR against main. Record status and PR link in `docs/bug-session.md`.
+- Once verified: confirm `.env` and `.test-accounts.json` are git-ignored (`git check-ignore -q`), then commit `fix(<scope>): <one-line description> — resolves <bug-slug>`. Push and open the PR against main following the pre-flight, explicit confirmation, local-only fallback, and never-merge rules in `kit/steps/phase-2/p2-07-ship.md` (section 3). Record status and PR link (or `local-only: not pushed`) in `docs/bug-session.md`.
 - No further code changes in this step.
 
 ### Completion criteria

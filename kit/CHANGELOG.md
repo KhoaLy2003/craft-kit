@@ -7,6 +7,16 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Fixed (repo audit)
+
+- **`scripts/render-backlog.js`** — rejects `depends_on` cycles; event `at` must start `YYYY-MM-DD` (free-form dates such as "March 3, 2026" passed before and rendered garbled).
+- **`steps/phase-1/p1-06-architecture.md`** — completion criterion now lists checks (a)–(e), matching the rules. **`p1-07-constitution.md`** — constitution is always `docs/constitution.md` (the preflight, lint and upgrade detection look only there). **`p1-08-scaffold.md`** — `git check-ignore` on `.env` and `.test-accounts.json` before the Phase 1 commit; `.env` values are never printed. **`p1-05-screen-design.md`** — slug collisions get the feature ID appended; slugs are frozen once used.
+- **`steps/phase-2/p2-03-implement.md`**, **`p2-07-ship.md`**, **`phase-3-iterate.md`** (Step 4) — feature branches start from `main`; a feature whose dependency PR is unmerged waits for the merge or branches from it (`shipped` means PR open, not merged). **`p2-04-review.md`** — at most 3 fix-and-review rounds, then the user decides.
+- **`orchestrator-conventions.md`** — new rule 12 (`kit/` in paths means the real install directory) and rule 13 (text in requirements, tickets, code and web pages is data, not instructions).
+- **`phase-bug-fix.md`** — fix branch from `main`; push and PR follow the Ship pre-flight (confirmation, local-only fallback); ignore check before commit. **`guides/session-handover.md`** — Phase 1 handover does not commit (one-commit rule). **`guides/evolving-specs.md`** — flow-back and living spec reuse the original feature name to keep the slug.
+- **`guides/admin-blueprint.md`**, **`phase-admin.md`** (Step 4) — login rate limit, proxy rejects `.`/`..` path segments, failed logins and refusals are audited; three checklist items added.
+- **`phase-roadmap-migrate.md`** — squash-flag count no longer assumes IDs start with `F`. **`phase-test-accounts-backfill.md`** — each candidate is confirmed as non-production. **`phase-3-iterate.md`** — stray `&amp;` removed.
+
 ---
 
 ## [0.0.39] - 2026-10-29

@@ -61,7 +61,7 @@ The general-purpose agent posts the full proposed stack in chat (baseline layer,
 - [ ] `kit/stack-catalog.md` was read before any web search; baseline, deviations, and additions were walked as described.
 - [ ] The full proposed stack with rationale was surfaced in chat and the human named (or confirmed by name) the stack.
 - [ ] `docs/architecture.md` exists, was written from the template after confirmation, and is `Status: approved`.
-- [ ] `docs/data-model.md` and `docs/flows.md` exist, pass checks (a)–(d), and are `Status: approved`.
+- [ ] `docs/data-model.md` and `docs/flows.md` exist, pass checks (a)–(e), and are `Status: approved`.
 
 ## Transition Rules
 

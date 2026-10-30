@@ -45,7 +45,7 @@
       - **Expected format**: `<KEY_NAME>=<realistic-example-value>`
       ```
    3. Tell the user: *"`ENV_SETUP.md` is ready at the project root. Open it next to your editor, copy `.env.example` to `.env`, fill in every value, and reply when done."* Wait.
-   4. Validate: `.env` exists and every key from `.env.example` is present with a non-empty, non-placeholder value (reject `<...>`, `your-key-here`, `TODO`, `""`). For any bad key, name it, restate where to get it, and wait. Repeat until all are valid.
+   4. Validate: `.env` exists and every key from `.env.example` is present with a non-empty, non-placeholder value (reject `<...>`, `your-key-here`, `TODO`, `""`). Check by pattern; never print, log, or quote a value. For any bad key, name it, restate where to get it, and wait. Repeat until all are valid.
 
    **Hard gate:** do not close Phase 1 while `.env` is missing, holds placeholders, or causes env-related startup errors. Wrong credentials found during E2E force costly reruns; this is the cheapest moment to fix them.
 4. **Smoke test.** Run the start command from the generated `README.md` and confirm the app launches with no errors (browser shows a working "hello world" state; for a static site, open `index.html`). If an error names a missing or invalid environment variable, return to the gate above. On Windows, if your platform's background-process tool cannot launch `.cmd` wrappers such as `npm` and `npx`, launch the underlying `node` entry file directly (for Vite: `node node_modules/vite/bin/vite.js`) or run the command in a normal terminal; on macOS/Linux `npm run dev` works directly.
@@ -53,7 +53,7 @@
 5. **Closeout.**
    1. Use your tool's project-init command if it has one (it generates `AGENTS.md` or equivalent); otherwise write `AGENTS.md` by hand from `docs/architecture.md` and `docs/constitution.md`. Check it holds a meaningful project summary, not a stub.
    2. Run the Phase 1 closeout checklist in `kit/phase-1-bootstrap.md`; every item except the commit must pass.
-   3. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json`: `kit_version` from `.craft-kit-version` in the installed kit directory, `recorded_at` today, `recorded_by: phase-1`. Then commit everything in one commit, the only commit of Phase 1:
+   3. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json`: `kit_version` from `.craft-kit-version` in the installed kit directory, `recorded_at` today, `recorded_by: phase-1`. Before staging, run `git check-ignore -q .env` and `git check-ignore -q .test-accounts.json` (skip `.env` when the project has none); both must exit 0, otherwise fix `.gitignore` first. Then commit everything in one commit, the only commit of Phase 1:
       ```
       git add -A
       git commit -m "phase 1 complete: bootstrap docs, scaffold, and project conventions"

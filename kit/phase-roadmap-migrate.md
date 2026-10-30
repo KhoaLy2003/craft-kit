@@ -49,10 +49,10 @@ Run from the project root. Skip the whole step, with a note, if `git rev-parse -
 
 1. Commits that changed each feature's row, newest first:
    `git log -G"^\| F03 \|" --format="%H%x09%aI%x09%s" -- docs/roadmap.md`
-   (replace `F03` with the feature ID).
+   (replace `F03` with the feature ID; if the ID contains regex or shell characters, escape and quote it).
 2. The earliest entry is the **created hint**; the newest entry is the **status hint**. For a `shipped` feature, the status hint is the shipped date.
 3. **Squash flag:** count the feature rows changed in that commit:
-   `git show --format= --unified=0 <sha> -- docs/roadmap.md | grep -c "^+| F"`.
+   `git show --format= --unified=0 <sha> -- docs/roadmap.md | grep -c "^+|"` (counts every added table row, whatever the ID format).
    If the count is greater than 1, the hint is **flagged**: the commit touched other rows, so the date may not be the feature's own. A flagged hint **defaults to `unknown`**, never to a date. It can only become a date by an explicit per-feature answer in Step 3.
 4. **Same-commit check:** if the created hint and the status hint are the same commit, the history cannot show when the feature was created. Set the created hint to `unknown` and keep the status hint.
 5. Record for each feature: created hint (sha, date, flagged or not, same-commit or not), status hint (sha, date, flagged or not), or "no evidence".

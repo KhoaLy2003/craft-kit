@@ -52,7 +52,7 @@ Establish what the product does today and what evidence exists, then produce a s
 - A candidate that is really a bug goes to `kit/phase-bug-fix.md`; note it in `discover.md`.
 - Dispatch research subagents per the PROJECT_ROOT and fail-fast write rules.
 
-**Artifact:** `docs/iterations/<release-slug>/discover.md` with the standard metadata header (`Status`, `Last updated`, `Based on`) and sections: Shipped State, Requirements Received (requester, original wording, date), Evidence, Known Defects &amp; Debt, Release Goal (user's own words), Idea Status, Candidates (table, with `Requested by`), Considered and Dropped (with reasons).
+**Artifact:** `docs/iterations/<release-slug>/discover.md` with the standard metadata header (`Status`, `Last updated`, `Based on`) and sections: Shipped State, Requirements Received (requester, original wording, date), Evidence, Known Defects and Debt, Release Goal (user's own words), Idea Status, Candidates (table, with `Requested by`), Considered and Dropped (with reasons).
 
 ### Completion criteria
 
@@ -141,7 +141,7 @@ Turn the approved design into work that developers can pick up independently, an
 
 - Add a **Work Packages** table to the release block: `Feature | Depends on | Owns (Shared Surface items) | Group | Branch`. A **group** is a set of features that may be built at the same time: every feature in it depends only on features in earlier groups, and none needs another's *code* (the shared design, schema, and contracts are already fixed in Step 3). A feature that needs another feature's built code goes in a later group. Features in the same group must not own the same Shared Surface item.
 - Commit the design: create `design/<release-slug>`, commit `design.md`, the amended foundation documents, the release block, and `docs/backlog.*`, then push and open a PR following the pre-flight, confirmation, and local-only fallback in `kit/steps/phase-2/p2-07-ship.md`. Feature branches are created from `main` after that PR is merged (from `design/<release-slug>` when local-only), so every branch sees the same design.
-- Emit one Phase 2 handoff prompt per feature of the first group: `kit/phase-2.md`, project name, `scope: feature`, and the feature ID. Each prompt can run in its own session, worktree, or by its own developer. Emit the prompts of a later group when every feature of the earlier groups has `shipped`. Phase 2 reads the Work Packages table and `docs/backlog.json`; the prompt is a hint, and the release slug is not an input.
+- Emit one Phase 2 handoff prompt per feature of the first group: `kit/phase-2.md`, project name, `scope: feature`, and the feature ID. Each prompt can run in its own session, worktree, or by its own developer. Emit the prompts of a later group when every feature of the earlier groups has `shipped` and its PR is merged (or the later feature branches from the earlier one, `kit/steps/phase-2/p2-03-implement.md`). Phase 2 reads the Work Packages table and `docs/backlog.json`; the prompt is a hint, and the release slug is not an input.
 - **Design change requests.** If a Phase 2 cycle needs an entity, field, screen, or contract the wave design lacks, that cycle stops and returns here. Update `design.md` and the foundation documents, the Shared Surface table, and the Amendment log; list the features that use the changed items (they re-check their spec slice); and get the user's approval. Never patch a shared item from inside one feature.
 
 ### Completion criteria

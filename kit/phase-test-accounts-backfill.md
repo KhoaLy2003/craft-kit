@@ -40,7 +40,7 @@ What to have ready: the app (and its database) able to start locally, so sign-in
    - `.env`, `.env.local`, and `.env.example` keys that name a test user (for example `E2E_*`, `TEST_USER_*`, `*_EMAIL` with a matching `*_PASSWORD`);
    - the credentials table in `docs/E2E-TESTS.md` (key names, which lead back to `.env` values);
    - seed scripts (`seed.*`, `prisma/seed.*`, `supabase/seed.sql`) that create users.
-4. Group by role. Two keys that resolve to the same `email` are one account. Show the user each candidate: role, email, password masked, source, and how it was provisioned if known.
+4. Group by role. Two keys that resolve to the same `email` are one account. Show the user each candidate: role, email, password masked, source, and how it was provisioned if known. Ask for each whether it is a test account on a non-production target; a candidate that may reach production data is dropped, never recorded.
 
 ## Step 2 — Review (hard gate)
 

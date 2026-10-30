@@ -100,6 +100,21 @@ function validate(doc) {
 
     validateEvents(f, err);
   }
+
+  // A dependency cycle means none of its features can ever start. Walk each chain; meeting a
+  // feature already on the current path closes a cycle (self-dependencies are reported above).
+  const byId = new Map(doc.features.filter((f) => f && isNonEmptyString(f.id)).map((f) => [f.id, f]));
+  const visited = new Set();
+  const visit = (id, path) => {
+    if (path.includes(id)) { err(`depends_on cycle: ${[...path.slice(path.indexOf(id)), id].join(' -> ')}`); return; }
+    if (visited.has(id)) return;
+    const deps = byId.get(id).depends_on;
+    for (const dep of Array.isArray(deps) ? deps : []) {
+      if (dep !== id && byId.has(dep)) visit(dep, [...path, id]);
+    }
+    visited.add(id);
+  };
+  for (const id of byId.keys()) visit(id, []);
   return errors;
 }
 
@@ -130,7 +145,8 @@ function validateEvents(f, err) {
       if (e.source !== 'unknown') err(`${where}: at may be null only when source is unknown`);
       return;
     }
-    if (typeof e.at !== 'string' || Number.isNaN(Date.parse(e.at))) {
+    // Date.parse alone accepts "March 3, 2026"; the renderer slices the first 10 characters, so require ISO.
+    if (typeof e.at !== 'string' || !/^\d{4}-\d{2}-\d{2}(T|$)/.test(e.at) || Number.isNaN(Date.parse(e.at))) {
       err(`${where}: at must be an ISO 8601 date-time or null`);
       return;
     }

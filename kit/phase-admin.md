@@ -128,6 +128,8 @@ Build `feature/admin` from the plan.
   4. the token is never in `localStorage`, `sessionStorage`, a JS-readable cookie, or a URL
   5. list endpoints whitelist `sort` and `filter` keys and cap `pageSize`
   6. audit `payload` carries no secrets or credentials
+  7. the login route is rate-limited (repeated failures return `429`) and failed logins and refusals (`401`/`403`) write audit rows
+  8. the proxy rejects `.` and `..` path segments, including URL-encoded ones
 - **E2E.** Add an "Admin" feature block to `docs/E2E-TESTS.md` (copy `kit/templates/e2e-tests.md` first if the file does not exist). Playwright covers the permission matrix — each role × each module action, allowed and denied — plus one happy path per module. A general-purpose agent writes and runs it; do not run the exhaustive UI pass.
 - Admin role accounts follow the registry rules (`kit/orchestrator-conventions.md` → Test account registry).
 - Run every case first and mark PASS, FAIL, or BLOCKED. Fix nothing inline. Send all failures and review findings to the implementer in one dispatch, have the reviewer check the fix diff, and re-run only the affected scope.

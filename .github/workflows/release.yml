@@ -30,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ steps.version.outputs.tag }}"
+          TAG="$GITHUB_REF_NAME"  # env var, not pasted into the script text
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
             echo "Release $TAG already exists — skipping."
@@ -43,7 +43,7 @@ jobs:
         id: notes
         run: |
           set -euo pipefail
-          TAG="${{ steps.version.outputs.tag }}"
+          TAG="$GITHUB_REF_NAME"  # env var, not pasted into the script text
 
           cat > release_notes.md << 'NOTES_EOF'
           ## Install
@@ -80,7 +80,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ steps.version.outputs.tag }}"
+          TAG="$GITHUB_REF_NAME"  # env var, not pasted into the script text
           gh release create "$TAG" \
             --title "craft-kit ${TAG}" \
             --notes-file release_notes.md
