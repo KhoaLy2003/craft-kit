@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.40] - 2026-10-30
+
+**Summary:** Lower token use · on-demand guides · audit fixes
+
 ### Changed (de-duplication)
 
 - **Completion Criteria condensed** in `p1-01`, `p1-04`, `p1-08`, `p2-01`, `p2-02`, `p2-05`, `p2-07`: bullets that only restated a Rule are merged; every check that is new (artifact exists, user approved, command passes) is kept. `p2-01` gate summary shortened. **`templates/08-scaffold-checklist.md`**: environment, smoke-test and convention items merged and pointed at `p1-08` rule 3. No gate or rule changed.
@@ -30,6 +36,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`phase-bug-fix.md`** — fix branch from `main`; push and PR follow the Ship pre-flight (confirmation, local-only fallback); ignore check before commit. **`guides/session-handover.md`** — Phase 1 handover does not commit (one-commit rule). **`guides/evolving-specs.md`** — flow-back and living spec reuse the original feature name to keep the slug.
 - **`guides/admin-blueprint.md`**, **`phase-admin.md`** (Step 4) — login rate limit, proxy rejects `.`/`..` path segments, failed logins and refusals are audited; three checklist items added.
 - **`phase-roadmap-migrate.md`** — squash-flag count no longer assumes IDs start with `F`. **`phase-test-accounts-backfill.md`** — each candidate is confirmed as non-production. **`phase-3-iterate.md`** — stray `&amp;` removed.
+
+---
 
 ---
 
