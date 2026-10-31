@@ -1,6 +1,6 @@
 {
   "name": "craft-kit",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "scripts": {
     "test": "node --test tests/cli.test.mjs tests/kit-consistency.test.mjs tests/lint-docs.test.mjs tests/render-backlog.test.mjs"
   },

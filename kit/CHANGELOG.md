@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.41] - 2026-10-31
+
+**Summary:** Phase 2 routing guard · workflow block in AGENTS.md · kit scripts work in ES-module projects
+
 **Summary:** Stop agents from coding backlog features outside Phase 2 · kit scripts work in ES-module projects
 
 Prompted by the lifeatlas project: after Adopt and Phase 3, a fresh session given "Start to implement F15" read `design.md` and wrote code directly. It never opened `kit/phase-2.md`, because nothing in the project (`AGENTS.md`, `CLAUDE.md`, `roadmap.md`) mentioned the kit, and `kit/` is git-ignored.
@@ -23,6 +29,8 @@ Prompted by the lifeatlas project: after Adopt and Phase 3, a fresh session give
 - **`steps/phase-1/p1-08-scaffold.md`**, **`phase-adopt.md`** — write the workflow block into `AGENTS.md` (Adopt: also `CLAUDE.md`, diff and approval); closeout checklists require it. Adopt's Transition now says to close the session and that every `r0-baseline` feature is `shipped`, so Phase 3 comes before Phase 2.
 - **`phase-3-iterate.md`** — Step 2 replaces an "all features shipped" roadmap sentence with a pointer to the release block; Step 4 adds the Work Packages Phase 2 line, "close this session and open a new one for Phase 2", a refusal rule for in-session implementation, and a prompt template matching Phase 1's.
 - **`START.md`** — intent row for "implement F-id / next feature / all pending".
+
+---
 
 ---
 
