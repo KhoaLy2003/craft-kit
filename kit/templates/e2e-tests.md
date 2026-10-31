@@ -192,3 +192,13 @@ If provisioning takes more than a few lines, put the step-by-step walkthrough in
 - **Cause**: <!-- root cause -->
 - **Fix**: <!-- exact step to resolve -->
 - **Verify**: <!-- how to confirm the fix worked -->
+
+---
+
+## 8. Run Log
+
+<!-- One row per run, appended and never rewritten. Evidence lives in `docs/e2e-runs/` (git-ignored); only the path is committed. -->
+
+| Date | Command | Scope | PASS | FAIL | BLOCKED | Evidence path |
+|------|---------|-------|------|------|---------|---------------|
+| | | | | | | |

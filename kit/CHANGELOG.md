@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed
+
+- **`steps/phase-2/p2-05-e2e.md`** — every E2E run (and re-run) saves its evidence (runner output, HTML report, failure traces/screenshots, or the request log) under `docs/e2e-runs/<date>/`, git-ignored; a new Report section defines the closing summary (counts, failures and fixes, exclusions, evidence path) and the cannot-start / still-failing variants. Completion Criteria require the evidence and Run Log.
+- **`templates/e2e-tests.md`** — new Section 8 Run Log (one appended row per run, with evidence path).
+- **`steps/phase-2/p2-06-manual-check.md`** — the E2E results listed before the walkthrough include the evidence path.
+
 ---
 
 ## [0.0.41] - 2026-10-31
