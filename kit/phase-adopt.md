@@ -2,7 +2,7 @@
 
 > **Status: experimental — not yet validated in a test round.**
 >
-> **Run once per project**, from the project root, on a codebase that has no kit documents. Output: `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`, `docs/MODELS.md`, `AGENTS.md`, `docs/.craft-kit.json`, and `docs/DESIGN.md` when the project has a UI. Source code is never modified.
+> **Run once per project**, from the project root, on a codebase that has no kit documents. Output: `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`, `docs/MODELS.md`, `AGENTS.md` (and `CLAUDE.md` when present), `docs/.craft-kit.json`, and `docs/DESIGN.md` when the project has a UI. Source code is never modified.
 
 Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/adopt-session.md`.
 
@@ -85,7 +85,7 @@ Run the "Model tiers" section of `kit/phase-1-bootstrap.md`.
 
 ## Step 8 — AGENTS.md
 
-Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`). If one exists, show a diff and apply only on approval; never overwrite a hand-written file.
+Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`), ending with the `## Workflow (craft-kit)` section from `kit/orchestrator-conventions.md` → "Project workflow block" (real `<kit_version>` from `docs/.craft-kit.json`). Without it a fresh session does not know `kit/` exists and codes backlog features directly. If `AGENTS.md` exists, show a diff and apply only on approval; never overwrite a hand-written file. If a `CLAUDE.md` exists, propose the same section for it under the same rule.
 
 ## Step 9 — Closeout
 
@@ -93,9 +93,9 @@ Create the root `AGENTS.md` from the survey and constitution (Commands from `## 
    - [ ] `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/data-model.md`, `docs/flows.md`, `docs/MODELS.md` are `approved`; `docs/DESIGN.md` too, or the skip is recorded
    - [ ] `docs/backlog.json` passes `node kit/scripts/render-backlog.js` with exit 0 and every `r0-baseline` feature was confirmed by you
    - [ ] Every MUST in the constitution has evidence (config file, or an observed ratio recorded in `docs/adopt/survey.md`)
-   - [ ] `AGENTS.md` at the project root with a meaningful project summary
+   - [ ] `AGENTS.md` at the project root with a meaningful project summary and the `## Workflow (craft-kit)` section
    - [ ] `node kit/scripts/lint-docs.js` reports no errors (conventions rule 11); warnings are shown to you
-   - [ ] Only `docs/`, `AGENTS.md`, and `.gitignore` changed in the repository (plus `.test-accounts.json`, already ignored); source code is untouched
+   - [ ] Only `docs/`, `AGENTS.md`, `CLAUDE.md`, and `.gitignore` changed in the repository (plus `.test-accounts.json`, already ignored); source code is untouched
 2. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` with `recorded_by: adopt`, `kit_version` from `.craft-kit-version` in the installed kit directory, and `recorded_at` today (conventions rule 10).
 3. Finalise `docs/adopt-session.md`.
 4. Branch `chore/adopt-craftkit`, one commit (`adopt: add craft-kit documents`), then push and open a PR per the pre-flight, local-only fallback, and never-merge rules in `p2-07-ship.md`.
@@ -107,12 +107,12 @@ Create the root `AGENTS.md` from the survey and constitution (Commands from `## 
 - [ ] The Phase 2 Docs preflight in `kit/phase-2.md` passes without any file written by hand
 - [ ] Every MUST in the constitution has evidence
 - [ ] `docs/backlog.json` passes the render script with exit 0
-- [ ] Only `docs/`, `AGENTS.md`, and `.gitignore` changed; source code untouched
+- [ ] Only `docs/`, `AGENTS.md`, `CLAUDE.md`, and `.gitignore` changed; source code untouched
 - [ ] The user approved at the Steps 2, 3 and 4 gates
 
 ## Transition
 
-Done. Next: `kit/phase-2.md` (keep building), `kit/phase-3-iterate.md` (decide what to build), or `kit/phase-bug-fix.md`. Offer `kit/phase-onboarding.md` when a developer is about to join.
+Done. Close this session; run the next workflow in a new one with the handoff prompt. Every `r0-baseline` feature is `shipped`, so Phase 2 has nothing to build until features are `pending`: choose `kit/phase-3-iterate.md` (decide what to build; its Direct path covers one known feature) to add them, then `kit/phase-2.md` to build them, or `kit/phase-bug-fix.md` for a defect. Unsure: `kit/START.md`. Offer `kit/phase-onboarding.md` when a developer is about to join.
 
 ## Exceptions
 

@@ -8,6 +8,8 @@ import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
+import { tmpdir } from 'node:os'
+import { mkdtempSync, cpSync, writeFileSync, rmSync } from 'node:fs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const SCRIPT = join(ROOT, 'kit', 'scripts', 'lint-docs.js')
@@ -47,5 +49,20 @@ describe('lint-docs', () => {
   test('a missing docs folder is an error', () => {
     const r = spawnSync(process.execPath, [SCRIPT, join(ROOT, 'tests', 'fixtures', 'lint-docs', 'valid', 'docs')], { encoding: 'utf8' })
     assert.equal(r.status, 1)
+  })
+})
+
+describe('lint-docs in an ES-module project', () => {
+  test('runs when the project package.json has "type": "module" (installed kit scripts stay CommonJS)', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'ck-esm-'))
+    try {
+      cpSync(join(ROOT, 'kit', 'scripts'), join(dir, 'kit', 'scripts'), { recursive: true })
+      cpSync(join(fixture('valid'), 'docs'), join(dir, 'docs'), { recursive: true })
+      writeFileSync(join(dir, 'package.json'), '{"type":"module"}')
+      const r = spawnSync(process.execPath, [join(dir, 'kit', 'scripts', 'lint-docs.js'), dir], { encoding: 'utf8' })
+      assert.equal(r.status, 0, r.stdout + r.stderr)
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 })

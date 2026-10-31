@@ -7,6 +7,23 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+**Summary:** Stop agents from coding backlog features outside Phase 2 · kit scripts work in ES-module projects
+
+Prompted by the lifeatlas project: after Adopt and Phase 3, a fresh session given "Start to implement F15" read `design.md` and wrote code directly. It never opened `kit/phase-2.md`, because nothing in the project (`AGENTS.md`, `CLAUDE.md`, `roadmap.md`) mentioned the kit, and `kit/` is git-ignored.
+
+### Added
+
+- **`orchestrator-conventions.md`** — rule 14 (implementation requests run Phase 2; "implement all" means one cycle per feature under `scope: feature`) and a "Project workflow block", the `## Workflow (craft-kit)` section written into the project's `AGENTS.md` (and `CLAUDE.md`).
+- **`phase-2.md`** — Entry guard: no source change before the unit's session-log section exists and its spec is `approved`. **`steps/phase-2/p2-01-spec.md`** creates that session-log section first.
+- **`scripts/package.json`** — pins the kit scripts to CommonJS, so `render-backlog.js` and `lint-docs.js` run in projects whose `package.json` has `"type": "module"` (they failed with `require is not defined`).
+- `tests/kit-consistency.test.mjs`, `tests/lint-docs.test.mjs` (dev only) — workflow-block contract, matching Phase 1 and Phase 3 handoffs, lint run inside an ES-module project.
+
+### Changed
+
+- **`steps/phase-1/p1-08-scaffold.md`**, **`phase-adopt.md`** — write the workflow block into `AGENTS.md` (Adopt: also `CLAUDE.md`, diff and approval); closeout checklists require it. Adopt's Transition now says to close the session and that every `r0-baseline` feature is `shipped`, so Phase 3 comes before Phase 2.
+- **`phase-3-iterate.md`** — Step 2 replaces an "all features shipped" roadmap sentence with a pointer to the release block; Step 4 adds the Work Packages Phase 2 line, "close this session and open a new one for Phase 2", a refusal rule for in-session implementation, and a prompt template matching Phase 1's.
+- **`START.md`** — intent row for "implement F-id / next feature / all pending".
+
 ---
 
 ## [0.0.40] - 2026-10-30

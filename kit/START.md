@@ -25,7 +25,7 @@ Send this to your AI, from the project root: `Start using <install directory>/ST
 | A shipped feature is broken | `kit/phase-bug-fix.md` |
 | One known feature to add | Direct path in `kit/phase-3-iterate.md`, then `kit/phase-2.md` with `scope: feature` |
 | New requirements, decide what to build | `kit/phase-3-iterate.md` |
-| Continue building pending features | `kit/phase-2.md` |
+| Build or implement pending features (an ID, "the next feature", "all pending") | `kit/phase-2.md`, starting at Step 1 (Spec); never code straight from `docs/`. No `pending` features in `docs/backlog.json` (for example right after Adopt)? `kit/phase-3-iterate.md` first |
 | Admin site | `kit/phase-admin.md` |
 | A developer is joining | `kit/phase-onboarding.md` |
 

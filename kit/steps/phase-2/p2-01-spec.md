@@ -23,6 +23,7 @@
 ## Rules
 
 - Skipped when `kit/phase-2.md` skip detection applies.
+- First action, before any questions: create the unit's section in `docs/phase-2-session.md` with Step 1 `in progress` (`kit/session-logging.md`). This is the marker the Entry guard in `kit/phase-2.md` checks; no source file changes until the spec is `approved`.
 - Invoke `brainstorming` (questions → approaches → design → written spec). Do not invoke `writing-plans` from inside it; that is Step 2.
 - Feature slug: the Phase 1 Step 5 slug (kebab-case of the feature name); derive it the same way if Step 5 was skipped or the feature is new.
 - Each feature's spec (or section) holds acceptance criteria, edge cases, and non-goals. `scope: all` adds, per section, how the feature connects to the one before it, and makes every cross-feature interaction explicit.

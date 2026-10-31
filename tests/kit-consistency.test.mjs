@@ -179,3 +179,31 @@ describe('templates', () => {
     assert.deepEqual([...NO_METADATA].filter(t => !templates.includes(t)), [])
   })
 })
+
+describe('project workflow block', () => {
+  const conventions = read(join(KIT, 'orchestrator-conventions.md'))
+  const block = conventions.match(/^## Project workflow block\s*\n[\s\S]*?```markdown\r?\n([\s\S]*?)```/m)
+
+  test('conventions define the block, and it routes feature work to Phase 2', () => {
+    assert.ok(block, 'orchestrator-conventions.md has no "Project workflow block" section with a markdown block')
+    assert.match(block[1], /^## Workflow \(craft-kit\)/m)
+    assert.match(block[1], /kit\/phase-2\.md/)
+    assert.match(block[1], /kit\/START\.md/)
+  })
+
+  test('both steps that write the project AGENTS.md add the block', () => {
+    for (const f of ['steps/phase-1/p1-08-scaffold.md', 'phase-adopt.md']) {
+      const text = read(join(KIT, f))
+      assert.match(text, /Project workflow block/, `${f} does not point at the workflow block`)
+      assert.match(text, /## Workflow \(craft-kit\)/, `${f} does not require the section in its checklist`)
+    }
+  })
+
+  test('Phase 1 and Phase 3 handoffs both say to open a new session and emit a Phase 2 prompt', () => {
+    for (const f of ['steps/phase-1/p1-08-scaffold.md', 'phase-3-iterate.md']) {
+      const text = read(join(KIT, f))
+      assert.match(text, /close this session and open a new one for Phase 2/, `${f} lacks the new-session instruction`)
+      assert.match(text, /Then run Phase 2 \(scope: /, `${f} lacks the Phase 2 prompt`)
+    }
+  })
+})

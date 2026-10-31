@@ -51,7 +51,7 @@
 4. **Smoke test.** Run the start command from the generated `README.md` and confirm the app launches with no errors (a working "hello world"; for a static site, open `index.html`). An error naming an environment variable returns you to the gate above. On Windows, if the background-process tool cannot launch `.cmd` wrappers (`npm`, `npx`), run the underlying `node` entry file (Vite: `node node_modules/vite/bin/vite.js`) or a normal terminal.
    Then run every constitution `Verification Commands` row that can run on a fresh scaffold; mark each `verified`, or `unknown` / `n/a — <reason>`, and update `Last amended`. Side-effect commands need user approval (conventions → Definition of Done).
 5. **Closeout.**
-   1. Use your tool's project-init command if it has one (it generates `AGENTS.md`); otherwise write `AGENTS.md` from `docs/architecture.md` and `docs/constitution.md`. It must hold a real project summary, not a stub.
+   1. Use your tool's project-init command if it has one (it generates `AGENTS.md`); otherwise write `AGENTS.md` from `docs/architecture.md` and `docs/constitution.md`. It must hold a real project summary, not a stub. Append the `## Workflow (craft-kit)` section from `kit/orchestrator-conventions.md` → "Project workflow block", with the real `<kit_version>`; init commands do not add it. Add it to `CLAUDE.md` too when the tool generated one.
    2. Run the Phase 1 closeout checklist below; every item except the commit must pass.
    3. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` (`kit_version` from `.craft-kit-version`, `recorded_at` today, `recorded_by: phase-1`). Before staging, `git check-ignore -q .env` and `.test-accounts.json` must both exit 0 (skip `.env` if none), else fix `.gitignore`. Then make the only Phase 1 commit:
       ```
@@ -75,7 +75,7 @@ The single closeout checklist. Step 8 runs it; every item must pass before the P
 - [ ] Scaffold: every item in `kit/templates/08-scaffold-checklist.md` is checked; the app builds and runs; the smoke test passes
 - [ ] `ENV_SETUP.md` at the project root, and `.env` valid with no placeholders and a clean start *(skip if no environment variables)*
 - [ ] `docs/.craft-kit.json` written from `kit/templates/craft-kit.json` with `recorded_by: phase-1` and `kit_version` copied from `.craft-kit-version` in the installed kit directory (conventions rule 10)
-- [ ] `AGENTS.md` at the project root with a meaningful project summary
+- [ ] `AGENTS.md` at the project root with a meaningful project summary and the `## Workflow (craft-kit)` section
 - [ ] `kit/` and `.test-accounts.json` are in `.gitignore`, and `git log` shows the single Phase 1 commit capturing all of the above
 
 ## Phase handoff prompt
