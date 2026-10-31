@@ -22,7 +22,7 @@
 Observable evidence, all three required:
 
 - [ ] The user states approval in their own words, naming the walkthrough they did (the feature, or the complete app)
-- [ ] The orchestrator listed to the user the spec's acceptance criteria and the E2E results (N/N passed) it presented before the walkthrough
+- [ ] The orchestrator listed to the user the spec's acceptance criteria and the E2E results (N/N passed, with the evidence path from the Run Log) it presented before the walkthrough
 - [ ] Every issue the user reported is fixed and its E2E scope re-run; none open
 
 ## Transitions
