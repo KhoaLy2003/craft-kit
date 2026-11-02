@@ -21,7 +21,7 @@ Create the file at the phase's first step. The header carries the tier → model
 ```markdown
 # <Phase> Session Log — <project-name>
 
-Models: capable = <model> · balanced = <model> · fast = <model>
+Models: capable = <model> · balanced = <model> · fast = <model>   <!-- or `Model: <model>` when one model serves every tier -->
 
 | Step | Name | Agent | Status | Output |
 |---|---|---|---|---|
@@ -34,6 +34,15 @@ Models: capable = <model> · balanced = <model> · fast = <model>
 | Status | `pending` · `in progress` · `complete` · `skipped` · `blocked` |
 | Output | Path of the file(s) produced; `—` until complete |
 
-Add free-text notes under the table for skip reasons, `design_md_fallback` screens, and decisions made at gates. Add a `Started` / `Duration` column only if you want timing; none is required.
+Notes go under the table, one line each, at most 5 per unit: skip reasons, `design_md_fallback` screens, gate outcomes. Put a decision where it belongs, not in the log:
+
+| Decision | Destination |
+|---|---|
+| Behavior (AC, edge case, non-goal) | the spec, edited in place (`kit/guides/change-control.md`) |
+| Technical choice inside a feature | the plan task's key decisions, then the commit message |
+| Cross-cutting (dependency, auth, route group, env var) | `## Architecture Impact` → `docs/architecture.md` |
+| Not yet in any artifact at a handover | `docs/handover.md` |
+
+Never repeat what git history, `docs/backlog.json` events, or an artifact already holds. Once a unit is shipped, collapse its section to its steps table and a one-line outcome (or move it to `docs/archive/`). Resume and handover read only the current unit's section. Add a `Started` / `Duration` column only if you want timing; none is required.
 
 Skipped steps record the reason in the Output column (e.g. `skipped — artifact_exists`).

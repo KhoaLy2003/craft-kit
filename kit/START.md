@@ -16,7 +16,7 @@ Send this to your AI, from the project root: `Start using <install directory>/ST
 4. **Older kit.** Run the Detect step of `kit/phase-upgrade.md` (read-only). If any module is needed, route to `kit/phase-upgrade.md`.
 5. **Documents complete.** Ask: "What do you want to do?" and use the Intent table.
 
-**Version gap (warning only).** Once Detect gets past rows 1–3, compare `kit_version` in `docs/.craft-kit.json` with `.craft-kit-version` in the installed kit directory. If the file is missing or the project's version is older, add one line to the output suggesting `kit/phase-upgrade.md`; if the project's version is newer, suggest reinstalling the kit with `--force`. Never block and never change the routing because of it.
+**Version gap (warning only).** Once Detect gets past rows 1–3, compare `kit_version` in `docs/.craft-kit.json` with `.craft-kit-version` in the installed kit directory. If `acknowledged_version` in that file equals the installed version, say nothing. Otherwise, if the file is missing or the project's version is older, add one line to the output suggesting `kit/phase-upgrade.md`; if the project's version is newer, suggest reinstalling the kit with `--force`. Never block and never change the routing because of it. START.md never writes the file.
 
 ## Intent (only when documents are complete)
 

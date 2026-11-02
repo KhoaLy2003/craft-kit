@@ -52,9 +52,9 @@
 
 ### Feature: <!-- Feature name from roadmap -->
 
-| AC ID | Acceptance Criterion | Test Case | Status |
-|-------|---------------------|-----------|--------|
-| <!-- AC-F01-1 --> | <!-- criterion text from spec --> | <!-- what the test does: action → expected result --> | |
+| AC ID | Label | Test Case | Status |
+|-------|-------|-----------|--------|
+| <!-- AC-F01-1 --> | <!-- short label, at most 8 words; the full criterion text stays in the spec --> | <!-- what the test does: action → expected result --> | |
 | | | | |
 
 <!-- Add more features above this line -->

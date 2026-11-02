@@ -52,7 +52,7 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 - [ ] Project name (`docs/idea-brief.md` or `package.json → name`)
 - [ ] Phase, unit (feature slug / bug slug / release slug), current step number and name
 - [ ] Sub-progress: what within the step is done, what remains
-- [ ] Session log status per step (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Phase 3: `docs/phase-3-session.md`; admin: `docs/admin-session.md`)
+- [ ] Session log status per step for the current unit only (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Phase 3: `docs/phase-3-session.md`; admin: `docs/admin-session.md`); never read or copy other units' sections
 - [ ] Paths and approval status of the step's artifacts (spec, plan, assess.md, discover.md …); plan task counts if applicable
 - [ ] Current branch (`git branch --show-current`) if code is involved
 - [ ] Decisions made this session not captured in an artifact

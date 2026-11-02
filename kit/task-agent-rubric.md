@@ -1,20 +1,18 @@
 # Task → Specialist Agent Rubric
 
-Used in **Phase 2, Step 2 — Plan**. Give every task one `Specialist:` line using this table.
-
-> `task` below means your platform's general-purpose agent. Update this file if your harness names it differently.
+Used in **Phase 2, Step 2 — Plan**. Every task runs on `task`, your platform's general-purpose agent (update this file if your harness names it differently). Write a `Specialist:` line only for a task that needs a skill from the table; a task without one defaults to `task`.
 
 ---
 
 ## Routing
 
-| Task involves... | Specialist | Also use |
+| Task involves... | Specialist line | Skill |
 |---|---|---|
-| Code review, spec and constitution compliance | `task` | `code-review-and-quality`, `security-and-hardening`, `performance-optimization` skills; `code-simplification` when applying review fixes |
-| Everything else: frontend, backend, database, auth, infrastructure, tests, research, visual design | `task` (general-purpose agent) | — |
-| UI visual quality: "visual quality", "design upgrade", "polish", "premium UI" | `task` | `design-taste-frontend` skill (**required** for these signals) |
-| Diagrams: entity-relationship, architecture, screen flow, data flow, sequence | `task` | `archify` skill (**required** for the HTML render; see `kit/guides/diagrams.md`) |
-| Admin site screens under `admin/` | `task` | — (build from `kit/guides/admin-blueprint.md` §3 and §6) |
+| UI visual quality: "visual quality", "design upgrade", "polish", "premium UI" | `task + design-taste-frontend` | `design-taste-frontend` (**required** for these signals) |
+| Diagrams: entity-relationship, architecture, screen flow, data flow, sequence | `task + archify` | `archify` (**required** for the HTML render; see `kit/guides/diagrams.md`) |
+| Admin site screens under `admin/` | `task` | none; build from `kit/guides/admin-blueprint.md` §3 and §6 |
+
+Everything else (frontend, backend, database, auth, infrastructure, tests, research) needs no `Specialist:` line. Review skills are loaded by Step 4 itself (`kit/steps/phase-2/p2-04-review.md`).
 
 Every UI dispatch follows the Design dispatch contract in `kit/orchestrator-conventions.md`.
 
@@ -23,9 +21,9 @@ Every UI dispatch follows the Design dispatch contract in `kit/orchestrator-conv
 ## Annotation Format
 
 ```markdown
-### Task 2: Build login form component
-**Specialist:** task
-- Files: Create: src/components/LoginForm.tsx
+### Task 2: Polish the login form
+**Specialist:** task + design-taste-frontend
+- Files: Modify: src/components/LoginForm.tsx
 ```
 
 ---
@@ -36,11 +34,9 @@ A task that touches both frontend and backend may stay whole or be split. Split 
 
 ```markdown
 ### Task 4a: Build product listing API endpoint
-**Specialist:** task
 - Files: Create: src/api/products.ts
 
 ### Task 4b: Build product listing UI component
-**Specialist:** task
 - Files: Create: src/components/ProductList.tsx
 - Depends on: Task 4a (consumes GET /api/products)
 ```

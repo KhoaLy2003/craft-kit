@@ -7,6 +7,24 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+**Summary:** Leaner plans, specs, E2E rows, session logs and review loops; one-time impact merge; dispatch failure rule
+
+### Changed
+
+- **`steps/phase-2/p2-02-plan.md`** — no code in the plan (signatures only, at most 12 lines per task; code is written at Step 3); the plan cites AC IDs and holds the technical decisions (file/class names, migration versions).
+- **`steps/phase-2/p2-01-spec.md`** — no file, class, or migration names; size target (about 8 KB / 15 ACs for an M feature); no decisions table.
+- **`templates/e2e-tests.md`**, **`steps/phase-2/p2-05-e2e.md`** — Section 3 rows carry the AC ID and a short label instead of the copied criterion text.
+- **`session-logging.md`** — notes capped (one line, about 5 per unit), a per-decision-type destination table, shipped units collapsed or archived, resume reads only the current unit. **`guides/session-handover.md`** — the capture checklist reads only the current unit's log section.
+- **`steps/phase-2/p2-01-spec.md`**, **`p2-02-plan.md`**, **`p2-07-ship.md`**, **`guides/evolving-specs.md`**, **`guides/diagrams.md`**, **`steps/phase-1/p1-05-screen-design.md`** — Data & Flow Impact and Architecture Impact stay in the spec and plan; Ship's new Impact merge applies them to `data-model.md`, `flows.md` and `architecture.md` once per cycle. Env vars still go to `ENV_SETUP.md` / `.env.example` at Plan. HTML diagrams re-render only on request. Plan and Review read the data model as amended by the spec's impact section.
+- **`steps/phase-2/p2-04-review.md`**, **`p2-05-e2e.md`**, **`p2-07-ship.md`** — Review fixes critical and important findings only; minor findings are logged and listed in the PR's Known limitations; size S features get one round; the E2E fix-diff re-check is a reviewer dispatch only above about 30 lines or on security-sensitive code.
+- **`orchestrator-conventions.md`**, **`steps/phase-2/p2-05-e2e.md`** — new rule 15 (dispatch failure): every dispatch ends with a `REPORT:` line; retry once, then offer inline or pause; inline work keeps the step's guarantees.
+- **`steps/phase-2/p2-07-ship.md`** — CI trigger check: workflow `on:` triggers are compared with the PR base before pushing, and a mismatch is reported once and logged as `not-checked` with the reason.
+- **`phase-2.md`**, **`START.md`**, **`orchestrator-conventions.md`** (rule 10), **`scripts/lint-docs.js`** — optional `acknowledged_version` in `docs/.craft-kit.json`: the version warning is shown once, then silent until the installed version changes; lint validates the field.
+- **`orchestrator-conventions.md`** (Gates), **`session-logging.md`** — a hard gate carries at most 3 named yes/no decisions; the step banner and log header print model tiers only when tiers map to different models.
+- **`orchestrator-conventions.md`** (rule 16), **`steps/phase-2/p2-01-spec.md`**, **`p2-02-plan.md`** — skill output goes to the step's Outputs path, never a skill default such as `docs/superpowers/…`; stray files are moved and deleted; artifacts start with the metadata header and omit skill banners (`REQUIRED SUB-SKILL …`).
+- **`task-agent-rubric.md`**, **`steps/phase-2/p2-02-plan.md`**, **`p2-03-implement.md`**, **`phase-admin.md`** — every task runs on `task`; a `Specialist:` line is written only when a task needs a skill (`task + design-taste-frontend`, `task + archify`). The review and "everything else" rows are gone from the routing table.
+- **`phase-2.md`**, **`guides/phase-2-feature-scope.md`**, **`steps/phase-2/p2-02-plan.md`** — the two step tables merged into one; the Mid-Cycle Escape moved to the feature-scope guide, which `scope: all` reads only when an escape surfaces.
+
 ---
 
 ## [0.0.43] - 2026-11-02

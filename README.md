@@ -190,7 +190,7 @@ Optional add-ons. Phase 1 starts with a pre-flight that checks which are availab
 | `dispatching-parallel-agents` | Phase 2 Step 3 |
 | `using-git-worktrees` | Phase 2 Step 3 |
 | `design-taste-frontend` | Phase 1 Step 3 (prototype), Phase 2 Step 3 (UI work) |
-| `archify` | Phase 1 Step 6 (diagram render), Phase 2 Step 1 (re-render after amendments) |
+| `archify` | Phase 1 Step 6 (diagram render), Phase 2 Step 7 (re-render on request) |
 | `requesting-code-review` | Phase 2 Step 4 |
 | `code-review-and-quality` | Phase 2 Step 4 (five-axis review) |
 | `security-and-hardening` | Phase 2 Step 4 (security axis) |

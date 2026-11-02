@@ -9,7 +9,7 @@
 
 **Prerequisites:** Phase 1 complete, or an existing project with `docs/constitution.md`, `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md`, and `docs/DESIGN.md` in place. `docs/backlog.json` holds the features and their status; Phase 2 reads it to select `pending` features in build order (`docs/roadmap.md`). `docs/roadmap.md` states `Phase 2 Scope: all | feature`; if the field is absent (existing project), apply the selection rule in `kit/steps/phase-1/p1-04-roadmap.md` and record the result in the roadmap before Step 1. `scope: all` builds Must features only; Should features stay `pending` for a later cycle (their designs already exist, see `p1-05-screen-design.md`).
 
-**Docs preflight (before Step 1 of every new unit).** If `docs/constitution.md` or `docs/architecture.md` is missing, stop, tell the user, and point to `kit/phase-adopt.md` (existing code with no kit documents) or Phase 1 (new product). If `docs/data-model.md` or `docs/flows.md` is missing or not `approved`, or `docs/constitution.md` lacks a `## Verification Commands` section, stop, tell the user, and run `kit/phase-upgrade.md`; proceed only after it completes. Exemption: a unit whose log shows Step 2 or later started finishes without them; upgrade before the next unit. **Version check (warn only):** compare `kit_version` in `docs/.craft-kit.json` with `.craft-kit-version` in the kit directory; missing or older → suggest `kit/phase-upgrade.md`; newer → suggest reinstalling with `--force`. **Docs lint** (conventions rule 11): fix errors before Step 1, show warnings, never block on them.
+**Docs preflight (before Step 1 of every new unit).** If `docs/constitution.md` or `docs/architecture.md` is missing, stop, tell the user, and point to `kit/phase-adopt.md` (existing code with no kit documents) or Phase 1 (new product). If `docs/data-model.md` or `docs/flows.md` is missing or not `approved`, or `docs/constitution.md` lacks a `## Verification Commands` section, stop, tell the user, and run `kit/phase-upgrade.md`; proceed only after it completes. Exemption: a unit whose log shows Step 2 or later started finishes without them; upgrade before the next unit. **Version check (warn once):** compare `kit_version` in `docs/.craft-kit.json` with `.craft-kit-version` in the kit directory. If `acknowledged_version` already equals the kit directory's version, say nothing. Otherwise: missing or older → suggest `kit/phase-upgrade.md`; newer → suggest reinstalling with `--force`; then record `acknowledged_version` (conventions rule 10). Never block. **Docs lint** (conventions rule 11): fix errors before Step 1, show warnings, never block on them.
 
 **Entry guard (no code before Step 1).** Before any source file changes for a unit, `docs/phase-2-session.md` has a section for it with Step 1 `in progress` or `skipped (spec exists)`, and its spec (`docs/specs/<feature-slug>/spec.md`, or `docs/specs/spec.md` under `scope: all`) is `approved`. A request that skips this ("implement F12", "start the next feature") still starts at Step 1; `docs/iterations/<release>/design.md` and the backlog entry are Step 1 inputs, not the spec. **"Implement all pending features":** under `scope: feature` that is one full cycle per feature in build order, each ending at Ship (Ship asks before the next); under `scope: all` it is the single cycle of every Must feature. Never batch features under `scope: feature`.
 
@@ -19,25 +19,15 @@
 
 ## Steps
 
-| # | Name | Gate | Model | Step file |
-|---|---|---|---|---|
-| 1 | Spec | `hard` | `capable` | `kit/steps/phase-2/p2-01-spec.md` |
-| 2 | Plan | `soft` | `balanced` | `kit/steps/phase-2/p2-02-plan.md` |
-| 3 | Implement | `none` | `balanced` | `kit/steps/phase-2/p2-03-implement.md` |
-| 4 | Review | `none` | `balanced` | `kit/steps/phase-2/p2-04-review.md` |
-| 5 | E2E | `soft` | `balanced` | `kit/steps/phase-2/p2-05-e2e.md` |
-| 6 | Manual Check | `hard` | none (human) | `kit/steps/phase-2/p2-06-manual-check.md` |
-| 7 | Ship | `none` | `fast` | `kit/steps/phase-2/p2-07-ship.md` |
-
-| Step | Skill / Agent | Produces |
-|---|---|---|
-| 1 | `brainstorming` | `spec.md`, user approval |
-| 2 | `writing-plans`; `kit/task-agent-rubric.md` | `plan.md` with `Specialist:` per task and parallel groups |
-| 3 | `subagent-driven-development` / `dispatching-parallel-agents` | Code on the feature branch |
-| 4 | general-purpose agent + `code-review-and-quality`, `security-and-hardening`, `performance-optimization`, `code-simplification` | Acceptance-criteria coverage verdict; all findings fixed |
-| 5 | general-purpose agent | `docs/E2E-TESTS.md`; test results |
-| 6 | Human | Approval |
-| 7 | `finishing-a-development-branch` + general-purpose agent | Commit, PR, shipped events recorded |
+| # | Name | Gate | Model | Skill / Agent | Produces | Step file |
+|---|---|---|---|---|---|---|
+| 1 | Spec | `hard` | `capable` | `brainstorming` | `spec.md`, user approval | `kit/steps/phase-2/p2-01-spec.md` |
+| 2 | Plan | `soft` | `balanced` | `writing-plans`; `kit/task-agent-rubric.md` | `plan.md` with parallel groups and a `Specialist:` where a task needs a skill | `kit/steps/phase-2/p2-02-plan.md` |
+| 3 | Implement | `none` | `balanced` | `subagent-driven-development` / `dispatching-parallel-agents` | Code on the feature branch | `kit/steps/phase-2/p2-03-implement.md` |
+| 4 | Review | `none` | `balanced` | general-purpose agent + `code-review-and-quality`, `security-and-hardening`, `performance-optimization`, `code-simplification` | Acceptance-criteria coverage verdict; critical and important findings fixed | `kit/steps/phase-2/p2-04-review.md` |
+| 5 | E2E | `soft` | `balanced` | general-purpose agent | `docs/E2E-TESTS.md`; test results | `kit/steps/phase-2/p2-05-e2e.md` |
+| 6 | Manual Check | `hard` | none (human) | Human | Approval | `kit/steps/phase-2/p2-06-manual-check.md` |
+| 7 | Ship | `none` | `fast` | `finishing-a-development-branch` + general-purpose agent | Commit, PR, shipped events recorded | `kit/steps/phase-2/p2-07-ship.md` |
 
 ```
 [1] Spec ─hard→ [2] Plan ─soft→ [3] Implement → [4] Review → [5] E2E ─soft→ [6] Manual Check ─hard→ [7] Ship
@@ -64,19 +54,7 @@ scope feature: Ship → next pending feature → [1]      scope all: Ship → Ph
 
 **Skip detection.** If the spec exists **and** is `approved`, log `skipped (spec exists)` and go to Step 2 without re-asking. A `draft` spec, or a log marking Step 1 `in progress`, means it was never approved: resume Step 1.
 
-**Under `scope: feature`**, read `kit/guides/phase-2-feature-scope.md` (feature loop, parallel features) before selecting a feature.
-
----
-
-## Mid-Cycle Escape (`scope: all` → `feature`)
-
-Stop the cycle if any of these surfaces:
-- A feature is much more complex than estimated (L-sized in practice)
-- A spec gap that substantially re-scopes a feature
-- A technical decision that invalidates later features' specs
-- A second domain (a distinct area needing a different specialist skill or a separate deployable concern — definition in `p1-04-roadmap.md`; UI plus API is one domain) holds ≥ 20% of the plan's tasks (Step 2 checks this — see `p2-02-plan.md`), or two independent domains emerge during implementation
-
-Revise the affected spec sections, then (after user confirmation) set `Phase 2 Scope: feature` in `docs/roadmap.md` and `phase2_scope` to `feature` in `docs/backlog.json`, and run each remaining Must feature from Step 1, seeding its spec from its section of `docs/specs/spec.md`.
+**Under `scope: feature`**, read `kit/guides/phase-2-feature-scope.md` (feature loop, parallel features) before selecting a feature. Under `scope: all` read it only when a Mid-Cycle Escape surfaces (same file).
 
 ---
 

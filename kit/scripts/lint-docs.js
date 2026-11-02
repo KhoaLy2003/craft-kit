@@ -117,6 +117,7 @@ function lintDocs(root) {
         if (typeof rec.kit_version !== 'string' || !SEMVER.test(rec.kit_version)) add(recordFile, 'error', 'kit_version must be a version like 0.0.37');
         if (typeof rec.recorded_at !== 'string' || !validDate(rec.recorded_at)) add(recordFile, 'error', 'recorded_at must be a real YYYY-MM-DD date');
         if (!RECORDED_BY.includes(rec.recorded_by)) add(recordFile, 'error', `recorded_by must be one of: ${RECORDED_BY.join(' | ')}`);
+        if (rec.acknowledged_version !== undefined && (typeof rec.acknowledged_version !== 'string' || !SEMVER.test(rec.acknowledged_version))) add(recordFile, 'error', 'acknowledged_version must be a version like 0.0.37');
       }
     }
   }

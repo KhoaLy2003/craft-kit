@@ -46,6 +46,12 @@ describe('lint-docs', () => {
     assert.doesNotMatch(out, /\| error \|/)
   })
 
+  test('an acknowledged_version that is not a version is an error; exit 1', () => {
+    const { status, out } = lint('bad-ack')
+    assert.equal(status, 1, out)
+    assert.match(out, /docs\/\.craft-kit\.json\s+\|\s+error\s+\|\s+acknowledged_version must be a version/)
+  })
+
   test('a missing docs folder is an error', () => {
     const r = spawnSync(process.execPath, [SCRIPT, join(ROOT, 'tests', 'fixtures', 'lint-docs', 'valid', 'docs')], { encoding: 'utf8' })
     assert.equal(r.status, 1)

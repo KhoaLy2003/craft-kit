@@ -19,6 +19,10 @@ Work in this order.
 
 ### 1. Before the commit
 
+- **Impact merge (once per cycle).** Merge the unit's records into the shared docs, then keep each `Status: approved` and refresh `Last updated`:
+  - spec `## Data & Flow Impact` → `docs/data-model.md` and `docs/flows.md` (extend the §4 matrix and screen inventory, update the §2 `erDiagram`). Compare fields, relationships, screens, and transitions, not just names; never duplicate rows. A wave-design feature has nothing to merge beyond its slice.
+  - plan `## Architecture Impact` → `docs/architecture.md` (`ENV_SETUP.md` and `.env.example` were done at Step 2).
+  - Re-render an HTML diagram (`kit/guides/diagrams.md`) only if the user asks; the Mermaid sources are always current.
 - **AGENTS.md sync.** If this cycle amended `docs/architecture.md`, or changed the install, start, build, or test commands or the folder layout, update the matching lines of the project-root `AGENTS.md`. Take commands from `docs/constitution.md` → Verification Commands, and update that table first if a command changed.
 - **Re-verify.** If code changed since the last Definition of Done run, run it again (conventions → Definition of Done step 3).
 - **Docs lint** (conventions rule 11). Fix errors; show warnings; warnings never block.
@@ -34,13 +38,13 @@ Commit everything except secrets.
 
 ### 3. Push and open the PR
 
-- **Pre-flight.** `git remote -v`; check a remote exists, the user is authenticated (`git ls-remote <remote>` succeeds), and which PR route exists (tool, CLI, or web UI). Name the remote URL and **get explicit confirmation before pushing**.
+- **Pre-flight.** `git remote -v`; check a remote exists, the user is authenticated (`git ls-remote <remote>` succeeds), and which PR route exists (tool, CLI, or web UI). **CI trigger check:** read the `on:` triggers in `.github/workflows/*.yml` (or the CI config named in Verification Commands); if the PR base branch is not matched by the `pull_request` triggers, tell the user once, before pushing, that CI will not run for this PR. Name the remote URL and **get explicit confirmation before pushing**.
 - **Local-only fallback.** If there is no remote, authentication fails, or the user declines:
   - commit on the feature branch; skip push and PR; log `local-only: not pushed`
   - tell the user how to publish later (`git remote add origin <url>`, `git push -u origin <branch>`, open a PR)
   - append the `shipped` events with `evidence: local commit <short-sha>` and run the render script
 - **Push and PR.** Push and open a PR against `main` (no PR tool: give the user the branch name for the web UI). Never merge, never push to `main`.
-- **PR body.** Write it from `kit/templates/pr-description.md`; every section is filled.
+- **PR body.** Write it from `kit/templates/pr-description.md`; every section is filled; Known limitations lists the minor review findings deferred at Step 4.
   - **Migration and rollback**: required with schema tasks (what changes, how to roll back); else `none`.
   - New environment variable names only, never values.
   - Verification: the Definition of Done result and E2E count.
@@ -56,7 +60,7 @@ Push first: the PR reference is the shipped event's evidence. Then:
 
 ### 5. CI status
 
-- With a CI row in Verification Commands or pipeline config, read the PR's check status **once** and log `passing`, `failing`, `pending`, or `not-checked`. Never wait indefinitely; for `pending`, ask the user. With no CI, remote, or tool: `not-checked` (or `local-only: not pushed`).
+- With a CI row in Verification Commands or pipeline config, read the PR's check status **once** and log `passing`, `failing`, `pending`, or `not-checked`. Never wait indefinitely; for `pending`, ask the user. With no CI, remote, or tool, or when the trigger check found CI will not run for the PR base: `not-checked` (or `local-only: not pushed`), with the reason.
 - `failing`: return to Step 4 **once per cycle** with the error output; the fix goes through review and the affected E2E scope reruns (`p2-05-e2e.md`); push to the same PR and check again. Still failing: ask the user; no second loop.
 
 ### 6. Other rules
@@ -69,7 +73,7 @@ Push first: the PR reference is the shipped event's evidence. Then:
 - [ ] Committed; user-confirmed remote pushed and PR open with the PR template filled, or the local-only fallback logged
 - [ ] CI status logged (a failing run returned to Step 4 at most once)
 - [ ] `shipped` events with PR (or local commit) evidence for every feature built; releases closed per rule 4; render script exits 0
-- [ ] Spec persistence decision recorded; `AGENTS.md` and root `CHANGELOG.md` (if any) updated; lint-docs reports no errors
+- [ ] Impact merge done; spec persistence decision recorded; `AGENTS.md` and root `CHANGELOG.md` (if any) updated; lint-docs reports no errors
 - [ ] `scope: feature` with `pending` features left: the user answered the next-step question; nothing started unprompted
 
 ## Transitions

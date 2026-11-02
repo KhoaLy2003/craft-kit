@@ -74,7 +74,7 @@ Turn the approved scope into one spec and one plan for the whole admin site. No 
 ### Rules
 
 - **Spec** (`docs/specs/admin/spec.md`, standard metadata header): per module — purpose, actions with their permissions and audit events, list columns and filters, and numbered acceptance criteria (`AC-<module>-<n>`), including at least one permission-denied criterion per role per mutating action. Reference blueprint archetypes by name; do not restate them.
-- **Plan** (`docs/specs/admin/plan.md`) via the `writing-plans` skill, with one `Specialist:` line per task from `kit/task-agent-rubric.md` and parallel groups marked as that file describes. Task groups, in order:
+- **Plan** (`docs/specs/admin/plan.md`) via the `writing-plans` skill, with a `Specialist:` line only where a task needs a skill (`kit/task-agent-rubric.md`) and parallel groups marked as that file describes. Task groups, in order:
   - **Group 0 (only if Step 1 required it):** role-model migration and/or admin credential login in the main app.
   - **Group 1 — Shell:** the `admin/` app skeleton, proxy and middleware, the `/api/admin/*` guard, the `admin_audit_log` table, the module registry, and one empty example module. Backend tasks and frontend tasks are separate tasks.
   - **Groups 2…N:** one group per approved module.
@@ -83,7 +83,7 @@ Turn the approved scope into one spec and one plan for the whole admin site. No 
 ### Completion criteria
 
 - [ ] Spec has acceptance criteria for every module, including permission-denied cases
-- [ ] Plan opens with group 0 (if required) then Shell, then one group per module; every task has a `Specialist:`
+- [ ] Plan opens with group 0 (if required) then Shell, then one group per module; parallel groups marked
 - [ ] Summary presented to the user
 
 **Gate summary:** *"The plan has [N] tasks: Shell plus [M] modules[, group 0 first]. Anything to change before building?"*
