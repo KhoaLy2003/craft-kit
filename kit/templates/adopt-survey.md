@@ -101,7 +101,23 @@
 
 ---
 
-## 9. Conflicts and unknowns
+## 9. Business context
+
+<!-- What the system does, from the business side. Read from README, existing docs, route and screen names, and domain model names; never invent. Step 4 uses this to check the inferred baseline features. -->
+
+- **Description**: <!-- what the system does overall, in one or two sentences; label -->
+
+| Transaction | What it does | Source | Label |
+|---|---|---|---|
+| | | | |
+
+| Term | Meaning | Source | Label |
+|---|---|---|---|
+| | | | |
+
+---
+
+## 10. Conflicts and unknowns
 
 <!-- Code vs docs conflicts, and every `unknown` item the user should resolve. -->
 

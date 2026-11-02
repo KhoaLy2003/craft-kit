@@ -2,7 +2,7 @@
 
 > **Status: experimental — not yet validated in a test round.**
 >
-> **Run once per project**, from the project root, on a codebase that has no kit documents. Output: `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`, `docs/MODELS.md`, `AGENTS.md` (and `CLAUDE.md` when present), `docs/.craft-kit.json`, and `docs/DESIGN.md` when the project has a UI. Source code is never modified.
+> **Run once per project**, from the project root, on a codebase that has no kit documents. Output: `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`, `docs/api.md` (when the code exposes an API), `docs/MODELS.md`, `AGENTS.md` (and `CLAUDE.md` when present), `docs/.craft-kit.json`, and `docs/DESIGN.md` when the project has a UI. Source code is never modified.
 
 Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/adopt-session.md`.
 
@@ -26,7 +26,7 @@ The AI surveys the repository read-only, drafts each document, and puts every un
 
 | # | Step | Gate | Model | Output |
 |---|---|---|---|---|
-| 1 | Survey | `soft` | `fast` | `docs/adopt/survey.md`: stack, layout, scripts, CI, test setup, existing docs, commit and branch conventions, whether it is a monorepo |
+| 1 | Survey | `soft` | `fast` | `docs/adopt/survey.md`: stack, layout, scripts, CI, test setup, existing docs, commit and branch conventions, whether it is a monorepo, business context (description, transactions, term dictionary) |
 | 2 | Architecture (as-is) | `hard` | `capable` | `docs/architecture.md` with `Provenance: reverse-engineered (Adopt)`. No stack-catalog or deviation triggers; technical debt and `unknown` items recorded |
 | 3 | Constitution from observed conventions | `hard` | `balanced` | `docs/constitution.md` with `Provenance: reverse-engineered (Adopt)`, including the Verification Commands table. A rule is MUST only when tooling enforces it (lint or format config) or it is observed consistently in a file sample; everything else is SHOULD |
 | 4 | Baseline roadmap | `hard` | `balanced` | `docs/roadmap.md` and `docs/backlog.json`: a release `r0-baseline` already `shipped`, features inferred from routes and screens, each confirmed by you; the NFR table recorded as `unknown` where nothing is found |
@@ -45,11 +45,11 @@ The AI surveys the repository read-only, drafts each document, and puts every un
 
 ## Step 1 — Survey
 
-Read-only static analysis by one general-purpose agent. Fill `kit/templates/adopt-survey.md` into `docs/adopt/survey.md` (stack and versions, layout, scripts, CI, test setup, env variable names, existing docs, commit/branch conventions, monorepo or not, and the conventions evidence Step 3 uses). Large repositories: sample files by directory and record the sample size and what was not sampled. Present a short summary; advance unless the user objects.
+Read-only static analysis by one general-purpose agent. Fill `kit/templates/adopt-survey.md` into `docs/adopt/survey.md` (stack and versions, layout, scripts, CI, test setup, env variable names, existing docs, commit/branch conventions, monorepo or not, the conventions evidence Step 3 uses, and the business context: what the system does, the business transactions the code implements, and the domain terms it uses, each labelled and sourced). Large repositories: sample files by directory and record the sample size and what was not sampled. Present a short summary; advance unless the user objects.
 
 ## Step 2 — Architecture (as-is) (hard gate)
 
-Draft `docs/architecture.md` from `kit/templates/06-architecture.md` as the system is, with `Provenance: reverse-engineered (Adopt)`. No stack catalog or deviation triggers. Record technical debt and every `unknown`; label facts as in the survey; list docs-versus-code conflicts separately; NFR lines only where code or docs show them, else `unknown`.
+Draft `docs/architecture.md` from `kit/templates/06-architecture.md` as the system is, with `Provenance: reverse-engineered (Adopt)`. No stack catalog or deviation triggers. In the key components table, fill `Type` (application, infrastructure, model, client, or test) and `Depends on` for each component; use `unknown` when it cannot be determined from code. Record technical debt and every `unknown`; label facts as in the survey; list docs-versus-code conflicts separately; NFR lines only where code or docs show them, else `unknown`.
 
 Gate summary: *"The architecture records [stack] as built, with [k] debt items and [u] unknowns. Confirm it describes the system, or name what to correct. Reply 'defaults' to approve this and the constitution together."*
 
@@ -64,7 +64,7 @@ If the user replied "defaults" at Step 2, set both documents `approved` on writi
 ## Step 4 — Baseline roadmap (hard gate)
 
 1. Read the allowed values in `kit/scripts/render-backlog.js` (statuses, priority, size, event types, sources, `by`) and follow `kit/phase-roadmap-migrate.md` Step 4 conventions (`schema_version`, `phase2_scope`, `admin_site`, event order, `status` = latest status event).
-2. Infer features from routes, screens, and API surfaces in the survey, grouped in one release `r0-baseline` (`shipped`). Each feature: short name, priority `Must`, size estimate, `depends_on` where evident, `status: shipped`, `release: "r0-baseline"`, events `created` then `shipped` with `by: "orchestrator"`. With no date evidence, set `at: null`, `source: "unknown"`, `note: "inferred by Adopt"`; a user-supplied date gets `source: "backfill-confirmed"`, `evidence: "user-supplied"`. Use only validator values.
+2. Infer features from routes, screens, and API surfaces in the survey, and cross-check them against the survey's business context (a transaction with no matching feature, or a feature no transaction explains, goes to you as a question instead of being added or dropped silently), grouped in one release `r0-baseline` (`shipped`). Each feature: short name, priority `Must`, size estimate, `depends_on` where evident, `status: shipped`, `release: "r0-baseline"`, events `created` then `shipped` with `by: "orchestrator"`. With no date evidence, set `at: null`, `source: "unknown"`, `note: "inferred by Adopt"`; a user-supplied date gets `source: "backfill-confirmed"`, `evidence: "user-supplied"`. Use only validator values.
 3. Write `docs/roadmap.md` from `kit/templates/04-roadmap.md` (short narrative, feature table between the generated markers, `Non-functional Requirements` filled only from evidence in code or docs, else `unknown`). Set `Phase 2 Scope` per `p1-04-roadmap.md`, defaulting to `feature`.
 4. Run `node kit/scripts/render-backlog.js` (exit 0; fix from its errors).
 5. Ask per feature: **keep / correct / drop**. You confirm every `r0-baseline` feature before approval.
@@ -73,7 +73,7 @@ Gate summary: *"The baseline has [N] features inferred from routes and screens, 
 
 ## Step 5 — Backfill modules
 
-Run the registry in `kit/phase-upgrade.md` (Detect, Confirm, Run): data-model and flows (`phase-docs-backfill.md`), test accounts (`phase-test-accounts-backfill.md`) if the project has test credentials, verification (`phase-verification-backfill.md`) only if Step 3 did not write it. Each module keeps its own gate. Skip `phase-roadmap-migrate.md`: Step 4 wrote the backlog.
+Run the registry in `kit/phase-upgrade.md` (Detect, Confirm, Run): data-model and flows (`phase-docs-backfill.md`), the API document (`phase-api-backfill.md`) if the code exposes an API, test accounts (`phase-test-accounts-backfill.md`) if the project has test credentials, verification (`phase-verification-backfill.md`) only if Step 3 did not write it. Each module keeps its own gate. Skip `phase-roadmap-migrate.md`: Step 4 wrote the backlog.
 
 ## Step 6 — DESIGN.md
 
@@ -90,7 +90,7 @@ Create the root `AGENTS.md` from the survey and constitution (Commands from `## 
 ## Step 9 — Closeout
 
 1. Checklist, every item must pass:
-   - [ ] `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/data-model.md`, `docs/flows.md`, `docs/MODELS.md` are `approved`; `docs/DESIGN.md` too, or the skip is recorded
+   - [ ] `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/data-model.md`, `docs/flows.md`, `docs/MODELS.md` are `approved`; `docs/api.md` too, or the code exposes no API; `docs/DESIGN.md` too, or the skip is recorded
    - [ ] `docs/backlog.json` passes `node kit/scripts/render-backlog.js` with exit 0 and every `r0-baseline` feature was confirmed by you
    - [ ] Every MUST in the constitution has evidence (config file, or an observed ratio recorded in `docs/adopt/survey.md`)
    - [ ] `AGENTS.md` at the project root with a meaningful project summary and the `## Workflow (craft-kit)` section

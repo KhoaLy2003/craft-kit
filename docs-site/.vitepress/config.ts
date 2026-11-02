@@ -33,6 +33,7 @@ const PHASES: Page[] = [
   kit('phase-upgrade',          'phases/upgrade',        'Project Upgrade'),
   kit('phase-roadmap-migrate',  'phases/roadmap-migrate', 'Roadmap Migration'),
   kit('phase-docs-backfill',    'phases/docs-backfill',  'Docs Backfill'),
+  kit('phase-api-backfill',     'phases/api-backfill',   'API Backfill'),
   kit('phase-test-accounts-backfill', 'phases/test-accounts-backfill', 'Test Accounts Backfill'),
   kit('phase-verification-backfill',  'phases/verification-backfill',  'Verification Backfill'),
   kit('phase-onboarding',       'phases/onboarding',     'Developer Onboarding'),

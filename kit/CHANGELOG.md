@@ -18,6 +18,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`steps/phase-2/p2-05-e2e.md`** — every E2E run (and re-run) saves its evidence (runner output, HTML report, failure traces/screenshots, or the request log) under `docs/e2e-runs/<date>/`, git-ignored; a new Report section defines the closing summary (counts, failures and fixes, exclusions, evidence path) and the cannot-start / still-failing variants. Completion Criteria require the evidence and Run Log.
 - **`templates/e2e-tests.md`** — new Section 8 Run Log (one appended row per run, with evidence path).
 - **`steps/phase-2/p2-06-manual-check.md`** — the E2E results listed before the walkthrough include the evidence path.
+- **`templates/adopt-survey.md`**, **`phase-adopt.md`** — the survey gains a Business context section (description, implemented transactions, term dictionary; each labelled and sourced). Adopt Step 1 fills it and Step 4 cross-checks the inferred baseline features against it; mismatches go to the user.
+- **`templates/06-architecture.md`**, **`phase-adopt.md`** — the key components table gains `Type` and `Depends on` columns; Adopt Step 2 fills them (`unknown` when not determinable from code). Prompted by a comparison with the AI-DLC reverse-engineering process.
+- **`phase-api-backfill.md`**, **`templates/06d-api.md`** — new one-time module and template: reverse-engineers `docs/api.md` from code (HTTP endpoints with request/response shapes, validation rules, access; boundary-crossing internal interfaces), with a hard review gate and the `as-built` / `planned` / `undocumented` / `unknown` labels. **`phase-upgrade.md`** registry row #5; **`phase-adopt.md`** Step 5 runs it when the code exposes an API. Docs site: `config.ts` page, `reference/templates.md`, `guides/existing-projects.md`.
+- **`bin/cli.js`**, `tests/cli.test.mjs` (dev only) — the post-install hint for existing projects also reports a missing `docs/api.md` (file-existence check, in step with registry row #5). **`phase-api-backfill.md`** records an `n/a` `docs/api.md` when there is no API or the user declines, so the hint and Detect stop repeating.
 
 ---
 
