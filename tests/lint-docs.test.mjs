@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
-import { mkdtempSync, cpSync, writeFileSync, rmSync } from 'node:fs'
+import { mkdtempSync, cpSync, writeFileSync, rmSync, readFileSync } from 'node:fs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const SCRIPT = join(ROOT, 'kit', 'scripts', 'lint-docs.js')
@@ -44,6 +44,24 @@ describe('lint-docs', () => {
     assert.equal(status, 0, out)
     assert.match(out, /docs\/constitution\.md\s+\|\s+warning\s+\|\s+stale: docs\/architecture\.md was updated after docs\/constitution\.md/)
     assert.doesNotMatch(out, /\| error \|/)
+  })
+
+  test('a Reviewed against date at or after the source date clears the stale warning; an earlier one does not', () => {
+    const tmp = mkdtempSync(join(tmpdir(), 'lint-reviewed-'))
+    try {
+      cpSync(fixture('stale'), tmp, { recursive: true })
+      const file = join(tmp, 'docs', 'constitution.md')
+      const original = readFileSync(file, 'utf8')
+      writeFileSync(file, original.replace('- **Based on**', '- **Reviewed against**: 2026-10-20\n- **Based on**'))
+      const cleared = spawnSync(process.execPath, [SCRIPT, tmp], { encoding: 'utf8' })
+      assert.equal(cleared.status, 0, cleared.stdout + cleared.stderr)
+      assert.doesNotMatch(cleared.stdout + cleared.stderr, /stale/)
+      writeFileSync(file, original.replace('- **Based on**', '- **Reviewed against**: 2026-10-19\n- **Based on**'))
+      const still = spawnSync(process.execPath, [SCRIPT, tmp], { encoding: 'utf8' })
+      assert.match(still.stdout + still.stderr, /stale: docs\/architecture\.md/)
+    } finally {
+      rmSync(tmp, { recursive: true, force: true })
+    }
   })
 
   test('an acknowledged_version that is not a version is an error; exit 1', () => {

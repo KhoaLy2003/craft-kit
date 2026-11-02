@@ -16,7 +16,7 @@
 
 - [ ] `src/` (or `app/`, `lib/`, per architecture.md) created
 - [ ] `test/` (or `tests/`, `spec/`) created
-- [ ] `.gitignore` configured for the stack, with the `kit/` and `.test-accounts.json` entries from Ideation kept
+- [ ] `.gitignore` configured for the stack, with the `kit/`, `.test-accounts.json` and `docs/backlog.html` entries from Ideation kept
 - [ ] `.test-accounts.json` created from `kit/templates/test-accounts.json` and git-ignored (`git check-ignore` passes)
 - [ ] `LICENSE` added <!-- required if this project may be open-sourced -->
 - [ ] Folder structure matches the components in `architecture.md` § System Overview
@@ -36,8 +36,8 @@
 
 ## 3. CI (basic)
 
-- [ ] CI config created (lint + test on push/PR, minimum viable)
-- [ ] CI passes on the empty scaffold
+- [ ] CI config created (lint + test on push/PR, minimum viable), triggered by PRs to the base branch (constitution → Verification Commands)
+- [ ] CI row Notes in the constitution say `runs on PRs to: <branches>`; CI passes on the empty scaffold
 
 ---
 

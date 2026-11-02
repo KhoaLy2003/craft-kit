@@ -58,6 +58,8 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 - [ ] Decisions made this session not captured in an artifact
 - [ ] Blockers
 
+Keep the document short: Where We Are, Next Action, and open decisions only. Anything already in the session log, spec, plan, or `docs/known-issues.md` is linked by path, never copied. Write every path from the file system (`ls`, `git`), never from memory; kit files use their real names (`kit/orchestrator-conventions.md`, not `docs/…`).
+
 ---
 
 ## Handover Document
@@ -135,7 +137,7 @@ Do not re-run any step recorded as `complete` in the session log.
 ## New Session Bootstrap
 
 1. Read `docs/handover.md` in full; the resumption prompt is only a summary.
-2. Verify every path in "Completed Artifacts" exists. If any is missing, stop and report it.
+2. Verify every path in the document exists: each "Completed Artifacts" row and every other backticked path (kit files resolve in the installed kit directory, conventions rule 12). If any is missing, stop and report it.
 3. Emit the banner for the resumption step and continue per the step file. The session log is the authoritative record of what is done; never re-run a `complete` step.
 4. Set the resumed step to `in progress` in the session log; the handover left it `blocked`.
 5. Once the log shows the step in progress, delete `docs/handover.md`. It is a one-time handoff, not a record.

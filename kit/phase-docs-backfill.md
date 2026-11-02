@@ -9,8 +9,7 @@ Universal rules: `kit/orchestrator-conventions.md`.
 ## Limitations (read before running)
 
 - **Derived from code, so it records what IS built.** An entity or screen found only in specs or the prototype is labelled `planned`.
-- **Nothing is invented.** Unreadable or ambiguous items are `unknown`.
-- **Code beats docs.** When ORM/migration code conflicts with existing docs, the conflict is reported to you, never silently resolved.
+- **Shared rules** (nothing invented, code beats docs, monorepo): `kit/phase-upgrade.md` → Shared module rules. Here, ORM or migration code that conflicts with existing docs is a conflict for you to decide.
 
 ## How to start
 
@@ -36,7 +35,7 @@ What to have ready: `docs/architecture.md`. You can answer for the whole list at
 ## Step 1 — Preflight & locate
 
 1. Stop if both `docs/data-model.md` and `docs/flows.md` exist and are `approved`. If only one exists, backfill only the missing one.
-2. Require `docs/architecture.md`. If it is absent, stop and tell the user to create it first (see the existing-projects guide on the docs site, `docs-site/guides/existing-projects.md`).
+2. Require `docs/architecture.md`. If it is absent, stop and tell the user to create it first (`kit/phase-adopt.md` writes it for an existing codebase).
 3. Locate the sources and show the user the list:
    - schema, migration, and ORM files, found from `docs/architecture.md` §6 and the stack (e.g. `drizzle/`, `prisma/schema.prisma`, `supabase/migrations/`, SQL files, model/entity classes);
    - route and page files (e.g. `app/**/page.tsx`, `pages/`, router config);
@@ -96,5 +95,5 @@ Done. Return to the workflow that sent you here (`kit/phase-2.md` Docs preflight
 ## Exceptions
 
 - **No schema in code** (schemaless or hosted BaaS only): the data model documents the collections observed in access code, each field type `unknown`.
-- **Monorepo:** ask the user which app or package to document.
+- **Monorepo:** see the shared rules.
 - **No UI:** write `flows.md` with §1–2 as `n/a: no UI` and fill §3–5.

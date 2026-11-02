@@ -8,7 +8,7 @@
 - **Gate**: `none`
 - **Inputs**:
   - the plan and spec (`docs/specs/` or `docs/specs/<feature-slug>/`), `docs/constitution.md`
-  - `docs/DESIGN.md`, `docs/preview/`, and `docs/designs/<feature-slug>/` (per feature, if it exists)
+  - `docs/DESIGN.md`, `docs/preview/` (when present), and `docs/designs/<feature-slug>/` (per feature, if it exists)
 - **Outputs**: code on the feature branch
 - **Template**: none
 
@@ -16,7 +16,7 @@
 
 - **In**: dispatching each task to its specialist; checking each task against the constitution.
 - **Out**: re-deciding parallel groups or specialists (Step 2 did); spec coverage and code review (Step 4); commits (Step 7).
-- **Boundary**: **BLOCK — create the branch before any code.** `git checkout -b feature/<slug>` if absent, and confirm it is checked out. `<slug>` is the feature slug (`scope: feature`) or project slug (`scope: all`); create it from `main`. If a `depends_on` feature is `shipped` but its PR is unmerged, ask the user to merge it or to branch from its branch (the PR then targets that branch). Never implement on `main`; no git repo is a Phase 1 gap, so stop. On creation, append a `started` event (`source: live`, `by: orchestrator`, `evidence`: branch name) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built), set a `planned` release to `in-progress` in the same write, then run `node kit/scripts/render-backlog.js`.
+- **Boundary**: **BLOCK — create the branch before any code.** `git checkout -b feature/<slug>` if absent, and confirm it is checked out. `<slug>` is the feature slug (`scope: feature`) or project slug (`scope: all`); create it from the base branch (conventions rule 17). If a `depends_on` feature is `shipped` but its PR is unmerged, ask the user to merge it or to branch from its branch (the PR then targets that branch). Never implement on the base branch; no git repo is a Phase 1 gap, so stop. On creation, append a `started` event (`source: live`, `by: orchestrator`, `evidence`: branch name) to the feature in `docs/backlog.json` (`scope: all`: every Must feature built), set a `planned` release to `in-progress` in the same write, then run `node kit/scripts/render-backlog.js`.
 - **Baseline**: after the branch exists and before any code, run the Verification Commands once (conventions → Definition of Done step 1) and log the results; failures that predate any change are `pre-existing`. Report any `unknown` command to the user.
 
 ## Rules
@@ -29,13 +29,13 @@
 - A token or component `docs/DESIGN.md` lacks: use the closest existing one, or add it to `docs/DESIGN.md` with the user's explicit approval; never invent undocumented values. `docs/preview/` is not regenerated.
 - A foundational task fails or invalidates later tasks: stop and re-evaluate scope.
 - No per-task commits (Ship, or a handover, commits). Log the branch name.
-- Phase 3 release features: create `feature/<slug>` from `main` after the `design/<release-slug>` PR is merged (from `design/<release-slug>` if local-only) so the branch has the wave design. Start only after every feature in earlier Work Packages groups has `shipped`.
+- Phase 3 release features: create `feature/<slug>` from the base branch after the `design/<release-slug>` PR is merged (from `design/<release-slug>` if local-only) so the branch has the wave design. Start only after every feature in earlier Work Packages groups has `shipped`.
 
 ## Completion Criteria
 
 - [ ] Every plan task implemented by its assigned specialist
 - [ ] Baseline run recorded in the session log (`pre-existing` failures listed)
-- [ ] All changes on `feature/<slug>`, none on `main`
+- [ ] All changes on `feature/<slug>`, none on the base branch
 - [ ] Each task checked against `docs/constitution.md`; no unresolved spec gaps
 
 ## Transitions

@@ -384,6 +384,16 @@ describe('kit link integrity', () => {
     assert.ok(checked > 20, `scanner found only ${checked} references — the patterns are probably broken`)
     assert.deepEqual(broken, [], `Broken kit references:\n  ${broken.join('\n  ')}`)
   })
+
+  test('installed kit files name no website path, no kit changelog, and carry no website HTML', () => {
+    const offenders = []
+    for (const file of scanned.filter(f => f !== join(ROOT, 'README.md'))) {
+      readFileSync(file, 'utf8').split(/\r?\n/).forEach((text, i) => {
+        if (/docs-site\/|kit\/CHANGELOG\.md|<iframe|<div style/.test(text)) offenders.push(`${relative(ROOT, file)}:${i + 1}`)
+      })
+    }
+    assert.deepEqual(offenders, [], `Installed kit files point at files or markup the install does not ship:\n  ${offenders.join('\n  ')}`)
+  })
 })
 
 // ─── Release and verification contracts ──────────────────────────────────────

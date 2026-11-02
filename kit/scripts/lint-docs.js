@@ -4,9 +4,11 @@
 // Usage: node kit/scripts/lint-docs.js [project-root]   (default: current directory)
 //
 // Checks, per docs/*.md that has a metadata header (a Status line); files without one are ignored:
-//   1. Status is valid for the file type, the date (Last updated, or Last amended) is YYYY-MM-DD.
+//   1. Status is valid for the file type, the date (Last updated, or Last amended) is YYYY-MM-DD,
+//      and the optional `Reviewed against` date is YYYY-MM-DD.
 //   2. stale (warning): a file listed under Based on has a later date than this file, and this
-//      file is approved. Resolution is by day: same-day edits are not flagged.
+//      file is approved. A `Reviewed against` date at or after that source date clears it.
+//      Resolution is by day: same-day edits are not flagged.
 // And once per project:
 //   3. docs/.craft-kit.json exists and matches its schema (missing: warning; malformed: error).
 // Output: a table of file | severity | message. Exit 1 on any error, 0 otherwise (warnings only).
@@ -20,7 +22,7 @@ const STATUS_BY_FILE = {
 };
 const RECORDED_BY = ['phase-1', 'adopt', 'upgrade'];
 const HEADER_LINES = 40;
-const FIELD = /^(?:[-*]\s+)?\*\*(Status|Last updated|Last amended|Based on)(?::\*\*|\*\*:)[ \t]*(.*)$/;
+const FIELD = /^(?:[-*]\s+)?\*\*(Status|Last updated|Last amended|Based on|Reviewed against)(?::\*\*|\*\*:)[ \t]*(.*)$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const SEMVER = /^\d+\.\d+\.\d+$/;
 
@@ -36,7 +38,7 @@ function validDate(s) {
 
 // Returns null when the file has no header (no Status line in the first lines).
 function parseHeader(text) {
-  const header = { status: null, updated: null, updatedLabel: null, basedOn: '' };
+  const header = { status: null, updated: null, updatedLabel: null, basedOn: '', reviewed: null };
   let found = false;
   const lines = text.split(/\r?\n/).slice(0, HEADER_LINES);
   for (const line of lines) {
@@ -47,6 +49,7 @@ function parseHeader(text) {
     else if (key === 'Last updated' && header.updated === null) { header.updated = cleanValue(raw); header.updatedLabel = key; }
     else if (key === 'Last amended' && header.updated === null) { header.updated = cleanValue(raw); header.updatedLabel = key; }
     else if (key === 'Based on' && !header.basedOn) header.basedOn = raw;
+    else if (key === 'Reviewed against' && header.reviewed === null) header.reviewed = cleanValue(raw);
   }
   return found ? header : null;
 }
@@ -86,16 +89,20 @@ function lintDocs(root) {
     if (!allowed.includes(header.status)) {
       add(file, 'error', `invalid Status ${JSON.stringify(header.status)}; expected one of: ${allowed.join(' | ')}`);
     }
+    if (header.reviewed !== null && !validDate(header.reviewed)) {
+      add(file, 'error', `malformed Reviewed against ${JSON.stringify(header.reviewed)}; expected a real YYYY-MM-DD date`);
+    }
     if (header.updated === null) {
       add(file, 'error', 'missing Last updated (or Last amended) date');
     } else if (!validDate(header.updated)) {
       add(file, 'error', `malformed ${header.updatedLabel} ${JSON.stringify(header.updated)}; expected a real YYYY-MM-DD date`);
     } else if (header.status === 'approved') {
+      const current = header.reviewed !== null && validDate(header.reviewed) && header.reviewed > header.updated ? header.reviewed : header.updated;
       for (const dep of basedOnFiles(header.basedOn)) {
         const depHeader = headers.get(dep);
         if (!depHeader || dep === name || !validDate(depHeader.updated || '')) continue;
-        if (depHeader.updated > header.updated) {
-          add(file, 'warning', `stale: docs/${dep} was updated after ${file} (${depHeader.updated} > ${header.updated}); re-confirm`);
+        if (depHeader.updated > current) {
+          add(file, 'warning', `stale: docs/${dep} was updated after ${file} (${depHeader.updated} > ${current}); re-confirm, then set **Reviewed against:** ${depHeader.updated}`);
         }
       }
     }

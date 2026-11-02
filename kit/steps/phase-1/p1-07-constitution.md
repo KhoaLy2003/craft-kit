@@ -23,7 +23,7 @@
 1. Read `docs/architecture.md`, `docs/DESIGN.md`, and `docs/roadmap.md` before drafting.
 2. Use `templates/07-constitution.md` as the scaffold. Apply the test above to every principle; rewrite or remove any that fail.
 3. Fill the Amendment Procedure with a real process. For a solo developer with ≤ 15 S/M features it can be one line ("update this file directly") and the constitution can be minimal (3–5 rules).
-4. Fill the `Verification Commands` table from the approved stack in `docs/architecture.md`: one command per row, status `planned`, `n/a — <reason>` where the stack has no such step. Step 8 runs each command and marks it `verified`.
+4. Fill the `Verification Commands` table from the approved stack in `docs/architecture.md`: one command per row, status `planned`, `n/a — <reason>` where the stack has no such step. Step 8 runs each command and marks it `verified`. Keep `**Base branch:** main` unless the user named another integration branch (kickoff or earlier answers); write it into the line below the table (conventions rule 17) and plan the CI row's `runs on PRs to:` note to include it.
 5. **NFR mapping.** For every row of `docs/roadmap.md` → Non-functional Requirements with a measurable target, add a MUST to a principle or a row to Verification Commands, and list the pair in the template's `NFR Mapping` table. A row with no mapping is resolved before the file is written. Rows marked `n/a` need no mapping.
 6. Write the file to disk, give the user its path, and present a short summary (principle count, the most consequential MUST rules).
 

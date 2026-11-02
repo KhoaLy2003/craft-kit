@@ -11,8 +11,7 @@ Universal rules: `kit/orchestrator-conventions.md`.
 ## Limitations (read before running)
 
 - **Derived from code, so it records what IS built.** An endpoint or interface found only in specs or the prototype is labelled `planned`.
-- **Nothing is invented.** Request and response shapes, validation rules, and status codes come from schemas, DTOs, validators, and handler code. Ambiguous or missing items are `unknown`; an unreadable body is never guessed from a sample.
-- **Code beats docs.** When an OpenAPI file, README, or existing doc conflicts with the handler code, the conflict is reported to you, never silently resolved.
+- **Shared rules** (nothing invented, code beats docs, monorepo): `kit/phase-upgrade.md` → Shared module rules. Request and response shapes, validation rules, and status codes come from schemas, DTOs, validators, and handler code; an unreadable body is never guessed from a sample. An OpenAPI file, README, or existing doc that conflicts with the handler code is a conflict for you to decide.
 - **Internal APIs are sampled.** Only interfaces that cross a module or package boundary are documented, not every exported function. The sample and what was not covered are recorded.
 - **Not maintained by Phase 2.** Phase 2 keeps `data-model.md` and `flows.md` current, not this document. Re-run this module when the API has changed enough to matter.
 
@@ -100,4 +99,4 @@ Done. Return to the workflow that sent you here (`kit/phase-upgrade.md` or `kit/
 - **OpenAPI or GraphQL schema file exists:** use it as a source, cite it, and still check it against the handlers; a mismatch is a conflict for Step 3.
 - **No HTTP API, only internal interfaces:** write §2 and §3 as `n/a: no HTTP API` and fill §4.
 - **No API at all, or the user declines the module:** write `docs/api.md` with only the metadata block (`Status: approved`, `Provenance: backfilled from code on <date>`, `Based on:` the files searched) and one line, `n/a: no API exposed (<reason>)` or `n/a: declined by the user on <date>`. This records the decision so the upgrade Detect step and the install hint stop reporting the document as missing. Delete the file and re-run to document the API later.
-- **Monorepo:** ask the user which app or package to document.
+- **Monorepo:** see the shared rules.

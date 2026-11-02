@@ -121,7 +121,7 @@ Customers can drop or change requirements at any time. To drop a feature, the AI
 | `docs/iterations/<release-slug>/discover.md` | Shipped state, requirements received, evidence, goal, candidates, and what was dropped |
 | `docs/iterations/<release-slug>/design.md` | The design for the whole wave, per foundation document |
 | `docs/backlog.json` | The new release and its features (appended after approval); dropped features stay as `cancelled` |
-| `docs/backlog.html` | Regenerated board (do not edit by hand) |
+| `docs/backlog.html` | Regenerated board (git-ignored; do not edit by hand) |
 | `docs/roadmap.md` | A `## Release <slug>` block with build order, impact, shared surface, amendment log, work packages, and outcome |
 | `docs/phase-3-session.md` | One section for this release, with the status of each step |
 

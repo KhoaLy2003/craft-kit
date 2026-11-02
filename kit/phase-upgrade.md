@@ -17,10 +17,18 @@ Run the project upgrade using kit/phase-upgrade.md.
 0. **Version check.** Compare `docs/.craft-kit.json` with `.craft-kit-version` in the kit directory. Missing or older: say so (expected on an older project). Newer: warn that the installed kit is older than the one that produced the docs and suggest reinstalling with `--force`. Never block.
 1. **Detect.** For each row of the registry below, evaluate the *Needed when* condition against the project's `docs/` folder. Show a table: document, needed or up to date, module.
 2. **Confirm.** Ask which needed modules to run now (default all, in registry order). A skipped module stays pending; the preflight that needs it asks again.
-3. **Run.** Run each chosen module to completion before the next. The upgrade adds no gate of its own.
-4. **Report.** List what was created, skipped, or left `unknown`. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` (`recorded_by: upgrade`, `kit_version` from `.craft-kit-version`, `recorded_at` today; conventions rule 10), then run `node kit/scripts/lint-docs.js` (rule 11). To share the exact version: `npx github:KhoaLy2003/craft-kit#v<kit_version>`.
+3. **Run.** Run each chosen module to completion before the next. The upgrade adds no gate of its own. Each module keeps its hard review gate, but the user may answer "defaults" once at the first one: every later module then applies its proposed defaults, still shows its summary, and re-opens a gate only for an item marked `unknown`, a conflict between code and docs, or a decision it cannot default.
+4. **Report.** List what was created, skipped, or left `unknown`. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` (`recorded_by: upgrade`, `kit_version` from `.craft-kit-version`, `recorded_at` today; conventions rule 10), then run `node kit/scripts/lint-docs.js` (rule 11). If the `## Workflow (craft-kit)` block in `AGENTS.md` or `CLAUDE.md` pins an install version, show the current block (`orchestrator-conventions.md` → "Project workflow block") as a diff and replace it on approval. To share the exact version: `npx github:KhoaLy2003/craft-kit#v<kit_version>`.
 
 If nothing is needed, say so, write the version record only if missing or older, and end.
+
+## Shared module rules
+
+Every module below, whether run from here or from Adopt, follows these; module files do not restate them.
+
+- **Nothing is invented.** An item the code or files do not settle is `unknown` (or `n/a — <reason>` when the stack has no such step).
+- **Code beats docs.** A conflict between code and an existing document is reported to the user, never resolved silently.
+- **Monorepo.** Ask once per run which app or package the modules cover.
 
 ## Registry
 
@@ -38,4 +46,4 @@ Order matters: a later module may read what an earlier one writes.
 
 1. Write the module file (shape of `kit/phase-docs-backfill.md`: Limitations, How to start, Steps with one hard review gate, Completion criteria, Exceptions).
 2. Add a registry row after any module whose output it reads.
-3. Add it to `docs-site/.vitepress/config.ts` and `kit/CHANGELOG.md`. The CLI hint and preflights point here and need no change; a new CLI hint check must be a file-existence test reusing the single hint line.
+3. The CLI hint and preflights point here and need no change; a new CLI hint check must be a file-existence test reusing the single hint line.

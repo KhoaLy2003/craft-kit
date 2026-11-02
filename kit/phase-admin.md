@@ -148,13 +148,13 @@ Manual check by the user, then commit and open the PR.
 ### Rules
 
 - **Manual check (the hard gate).** Start the main app and `admin/`; the user signs in as each role and walks the modules. Give account ids and URLs (read passwords from `.test-accounts.json` for them; never write them into docs). No commit before approval.
-- After approval, use the `finishing-a-development-branch` skill: commit everything on `feature/admin` as `feat(admin): add admin site — <module list>`, push, and open one PR against `main` containing the main-backend changes and `admin/`. Never merge it and never push to `main`.
+- After approval, use the `finishing-a-development-branch` skill: commit everything on `feature/admin` as `feat(admin): add admin site — <module list>`, push, and open one PR against the base branch (conventions rule 17) containing the main-backend changes and `admin/`. Never merge it and never push to the base branch.
 - Update `docs/admin-session.md` to show every step complete, with the PR link.
 
 ### Completion criteria
 
 - [ ] The user approved after walking through each role
-- [ ] One commit, branch pushed, one PR open against `main`
+- [ ] One commit, branch pushed, one PR open against the base branch
 - [ ] `docs/admin-session.md` complete with the PR link
 
 **Gate summary:** *"The admin site is built and tested: [N] modules, [R] roles, [E2E result]. Walk through it as each role. Do you approve committing and opening the PR?"*
