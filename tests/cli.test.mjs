@@ -254,8 +254,15 @@ describe('docs backfill hint', () => {
     assert.ok(stdout.includes(HINT))
   })
 
-  test('both docs present: no hint, also on --force reinstall', () => {
+  test('architecture.md without api.md prints the hint naming docs/api.md', () => {
     const base = project(['architecture.md', 'data-model.md', 'flows.md'])
+    const { stdout } = run([join(base, 'kit'), '--skip-setup'], { cwd: base })
+    assert.ok(stdout.includes(HINT))
+    assert.ok(stdout.includes('docs/api.md'))
+  })
+
+  test('all docs present: no hint, also on --force reinstall', () => {
+    const base = project(['architecture.md', 'data-model.md', 'flows.md', 'api.md'])
     const target = join(base, 'kit')
     assert.ok(!run([target, '--skip-setup'], { cwd: base }).stdout.includes(HINT))
     assert.ok(!run([target, '--skip-setup', '--force'], { cwd: base }).stdout.includes(HINT))

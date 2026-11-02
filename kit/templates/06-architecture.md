@@ -67,10 +67,10 @@
 
 **Key components**:
 
-| Component | Responsibility | Technology |
-|---|---|---|
-| | | |
-| | | |
+| Component | Responsibility | Technology | Type | Depends on |
+|---|---|---|---|---|
+| | | | <!-- application / infrastructure / model / client / test --> | <!-- other components, or `none` --> |
+| | | | | |
 
 ---
 

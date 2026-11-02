@@ -375,7 +375,7 @@ ${versionLine}
   const missing = []
   if (has('roadmap.md') && !has('backlog.json')) missing.push('docs/backlog.json')
   if (has('architecture.md')) {
-    for (const f of ['data-model.md', 'flows.md']) if (!has(f)) missing.push('docs/' + f)
+    for (const f of ['data-model.md', 'flows.md', 'api.md']) if (!has(f)) missing.push('docs/' + f)
   }
   if (has('constitution.md')) {
     const constitution = fs.readFileSync(path.join(docsDir, 'constitution.md'), 'utf8')
