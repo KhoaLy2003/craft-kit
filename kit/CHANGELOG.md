@@ -9,6 +9,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 
 ---
 
+## [0.0.43] - 2026-11-02
+
+**Summary:** Adopt business context · component types · API Backfill module
+
+---
+
+---
+
 ## [0.0.42] - 2026-10-31
 
 **Summary:** E2E run evidence and a defined closing report
