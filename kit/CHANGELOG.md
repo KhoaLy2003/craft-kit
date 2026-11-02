@@ -7,6 +7,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.44] - 2026-11-02
+
 **Summary:** Leaner plans, specs and logs; base branch and known-issues records; backlog and lint noise cut
 
 ### Changed
@@ -36,6 +40,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`orchestrator-conventions.md`** (Design dispatch contract), **`phase-adopt.md`** (Step 6), **`steps/phase-2/p2-01-spec.md`**, **`p2-03-implement.md`** — `docs/DESIGN.md` is required for UI dispatches, `docs/preview/` only when it exists; Adopt builds `docs/DESIGN.md` from an existing design file when there is one.
 - **`phase-upgrade.md`**, **`phase-docs-backfill.md`**, **`phase-verification-backfill.md`**, **`phase-api-backfill.md`** — shared module rules stated once; answering "defaults" at the first module gate applies to the later modules.
 - **`orchestrator-conventions.md`** (new rule 17), **`templates/07-constitution.md`**, **`steps/phase-1/p1-07-constitution.md`**, **`templates/08-scaffold-checklist.md`**, **`phase-adopt.md`**, **`phase-verification-backfill.md`**, **`steps/phase-2/p2-03-implement.md`**, **`p2-07-ship.md`**, **`phase-bug-fix.md`**, **`phase-admin.md`**, **`phase-3-iterate.md`** — one `**Base branch:**` line in the constitution; branches start from it and PRs target it in every workflow; the CI row's Notes record `runs on PRs to: <branches>`, which Ship reads before re-deriving the CI trigger check.
+
+---
 
 ---
 
