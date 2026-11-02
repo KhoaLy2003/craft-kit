@@ -7,7 +7,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
-**Summary:** Leaner plans, specs, E2E rows, session logs and review loops; one-time impact merge; dispatch failure rule
+**Summary:** Leaner plans, specs and logs; base branch and known-issues records; backlog and lint noise cut
 
 ### Changed
 
@@ -24,6 +24,18 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`orchestrator-conventions.md`** (rule 16), **`steps/phase-2/p2-01-spec.md`**, **`p2-02-plan.md`** — skill output goes to the step's Outputs path, never a skill default such as `docs/superpowers/…`; stray files are moved and deleted; artifacts start with the metadata header and omit skill banners (`REQUIRED SUB-SKILL …`).
 - **`task-agent-rubric.md`**, **`steps/phase-2/p2-02-plan.md`**, **`p2-03-implement.md`**, **`phase-admin.md`** — every task runs on `task`; a `Specialist:` line is written only when a task needs a skill (`task + design-taste-frontend`, `task + archify`). The review and "everything else" rows are gone from the routing table.
 - **`phase-2.md`**, **`guides/phase-2-feature-scope.md`**, **`steps/phase-2/p2-02-plan.md`** — the two step tables merged into one; the Mid-Cycle Escape moved to the feature-scope guide, which `scope: all` reads only when an escape surfaces.
+- **`scripts/render-backlog.js`**, **`phase-adopt.md`**, **`phase-roadmap-migrate.md`**, **`steps/phase-2/p2-07-ship.md`**, `README.md` — backlog events may omit `at` (undated, `source: unknown`), `source` (`live`), `by` (`orchestrator`) and `note`; defaults are filled in memory, existing files still validate, and Adopt and the migration stop writing null fields and "inferred" notes. **`orchestrator-conventions.md`** (rule 9), **`p2-07-ship.md`**, **`templates/08-scaffold-checklist.md`** — generated `docs/backlog.html` is git-ignored and no longer committed; Ship commits `backlog.json` and the roadmap table.
+- **`scripts/lint-docs.js`**, **`orchestrator-conventions.md`** (rule 11), **`steps/phase-2/p2-07-ship.md`** — optional `**Reviewed against:** <date>` header line clears a stale warning once the file was re-checked; the warning names the date to set.
+- **`orchestrator-conventions.md`** (Gates) — a hard gate with several decisions lists them as numbered `D1`–`D3` yes/no lines with defaults; one reply settles all, a bare "approved" accepts the defaults.
+- **`guides/session-handover.md`** — every backticked path in the document is verified at bootstrap (kit files in the installed kit directory); the document stays short and links the log, spec and known issues instead of copying them.
+- **`templates/known-issues.md`** (new), **`steps/phase-2/p2-04-review.md`**, **`p2-01-spec.md`**, **`p2-07-ship.md`**, **`phase-3-iterate.md`** (Step 5), **`session-logging.md`** — one `docs/known-issues.md` for minor findings and gaps that ship open; Spec reads the open rows for its area, Ship stages it, Closeout leaves no `open` row.
+- **`steps/phase-2/p2-01-spec.md`** — "standard inputs" named once; the spec's `Based on` lists extras only.
+- **`phase-3-iterate.md`** (Steps 3-4), **`steps/phase-2/p2-01-spec.md`**, **`p2-02-plan.md`** — `design.md` ends with a Feature slices index; Phase 2 reads only the feature's entry and the sections it lists.
+- **`phase-1-bootstrap.md`**, **`phase-docs-backfill.md`**, **`phase-verification-backfill.md`**, **`phase-upgrade.md`** — no website HTML and no `docs-site/` or `kit/CHANGELOG.md` references in installed files; `tests/cli.test.mjs` fails on them.
+- **`orchestrator-conventions.md`** (Project workflow block), **`phase-1/p1-08-scaffold.md`**, **`phase-adopt.md`**, **`phase-upgrade.md`** — the `AGENTS.md` / `CLAUDE.md` workflow block carries no version number (it points at `kit_version` in `docs/.craft-kit.json`); Upgrade replaces an older pinned block on approval.
+- **`orchestrator-conventions.md`** (Design dispatch contract), **`phase-adopt.md`** (Step 6), **`steps/phase-2/p2-01-spec.md`**, **`p2-03-implement.md`** — `docs/DESIGN.md` is required for UI dispatches, `docs/preview/` only when it exists; Adopt builds `docs/DESIGN.md` from an existing design file when there is one.
+- **`phase-upgrade.md`**, **`phase-docs-backfill.md`**, **`phase-verification-backfill.md`**, **`phase-api-backfill.md`** — shared module rules stated once; answering "defaults" at the first module gate applies to the later modules.
+- **`orchestrator-conventions.md`** (new rule 17), **`templates/07-constitution.md`**, **`steps/phase-1/p1-07-constitution.md`**, **`templates/08-scaffold-checklist.md`**, **`phase-adopt.md`**, **`phase-verification-backfill.md`**, **`steps/phase-2/p2-03-implement.md`**, **`p2-07-ship.md`**, **`phase-bug-fix.md`**, **`phase-admin.md`**, **`phase-3-iterate.md`** — one `**Base branch:**` line in the constitution; branches start from it and PRs target it in every workflow; the CI row's Notes record `runs on PRs to: <branches>`, which Ship reads before re-deriving the CI trigger check.
 
 ---
 

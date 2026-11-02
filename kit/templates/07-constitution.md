@@ -80,9 +80,11 @@ Common categories: type safety, testing standard, architectural boundaries (tie 
 | Unit / integration tests | `<command>` | planned | |
 | E2E | `<command>` | planned | Verification type: browser, API, CLI or mobile |
 | Start | `<command>` | planned | |
-| CI | `<pipeline or workflow name>` | planned | `n/a — <reason>` when no CI |
+| CI | `<pipeline or workflow name>` | planned | `runs on PRs to: <branches>`, or `n/a — <reason>` when no CI. If the base branch is not among them, say so here once. |
 
 Status values: `planned` (not yet run), `verified` (ran successfully), `unknown` (not determinable), `n/a — <reason>`.
+
+**Base branch:** `main` <!-- the branch every feature, fix and admin branch starts from and every PR targets; conventions rule 17 -->
 
 ---
 

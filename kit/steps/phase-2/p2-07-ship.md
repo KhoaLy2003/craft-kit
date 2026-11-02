@@ -8,8 +8,8 @@
 - **Gate**: `none`
 - **Inputs**: the feature branch (changes uncommitted unless a handover committed some); `docs/backlog.json`
 - **Outputs**:
-  - committed branch; pushed branch and PR against `main` (unless local-only) with a structured description
-  - `shipped` event in `docs/backlog.json` per shipped feature; regenerated `docs/backlog.html` and `docs/roadmap.md` table
+  - committed branch; pushed branch and PR against the base branch (conventions rule 17; unless local-only) with a structured description
+  - `shipped` event in `docs/backlog.json` per shipped feature; regenerated `docs/roadmap.md` table (`docs/backlog.html` is regenerated locally and git-ignored)
   - CI status in the session log
 - **Template**: `kit/templates/pr-description.md`
 
@@ -25,7 +25,8 @@ Work in this order.
   - Re-render an HTML diagram (`kit/guides/diagrams.md`) only if the user asks; the Mermaid sources are always current.
 - **AGENTS.md sync.** If this cycle amended `docs/architecture.md`, or changed the install, start, build, or test commands or the folder layout, update the matching lines of the project-root `AGENTS.md`. Take commands from `docs/constitution.md` → Verification Commands, and update that table first if a command changed.
 - **Re-verify.** If code changed since the last Definition of Done run, run it again (conventions → Definition of Done step 3).
-- **Docs lint** (conventions rule 11). Fix errors; show warnings; warnings never block.
+- **Docs lint** (conventions rule 11). Fix errors; show warnings; warnings never block. For a stale warning on a doc this cycle's Impact merge or review already covered, set its `**Reviewed against:**` date rather than editing the body.
+- **Known issues.** Stage `docs/known-issues.md` when this cycle added rows. Mention the count of `open` rows in the PR's Known limitations; `scope: all` also asks the user to fix or accept each (Status `accepted`) before the commit.
 - **Product changelog.** If the project has a root `CHANGELOG.md`, add one entry under Unreleased in its format; never create one.
 - **Secrets.** Confirm `.env` and `.test-accounts.json` are git-ignored (`git ls-files .test-accounts.json` returns nothing). `docs/E2E-TESTS.md` and `docs/ENV_SETUP.md` hold names and ids only, never values.
 
@@ -38,12 +39,12 @@ Commit everything except secrets.
 
 ### 3. Push and open the PR
 
-- **Pre-flight.** `git remote -v`; check a remote exists, the user is authenticated (`git ls-remote <remote>` succeeds), and which PR route exists (tool, CLI, or web UI). **CI trigger check:** read the `on:` triggers in `.github/workflows/*.yml` (or the CI config named in Verification Commands); if the PR base branch is not matched by the `pull_request` triggers, tell the user once, before pushing, that CI will not run for this PR. Name the remote URL and **get explicit confirmation before pushing**.
+- **Pre-flight.** `git remote -v`; check a remote exists, the user is authenticated (`git ls-remote <remote>` succeeds), and which PR route exists (tool, CLI, or web UI). **CI trigger check:** take `runs on PRs to:` from the constitution's CI row; when it is missing, read the `on:` triggers in `.github/workflows/*.yml` (or the CI config named in Verification Commands) and record the result there. If the base branch (conventions rule 17) is not matched by the `pull_request` triggers, tell the user once, before pushing, that CI will not run for this PR; the constitution note means later cycles do not repeat it. Name the remote URL and **get explicit confirmation before pushing**.
 - **Local-only fallback.** If there is no remote, authentication fails, or the user declines:
   - commit on the feature branch; skip push and PR; log `local-only: not pushed`
   - tell the user how to publish later (`git remote add origin <url>`, `git push -u origin <branch>`, open a PR)
   - append the `shipped` events with `evidence: local commit <short-sha>` and run the render script
-- **Push and PR.** Push and open a PR against `main` (no PR tool: give the user the branch name for the web UI). Never merge, never push to `main`.
+- **Push and PR.** Push and open a PR against the base branch (no PR tool: give the user the branch name for the web UI). Never merge, never push to the base branch.
 - **PR body.** Write it from `kit/templates/pr-description.md`; every section is filled; Known limitations lists the minor review findings deferred at Step 4.
   - **Migration and rollback**: required with schema tasks (what changes, how to roll back); else `none`.
   - New environment variable names only, never values.
@@ -53,10 +54,10 @@ Commit everything except secrets.
 
 Push first: the PR reference is the shipped event's evidence. Then:
 
-1. Append a `shipped` event (`source: live`, `by: orchestrator`, `evidence`: the PR reference, e.g. `PR #7`) to each feature built. Under `scope: all` that is every Must feature built in this pass.
+1. Append a `shipped` event (`at`, `evidence`: the PR reference, e.g. `PR #7`; `source` and `by` default to `live` and `orchestrator`) to each feature built. Under `scope: all` that is every Must feature built in this pass.
 2. Set `status: shipped` on every release that has no `pending` or `in-progress` Must feature left and at least one `shipped` feature. Should and Could features not built stay `pending`; `cancelled` features never hold a release open.
 3. Run `node kit/scripts/render-backlog.js`.
-4. Commit and push these files to the same branch so the same PR carries them.
+4. Commit and push `docs/backlog.json` and `docs/roadmap.md` to the same branch so the same PR carries them.
 
 ### 5. CI status
 

@@ -55,7 +55,7 @@ Gate summary: *"The architecture records [stack] as built, with [k] debt items a
 
 ## Step 3 — Constitution from observed conventions (hard gate)
 
-Draft `docs/constitution.md` from `kit/templates/07-constitution.md` with `Provenance: reverse-engineered (Adopt)`. Every MUST cites evidence: a config file (lint, format, compiler, CI check) or the observed file ratio in the survey sample; anything else is SHOULD, and aspirational rules are not written. Fill `## Verification Commands` via Steps 1–2 of `kit/phase-verification-backfill.md` (survey scripts and CI config); this gate is the review. Rules with thin evidence are listed for you to decide.
+Draft `docs/constitution.md` from `kit/templates/07-constitution.md` with `Provenance: reverse-engineered (Adopt)`. Every MUST cites evidence: a config file (lint, format, compiler, CI check) or the observed file ratio in the survey sample; anything else is SHOULD, and aspirational rules are not written. Fill `## Verification Commands` via Steps 1–2 of `kit/phase-verification-backfill.md` (survey scripts and CI config); this gate is the review. Set `**Base branch:**` from the survey (conventions rule 17) and the CI row's `runs on PRs to:` note from the workflow triggers; a base branch outside those triggers is stated once there, so Ship does not rediscover it. Rules with thin evidence are listed for you to decide.
 
 Gate summary: *"[m] MUST rules each backed by config or observed usage, [s] SHOULD rules, and [v] of 8 verification commands found. Approve the constitution, or name a rule to change."*
 
@@ -64,7 +64,7 @@ If the user replied "defaults" at Step 2, set both documents `approved` on writi
 ## Step 4 — Baseline roadmap (hard gate)
 
 1. Read the allowed values in `kit/scripts/render-backlog.js` (statuses, priority, size, event types, sources, `by`) and follow `kit/phase-roadmap-migrate.md` Step 4 conventions (`schema_version`, `phase2_scope`, `admin_site`, event order, `status` = latest status event).
-2. Infer features from routes, screens, and API surfaces in the survey, and cross-check them against the survey's business context (a transaction with no matching feature, or a feature no transaction explains, goes to you as a question instead of being added or dropped silently), grouped in one release `r0-baseline` (`shipped`). Each feature: short name, priority `Must`, size estimate, `depends_on` where evident, `status: shipped`, `release: "r0-baseline"`, events `created` then `shipped` with `by: "orchestrator"`. With no date evidence, set `at: null`, `source: "unknown"`, `note: "inferred by Adopt"`; a user-supplied date gets `source: "backfill-confirmed"`, `evidence: "user-supplied"`. Use only validator values.
+2. Infer features from routes, screens, and API surfaces in the survey, and cross-check them against the survey's business context (a transaction with no matching feature, or a feature no transaction explains, goes to you as a question instead of being added or dropped silently), grouped in one release `r0-baseline` (`shipped`). Each feature: short name, priority `Must`, size estimate, `depends_on` where evident, `status: shipped`, `release: "r0-baseline"`, events `created` then `shipped`. With no date evidence, an event is just `{"type": "created"}`: the validator reads an omitted `at` as undated (`source: unknown`) and defaults `by` to `orchestrator`, so write no null fields and no note. A user-supplied date gets `at`, `source: "backfill-confirmed"`, `evidence: "user-supplied"`. Use only validator values.
 3. Write `docs/roadmap.md` from `kit/templates/04-roadmap.md` (short narrative, feature table between the generated markers, `Non-functional Requirements` filled only from evidence in code or docs, else `unknown`). Set `Phase 2 Scope` per `p1-04-roadmap.md`, defaulting to `feature`.
 4. Run `node kit/scripts/render-backlog.js` (exit 0; fix from its errors).
 5. Ask per feature: **keep / correct / drop**. You confirm every `r0-baseline` feature before approval.
@@ -77,7 +77,7 @@ Run the registry in `kit/phase-upgrade.md` (Detect, Confirm, Run): data-model an
 
 ## Step 6 — DESIGN.md
 
-Skip when the project has no UI (record `skipped (no UI)`). Otherwise extract tokens from the tailwind config, CSS variables, and theme files into `docs/DESIGN.md` using `kit/templates/03c-design-system.md`, each token `from-code`. Create no `docs/preview/` (the Design dispatch contract has `design_md_fallback`).
+Skip when the project has no UI (record `skipped (no UI)`). Otherwise `docs/DESIGN.md` must exist when this step ends. If the project already has a hand-written design file (for example a root `DESIGN.md` or a design-system doc), use it as the source: write `docs/DESIGN.md` from it in the template's format, name its path under `Based on`, and leave the original untouched. Otherwise extract tokens from the tailwind config, CSS variables, and theme files using `kit/templates/03c-design-system.md`, each token `from-code`. Create no `docs/preview/`: the Design dispatch contract treats it as optional (`design_md_fallback`).
 
 ## Step 7 — MODELS.md
 
@@ -85,7 +85,7 @@ Run the "Model tiers" section of `kit/phase-1-bootstrap.md`.
 
 ## Step 8 — AGENTS.md
 
-Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`), ending with the `## Workflow (craft-kit)` section from `kit/orchestrator-conventions.md` → "Project workflow block" (real `<kit_version>` from `docs/.craft-kit.json`). Without it a fresh session does not know `kit/` exists and codes backlog features directly. If `AGENTS.md` exists, show a diff and apply only on approval; never overwrite a hand-written file. If a `CLAUDE.md` exists, propose the same section for it under the same rule.
+Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`), ending with the `## Workflow (craft-kit)` section from `kit/orchestrator-conventions.md` → "Project workflow block" (it carries no version number). Without it a fresh session does not know `kit/` exists and codes backlog features directly. If `AGENTS.md` exists, show a diff and apply only on approval; never overwrite a hand-written file. If a `CLAUDE.md` exists, propose the same section for it under the same rule.
 
 ## Step 9 — Closeout
 

@@ -23,6 +23,7 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/06b-data-model.md` | `docs/data-model.md` | Agent | Phase 1 Step 6 (Stage 4); Docs Backfill |
 | `templates/06c-flows.md` | `docs/flows.md` | Agent | Phase 1 Step 6 (Stage 4); Docs Backfill |
 | `templates/06d-api.md` | `docs/api.md` | Agent | API Backfill |
+| `templates/known-issues.md` | `docs/known-issues.md` | Agent | Phase 2 Review / Ship |
 | `templates/07-constitution.md` | `docs/constitution.md` | Agent | Phase 1 Step 7 |
 | `templates/08-scaffold-checklist.md` | Used as a checklist in the session | Agent | Phase 1 Step 8 |
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |

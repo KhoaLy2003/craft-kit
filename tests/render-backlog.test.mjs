@@ -461,3 +461,33 @@ describe('render-backlog: cancelled features', () => {
     assert.match(result.stderr, /a cancelled event needs a note giving the reason/);
   });
 });
+
+describe('render-backlog: default event fields', () => {
+  it('accepts events that omit at, source, by and note, and reads them as undated or live', () => {
+    const root = tempProject({
+      backlog: backlog([
+        baseFeature({
+          id: 'F01',
+          status: 'shipped',
+          events: [{ type: 'created' }, { type: 'shipped', at: '2026-09-12T16:40:00Z', evidence: 'PR #4' }],
+        }),
+      ]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 0, result.stderr);
+    const html = fs.readFileSync(path.join(root, 'docs', 'backlog.html'), 'utf8');
+    assert.ok(html.includes('shipped 2026-09-12'));
+    assert.ok(html.includes('date unknown'));
+  });
+
+  it('still rejects an explicit source live with a null date', () => {
+    const root = tempProject({
+      backlog: backlog([baseFeature({ events: [{ type: 'created', at: null, source: 'live' }] })]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /at may be null only when source is unknown/);
+  });
+});

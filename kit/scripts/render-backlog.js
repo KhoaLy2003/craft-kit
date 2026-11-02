@@ -34,6 +34,23 @@ const SOURCE_LABEL = {
   'unknown': 'date unknown',
 };
 
+// Events may omit fields that carry no information: `at` (undated), `source` (live when dated,
+// unknown when undated), `by` (orchestrator), `note` (empty). Defaults are filled in memory
+// before validation; the file on disk is never rewritten.
+function normalizeEvents(doc) {
+  if (!doc || !Array.isArray(doc.features)) return;
+  for (const f of doc.features) {
+    if (!f || !Array.isArray(f.events)) continue;
+    for (const e of f.events) {
+      if (!e || typeof e !== 'object') continue;
+      if (e.at === undefined) e.at = null;
+      if (e.source === undefined) e.source = e.at === null ? 'unknown' : 'live';
+      if (e.by === undefined) e.by = 'orchestrator';
+      if (e.note === undefined) e.note = '';
+    }
+  }
+}
+
 function isNonEmptyString(v) {
   return typeof v === 'string' && v.trim() !== '';
 }
@@ -370,6 +387,7 @@ function main(argv) {
       : `render-backlog: cannot read ${jsonPath}: ${e.message}`);
     return 1;
   }
+  normalizeEvents(doc);
   const errors = validate(doc);
   if (errors.length) {
     console.error(`render-backlog: ${errors.length} validation error(s) in backlog.json:`);

@@ -42,6 +42,7 @@ Notes go under the table, one line each, at most 5 per unit: skip reasons, `desi
 | Technical choice inside a feature | the plan task's key decisions, then the commit message |
 | Cross-cutting (dependency, auth, route group, env var) | `## Architecture Impact` → `docs/architecture.md` |
 | Not yet in any artifact at a handover | `docs/handover.md` |
+| Minor finding or gap that ships open | `docs/known-issues.md` (one row; the log keeps only the count) |
 
 Never repeat what git history, `docs/backlog.json` events, or an artifact already holds. Once a unit is shipped, collapse its section to its steps table and a one-line outcome (or move it to `docs/archive/`). Resume and handover read only the current unit's section. Add a `Started` / `Duration` column only if you want timing; none is required.
 

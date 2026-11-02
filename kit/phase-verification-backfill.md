@@ -11,9 +11,9 @@ Universal rules: `kit/orchestrator-conventions.md`.
 ## Limitations (read before running)
 
 - **Commands are copied, never reconstructed.** Each command comes verbatim from `package.json` scripts, a Makefile, task-runner config, or CI config. A check with no source is `unknown`.
-- **Nothing is invented.** Ambiguous or missing items are `unknown`; a step the language does not have is `n/a — <reason>`.
+- **Shared rules** (nothing invented, code beats docs, monorepo): `kit/phase-upgrade.md` → Shared module rules. A step the language does not have is `n/a — <reason>`.
 - **Side effects.** Commands that touch a database, the network, or a deployment are listed but not run without asking you.
-- **Code beats docs.** When `AGENTS.md` or the README conflicts with the scripts, the conflict is reported to you, never silently resolved.
+- **Conflicts.** When `AGENTS.md` or the README disagrees with the scripts, report it to you.
 
 ## How to start
 
@@ -38,7 +38,7 @@ What to have ready: `docs/constitution.md`.
 
 ## Step 1 — Preflight & locate
 
-1. Stop if `docs/constitution.md` already has a `## Verification Commands` section. Require `docs/constitution.md`; if it is absent, stop and point to `kit/phase-adopt.md` (existing code with no kit documents) or the existing-projects guide on the docs site, `docs-site/guides/existing-projects.md`.
+1. Stop if `docs/constitution.md` already has a `## Verification Commands` section. Require `docs/constitution.md`; if it is absent, stop and point to `kit/phase-adopt.md` (existing code with no kit documents).
 2. Locate the sources and show the user the list: `package.json` (or the stack's manifest: `pyproject.toml`, `Cargo.toml`, `pom.xml`, `go.mod`), `Makefile` or task-runner config, CI config (for example `.github/workflows/`, `.gitlab-ci.yml`), and the root `AGENTS.md` or README when they list commands.
 
 ## Step 2 — Propose
@@ -60,7 +60,7 @@ Gate summary: *"[N] of 8 verification commands were found in the project's scrip
 
 ## Step 4 — Write & verify
 
-1. Add the `## Verification Commands` section from `kit/templates/07-constitution.md` to `docs/constitution.md`, before `## Governance` when present, with the approved rows. Set `Last amended` to today.
+1. Add the `## Verification Commands` section from `kit/templates/07-constitution.md` to `docs/constitution.md`, before `## Governance` when present, with the approved rows and a `**Base branch:**` line (the branch PRs merge into, from the user; conventions rule 17). In the CI row's Notes write `runs on PRs to: <branches>` from the workflow triggers, and say once if the base branch is not among them. Set `Last amended` to today.
 2. Re-read the file: the table separator row is present and no `<command>` placeholder remains.
 3. If the project-root `AGENTS.md` has a Commands section that disagrees, tell the user; never overwrite a hand-written file.
 

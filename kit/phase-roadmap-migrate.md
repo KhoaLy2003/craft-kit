@@ -61,7 +61,7 @@ Present one table: feature, status, created hint, status hint, flag, and a defau
 
 - **Confirm** the hint → event `source: backfill-confirmed`, `evidence` = the commit sha.
 - **Correct** the date → the user types an ISO date; event `source: backfill-confirmed`, `evidence: "user-supplied"`.
-- **Unknown** → event `at: null`, `source: unknown`.
+- **Unknown** → event with no `at` (the validator reads it as `source: unknown`; writing `at: null` is also accepted).
 - **Accept without review** (only for hints that are not flagged) → `source: backfill-unverified`.
 
 Rules:
@@ -101,4 +101,4 @@ Done. Future status changes go through `docs/backlog.json` followed by the rende
 
 - **Table has no ID column or duplicate IDs**: stop; the user fixes the table first.
 - **Git hints conflict with the table** (for example, the table says `shipped` but the newest row change says `pending`): report the conflict; the table is the status source, the hint is only a date hint.
-- **Feature has shipped but no evidence at all**: write the `shipped` event with `at: null` and `source: unknown`, and say so in the report. The schema allows it; the HTML leaves the date blank. Do not invent a date.
+- **Feature has shipped but no evidence at all**: write the `shipped` event without `at` and say so in the report. The schema allows it; the HTML leaves the date blank. Do not invent a date.
