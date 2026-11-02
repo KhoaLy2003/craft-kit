@@ -7,7 +7,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
-**Summary:** Leaner plans, specs, E2E rows, session logs and review loops; one-time impact merge; dispatch failure rule
+**Summary:** Leaner plans, specs and logs; base branch and known-issues records; backlog and lint noise cut
 
 ### Changed
 
