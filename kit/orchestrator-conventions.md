@@ -12,7 +12,7 @@ Emit one line before any work in a step:
 ## Step N — <Name> | Gate: <none|soft|hard>
 ```
 
-Append ` | Model: <tier>` only when `docs/MODELS.md` maps the tiers to different models (or a step override applies). When one model serves every tier, omit it; tiers still resolve normally.
+Append `| Model: <tier>` to the line (after a space) only when `docs/MODELS.md` maps the tiers to different models (or a step override applies). When one model serves every tier, omit it; tiers still resolve normally.
 
 ## Model Tiers
 
