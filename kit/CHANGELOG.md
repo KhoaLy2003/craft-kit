@@ -7,6 +7,13 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed
+
+- **`steps/phase-2/p2-07-ship.md`**, **`session-logging.md`** — Ship collapses the shipped unit (section 4, step 4): its session-log section and its E2E block and Run Log rows move unchanged to `docs/archive/phase-2-session/<slug>.md` and `docs/archive/e2e/<slug>.md`, leaving a steps table with path-only Output cells and one `Outcome:` line. Archiving is mandatory, not optional. CI status is reported to the user, no longer written to the log. Session-log Output cells are paths only; incidents get a destination (evidence folder or `docs/known-issues.md`). Prompted by LifeAtlas feedback: after 9 features the session log and E2E doc were about 200 KB.
+- **`templates/e2e-tests.md`**, **`steps/phase-2/p2-05-e2e.md`** — Section 3 gains an `Evidence` column (a path, never prose); Test Case is one line; Run Log rows are one line of about 200 characters, with findings and incidents going to the evidence folder or `docs/known-issues.md`; E2E works from the current feature's block and restores an archived block when a shipped feature's cases re-run.
+- **`scripts/lint-docs.js`** — warning-only growth checks, scanned by name in `docs/phase-2-session.md` (no Status header, so the header lint skips it) and `docs/E2E-TESTS.md`: file over 20 KB, lines over 400 characters, a unit over 5 notes, a shipped unit not collapsed, a Run Log row over 300 characters. Exit code is unchanged.
+- **`phase-log-collapse.md`** (new), **`phase-upgrade.md`** registry row #6 — one-time module that archives the shipped units already in an existing project's session log and E2E doc, with a hard review gate and a verbatim-archive check. Existing projects get it through `kit/phase-upgrade.md`; lint-docs reporting a not-collapsed shipped unit is the detection condition.
+
 ---
 
 ## [0.0.44] - 2026-11-02

@@ -41,6 +41,7 @@ Order matters: a later module may read what an earlier one writes.
 | 3 | `.test-accounts.json` | the project has test credentials (`.env` keys, `docs/E2E-TESTS.md` credential table, or a seed script that creates users) and `.test-accounts.json` does not exist | `kit/phase-test-accounts-backfill.md` |
 | 4 | `## Verification Commands` in `docs/constitution.md` | `docs/constitution.md` exists and lacks a `## Verification Commands` section | `kit/phase-verification-backfill.md` |
 | 5 | `docs/api.md` | `docs/architecture.md` exists, `docs/api.md` does not, and the code exposes an API (route or controller files, server actions, or an OpenAPI or GraphQL schema) | `kit/phase-api-backfill.md` |
+| 6 | `docs/phase-2-session.md`, `docs/E2E-TESTS.md` (shipped units collapsed) | `node kit/scripts/lint-docs.js` reports a `growth:` warning on `docs/phase-2-session.md` or `docs/E2E-TESTS.md` | `kit/phase-log-collapse.md` |
 
 ## Adding a document in a future kit version
 

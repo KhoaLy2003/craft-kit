@@ -70,6 +70,44 @@ describe('lint-docs', () => {
     assert.match(out, /docs\/\.craft-kit\.json\s+\|\s+error\s+\|\s+acknowledged_version must be a version/)
   })
 
+  test('growth: a shipped unit with notes is not collapsed and a unit over 5 notes is flagged; warnings only, exit 0', () => {
+    const { status, out } = lint('growth')
+    assert.equal(status, 0, out)
+    assert.match(out, /docs\/phase-2-session\.md\s+\|\s+warning\s+\|\s+growth: shipped unit "shipped-feature" is not collapsed/)
+    assert.match(out, /growth: unit "active-feature" has 6 notes/)
+    assert.doesNotMatch(out, /\| error \|/)
+  })
+
+  test('growth: a collapsed shipped unit and an active unit within the cap give no findings', () => {
+    const { status, out } = lint('collapsed')
+    assert.equal(status, 0, out)
+    assert.match(out, /no findings/)
+  })
+
+  test('growth: long lines, an oversized file and a long Run Log row warn; a long row outside the Run Log does not', () => {
+    const tmp = mkdtempSync(join(tmpdir(), 'lint-growth-'))
+    try {
+      cpSync(fixture('collapsed'), tmp, { recursive: true })
+      const longRow = `| 2026-11-01 | cmd | F1 | ${'x'.repeat(320)} | docs/e2e-runs/a |`
+      const e2e = [
+        '# e2e-tests.md', '', '## 3. Test Coverage Map', '', longRow, '', '## 8. Run Log', '',
+        '| Date | Command | Scope | Result | Evidence path |', '|---|---|---|---|---|',
+        '| 2026-11-01 | cmd | F1 | 3 PASS | docs/e2e-runs/a |', longRow, '',
+      ].join('\n')
+      writeFileSync(join(tmp, 'docs', 'E2E-TESTS.md'), e2e)
+      const log = join(tmp, 'docs', 'phase-2-session.md')
+      writeFileSync(log, readFileSync(log, 'utf8') + `\n${'y'.repeat(450)}\n${'z'.repeat(21 * 1024)}\n`)
+      const r = spawnSync(process.execPath, [SCRIPT, tmp], { encoding: 'utf8' })
+      const out = r.stdout + r.stderr
+      assert.equal(r.status, 0, out)
+      assert.match(out, /docs\/E2E-TESTS\.md\s+\|\s+warning\s+\|\s+growth: 1 Run Log row\(s\) over 300/)
+      assert.match(out, /docs\/phase-2-session\.md\s+\|\s+warning\s+\|\s+growth: \d+ line\(s\) over 400/)
+      assert.match(out, /docs\/phase-2-session\.md\s+\|\s+warning\s+\|\s+growth: \d+ KB, over 20 KB/)
+    } finally {
+      rmSync(tmp, { recursive: true, force: true })
+    }
+  })
+
   test('a missing docs folder is an error', () => {
     const r = spawnSync(process.execPath, [SCRIPT, join(ROOT, 'tests', 'fixtures', 'lint-docs', 'valid', 'docs')], { encoding: 'utf8' })
     assert.equal(r.status, 1)
