@@ -46,16 +46,16 @@
 
 ## 3. Test Coverage Map
 
-<!-- One table per feature in the spec. AC IDs must match the spec exactly. Under `scope: feature` each cycle appends its own Feature block. Status stays blank until the E2E run; then PASS / FAIL / BLOCKED. -->
+<!-- One table per feature in the spec. AC IDs must match the spec exactly. Under `scope: feature` each cycle appends its own Feature block. Status stays blank until the E2E run; then PASS / FAIL / BLOCKED. Evidence is a path (a file under `docs/e2e-runs/`, a log, a test file), never prose. Once a feature ships, Ship moves its block to `docs/archive/e2e/<feature-slug>.md` and leaves one line here: `Shipped <PR>; <n> of <n> PASS; archived: <path>`. -->
 
 <!-- Repeat this block for each feature: -->
 
 ### Feature: <!-- Feature name from roadmap -->
 
-| AC ID | Label | Test Case | Status |
-|-------|-------|-----------|--------|
-| <!-- AC-F01-1 --> | <!-- short label, at most 8 words; the full criterion text stays in the spec --> | <!-- what the test does: action → expected result --> | |
-| | | | |
+| AC ID | Label | Test Case | Status | Evidence |
+|-------|-------|-----------|--------|----------|
+| <!-- AC-F01-1 --> | <!-- short label, at most 8 words; the full criterion text stays in the spec --> | <!-- one line: action → expected result --> | | <!-- path, e.g. docs/e2e-runs/2026-11-01/run.log --> |
+| | | | | |
 
 <!-- Add more features above this line -->
 
@@ -197,7 +197,7 @@ If provisioning takes more than a few lines, put the step-by-step walkthrough in
 
 ## 8. Run Log
 
-<!-- One row per run, appended and never rewritten. Evidence lives in `docs/e2e-runs/` (git-ignored); only the path is committed. -->
+<!-- One row per run, one line of about 200 characters at most, appended and never rewritten. Evidence lives in `docs/e2e-runs/` (git-ignored); only the path is committed. Findings and incidents go to the evidence folder or `docs/known-issues.md`, not here. Ship removes a shipped feature's rows to `docs/archive/e2e/<feature-slug>.md`. -->
 
 | Date | Command | Scope | PASS | FAIL | BLOCKED | Evidence path |
 |------|---------|-------|------|------|---------|---------------|

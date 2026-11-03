@@ -59,7 +59,8 @@ Other workflows (all experimental — not yet validated in a test round)
               docs/adopt/survey.md, docs/adopt-session.md, chore/adopt-craftkit → PR; source code never modified
   Project Upgrade (existing projects, once): detect missing docs → run modules   kit/phase-upgrade.md
     modules: Roadmap Migration (kit/phase-roadmap-migrate.md), Docs Backfill (kit/phase-docs-backfill.md), API Backfill (kit/phase-api-backfill.md),
-             Test Accounts Backfill (kit/phase-test-accounts-backfill.md), Verification Backfill (kit/phase-verification-backfill.md)
+             Test Accounts Backfill (kit/phase-test-accounts-backfill.md), Verification Backfill (kit/phase-verification-backfill.md),
+             Log Collapse (kit/phase-log-collapse.md)
   Bug Fix: Assess → Fix → Verify         docs/specs/bugs/<bug-slug>/assess.md, fix/<bug-slug> → PR
   Phase 3: Discover → Prioritise → Design → Handoff → Closeout
   Admin Site: Scope → Spec & Plan → Implement → Review & E2E → Ship
@@ -192,9 +193,9 @@ onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
 | `kit/START.md` | Entry router (read-only): Detect → workflow + prompt; reuses the Detect step of `phase-upgrade.md` |
 | `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows |
 | `kit/phase-adopt.md` | Adopt: brings a codebase with no kit documents into the kit (9 steps, hard gates 2, 3, 4); writes `docs/adopt-session.md` |
-| `kit/phase-upgrade.md` | Single entry point for existing projects; registry of one-time modules (`phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`) — add a row here for every future migration |
-| `kit/phase-roadmap-migrate.md`, `kit/phase-docs-backfill.md`, `kit/phase-api-backfill.md`, `kit/phase-verification-backfill.md` | Upgrade modules: roadmap table → `backlog.json`; reverse-engineered `data-model.md` / `flows.md`; reverse-engineered `api.md` (endpoints and internal interfaces); constitution `Verification Commands` table from scripts and CI config |
-| `kit/scripts/lint-docs.js` | Read-only docs lint shipped with the kit: valid `Status`, `Last updated` format, `stale` warnings, `.craft-kit.json` schema (conventions rule 11) |
+| `kit/phase-upgrade.md` | Single entry point for existing projects; registry of one-time modules (`phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md`) — add a row here for every future migration |
+| `kit/phase-roadmap-migrate.md`, `kit/phase-docs-backfill.md`, `kit/phase-api-backfill.md`, `kit/phase-verification-backfill.md`, `kit/phase-log-collapse.md` | Upgrade modules: roadmap table → `backlog.json`; reverse-engineered `data-model.md` / `flows.md`; reverse-engineered `api.md` (endpoints and internal interfaces); constitution `Verification Commands` table from scripts and CI config; shipped units archived out of `phase-2-session.md` / `E2E-TESTS.md` |
+| `kit/scripts/lint-docs.js` | Read-only docs lint shipped with the kit: valid `Status`, `Last updated` format, `stale` warnings, `.craft-kit.json` schema, growth warnings for the session log and E2E doc (conventions rule 11) |
 | `kit/templates/craft-kit.json`, `kit/templates/pr-description.md`, `kit/templates/adopt-survey.md` | Kit version record; Ship's PR body; Adopt survey (metadata-header rule exempts the first two) |
 | `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
 | `kit/templates/onboarding.html` | Developer-onboarding page template; filled by the agent (no render script), light/dark via `prefers-color-scheme` like `backlog.html` |

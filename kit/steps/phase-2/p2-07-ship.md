@@ -10,7 +10,7 @@
 - **Outputs**:
   - committed branch; pushed branch and PR against the base branch (conventions rule 17; unless local-only) with a structured description
   - `shipped` event in `docs/backlog.json` per shipped feature; regenerated `docs/roadmap.md` table (`docs/backlog.html` is regenerated locally and git-ignored)
-  - CI status in the session log
+  - the unit collapsed in the session log and the E2E doc, its full text archived under `docs/archive/` (section 4, step 4); CI status reported to the user
 - **Template**: `kit/templates/pr-description.md`
 
 ## Rules
@@ -25,7 +25,7 @@ Work in this order.
   - Re-render an HTML diagram (`kit/guides/diagrams.md`) only if the user asks; the Mermaid sources are always current.
 - **AGENTS.md sync.** If this cycle amended `docs/architecture.md`, or changed the install, start, build, or test commands or the folder layout, update the matching lines of the project-root `AGENTS.md`. Take commands from `docs/constitution.md` → Verification Commands, and update that table first if a command changed.
 - **Re-verify.** If code changed since the last Definition of Done run, run it again (conventions → Definition of Done step 3).
-- **Docs lint** (conventions rule 11). Fix errors; show warnings; warnings never block. For a stale warning on a doc this cycle's Impact merge or review already covered, set its `**Reviewed against:**` date rather than editing the body.
+- **Docs lint** (conventions rule 11). Fix errors; show warnings; warnings never block. For a stale warning on a doc this cycle's Impact merge or review already covered, set its `**Reviewed against:**` date rather than editing the body. A growth warning for this unit's own section is expected now; the collapse in section 4 clears it.
 - **Known issues.** Stage `docs/known-issues.md` when this cycle added rows. Mention the count of `open` rows in the PR's Known limitations; `scope: all` also asks the user to fix or accept each (Status `accepted`) before the commit.
 - **Product changelog.** If the project has a root `CHANGELOG.md`, add one entry under Unreleased in its format; never create one.
 - **Secrets.** Confirm `.env` and `.test-accounts.json` are git-ignored (`git ls-files .test-accounts.json` returns nothing). `docs/E2E-TESTS.md` and `docs/ENV_SETUP.md` hold names and ids only, never values.
@@ -41,7 +41,7 @@ Commit everything except secrets.
 
 - **Pre-flight.** `git remote -v`; check a remote exists, the user is authenticated (`git ls-remote <remote>` succeeds), and which PR route exists (tool, CLI, or web UI). **CI trigger check:** take `runs on PRs to:` from the constitution's CI row; when it is missing, read the `on:` triggers in `.github/workflows/*.yml` (or the CI config named in Verification Commands) and record the result there. If the base branch (conventions rule 17) is not matched by the `pull_request` triggers, tell the user once, before pushing, that CI will not run for this PR; the constitution note means later cycles do not repeat it. Name the remote URL and **get explicit confirmation before pushing**.
 - **Local-only fallback.** If there is no remote, authentication fails, or the user declines:
-  - commit on the feature branch; skip push and PR; log `local-only: not pushed`
+  - commit on the feature branch; skip push and PR; record `local-only: not pushed` in the Outcome line
   - tell the user how to publish later (`git remote add origin <url>`, `git push -u origin <branch>`, open a PR)
   - append the `shipped` events with `evidence: local commit <short-sha>` and run the render script
 - **Push and PR.** Push and open a PR against the base branch (no PR tool: give the user the branch name for the web UI). Never merge, never push to the base branch.
@@ -57,11 +57,16 @@ Push first: the PR reference is the shipped event's evidence. Then:
 1. Append a `shipped` event (`at`, `evidence`: the PR reference, e.g. `PR #7`; `source` and `by` default to `live` and `orchestrator`) to each feature built. Under `scope: all` that is every Must feature built in this pass.
 2. Set `status: shipped` on every release that has no `pending` or `in-progress` Must feature left and at least one `shipped` feature. Should and Could features not built stay `pending`; `cancelled` features never hold a release open.
 3. Run `node kit/scripts/render-backlog.js`.
-4. Commit and push `docs/backlog.json` and `docs/roadmap.md` to the same branch so the same PR carries them.
+4. **Collapse the unit (mandatory).** Set every step row of the unit to `complete` or `skipped`, then:
+   - **Session log.** Move the unit's whole section from `docs/phase-2-session.md` to `docs/archive/phase-2-session/<unit-slug>.md` (create the folder; text unchanged). In its place keep the `## <unit>` heading, the steps table with every Output cell reduced to a path, and one line: `Outcome: shipped, <PR ref>; <n> of <n> acceptance criteria PASS; <n> known issues. Archive: <path>`. A local-only ship writes `Outcome: local-only: not pushed, commit <sha>; ...`.
+   - **E2E doc.** For each feature shipped, move its Section 3 block and its Section 8 rows to `docs/archive/e2e/<feature-slug>.md` and leave one line where the block was: `Shipped <PR ref>; <n> of <n> PASS; archived: <path>`. Under `scope: all` this covers every feature built.
+   - Archived files are read only when a step names them (the restore rule in `p2-05-e2e.md`); resume, handover, review and E2E read the current unit only.
+5. Run `node kit/scripts/lint-docs.js` again: no growth warning for this unit may remain.
+6. Commit and push `docs/backlog.json`, `docs/roadmap.md`, the collapsed `docs/phase-2-session.md` and `docs/E2E-TESTS.md`, and `docs/archive/` to the same branch so the same PR carries them.
 
 ### 5. CI status
 
-- With a CI row in Verification Commands or pipeline config, read the PR's check status **once** and log `passing`, `failing`, `pending`, or `not-checked`. Never wait indefinitely; for `pending`, ask the user. With no CI, remote, or tool, or when the trigger check found CI will not run for the PR base: `not-checked` (or `local-only: not pushed`), with the reason.
+- With a CI row in Verification Commands or pipeline config, read the PR's check status **once** and report `passing`, `failing`, `pending`, or `not-checked` to the user (the unit is already collapsed; CI status is not written to the docs). Never wait indefinitely; for `pending`, ask the user. With no CI, remote, or tool, or when the trigger check found CI will not run for the PR base: `not-checked` (or `local-only: not pushed`), with the reason.
 - `failing`: return to Step 4 **once per cycle** with the error output; the fix goes through review and the affected E2E scope reruns (`p2-05-e2e.md`); push to the same PR and check again. Still failing: ask the user; no second loop.
 
 ### 6. Other rules
@@ -71,10 +76,10 @@ Push first: the PR reference is the shipped event's evidence. Then:
 
 ## Completion Criteria
 
-- [ ] Committed; user-confirmed remote pushed and PR open with the PR template filled, or the local-only fallback logged
-- [ ] CI status logged (a failing run returned to Step 4 at most once)
+- [ ] Committed; user-confirmed remote pushed and PR open with the PR template filled, or the local-only fallback recorded in the Outcome line
+- [ ] CI status reported (a failing run returned to Step 4 at most once)
 - [ ] `shipped` events with PR (or local commit) evidence for every feature built; releases closed per rule 4; render script exits 0
-- [ ] Impact merge done; spec persistence decision recorded; `AGENTS.md` and root `CHANGELOG.md` (if any) updated; lint-docs reports no errors
+- [ ] Impact merge done; unit collapsed and archived (session log and E2E doc); spec persistence decision recorded; `AGENTS.md` and root `CHANGELOG.md` (if any) updated; lint-docs reports no errors and no growth warning for this unit
 - [ ] `scope: feature` with `pending` features left: the user answered the next-step question; nothing started unprompted
 
 ## Transitions

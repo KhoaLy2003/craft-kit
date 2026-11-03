@@ -11,6 +11,9 @@
 //      Resolution is by day: same-day edits are not flagged.
 // And once per project:
 //   3. docs/.craft-kit.json exists and matches its schema (missing: warning; malformed: error).
+//   4. growth (warnings only), checked by name in docs/phase-2-session.md and docs/E2E-TESTS.md:
+//      file over 20 KB; lines over 400 characters; a unit with more than 5 notes; a shipped unit
+//      (Step 7 `complete`) that still has notes (not collapsed); a Run Log row over 300 characters.
 // Output: a table of file | severity | message. Exit 1 on any error, 0 otherwise (warnings only).
 
 const fs = require('fs');
@@ -25,6 +28,10 @@ const HEADER_LINES = 40;
 const FIELD = /^(?:[-*]\s+)?\*\*(Status|Last updated|Last amended|Based on|Reviewed against)(?::\*\*|\*\*:)[ \t]*(.*)$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const SEMVER = /^\d+\.\d+\.\d+$/;
+const MAX_DOC_BYTES = 20 * 1024;
+const MAX_LINE = 400;
+const MAX_NOTES = 5;
+const MAX_RUN_LOG_ROW = 300;
 
 function cleanValue(raw) {
   return raw.replace(/<!--.*?-->/g, '').replace(/`/g, '').trim();
@@ -64,6 +71,63 @@ function basedOnFiles(raw) {
     names.push(name);
   }
   return names;
+}
+
+function readLines(file) {
+  return fs.readFileSync(file, 'utf8').split(/\r?\n/);
+}
+
+function checkSize(file, docPath, hint, add) {
+  const bytes = fs.statSync(docPath).size;
+  if (bytes > MAX_DOC_BYTES) add(file, 'warning', `growth: ${Math.round(bytes / 1024)} KB, over ${MAX_DOC_BYTES / 1024} KB; ${hint}`);
+}
+
+// Session log: one `## <unit>` section per feature. A shipped unit keeps its steps table and a one-line
+// Outcome only, so any note bullet left in it means it was not collapsed.
+function lintSessionLog(docsDir, add) {
+  const file = 'docs/phase-2-session.md';
+  const docPath = path.join(docsDir, 'phase-2-session.md');
+  if (!fs.existsSync(docPath)) return;
+  checkSize(file, docPath, 'collapse and archive shipped units (kit/session-logging.md)', add);
+  const lines = readLines(docPath);
+  const long = lines.map((l, i) => [l.length, i + 1]).filter(([len]) => len > MAX_LINE);
+  if (long.length) add(file, 'warning', `growth: ${long.length} line(s) over ${MAX_LINE} characters (first at line ${long[0][1]}); keep Output cells to paths and notes to one line`);
+  const sections = [];
+  let nameCol = 2, statusCol = 4; // default layout: | Step | Name | Agent | Status | Output |
+  for (const line of lines) {
+    const h = /^##\s+(.+?)\s*$/.exec(line);
+    if (h) sections.push({ title: h[1], notes: 0, shipped: false });
+    else if (sections.length) {
+      const s = sections[sections.length - 1];
+      if (/^\s*[-*]\s/.test(line)) s.notes++;
+      else if (line.trim().startsWith('|')) {
+        const cells = line.split('|').map(c => c.trim());
+        const lower = cells.map(c => c.toLowerCase());
+        if (lower.includes('status') && lower.includes('name')) { nameCol = lower.indexOf('name'); statusCol = lower.indexOf('status'); continue; }
+        if (/^ship/i.test(cells[nameCol] || '') && (cells[statusCol] || '').toLowerCase() === 'complete') s.shipped = true;
+      }
+    }
+  }
+  for (const s of sections) {
+    if (s.shipped && s.notes > 0) add(file, 'warning', `growth: shipped unit "${s.title}" is not collapsed (${s.notes} note line(s)); archive it to docs/archive/phase-2-session/ and keep the steps table and an Outcome line`);
+    else if (s.notes > MAX_NOTES) add(file, 'warning', `growth: unit "${s.title}" has ${s.notes} notes, over ${MAX_NOTES}`);
+  }
+}
+
+// E2E doc: the Run Log (Section 8) is one short row per run; evidence lives in docs/e2e-runs/.
+function lintE2eDoc(docsDir, add) {
+  const file = 'docs/E2E-TESTS.md';
+  const docPath = path.join(docsDir, 'E2E-TESTS.md');
+  if (!fs.existsSync(docPath)) return;
+  checkSize(file, docPath, 'archive shipped features\' blocks and their Run Log rows (kit/steps/phase-2/p2-05-e2e.md)', add);
+  const lines = readLines(docPath);
+  let inLog = false;
+  const long = [];
+  lines.forEach((line, i) => {
+    if (/^##\s/.test(line)) inLog = /^##\s+8\.\s*Run Log/i.test(line);
+    else if (inLog && line.trim().startsWith('|') && line.length > MAX_RUN_LOG_ROW) long.push(i + 1);
+  });
+  if (long.length) add(file, 'warning', `growth: ${long.length} Run Log row(s) over ${MAX_RUN_LOG_ROW} characters (first at line ${long[0]}); keep one line per run and put findings in docs/e2e-runs/ or docs/known-issues.md`);
 }
 
 function lintDocs(root) {
@@ -128,6 +192,9 @@ function lintDocs(root) {
       }
     }
   }
+  lintSessionLog(docsDir, add);
+  lintE2eDoc(docsDir, add);
+
   return findings;
 }
 

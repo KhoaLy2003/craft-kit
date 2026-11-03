@@ -36,6 +36,7 @@ const PHASES: Page[] = [
   kit('phase-api-backfill',     'phases/api-backfill',   'API Backfill'),
   kit('phase-test-accounts-backfill', 'phases/test-accounts-backfill', 'Test Accounts Backfill'),
   kit('phase-verification-backfill',  'phases/verification-backfill',  'Verification Backfill'),
+  kit('phase-log-collapse',     'phases/log-collapse',   'Log Collapse'),
   kit('phase-onboarding',       'phases/onboarding',     'Developer Onboarding'),
 ]
 

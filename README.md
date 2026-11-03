@@ -215,7 +215,7 @@ All work uses your platform's general-purpose agent.
 | `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
 | `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
-| `phase-upgrade.md`, `phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md` | Project upgrade entry point and its one-time modules |
+| `phase-upgrade.md`, `phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
 | `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`) |
 | `session-logging.md` | Session log format |
 | `stack-catalog.md` | Stack baseline and deviation model for the Architecture step |
