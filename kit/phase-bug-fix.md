@@ -8,6 +8,8 @@
 
 Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/bug-session.md`, one section per bug (`kit/session-logging.md`). `<bug-slug>` is a short kebab-case name agreed with the user.
 
+**Resume and handover.** A session that finds the bug's section in `docs/bug-session.md` with unfinished steps resumes per conventions rule 18 (`assess.md` with `Status: draft` means Step 1 is not approved; Step 2 resumes on `fix/<bug-slug>`). Seams: after the Assess gate and at Verify (rule 19, `kit/guides/session-handover.md`).
+
 | Step | Name | Gate | Model | Agent | Output |
 |---|---|---|---|---|---|
 | 1 | Assess | hard | capable | general-purpose agent (read-only) + human | `docs/specs/bugs/<bug-slug>/assess.md` |

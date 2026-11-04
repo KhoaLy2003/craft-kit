@@ -56,6 +56,15 @@ Resolved once in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers"), which w
 
 17. **Base branch** — every branch starts from, and every PR targets, the project's base branch: the `Base branch:` line under `docs/constitution.md` → Verification Commands, or `main` when the line is missing. Phase 1 Step 7 writes it (default `main`); Adopt Step 3 takes it from the survey (the branch PRs merge into, else `git symbolic-ref --short refs/remotes/origin/HEAD`). Phase 2, Phase 3, bug fix and admin read it; `main` in their text means this branch. Never push to it.
 
+18. **Resume on re-entry** — a workflow started while its session log already has a section (or table) for the unit is a resume, never a fresh start; do not re-ask answered questions or overwrite finished artifacts. Read only the current unit's log section and the artifacts it points to, then act on the first step that is not `complete` or `skipped`:
+    - `in progress` or `blocked`, or an artifact whose `Status` is `draft`: resume that step from the artifact on disk. At a hard gate, re-present the Gate Summary and wait; a `draft` artifact is never treated as approved.
+    - `pending`, but its artifact is on disk with `Status: approved` (the log lagged): confirm the file, set the step `complete`, and move on.
+    - `pending` with no artifact: start it normally.
+
+    Say `Resuming <workflow> at Step N — <Name>` before the banner. `kit/START.md` detects this state and prints the prompt; a handover (`kit/guides/session-handover.md`) only adds saved context on top of it.
+
+19. **Session checkpoint** — after a hard gate clears, or any step the workflow names a seam, offer a handover as `kit/guides/session-handover.md` → Triggers defines (every workflow: Phase 1, 2, 3, bug fix, admin, adopt). "hand over", "new session" or "checkpoint" from the user is executed immediately.
+
 ---
 
 ## Definition of Done

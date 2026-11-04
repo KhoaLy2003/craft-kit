@@ -62,5 +62,6 @@ scope feature: Ship → next pending feature → [1]      scope all: Ship → Ph
 
 - **Session log:** `docs/phase-2-session.md`, one section per feature (per the table above), created at Step 1 (schema and cadence: `kit/session-logging.md`).
 - **Handover:** `kit/guides/session-handover.md` covers every pause inside Phase 2 (`Unit` = feature slug, or project slug under `scope: all`; resume at the step in the session log). The Phase 1 → Phase 2 handoff prompt is separate (`kit/phase-1-bootstrap.md`). Clean seams: after Step 2 (Plan), Step 3 (Implement), Step 4 (Review), and, under `scope: feature` with `pending` features left, Step 7 (Ship: Ship asks whether to start the next feature, hand over, or stop).
+- **Resume:** a session that finds the unit's section in `docs/phase-2-session.md` with unfinished steps resumes per conventions rule 18 (an unapproved spec resumes Step 1, per the skip detection above; Step 3 resumes on `feature/<slug>` and re-checks the plan's task list against the commits already on it, never re-implementing a finished task).
 - **No per-task commits.** Changes accumulate on the feature branch; Ship commits them (a handover may commit earlier).
 - **Shipped events:** Ship appends a `shipped` event per feature to `docs/backlog.json`; `docs/backlog.html` and the roadmap table are rendered from it.

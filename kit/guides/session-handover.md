@@ -23,6 +23,7 @@ Natural seams (nothing mid-flight, state is on disk):
 | Phase 1 | Any step whose hard gate has just cleared |
 | Phase 2 | After Step 2 (Plan: spec and plan on disk, no code), Step 3 (Implement: code on the feature branch; the handover commits it), Step 4 (Review: findings fixed; the handover commits it), Step 7 (Ship, `scope: feature` with `pending` features left: everything committed; the Unit is the next feature and the resume step is Step 1) |
 | Phase 3 / bug fix / admin site | After any hard gate (admin: after the Scope gate, or after the shell checkpoint passes) |
+| Adopt | Any step whose hard gate has just cleared (Steps 2, 3, 4), and after Step 8 |
 
 Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 
@@ -41,7 +42,7 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 3. For partial code, apply the one rule: **commit only what compiles cleanly; every other uncommitted change is stashed (`git stash push -m "handover: <task>"`, listed under In-Progress State) or discarded, and its task is flagged "restarted in new session" in the session log.** Never leave partial writes in the working tree.
 4. Set the step to `blocked` in the session log with reason `session handover`.
 
-**Phase 1 exception:** Phase 1 makes exactly one commit, at Step 8, so its documents stay uncommitted at a handover. Do not commit. List every file under `docs/` in the handover document and tell the user to keep the working folder (the same checkout) for the new session.
+**Phase 1 and Adopt exception:** both make exactly one commit (Phase 1 at Step 8, Adopt at Step 9), so their documents stay uncommitted at a handover. Do not commit. List every file under `docs/` in the handover document and tell the user to keep the working folder (the same checkout) for the new session.
 
 **Rule (all other phases):** after these steps the working tree is clean apart from `docs/handover.md` and the session log (`git status` shows no other uncommitted change). Never hand over with uncommitted writes; a new session cannot recover unsaved work. A stash is saved work only if it is named in the handover document.
 
@@ -52,7 +53,7 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 - [ ] Project name (`docs/idea-brief.md` or `package.json → name`)
 - [ ] Phase, unit (feature slug / bug slug / release slug), current step number and name
 - [ ] Sub-progress: what within the step is done, what remains
-- [ ] Session log status per step for the current unit only (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Phase 3: `docs/phase-3-session.md`; admin: `docs/admin-session.md`); never read or copy other units' sections
+- [ ] Session log status per step for the current unit only (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Phase 3: `docs/phase-3-session.md`; admin: `docs/admin-session.md`; Adopt: `docs/adopt-session.md`); never read or copy other units' sections
 - [ ] Paths and approval status of the step's artifacts (spec, plan, assess.md, discover.md …); plan task counts if applicable
 - [ ] Current branch (`git branch --show-current`) if code is involved
 - [ ] Decisions made this session not captured in an artifact
@@ -80,7 +81,7 @@ Write to `docs/handover.md`. Fill every `[bracket]`.
 
 | Field | Value |
 |---|---|
-| Phase | [Phase 1 | Phase 2 (scope: all|feature) | Phase 3 | Bug fix | Admin site] |
+| Phase | [Phase 1 | Phase 2 (scope: all|feature) | Phase 3 | Bug fix | Admin site | Adopt] |
 | Unit | `[feature-slug | bug-slug | release-slug | project]` |
 | Step | Step [N] — [Step Name] |
 | Status | [complete | in progress — sub-progress] |

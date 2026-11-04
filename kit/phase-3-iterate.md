@@ -8,6 +8,8 @@
 
 Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/phase-3-session.md`, one section per release (`kit/session-logging.md`). Agree `<release-slug>` (e.g. `r2-growth`) before Step 1; it names `docs/iterations/<release-slug>/`.
 
+**Resume and handover.** A session that finds the release's section in `docs/phase-3-session.md` with unfinished steps resumes per conventions rule 18; the release slug is the Unit. Seams: after any hard gate (rule 19, `kit/guides/session-handover.md`).
+
 ## Steps
 
 

@@ -7,6 +7,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed
+
+- **`orchestrator-conventions.md`** — new rule 18 (resume on re-entry: first step not `complete` or `skipped`; `draft` artifact resumes and re-presents the gate; approved artifact with a lagging log is marked complete) and rule 19 (session checkpoint offered at every workflow's seams). Prompted by an audit of mid-phase exits: only Phase 2 Step 1 had skip detection, and Phase 1, 3, admin and adopt never referenced the handover guide.
+- **`START.md`** — the Resume row now fires on any `docs/*-session.md` with an unfinished step (not only `in progress`), covers a `draft` next artifact, and prints the resume prompt. Previously a Phase 1 project left after a cleared gate matched no row, or misrouted to Adopt.
+- **`phase-1-bootstrap.md`**, **`phase-2.md`**, **`phase-3-iterate.md`**, **`phase-bug-fix.md`**, **`phase-admin.md`**, **`phase-adopt.md`** — each has a resume and handover paragraph (Phase 2: Run State and Handover) naming its unit, draft-artifact case and seams.
+- **`guides/session-handover.md`** — Adopt added as a phase with seams (after Steps 2, 3, 4 and 8) and to the no-commit exception shared with Phase 1.
+- **`docs-site/guides/resuming-a-session.md`** — documents the no-handover path (`Start using kit/START.md.`).
+
 ---
 
 ## [0.0.45] - 2026-11-03

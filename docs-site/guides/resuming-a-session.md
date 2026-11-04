@@ -44,6 +44,16 @@ The AI then:
 
 Once the step is in progress, the AI deletes `docs/handover.md`. The session log is the record; the handover file was only a bridge.
 
+### If you left without a handover
+
+Closing the chat without saying "hand over" is fine as long as the work is saved on disk. Open a new conversation in the same project folder (for Phase 1 and Adopt, the same checkout, since their documents are not committed until the end) and send:
+
+```
+Start using kit/START.md.
+```
+
+START.md is read-only. It looks for `docs/handover.md` and for any session log (`docs/phase-1-session.md`, `phase-2-session.md`, `phase-3-session.md`, `bug-session.md`, `admin-session.md`, `adopt-session.md`) with an unfinished step, and prints the exact resume prompt. Send that prompt. The AI then resumes at the first unfinished step: a step the log marks complete is never re-run, a step whose document is still a draft is picked up from that document and asks for your approval again, and a step whose approved document is already on disk is marked complete and passed.
+
 ---
 
 ## Things to Know

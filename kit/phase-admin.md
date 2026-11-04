@@ -8,6 +8,8 @@
 
 Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/admin-session.md`, one table (`kit/session-logging.md`).
 
+**Resume and handover.** A session that finds `docs/admin-session.md` with unfinished steps resumes per conventions rule 18; `docs/admin/scope.md` with `Status: draft` means Step 1 is not approved. Seams: after the Scope gate or the shell checkpoint (rule 19, `kit/guides/session-handover.md`).
+
 ## Steps
 
 | Step | Name | Gate | Model | Agent | Output |

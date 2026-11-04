@@ -5,6 +5,8 @@
 
 Universal rules are in `kit/orchestrator-conventions.md` (every dispatch: rules 1–3). Session log: `docs/phase-1-session.md` (`kit/session-logging.md`).
 
+**Resume and handover.** A new session on a project whose `docs/phase-1-session.md` has unfinished steps resumes per conventions rule 18 (`kit/START.md` prints the prompt); skip nothing the log marks `complete`. Seams: any step whose hard gate has just cleared (rule 19, `kit/guides/session-handover.md`; Phase 1 documents stay uncommitted until Step 8, so keep the same checkout).
+
 ## Skills and agents pre-flight
 
 Run once, before Model tiers. Check each skill below is available (platform skill list, else try loading it by name). The kit falls back to the AI's general capability for a missing skill, except `design-taste-frontend` (required for visual-quality work) and `archify` (required for diagram rendering; see `kit/task-agent-rubric.md`, `kit/guides/diagrams.md`). Install notes: the site page *What You Need*.
