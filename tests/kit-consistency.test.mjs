@@ -207,3 +207,26 @@ describe('project workflow block', () => {
     }
   })
 })
+
+describe('resume and handover coverage', () => {
+  const WORKFLOWS = ['phase-1-bootstrap', 'phase-2', 'phase-3-iterate', 'phase-bug-fix', 'phase-admin', 'phase-adopt']
+  const conventions = read(join(KIT, 'orchestrator-conventions.md'))
+
+  test('conventions define resume on re-entry (rule 18) and session checkpoint (rule 19)', () => {
+    assert.match(conventions, /^18\. \*\*Resume on re-entry\*\*/m)
+    assert.match(conventions, /^19\. \*\*Session checkpoint\*\*/m)
+  })
+
+  for (const name of WORKFLOWS) {
+    test(`${name}.md points to the resume rule and the handover guide`, () => {
+      const text = read(join(KIT, `${name}.md`))
+      assert.match(text, /rule 18/, 'missing the resume rule reference')
+      assert.match(text, /session-handover\.md/, 'missing the handover guide reference')
+    })
+  }
+
+  test('START.md resume row covers unfinished session logs', () => {
+    const start = read(join(KIT, 'START.md'))
+    assert.match(start, /\*\*Resume\.\*\*[\s\S]*docs\/\*-session\.md[\s\S]*rule 18/)
+  })
+})

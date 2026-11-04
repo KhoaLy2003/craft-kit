@@ -6,6 +6,8 @@
 
 Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/adopt-session.md`.
 
+**Resume and handover.** A session that finds `docs/adopt-session.md` with unfinished steps resumes per conventions rule 18, from the documents already written (never regenerate an approved one). Seams: after Steps 2, 3, 4 and 8 (rule 19, `kit/guides/session-handover.md`; Adopt commits only at Step 9, so keep the same checkout).
+
 ## Limitations (read before running)
 
 - **Describes what exists**, including debt. Nothing aspirational becomes a MUST without approval.
