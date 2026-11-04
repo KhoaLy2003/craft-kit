@@ -61,7 +61,7 @@ Resolved once in Phase 1 (`kit/phase-1-bootstrap.md` → "Model tiers"), which w
     - `pending`, but its artifact is on disk with `Status: approved` (the log lagged): confirm the file, set the step `complete`, and move on.
     - `pending` with no artifact: start it normally.
 
-    Say "Resuming <workflow> at Step N — <Name>" before the banner. `kit/START.md` detects this state and prints the prompt; a handover (`kit/guides/session-handover.md`) only adds saved context on top of it.
+    Say `Resuming <workflow> at Step N — <Name>` before the banner. `kit/START.md` detects this state and prints the prompt; a handover (`kit/guides/session-handover.md`) only adds saved context on top of it.
 
 19. **Session checkpoint** — after a hard gate clears, or any step the workflow names a seam, offer a handover as `kit/guides/session-handover.md` → Triggers defines (every workflow: Phase 1, 2, 3, bug fix, admin, adopt). "hand over", "new session" or "checkpoint" from the user is executed immediately.
 
