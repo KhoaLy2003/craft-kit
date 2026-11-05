@@ -63,6 +63,7 @@ const PHASE_2_STEPS = steps('phase-2', [
 ])
 
 const GUIDES: Page[] = [
+  docs('guides/what-to-say',                'guides/what-to-say',                'What to Say to the AI'),
   docs('guides/existing-projects',          'guides/existing-projects',          'Existing Projects'),
   docs('guides/phase-2-build',              'guides/phase-2-build',              'Phase 2 — Build (guide)'),
   docs('guides/phase-3-iterate',            'guides/phase-3-iterate',            'Phase 3 — Iterate (guide)'),
@@ -80,7 +81,7 @@ const GUIDES: Page[] = [
 ]
 
 const REFERENCE_SETUP: Page[] = [
-  docs('reference/required-skills', 'reference/required-skills', 'What You Need'),
+  docs('reference/required-skills', 'reference/required-skills', 'Skills & Agents'),
   docs('reference/templates',       'reference/templates',       'Templates'),
   docs('reference/glossary',        'reference/glossary',        'Glossary'),
 ]
@@ -156,7 +157,7 @@ const withChildren = (p: Page, children: Page[]) =>
   ({ ...item(p), collapsed: true, items: children.map(item) })
 
 const SIDEBAR = [
-  group('Start here', pick('getting-started', 'start')),
+  group('Start here', pick('getting-started', 'guides/what-to-say', 'start')),
   {
     text: 'Build a new product',
     items: [
@@ -273,6 +274,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Get Started', link: '/getting-started' },
+      { text: 'What to Say', link: '/guides/what-to-say' },
       {
         text: 'Workflows',
         items: pick(
@@ -287,7 +289,7 @@ export default defineConfig({
           'guides/adding-a-feature', 'guides/resuming-a-session',
         ).map(item),
       },
-      { text: 'Reference', link: '/reference/required-skills' },
+      { text: 'Reference', link: '/reference/glossary' },
       { text: `Changelog (v${KIT_VERSION})`, link: '/changelog' },
     ],
 

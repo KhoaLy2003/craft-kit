@@ -1,5 +1,7 @@
 # Orchestrator Conventions
 
+> **Agent-facing reference.** Written for the AI; you do not need to read it to use the kit. To know what to say, see [What to Say to the AI](/guides/what-to-say).
+
 > Universal rules for every orchestrating agent in every phase. Phase and step files reference this document instead of restating these rules.
 
 ---

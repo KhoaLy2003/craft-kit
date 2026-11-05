@@ -9,7 +9,7 @@ Universal rules are in `kit/orchestrator-conventions.md` (every dispatch: rules 
 
 ## Skills and agents pre-flight
 
-Run once, before Model tiers. Check each skill below is available (platform skill list, else try loading it by name). The kit falls back to the AI's general capability for a missing skill, except `design-taste-frontend` (required for visual-quality work) and `archify` (required for diagram rendering; see `kit/task-agent-rubric.md`, `kit/guides/diagrams.md`). Install notes: the site page *What You Need*.
+Run once, before Model tiers. Check each skill below is available (platform skill list, else try loading it by name). The kit falls back to the AI's general capability for a missing skill, except `design-taste-frontend` (required for visual-quality work) and `archify` (required for diagram rendering; see `kit/task-agent-rubric.md`, `kit/guides/diagrams.md`). Install notes: the site page *Skills & Agents*.
 
 | Needed in | Skills | Agent |
 |---|---|---|

@@ -1,5 +1,7 @@
 # Task → Specialist Agent Rubric
 
+> **Agent-facing reference.** Written for the AI; you do not need to read it to use the kit. To know what to say, see [What to Say to the AI](/guides/what-to-say).
+
 Used in **Phase 2, Step 2 — Plan**. Every task runs on `task`, your platform's general-purpose agent (update this file if your harness names it differently). Write a `Specialist:` line only for a task that needs a skill from the table; a task without one defaults to `task`.
 
 ---

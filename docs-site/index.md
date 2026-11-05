@@ -10,8 +10,8 @@ hero:
       text: Get Started
       link: /getting-started
     - theme: alt
-      text: Phase 1 — Bootstrap
-      link: /phases/phase-1
+      text: What to say to the AI
+      link: /guides/what-to-say
 
 features:
   - icon:
@@ -122,14 +122,14 @@ npx github:KhoaLy2003/craft-kit
 
 This creates a `kit/` folder with all the phase files and templates. Run once per project; use `--force` to update an existing install.
 
-**Step 2 — Share the relevant phase file** with your AI assistant and send a short message to begin. The AI reads the file and follows the workflow — creating documents, making decisions, and pausing to get your input at key moments. You don't run anything manually.
+**Step 2 — Send a short message to begin.** Unsure which one? Send `Start using kit/START.md.`; it picks the workflow and prints the prompt. The full list is in [What to Say to the AI](/guides/what-to-say). Otherwise name the phase file in your message (attach it if your tool cannot read files). The AI reads the file and follows the workflow — creating documents, making decisions, and pausing to get your input at key moments. You don't run anything manually.
 
 **Your role:**
 1. Copy `kit/templates/phase-1-kickoff.md` to `docs/phase-1-kickoff.md` and fill it in (setup steps for Windows, macOS, and Linux are in [Getting Started](/getting-started))
 2. Read the brief summary the AI sends at each decision point
 3. Say yes to continue — or give feedback before it moves on
 
-**Phrases to start** — share the matching phase file first, then send one of these:
+**Phrases to start** — send one of these (resuming an unfinished run? Use the first):
 
 ::::: code-group
 
@@ -147,6 +147,10 @@ Run Adopt using kit/phase-adopt.md.
 
 ```text [Build (Phase 2)]
 Run Phase 2 using kit/phase-2.md.
+```
+
+```text [Update an older project]
+Run the project upgrade using kit/phase-upgrade.md.
 ```
 
 ```text [Bug fix]
@@ -191,11 +195,15 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 
 [**Developer Onboarding**<br>Generate a one-page guide for a new developer](/phases/onboarding)
 
+[**What to Say to the AI**<br>Every prompt by situation: start, build, resume, fix, plan the next release](/guides/what-to-say)
+
+[**Adopt / Upgrade**<br>Bring an existing codebase or an older kit project up to date](/phases/adopt)
+
 [**Resuming a Session**<br>Continue any workflow in a new conversation](/guides/resuming-a-session)
 
 [**Evolving Specs**<br>How to update your feature plan after something has shipped](/guides/evolving-specs)
 
-[**What You Need**<br>Skills and agents the kit uses (one is required for visual work), and how it checks for them](/reference/required-skills)
+[**Skills & Agents**<br>Skills and agents the kit uses (one is required for visual work), and how it checks for them](/reference/required-skills)
 
 [**Glossary**<br>Must, gate, scope, domain, seam, and other terms in plain words](/reference/glossary)
 

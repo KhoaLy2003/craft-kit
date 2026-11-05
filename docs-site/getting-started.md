@@ -4,7 +4,7 @@
 
 You don't need to be a developer. Your job is to describe your idea and give feedback at the right moments. Plain terms such as *Must feature*, *gate*, or *scope* are explained in the [Glossary](/reference/glossary).
 
-New to the kit? The <a href="/craft-kit/diagrams/overview.html" target="_blank" rel="noopener">overview diagram</a> shows how the install, Phase 1, Phase 2, and the optional workflows fit together. Not sure which workflow fits your situation? After installing, say `Start using kit/START.md.` and the AI inspects your project and tells you which workflow to run and the exact prompt for it (see [Start](/start)).
+New to the kit? The <a href="/craft-kit/diagrams/overview.html" target="_blank" rel="noopener">overview diagram</a> shows how the install, Phase 1, Phase 2, and the optional workflows fit together. **Not sure what to say to the AI? After installing, send `Start using kit/START.md.`** It inspects your project and prints the workflow and the exact prompt to run, and does the same when you come back after a break. All the prompts are in [What to Say to the AI](/guides/what-to-say).
 
 ---
 
@@ -13,7 +13,7 @@ New to the kit? The <a href="/craft-kit/diagrams/overview.html" target="_blank" 
 - **Node.js 18 or later** — for the one-time install command below
 - **An AI assistant** you can have an extended conversation with, ideally one that can read files in your project folder
 - **A design-system file (`DESIGN.md`)** — Phase 1 Step 3 stops until you provide one. See [Prepare your design-system file](#prepare-your-design-system-file)
-- **Optional: skills and agents** — add-ons that improve consistency; see [Skills and agents](#skills-and-agents)
+- **Skills:** `design-taste-frontend` and `archify` are required for visual work and diagrams; the rest are optional add-ons. See [Skills and agents](#skills-and-agents)
 
 The kit tells the AI what to do; you don't need to figure out how to guide it.
 
@@ -145,7 +145,15 @@ When Phase 1 finishes, the AI gives you an exact message to start the next stage
 
 `kit/` is not committed to git. If you continue on another machine or from a fresh clone, run `npx github:KhoaLy2003/craft-kit` in the project folder again first; the `docs/` files come with the repository.
 
-Phase 2 specs, plans, builds, reviews, and tests the work. Small apps build every Must feature in one cycle; larger products go one feature per cycle. Before anything ships, you walk through the working app yourself and confirm it matches what you asked for.
+Phase 2 specs, plans, builds, reviews, and tests the work. It has two hard gates: you approve the **spec** (Step 1) before any code, and you confirm the **Manual Check** (Step 6) before anything ships. To start it, send `Run Phase 2 using kit/phase-2.md.`. Small apps build every Must feature in one cycle; larger products go one feature per cycle. Before anything ships, you walk through the working app yourself and confirm it matches what you asked for.
+
+### If you stop partway
+
+Closing the chat is fine as long as the work is on disk. In a new conversation in the same project folder, send `Start using kit/START.md.` and then the prompt it prints; the AI resumes at the first unfinished step. Details: [Resuming in a New Session](/guides/resuming-a-session).
+
+### Replying at a gate
+
+Answer the decision the AI names. With a numbered list, reply `1 yes, 2 no, 3 yes`, or `approved` to accept every default. More in [What to Say to the AI](/guides/what-to-say#at-a-gate-reply-with).
 
 ---
 
@@ -175,13 +183,13 @@ If a criterion fails, the AI tells you which one and why; you fix or replace the
 
 ## Skills and Agents
 
-Skills are instruction sets and agents are specialist workers that some AI tools can load. The kit works without them; they improve consistency. They are optional per-tool add-ons, and where they live depends on your tool.
+Skills are instruction sets and agents are specialist workers that some AI tools can load. The kit works without most of them. Two are required for the work they cover: `design-taste-frontend` and `archify`. Install them first (the installer offers to). Where skills live depends on your tool.
 
-The full list, with the step each one is used in and where to get it, is in [What You Need](/reference/required-skills#skills). Two matter most: `design-taste-frontend` (visual work) and `archify` (diagrams).
+The full list, with the step each one is used in and where to get it, is in [Skills & Agents](/reference/required-skills#skills). Two matter most: `design-taste-frontend` (visual work) and `archify` (diagrams).
 
 All work uses your tool's general-purpose agent.
 
-When Phase 1 starts, the AI checks which of these your tool has. If something is missing it tells you which step is affected and continues with the closest built-in behavior only after you agree. Details and install notes: [What You Need](/reference/required-skills).
+When Phase 1 starts, the AI checks which of these your tool has. If something is missing it tells you which step is affected and continues with the closest built-in behavior only after you agree. Details and install notes: [Skills & Agents](/reference/required-skills).
 
 ### What the installer writes
 

@@ -132,6 +132,7 @@ Banner (one line, defined only in that file):
 ```
 ## Step N — <Name> | Gate: <none|soft|hard> | Model: <tier>
 ```
+`| Model: <tier>` is appended only when `docs/MODELS.md` maps tiers to different models (conventions → Step Banner).
 
 ### Step File Structure
 

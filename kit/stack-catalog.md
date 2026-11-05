@@ -1,5 +1,7 @@
 # Stack Catalog — Canonical Baseline and Additions Reference
 
+> **Agent-facing reference.** Written for the AI; you do not need to read it. It lists the default stack and its alternatives, which you approve at the Architecture gate.
+
 Step 6 (Architecture) consults this file before any web search. **Read selectively**: Section 1 in full, then only the trigger and domain sections the roadmap matches (list the `###` headings first). Read-only during a run.
 
 **How to use this file:**

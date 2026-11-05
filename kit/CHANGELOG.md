@@ -7,6 +7,11 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed
+
+- **`orchestrator-conventions.md`**, **`task-agent-rubric.md`**, **`stack-catalog.md`**, **`session-logging.md`** — agent-facing notice (and a resume pointer in session-logging) at the top, linking the new docs page `What to Say to the AI`. Prompted by a docs-site reference audit.
+- **`phase-1-bootstrap.md`** — pre-flight points to the renamed site page *Skills & Agents*.
+
 ---
 
 ## [0.0.46] - 2026-11-04

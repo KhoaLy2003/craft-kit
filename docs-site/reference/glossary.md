@@ -68,3 +68,31 @@ A run-once workflow that brings an existing codebase into the kit by reading the
 ## Kit version record
 
 `docs/.craft-kit.json`, committed with your documents, says which kit version produced them. Workflows warn when it differs from the installed kit and never block.
+
+## Start (router)
+
+`kit/START.md`, a read-only router. Send `Start using kit/START.md.` when unsure or returning to a project; it prints the workflow to run and the exact prompt, including the prompt to resume. See [What to Say to the AI](/guides/what-to-say).
+
+## Unit
+
+What one session log section tracks: a feature in Phase 2 under scope `feature` (the project under scope `all`), a bug in Bug Fix, a release in Phase 3. Resume works per unit.
+
+## Resume
+
+Continuing a workflow whose session log already has unfinished steps. The AI starts at the first step that is not complete and never repeats finished ones. See [Resuming in a New Session](/guides/resuming-a-session).
+
+## Spec and plan
+
+The **spec** says what a feature must do (screens, behavior, acceptance criteria, "AC"); you approve it before any code. The **plan** lists the build tasks that implement it.
+
+## Backlog
+
+`docs/backlog.json`, the feature list with IDs (such as F12), priority, build order and status. `docs/roadmap.md` presents it.
+
+## E2E (end-to-end tests)
+
+Automated tests that click through the running app the way a user does. They run before your hands-on Manual Check.
+
+## Replying at a gate
+
+At a hard gate, answer the named decision. With a numbered list (`D1`–`D3`), reply `1 yes, 2 no, 3 yes`, or `approved` to accept every default. A bare "continue" counts only if the gate message already named the decision.
