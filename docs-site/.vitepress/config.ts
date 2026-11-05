@@ -65,9 +65,13 @@ const PHASE_2_STEPS = steps('phase-2', [
 const GUIDES: Page[] = [
   docs('guides/what-to-say',                'guides/what-to-say',                'What to Say to the AI'),
   docs('guides/existing-projects',          'guides/existing-projects',          'Existing Projects'),
+  docs('guides/phase-1-bootstrap',          'guides/phase-1-bootstrap',          'Phase 1 — Bootstrap (guide)'),
   docs('guides/phase-2-build',              'guides/phase-2-build',              'Phase 2 — Build (guide)'),
   docs('guides/phase-3-iterate',            'guides/phase-3-iterate',            'Phase 3 — Iterate (guide)'),
   docs('guides/adding-a-feature',           'guides/adding-a-feature',           'Adding a Single Feature'),
+  docs('guides/fixing-a-bug',               'guides/fixing-a-bug',               'Fixing a Bug'),
+  docs('guides/admin-site',                 'guides/admin-site',                 'Building an Admin Site'),
+  docs('guides/onboarding-a-developer',     'guides/onboarding-a-developer',     'Onboarding a New Developer'),
   docs('guides/resuming-a-session',         'guides/resuming-a-session',         'Resuming in a New Session'),
   kit('guides/evolving-specs',              'guides/evolving-specs',             'Evolving Specs'),
   kit('guides/session-handover',            'guides/session-handover',           'Session Handover'),
@@ -161,21 +165,23 @@ const SIDEBAR = [
   {
     text: 'Build a new product',
     items: [
+      item(byTo.get('guides/phase-1-bootstrap')!),
       withChildren(byTo.get('phases/phase-1')!, PHASE_1_STEPS),
       withChildren(byTo.get('phases/phase-2')!, PHASE_2_STEPS),
       ...pick('guides/phase-2-build', 'guides/phase-2-feature-scope').map(item),
     ],
   },
   group('Change a shipped product', pick(
-    'phases/bug-fix', 'phases/phase-3-iterate', 'guides/phase-3-iterate',
-    'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control', 'phases/admin', 'guides/admin-blueprint',
+    'guides/fixing-a-bug', 'phases/bug-fix', 'phases/phase-3-iterate', 'guides/phase-3-iterate',
+    'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control',
+    'guides/admin-site', 'phases/admin', 'guides/admin-blueprint',
   ), true),
   {
     text: 'Existing code', collapsed: true,
     items: [
       ...pick('guides/existing-projects', 'phases/adopt').map(item),
       withChildren(byTo.get('phases/upgrade')!, UPGRADE_MODULES),
-      item(byTo.get('phases/onboarding')!),
+      ...pick('guides/onboarding-a-developer', 'phases/onboarding').map(item),
     ],
   },
   group('Sessions, designs, tests', pick(
@@ -285,8 +291,9 @@ export default defineConfig({
       {
         text: 'Guides',
         items: pick(
-          'guides/existing-projects', 'guides/phase-2-build', 'guides/phase-3-iterate',
-          'guides/adding-a-feature', 'guides/resuming-a-session',
+          'guides/existing-projects', 'guides/phase-1-bootstrap', 'guides/phase-2-build', 'guides/phase-3-iterate',
+          'guides/adding-a-feature', 'guides/fixing-a-bug', 'guides/admin-site',
+          'guides/onboarding-a-developer', 'guides/resuming-a-session',
         ).map(item),
       },
       { text: 'Reference', link: '/reference/glossary' },

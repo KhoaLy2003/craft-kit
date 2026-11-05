@@ -3,8 +3,10 @@
 // Keep facts here to what the workflow file's header and step table already say.
 
 export type Summary = {
-  when: string      // when to run it
-  prompt: string    // what to send the AI
+  when?: string     // workflow: when to run it
+  prompt?: string   // workflow: what to send the AI
+  does?: string     // step: what the step does (marks a step summary)
+  check?: string[]  // step with a hard gate: what to verify before approving
   you: string[]     // what you decide or do
   produces: string  // what exists afterwards
   experimental?: boolean
@@ -15,7 +17,7 @@ const module_ = (when: string, produces: string, prompt: string, you: string[], 
   prompt, you, produces, experimental,
 })
 
-export const SUMMARIES: Record<string, Summary> = {
+const WORKFLOWS: Record<string, Summary> = {
   'start': {
     when: 'You are not sure which workflow fits, or you are coming back to a project.',
     prompt: 'Start using kit/START.md.',
@@ -109,3 +111,6 @@ export const SUMMARIES: Record<string, Summary> = {
     experimental: true,
   },
 }
+
+import { STEPS } from "./step-summaries"
+export const SUMMARIES: Record<string, Summary> = { ...WORKFLOWS, ...STEPS }
