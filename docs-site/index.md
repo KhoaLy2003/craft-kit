@@ -62,7 +62,7 @@ features:
 
 ## The Big Picture
 
-One install, one core path, and three experimental workflows you can reach once the app has shipped.
+One install and one core path (Phase 1, then Phase 2). Other workflows cover a shipped app (bug fix, iterate, admin site), an existing codebase (Adopt, Upgrade, Onboarding), and a router (Start) that tells you which one to run.
 
 <div style="margin:24px 0;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.12);">
   <iframe src="/craft-kit/diagrams/overview.html?embed=1" width="100%" style="border:none;display:block;height:60vh;min-height:480px;" title="CraftKit overview — interactive diagram"></iframe>
@@ -182,6 +182,16 @@ Everything the AI produces (documents, plans, code) lands in your **project fold
 [**Bug Fix Workflow**<br>Diagnose the cause, fix only that, verify it's gone](/phases/bug-fix)
 
 [**Existing Projects**<br>Already have a codebase? Run Adopt, or set up a few files by hand and start at Phase 2](/guides/existing-projects)
+
+[**Not sure where to start?**<br>The Start router inspects your project and prints the workflow and prompt to use](/start)
+
+[**Phase 3 — Iterate**<br>Turn new requirements into one approved release design](/guides/phase-3-iterate)
+
+[**Admin Site**<br>Add a role-based admin site to a shipped app](/phases/admin)
+
+[**Developer Onboarding**<br>Generate a one-page guide for a new developer](/phases/onboarding)
+
+[**Resuming a Session**<br>Continue any workflow in a new conversation](/guides/resuming-a-session)
 
 [**Evolving Specs**<br>How to update your feature plan after something has shipped](/guides/evolving-specs)
 

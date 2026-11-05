@@ -232,7 +232,7 @@ Every version cut in `kit/CHANGELOG.md` needs matching state in three places: (1
 
 ### Framework
 
-`node:test` with `node:assert/strict`. No external libraries. Four files: `tests/cli.test.mjs` (installer), `tests/render-backlog.test.mjs` (backlog validator and renderer, run against the real script), `tests/kit-consistency.test.mjs` (the kit's own drift lint), and `tests/lint-docs.test.mjs` (the shipped docs lint, run against fixtures in `tests/fixtures/lint-docs/`).
+`node:test` with `node:assert/strict`. No external libraries. Five files: `tests/docs-site.test.mjs` (hand-written docs-site pages: links, skill list, step counts), `tests/cli.test.mjs` (installer), `tests/render-backlog.test.mjs` (backlog validator and renderer, run against the real script), `tests/kit-consistency.test.mjs` (the kit's own drift lint), and `tests/lint-docs.test.mjs` (the shipped docs lint, run against fixtures in `tests/fixtures/lint-docs/`).
 
 ### Test Strategy
 

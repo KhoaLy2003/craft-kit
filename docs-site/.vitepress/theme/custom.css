@@ -84,3 +84,19 @@ html {
 .dark .grid-3 a:hover {
   box-shadow: 0 4px 16px rgba(232, 146, 74, 0.12);
 }
+
+/* Workflow summary (above kit instruction pages) */
+.wf-summary {
+  margin: 0 0 32px;
+  padding: 16px 20px;
+  border: 1px solid var(--vp-c-divider);
+  border-left: 4px solid var(--vp-c-brand-1);
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+}
+.wf-summary dt { margin-top: 12px; font-weight: 600; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.04em; color: var(--vp-c-text-2); }
+.wf-summary dt:first-child { margin-top: 0; }
+.wf-summary dd { margin: 4px 0 0; }
+.wf-summary ul { margin: 0; padding-left: 1.2em; }
+.wf-summary .wf-tag { margin: 0 0 8px; font-size: 0.85em; color: var(--vp-c-warning-1); }
+.wf-summary .wf-note { margin: 16px 0 0; font-size: 0.85em; color: var(--vp-c-text-2); }

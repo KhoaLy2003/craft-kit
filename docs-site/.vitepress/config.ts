@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'fs'
 import { resolve } from 'path'
 import { defineConfig } from 'vitepress'
+import { SUMMARIES } from './summaries'
 
 // The root package version is the kit release shown on every page.
 const KIT_VERSION: string = JSON.parse(readFileSync(resolve(__dirname, '../../package.json'), 'utf8')).version
@@ -118,6 +119,11 @@ function listMarkdown(dir: string, prefix: string): string[] {
   )
 }
 
+// A summary keyed to a renamed or removed page would silently vanish; fail the build instead.
+for (const key of Object.keys(SUMMARIES)) {
+  if (!PAGES.some(p => p.to === key)) throw new Error(`summaries.ts: no page "${key}"`)
+}
+
 const unmapped = listMarkdown(resolve(__dirname, '../../kit'), 'kit/').filter(
   f => !(f in rewrites) && !KIT_NOT_PUBLISHED.some(p => f.startsWith(p)),
 )
@@ -130,8 +136,53 @@ if (unmapped.length) {
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
-const phasesGroup = { text: 'Phases', items: PHASES.map(item) }
-const guidesGroup = { text: 'Guides', items: GUIDES.map(item) }
+const byTo = new Map(PAGES.map(p => [p.to, p]))
+const pick = (...tos: string[]): Page[] => tos.map(t => {
+  const p = byTo.get(t)
+  if (!p) throw new Error(`docs-site/.vitepress/config.ts: nav names unknown page "${t}"`)
+  return p
+})
+
+// One-time upgrade modules are run by Project Upgrade, not entered directly.
+const UPGRADE_MODULES = pick(
+  'phases/roadmap-migrate', 'phases/docs-backfill', 'phases/api-backfill',
+  'phases/test-accounts-backfill', 'phases/verification-backfill', 'phases/log-collapse',
+)
+
+// Task-first sidebar, shared by every page.
+const group = (text: string, items: Page[], collapsed = false) =>
+  ({ text, collapsed, items: items.map(item) })
+const withChildren = (p: Page, children: Page[]) =>
+  ({ ...item(p), collapsed: true, items: children.map(item) })
+
+const SIDEBAR = [
+  group('Start here', pick('getting-started', 'start')),
+  {
+    text: 'Build a new product',
+    items: [
+      withChildren(byTo.get('phases/phase-1')!, PHASE_1_STEPS),
+      withChildren(byTo.get('phases/phase-2')!, PHASE_2_STEPS),
+      ...pick('guides/phase-2-build', 'guides/phase-2-feature-scope').map(item),
+    ],
+  },
+  group('Change a shipped product', pick(
+    'phases/bug-fix', 'phases/phase-3-iterate', 'guides/phase-3-iterate',
+    'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control', 'phases/admin', 'guides/admin-blueprint',
+  ), true),
+  {
+    text: 'Existing code', collapsed: true,
+    items: [
+      ...pick('guides/existing-projects', 'phases/adopt').map(item),
+      withChildren(byTo.get('phases/upgrade')!, UPGRADE_MODULES),
+      item(byTo.get('phases/onboarding')!),
+    ],
+  },
+  group('Sessions, designs, tests', pick(
+    'guides/resuming-a-session', 'guides/session-handover', 'guides/design-reference',
+    'guides/design-mcp', 'guides/diagrams', 'guides/test-accounts',
+  ), true),
+  group('Reference', [...REFERENCE_SETUP, ...REFERENCE_ORCHESTRATOR], true),
+]
 
 // Pages whose H1 repeats another page's H1 get their nav label as the page title.
 const UNIQUE_TITLES = new Map(
@@ -163,6 +214,11 @@ export default defineConfig({
     'docs-site/.vitepress/**',
     'docs-site/node_modules/**',
     'testing/**',
+    // Everything outside kit/ and docs-site/ is repo plumbing, never a docs page.
+    'docs/**',
+    'tests/**',
+    '.github/**',
+    'bin/**',
     // Fill-in forms and dev-only files (resource/ is not installed either).
     ...KIT_NOT_PUBLISHED.map(p => `${p}**`),
     // Root-level markdown that is not a docs page.
@@ -176,11 +232,32 @@ export default defineConfig({
   transformPageData(pageData) {
     const title = UNIQUE_TITLES.get(pageData.relativePath)
     if (title) pageData.title = title
+    const summary = SUMMARIES[pageData.relativePath.replace(/\.md$/, '')]
+    if (summary) pageData.frontmatter.summary = summary
+    // The changelog has one H2 per release; H3 sub-headings would bury the version list.
+    if (pageData.relativePath === 'changelog.md') pageData.frontmatter.outline = [2, 2]
   },
 
   // Fix SSR build: alias Vue packages to absolute paths so Rollup can find them
   // when compiling pages from kit/ paths outside docs-site/.
   vite: {
+    plugins: [
+      {
+        // The full changelog is ~1000 lines. Publish the latest releases and link the rest.
+        name: 'craft-kit:trim-changelog',
+        enforce: 'pre',
+        transform(code: string, id: string) {
+          if (!/kit[\\/]CHANGELOG\.md$/.test(id)) return
+          const KEEP = 6 // "Unreleased" plus the five newest releases
+          const heads = [...code.matchAll(/^## \[/gm)]
+          if (heads.length <= KEEP) return
+          return (
+            code.slice(0, heads[KEEP].index).trimEnd() +
+            '\n\n---\n\nOlder releases: [full changelog on GitHub](https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md).\n'
+          )
+        },
+      },
+    ],
     publicDir: resolve(__dirname, '../public'),
     resolve: {
       alias: [
@@ -196,37 +273,37 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Get Started', link: '/getting-started' },
-      { text: 'Phases', items: phasesGroup.items },
-      { text: 'Guides', items: guidesGroup.items },
+      {
+        text: 'Workflows',
+        items: pick(
+          'start', 'phases/phase-1', 'phases/phase-2', 'phases/bug-fix', 'phases/phase-3-iterate',
+          'phases/admin', 'phases/adopt', 'phases/upgrade', 'phases/onboarding',
+        ).map(item),
+      },
+      {
+        text: 'Guides',
+        items: pick(
+          'guides/existing-projects', 'guides/phase-2-build', 'guides/phase-3-iterate',
+          'guides/adding-a-feature', 'guides/resuming-a-session',
+        ).map(item),
+      },
       { text: 'Reference', link: '/reference/required-skills' },
       { text: `Changelog (v${KIT_VERSION})`, link: '/changelog' },
     ],
 
     sidebar: {
-      '/getting-started': [
-        { text: 'Getting Started', items: [{ text: 'Overview', link: '/getting-started' }] },
-        phasesGroup,
-      ],
-      '/phases/': [
-        phasesGroup,
-        { text: 'Phase 1 — Steps', collapsed: true, items: PHASE_1_STEPS.map(item) },
-        { text: 'Phase 2 — Steps', collapsed: true, items: PHASE_2_STEPS.map(item) },
-        guidesGroup,
-      ],
-      '/guides/': [guidesGroup, phasesGroup],
-      '/reference/': [
-        { text: 'Setup', items: REFERENCE_SETUP.map(item) },
-        { text: 'Orchestrator Reference', items: REFERENCE_ORCHESTRATOR.map(item) },
-      ],
       '/changelog': [],
+      '/': SIDEBAR,
     },
+
+    outline: { level: [2, 3], label: 'On this page' },
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/KhoaLy2003/craft-kit' },
     ],
 
     footer: {
-      message: 'Released under the MIT License.',
+      message: `CraftKit v${KIT_VERSION} · Released under the MIT License.`,
       copyright: `Copyright © ${new Date().getFullYear()} Khoa Ly`,
     },
 

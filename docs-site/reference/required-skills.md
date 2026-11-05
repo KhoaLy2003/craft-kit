@@ -10,11 +10,11 @@ Some AI platforms can load *skills* (instruction sets for a specific task) and r
 
 **Pre-flight.** When Phase 1 starts, the AI checks that the items below are available, using your platform's skill and agent list. If any are missing it tells you which ones and which step each affects, and continues with the closest built-in behavior only after you agree. You can also install them first and then continue. The check is defined in `kit/phase-1-bootstrap.md` (*Skills and agents pre-flight*).
 
-**Installer.** `npx github:KhoaLy2003/craft-kit` copies `kit/`, then prints install instructions for the plugin skills and, in an interactive terminal, offers to install `design-taste-frontend`, `archify` and the four review skills. The full list of paths it writes is in [Getting Started](/getting-started#what-the-installer-writes).
+**Installer.** `npx github:KhoaLy2003/craft-kit` copies `kit/`, then prints install instructions for the plugin skills and, in an interactive terminal, offers to install `design-taste-frontend`, `archify` and the review skills. The full list of paths it writes is in [Getting Started](/getting-started#what-the-installer-writes).
 
 ---
 
-## Skills
+## Skills {#skills}
 
 | Skill | Used in |
 |---|---|

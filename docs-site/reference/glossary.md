@@ -39,7 +39,7 @@ A product area that needs a different specialist skill set, or a separate deploy
 ## Handover vs. handoff
 
 - **Handoff** is the planned move from Phase 1 to Phase 2: the AI ends Phase 1 and gives you a prompt that starts Phase 2 in a new conversation, reading the planning documents in `docs/`.
-- **Handover** is pausing in the middle of any workflow: the AI saves its state to `docs/handover.md` and you resume in a new conversation. See [Resuming in a New Session](/guides/resuming-a-session).
+- **Handover** is pausing in the middle of any workflow: the AI saves its state to `docs/handover.md` and you resume in a new conversation. If you left without a handover, the session logs let `kit/START.md` resume at the first unfinished step. See [Resuming in a New Session](/guides/resuming-a-session).
 
 ## Seam
 

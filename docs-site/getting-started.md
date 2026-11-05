@@ -177,22 +177,7 @@ If a criterion fails, the AI tells you which one and why; you fix or replace the
 
 Skills are instruction sets and agents are specialist workers that some AI tools can load. The kit works without them; they improve consistency. They are optional per-tool add-ons, and where they live depends on your tool.
 
-| Skill | Used in |
-|---|---|
-| `brainstorming` | Phase 1 Step 1; Phase 2 Step 1 |
-| `writing-plans` | Phase 2 Step 2 |
-| `subagent-driven-development` | Phase 2 Step 3 |
-| `dispatching-parallel-agents` | Phase 2 Step 3 |
-| `using-git-worktrees` | Phase 2 Step 3 |
-| `design-taste-frontend` | Phase 1 Step 3 and Phase 2 Step 3 (UI work) |
-| `archify` | Phase 1 Step 6 and Phase 2 Step 1 (diagrams rendered to `docs/diagrams/`) |
-| `requesting-code-review` | Phase 2 Step 4 |
-| `code-review-and-quality` | Phase 2 Step 4 (five-axis review) |
-| `security-and-hardening` | Phase 2 Step 4 (security axis) |
-| `performance-optimization` | Phase 2 Step 4 (performance axis) |
-| `code-simplification` | Phase 2 Step 4 (applying review fixes) |
-| `finishing-a-development-branch` | Phase 2 Step 7 |
-| `verification-before-completion` | All phases |
+The full list, with the step each one is used in and where to get it, is in [What You Need](/reference/required-skills#skills). Two matter most: `design-taste-frontend` (visual work) and `archify` (diagrams).
 
 All work uses your tool's general-purpose agent.
 
