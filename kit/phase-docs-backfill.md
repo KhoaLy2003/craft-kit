@@ -19,8 +19,6 @@ Send this to your AI, from the project root:
 Run the docs backfill using kit/phase-docs-backfill.md.
 ```
 
-What happens next: the AI lists the schema, route, and navigation files it will read, reverse-engineers entities, screens, and data flows from them, and shows you every item that is not plainly confirmed by code. You decide per item: keep, correct, drop, or mark unknown. Nothing is written until you approve.
-
 What to have ready: `docs/architecture.md`. You can answer for the whole list at once, for example "keep all undocumented, mark the rest unknown".
 
 ## Steps
@@ -85,12 +83,6 @@ Gate summary: *"The data model has [N] entities ([a] as-built, [p] planned, [u] 
 
 - [ ] `docs/data-model.md` and `docs/flows.md` exist and are `approved`
 - [ ] Every entity and screen has a Source and a label
-- [ ] The user approved at the Step 3 gate
-- [ ] No invented items
-
-## Transition
-
-Done. Return to the workflow that sent you here (`kit/phase-2.md` Docs preflight, or `kit/phase-3-iterate.md`). Later changes are maintained per feature through the Data & Flow Impact rule in `kit/steps/phase-2/p2-01-spec.md`.
 
 ## Exceptions
 

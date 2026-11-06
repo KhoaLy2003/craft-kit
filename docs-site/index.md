@@ -114,64 +114,11 @@ The Roadmap gate in Phase 1 sets the scope:
 
 ## How to Use This Kit
 
-**Step 1 — Install the kit** in your project folder:
+1. Install it in your project folder with `npx github:KhoaLy2003/craft-kit` (creates `kit/`; `--force` updates it). Setup for Windows, macOS and Linux is in [Getting Started](/getting-started).
+2. Send one short message to your AI. Unsure which? Send `Start using kit/START.md.` and it picks the workflow. Every prompt by situation is in [What to Say to the AI](/guides/what-to-say).
+3. Read the summary the AI sends at each decision point, then say yes or give feedback.
 
-```bash
-npx github:KhoaLy2003/craft-kit
-```
-
-This creates a `kit/` folder with all the phase files and templates. Run once per project; use `--force` to update an existing install.
-
-**Step 2 — Send a short message to begin.** Unsure which one? Send `Start using kit/START.md.`; it picks the workflow and prints the prompt. The full list is in [What to Say to the AI](/guides/what-to-say). Otherwise name the phase file in your message (attach it if your tool cannot read files). The AI reads the file and follows the workflow — creating documents, making decisions, and pausing to get your input at key moments. You don't run anything manually.
-
-**Your role:**
-1. Copy `kit/templates/phase-1-kickoff.md` to `docs/phase-1-kickoff.md` and fill it in (setup steps for Windows, macOS, and Linux are in [Getting Started](/getting-started))
-2. Read the brief summary the AI sends at each decision point
-3. Say yes to continue — or give feedback before it moves on
-
-**Phrases to start** — send one of these (resuming an unfinished run? Use the first):
-
-::::: code-group
-
-```text [Not sure where to start]
-Start using kit/START.md.
-```
-
-```text [New project]
-Start Phase 1 using the kickoff form I've shared.
-```
-
-```text [Existing code, no kit docs (Adopt)]
-Run Adopt using kit/phase-adopt.md.
-```
-
-```text [Build (Phase 2)]
-Run Phase 2 using kit/phase-2.md.
-```
-
-```text [Update an older project]
-Run the project upgrade using kit/phase-upgrade.md.
-```
-
-```text [Bug fix]
-Run the bug fix workflow using kit/phase-bug-fix.md. The problem is: [describe what's wrong and where it appears].
-```
-
-```text [Next release (Phase 3)]
-Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth.
-```
-
-```text [Admin site]
-Build the admin site using kit/phase-admin.md.
-```
-
-```text [Developer onboarding]
-Run developer onboarding using kit/phase-onboarding.md.
-```
-
-:::::
-
-Everything the AI produces (documents, plans, code) lands in your **project folder**. The `kit/` folder is a guide the AI reads — you never edit it; an update with `--force` overwrites it.
+Everything the AI produces lands in your project folder. Never edit `kit/`: an update with `--force` overwrites it.
 
 ---
 

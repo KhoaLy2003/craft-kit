@@ -19,10 +19,7 @@ Works with any AI coding assistant. Phase 1 maps your available models to three 
 
 - [How It Works](#how-it-works)
 - [Quick Start](#quick-start)
-- [Phase 1 — Bootstrap](#phase-1--bootstrap)
-- [Phase 2 — Build](#phase-2--build)
-- [Other Workflows](#other-workflows)
-- [Existing Projects](#existing-projects)
+- [Workflows](#workflows)
 - [Required Skills & Agents](#required-skills--agents)
 - [Kit Contents](#kit-contents)
 - [Contributing](#contributing)
@@ -75,97 +72,23 @@ Not sure where to start? Say: "Start using kit/START.md." It inspects the projec
 
 ---
 
-## Phase 1 — Bootstrap
+## Workflows
 
-Eight steps from raw idea to a running scaffold. Orchestration: `kit/phase-1-bootstrap.md`.
+Not sure where to start? Say `Start using kit/START.md.` The router inspects the project and prints the right workflow and prompt. Step-by-step pages for every workflow are in the [documentation](https://khoaly2003.github.io/craft-kit).
 
-| # | Step | Gate |
-|---|---|---|
-| 1 | Ideation — problem, user, solution hypothesis (or Requirements Intake when the kickoff supplies a BRD/PRD/tickets) | soft |
-| 2 | Market Research — competitor map, reasons it might not work (run/skip chosen in the kickoff form) | soft |
-| 3 | Prototype & Design — journey map, `DESIGN.md`, one clickable HTML prototype built with it | **hard** |
-| 4 | Roadmap — MoSCoW feature list, build order, Phase 2 scope, non-functional requirements | **hard** |
-| 5 | Full Screen Design — every screen for Must + Should features (skippable when designs exist) | **hard** |
-| 6 | Architecture — stack research, analysis, stack decision | **hard** |
-| 7 | Constitution — coding rules and Verification Commands (build, lint, test commands) for every AI agent on the project | soft |
-| 8 | Scaffold — folder structure, CI, smoke test, version record (`docs/.craft-kit.json`), one commit, Phase 2 handoff prompt | none |
+| Workflow | Entry file | Use when | Status |
+|---|---|---|---|
+| Phase 1 — Bootstrap (8 steps, once) | `phase-1-bootstrap.md` | New product: idea → researched, designed, architected scaffold in `docs/` | validated |
+| Phase 2 — Build (7 steps) | `phase-2.md` | Build features: Spec → Plan → Implement → Review → E2E → Manual Check → Ship. Scope `all` builds every Must feature in one cycle; `feature` builds one per cycle | `all` validated, `feature` experimental |
+| Adopt | `phase-adopt.md` | Existing codebase with no kit documents | experimental |
+| Project Upgrade | `phase-upgrade.md` | Documents from an older kit; runs the one-time modules it detects | experimental |
+| Phase 3 — Iterate (5 steps) | `phase-3-iterate.md` | Plan the next release: requirements → one approved design for the whole wave | experimental |
+| Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess → Fix → Verify | experimental |
+| Admin Site | `phase-admin.md` | The app needs an administrator site | experimental |
+| Developer Onboarding | `phase-onboarding.md` | A developer is joining; writes `docs/ONBOARDING.html` | experimental |
+| Session Handover | `guides/session-handover.md` | A long run continues in a fresh session | experimental |
 
-**End state:** a running "hello world" scaffold, one commit, and approved artifacts in `docs/` that Phase 2 reads.
-
----
-
-## Phase 2 — Build
-
-One track, seven steps, run at one of two scopes. The scope is decided at the Phase 1 Roadmap gate — the selection rule lives in `kit/steps/phase-1/p1-04-roadmap.md` and is recorded as `Phase 2 Scope: all | feature` in `docs/roadmap.md`.
-
-| Scope | Unit of work | Best for |
-|---|---|---|
-| `all` | Every Must feature in one cycle | Small apps: one domain, small/medium features, complete scope known upfront. Validated in five test rounds. |
-| `feature` | One feature per cycle, repeated in build order | Larger or multi-domain products. **Experimental** — not yet validated in a test round. |
-
-| # | Step | Gate |
-|---|---|---|
-| 1 | Spec — behaviour and acceptance criteria | **hard** |
-| 2 | Plan — ordered tasks, `Specialist:` per task, parallel groups | soft |
-| 3 | Implement — branch `feature/<slug>`, specialist subagents | none |
-| 4 | Review — code review, acceptance-criteria coverage, NFR compliance, Verification Commands pass | none |
-| 5 | E2E — write the E2E plan, run it, batch failures into one fix pass | soft |
-| 6 | Manual Check — you walk through the running app | **hard** |
-| 7 | Ship — commit, PR from a structured template, CI status recorded, shipped events recorded | none |
-
-Start it:
-
-```
-"Run Phase 2 using kit/phase-2.md."
-```
-
----
-
-## Other Workflows
-
-All experimental — not yet validated in a test round.
-
-| Workflow | File | Use when |
-|---|---|---|
-| Adopt | `phase-adopt.md` | An existing codebase has no kit documents: Survey → Architecture as-is (hard) → Constitution from observed conventions (hard) → Baseline roadmap (hard) → Backfill modules → DESIGN.md → MODELS.md → AGENTS.md → Closeout. Reads the code, never modifies it, labels every fact `from-code`, `from-docs` or `unknown`. |
-| Project Upgrade | `phase-upgrade.md` | Documents come from an older kit: detects what is missing and runs the one-time modules (roadmap migration, docs backfill, test accounts backfill, verification backfill). |
-| Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess (hard) → Fix → Verify. Reproduce first; the fix stays inside the assessed scope. |
-| Phase 3 — Iterate | `phase-3-iterate.md` | Discover → Prioritise (hard) → Design (hard) → Handoff → Closeout: turn customer requirements into one approved design for the whole wave, split into work packages built in parallel by Phase 2; handles scope changes after approval. Repeats for every new batch of requirements. |
-| Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). The admin app uses your project's stack and only calls `/api/admin/*` on your backend. Run after Phase 2. |
-| Developer Onboarding | `phase-onboarding.md` | A new developer is joining: Gather → Draft → Review (hard) → Write. Produces `docs/ONBOARDING.html` (one self-contained page; re-run to refresh) from your docs and code. |
-| Session Handover | `guides/session-handover.md` | A long run must continue in a fresh session. |
-
-To produce a guide for a developer joining the project (any time, new or existing project), say `"Run developer onboarding using kit/phase-onboarding.md."`. The agent drafts `docs/ONBOARDING.html` from your docs and code and asks you to review it at one hard gate; re-run the same prompt to refresh it.
-
-To plan the next release after Phase 2 has shipped, open a new session in the project root and say (the slug is a short lowercase-hyphen name you choose, e.g. a client's follow-up requests become `r2-client-requests`):
-
-```
-"Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth."
-```
-
-The agent asks about the release goal, your evidence, and any ideas, then waits for your approval before writing the new release to `docs/backlog.json`.
-
-To add one known feature to a shipped app without planning a release, use `kit/phase-2.md` directly after adding the feature to `docs/backlog.json`. See `docs-site/guides/adding-a-feature.md`.
-
----
-
-## Existing Projects
-
-Skip Phase 1. Create these files in `docs/` — Phase 2 reads them on every cycle:
-
-| File | Template | What to put in it |
-|---|---|---|
-| `docs/constitution.md` | `templates/07-constitution.md` | Coding principles for AI-generated code: naming, types, testing standard, architectural rules. Be specific. |
-| `docs/architecture.md` | `templates/06-architecture.md` | Existing stack, folder layout, key architectural decisions. |
-| `docs/DESIGN.md` | `templates/03c-design-system.md` | Design tokens and component list. `guides/design-reference.md` shows the expected format. |
-| `docs/roadmap.md` | `templates/04-roadmap.md` | Build order, deferrals, and `Phase 2 Scope`; the feature table is generated from `docs/backlog.json`. |
-| `docs/backlog.json` | `templates/backlog.json` | Features, status, and dated events (`source`, `by`, `note` may be omitted when default). Phase 2 appends events as features start and ship; `kit/scripts/render-backlog.js` renders `docs/roadmap.md`'s table and a git-ignored `docs/backlog.html`. |
-| `docs/known-issues.md` | `templates/known-issues.md` | Minor review findings and gaps that ship open; every open row is fixed or accepted at Phase 3 Closeout. |
-| `docs/data-model.md` | `templates/06b-data-model.md` | Entities, relationships, feature × entity matrix. Generate it from code with `kit/phase-upgrade.md`. |
-| `docs/flows.md` | `templates/06c-flows.md` | Screen inventory, screen flow, data flow. Generate it with `kit/phase-upgrade.md`. |
-| `docs/MODELS.md` | `templates/MODELS.md` | Tier → model map. Run the "Model tiers" section of `phase-1-bootstrap.md` to produce it. |
-
-Projects built on an older kit version (no `backlog.json`, `data-model.md` or `flows.md`): say `Run the project upgrade using kit/phase-upgrade.md.` first. Then start Phase 2 with the prompt above.
+Start Phase 2 with `"Run Phase 2 using kit/phase-2.md."` and Phase 3 with `"Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth."` (the slug is a short lowercase-hyphen name you choose). Adding one known feature to a shipped app: [Adding a Feature](https://khoaly2003.github.io/craft-kit/guides/adding-a-feature).
 
 ---
 
@@ -207,7 +130,7 @@ All work uses your platform's general-purpose agent.
 | `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
 | `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
-| `phase-upgrade.md`, `phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
+| `phase-upgrade.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
 | `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`) |
 | `session-logging.md` | Session log format |
 | `stack-catalog.md` | Stack baseline and deviation model for the Architecture step |

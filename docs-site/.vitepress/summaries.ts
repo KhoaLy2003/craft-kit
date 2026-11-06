@@ -73,11 +73,6 @@ const WORKFLOWS: Record<string, Summary> = {
     you: ['Choose which of the detected modules to run.', 'Review each module at its own gate.'],
     produces: 'The missing documents, and `docs/.craft-kit.json` recording the kit version.',
   },
-  'phases/roadmap-migrate': module_(
-    'Your roadmap is a hand-kept table and there is no `docs/backlog.json`.',
-    '`docs/backlog.json`, `docs/backlog.html` and a roadmap whose feature table is generated.',
-    'Run the roadmap migration using kit/phase-roadmap-migrate.md.',
-    ['Confirm, correct or mark unknown each feature date (git dates are only hints).', 'Approve the write.']),
   'phases/docs-backfill': module_(
     '`docs/data-model.md` or `docs/flows.md` is missing.',
     '`docs/data-model.md` and `docs/flows.md`, reverse-engineered from the code.',

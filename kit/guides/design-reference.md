@@ -1,6 +1,6 @@
 # DESIGN.md Format Reference
 
-> **Format reference only.** A real-world example (Airbnb) of the structure and depth a good `docs/DESIGN.md` has. Use it to judge a design system file or to write your own (`kit/templates/03c-design-system.md` is the skeleton). Do not copy its values into a project. The project's own file lives at `docs/DESIGN.md` and is validated in `kit/steps/phase-1/p1-03-prototype-design.md`.
+> **Human sample. Agents: do not read this file unless the user asks; `kit/templates/03c-design-system.md` is the skeleton.** Format reference only. A real-world example (Airbnb) of the structure and depth a good `docs/DESIGN.md` has. Use it to judge a design system file or to write your own (`kit/templates/03c-design-system.md` is the skeleton). Do not copy its values into a project. The project's own file lives at `docs/DESIGN.md` and is validated in `kit/steps/phase-1/p1-03-prototype-design.md`.
 
 ## Overview
 

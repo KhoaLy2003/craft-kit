@@ -64,6 +64,7 @@ function phaseTable(file) {
 const PHASES = [
   { dir: 'phase-1', prefix: 'p1', file: join(KIT, 'phase-1-bootstrap.md') },
   { dir: 'phase-2', prefix: 'p2', file: join(KIT, 'phase-2.md') },
+  { dir: 'phase-3', prefix: 'p3', file: join(KIT, 'phase-3-iterate.md') },
 ]
 
 describe('step files', () => {
@@ -129,6 +130,7 @@ describe('hard-gate list in AGENTS.md', () => {
   })
 
   for (const { dir, file } of PHASES) {
+    if (dir === 'phase-3') continue // named in the list by step name, checked below
     const label = dir === 'phase-1' ? 'Phase 1' : 'Phase 2'
     test(`${label} steps match the steps declaring "Gate: hard"`, () => {
       const declared = [...phaseTable(file)].filter(([, r]) => r.gate === 'hard').map(([n]) => n)
@@ -139,7 +141,10 @@ describe('hard-gate list in AGENTS.md', () => {
 
   for (const [workflow, file] of [['Phase 3', 'phase-3-iterate.md'], ['Bug Fix', 'phase-bug-fix.md'], ['Admin', 'phase-admin.md']]) {
     test(`${workflow}: every step headed "Gate: hard" is named in the list`, () => {
-      const hard = [...read(join(KIT, file)).matchAll(/^## Step \d+ — (.+?) \| Gate: hard/gm)].map(m => m[1])
+      const text = read(join(KIT, file))
+      const hard = workflow === 'Phase 3' // Phase 3 declares gates in its step table, not in headings
+        ? [...text.matchAll(/^\| \d+ \| (\w+) \| hard \|/gm)].map(m => m[1])
+        : [...text.matchAll(/^## Step \d+ — (.+?) \| Gate: hard/gm)].map(m => m[1])
       assert.ok(hard.length > 0, `${file}: no "Gate: hard" step headings found`)
       const missing = hard.filter(name => !line.toLowerCase().includes(name.toLowerCase().split(/[ &]/)[0]))
       assert.deepEqual(missing, [])
@@ -181,11 +186,11 @@ describe('templates', () => {
 })
 
 describe('project workflow block', () => {
-  const conventions = read(join(KIT, 'orchestrator-conventions.md'))
+  const conventions = read(join(KIT, 'guides/conventions-detail.md'))
   const block = conventions.match(/^## Project workflow block\s*\n[\s\S]*?```markdown\r?\n([\s\S]*?)```/m)
 
   test('conventions define the block, and it routes feature work to Phase 2', () => {
-    assert.ok(block, 'orchestrator-conventions.md has no "Project workflow block" section with a markdown block')
+    assert.ok(block, 'conventions-detail.md has no "Project workflow block" section with a markdown block')
     assert.match(block[1], /^## Workflow \(craft-kit\)/m)
     assert.match(block[1], /kit\/phase-2\.md/)
     assert.match(block[1], /kit\/START\.md/)
@@ -200,7 +205,7 @@ describe('project workflow block', () => {
   })
 
   test('Phase 1 and Phase 3 handoffs both say to open a new session and emit a Phase 2 prompt', () => {
-    for (const f of ['steps/phase-1/p1-08-scaffold.md', 'phase-3-iterate.md']) {
+    for (const f of ['steps/phase-1/p1-08-scaffold.md', 'steps/phase-3/p3-04-handoff.md']) {
       const text = read(join(KIT, f))
       assert.match(text, /close this session and open a new one for Phase 2/, `${f} lacks the new-session instruction`)
       assert.match(text, /Then run Phase 2 \(scope: /, `${f} lacks the Phase 2 prompt`)
@@ -228,5 +233,43 @@ describe('resume and handover coverage', () => {
   test('START.md resume row covers unfinished session logs', () => {
     const start = read(join(KIT, 'START.md'))
     assert.match(start, /\*\*Resume\.\*\*[\s\S]*docs\/\*-session\.md[\s\S]*rule 18/)
+  })
+})
+
+// Size budgets for the files an agent re-reads on every step. They exist because the kit grew back
+// 12% after the token-trim plans (docs/token-trim-plan*.md). Raising a limit is a deliberate act:
+// say why in kit/CHANGELOG.md. `node tests/measure-reading-set.mjs` shows the effect per step.
+describe('size budgets (agent reading cost)', () => {
+  const size = f => read(f).length
+  const BUDGET = {
+    conventions: 12_000,
+    phaseFile: 8_000,
+    stepFile: 10_500,
+    installedKit: 400_000,
+  }
+  // Whole-workflow files that predate the step-file layout; split before raising their limit.
+  const MONOLITHS = new Set(['phase-admin.md', 'phase-adopt.md'])
+
+  test('orchestrator-conventions.md stays within budget (re-read at every step)', () => {
+    const n = size(join(KIT, 'orchestrator-conventions.md'))
+    assert.ok(n <= BUDGET.conventions, `orchestrator-conventions.md is ${n} chars, budget ${BUDGET.conventions}; move detail into kit/guides/conventions-detail.md`)
+  })
+
+  test('phase files stay within budget', () => {
+    const over = ['phase-1-bootstrap', 'phase-2', 'phase-3-iterate', 'phase-bug-fix', 'phase-onboarding', 'phase-upgrade']
+      .map(n => [`${n}.md`, size(join(KIT, `${n}.md`))])
+      .filter(([n, c]) => !MONOLITHS.has(n) && c > BUDGET.phaseFile)
+    assert.deepEqual(over, [])
+  })
+
+  test('step files stay within budget', () => {
+    const over = stepFiles.map(f => [norm(f), size(f)]).filter(([, c]) => c > BUDGET.stepFile)
+    assert.deepEqual(over, [])
+  })
+
+  test('installed kit (excluding CHANGELOG and resource/) stays within budget', () => {
+    const total = kitMarkdown.reduce((n, f) => n + size(f), 0)
+      + walk(KIT).filter(f => !f.endsWith('.md') && !norm(f).startsWith('kit/resource/')).reduce((n, f) => n + statSync(f).size, 0)
+    assert.ok(total <= BUDGET.installedKit, `installed kit is ${total} chars, budget ${BUDGET.installedKit}`)
   })
 })

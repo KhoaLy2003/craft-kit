@@ -23,8 +23,6 @@ Send this to your AI, from the project root:
 Run the verification backfill using kit/phase-verification-backfill.md.
 ```
 
-What happens next: the AI reads the project's scripts and CI config, proposes the table, and shows you every row it could not confirm. Nothing is written until you approve.
-
 What to have ready: `docs/constitution.md`.
 
 ## Steps
@@ -68,12 +66,6 @@ Gate summary: *"[N] of 8 verification commands were found in the project's scrip
 
 - [ ] `docs/constitution.md` has `## Verification Commands` with all eight rows
 - [ ] Every command has a source file or is `unknown` / `n/a — <reason>`
-- [ ] The user approved at the Step 3 gate
-- [ ] No invented commands
-
-## Transition
-
-Done. Return to the workflow that sent you here (`kit/phase-2.md` Docs preflight, `kit/phase-upgrade.md`, or `kit/phase-adopt.md`).
 
 ## Exceptions
 

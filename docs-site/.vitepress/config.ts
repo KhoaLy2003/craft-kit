@@ -32,7 +32,6 @@ const PHASES: Page[] = [
   kit('phase-admin',            'phases/admin',          'Admin Site Workflow'),
   kit('phase-adopt',            'phases/adopt',          'Adopt — Existing Codebase'),
   kit('phase-upgrade',          'phases/upgrade',        'Project Upgrade'),
-  kit('phase-roadmap-migrate',  'phases/roadmap-migrate', 'Roadmap Migration'),
   kit('phase-docs-backfill',    'phases/docs-backfill',  'Docs Backfill'),
   kit('phase-api-backfill',     'phases/api-backfill',   'API Backfill'),
   kit('phase-test-accounts-backfill', 'phases/test-accounts-backfill', 'Test Accounts Backfill'),
@@ -62,6 +61,14 @@ const PHASE_2_STEPS = steps('phase-2', [
   ['p2-07-ship',         'Step 7 — Ship'],
 ])
 
+const PHASE_3_STEPS = steps('phase-3', [
+  ['p3-01-discover',   'Step 1 — Discover'],
+  ['p3-02-prioritise', 'Step 2 — Prioritise'],
+  ['p3-03-design',     'Step 3 — Design'],
+  ['p3-04-handoff',    'Step 4 — Handoff'],
+  ['p3-05-closeout',   'Step 5 — Closeout'],
+])
+
 const GUIDES: Page[] = [
   docs('guides/what-to-say',                'guides/what-to-say',                'What to Say to the AI'),
   docs('guides/existing-projects',          'guides/existing-projects',          'Existing Projects'),
@@ -81,6 +88,7 @@ const GUIDES: Page[] = [
   kit('guides/phase-2-feature-scope',       'guides/phase-2-feature-scope',      'Phase 2 Feature Scope'),
   kit('guides/change-control',              'guides/change-control',             'Change Control'),
   kit('guides/design-mcp',                  'guides/design-mcp',                 'Designs via MCP'),
+  kit('guides/conventions-detail',          'guides/conventions-detail',         'Conventions Detail'),
 ]
 
 const REFERENCE_SETUP: Page[] = [
@@ -103,7 +111,7 @@ const OTHER: Page[] = [
 ]
 
 const PAGES = [
-  ...PHASES, ...PHASE_1_STEPS, ...PHASE_2_STEPS, ...GUIDES,
+  ...PHASES, ...PHASE_1_STEPS, ...PHASE_2_STEPS, ...PHASE_3_STEPS, ...GUIDES,
   ...REFERENCE_SETUP, ...REFERENCE_ORCHESTRATOR, ...OTHER,
 ]
 
@@ -149,7 +157,7 @@ const pick = (...tos: string[]): Page[] => tos.map(t => {
 
 // One-time upgrade modules are run by Project Upgrade, not entered directly.
 const UPGRADE_MODULES = pick(
-  'phases/roadmap-migrate', 'phases/docs-backfill', 'phases/api-backfill',
+  'phases/docs-backfill', 'phases/api-backfill',
   'phases/test-accounts-backfill', 'phases/verification-backfill', 'phases/log-collapse',
 )
 
@@ -170,11 +178,17 @@ const SIDEBAR = [
       ...pick('guides/phase-2-build', 'guides/phase-2-feature-scope').map(item),
     ],
   },
-  group('Change a shipped product', pick(
-    'guides/fixing-a-bug', 'phases/bug-fix', 'phases/phase-3-iterate', 'guides/phase-3-iterate',
-    'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control',
-    'guides/admin-site', 'phases/admin',
-  ), true),
+  {
+    text: 'Change a shipped product', collapsed: true,
+    items: [
+      ...pick('guides/fixing-a-bug', 'phases/bug-fix').map(item),
+      withChildren(byTo.get('phases/phase-3-iterate')!, PHASE_3_STEPS),
+      ...pick(
+        'guides/phase-3-iterate', 'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control',
+        'guides/admin-site', 'phases/admin',
+      ).map(item),
+    ],
+  },
   {
     text: 'Existing code', collapsed: true,
     items: [
@@ -185,7 +199,7 @@ const SIDEBAR = [
   },
   group('Sessions, designs, tests', pick(
     'guides/resuming-a-session', 'guides/session-handover', 'guides/design-reference',
-    'guides/design-mcp', 'guides/diagrams', 'guides/test-accounts',
+    'guides/design-mcp', 'guides/diagrams', 'guides/test-accounts', 'guides/conventions-detail',
   ), true),
   group('Reference', [...REFERENCE_SETUP, ...REFERENCE_ORCHESTRATOR], true),
 ]

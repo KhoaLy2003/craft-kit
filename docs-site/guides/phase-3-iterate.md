@@ -26,7 +26,7 @@ Use Phase 3 with ideas or without them. If you have no ideas and no evidence, Ph
 
 Phase 3 needs these files in your project's `docs/` folder:
 
-- `backlog.json` and `roadmap.md` — from the shipped release. If your project predates the backlog file, run `kit/phase-roadmap-migrate.md` first.
+- `backlog.json` and `roadmap.md` — from the shipped release. If your project predates the backlog file, see [Migrating an Existing Roadmap](/guides/existing-projects#migrating-an-existing-roadmap) first.
 - `constitution.md`, `architecture.md`, `DESIGN.md`
 - Your application, shipped or at least runnable
 
@@ -56,22 +56,13 @@ Phase 3 has five steps. You are involved at each one.
 
 ### Step 1 — Discover (soft gate)
 
-The AI asks, one question at a time:
+The AI asks, one question at a time: the release goal, any requirements customers or stakeholders sent (who, what, why), other evidence ("none" is valid), and your own feature ideas.
 
-1. What is the goal of this release?
-2. Have customers or stakeholders sent requirements? Who asked, what, and why.
-3. What other evidence do you have? (user feedback, support requests, analytics, interviews, usage notes). "None" is a valid answer.
-4. Do you already have feature ideas?
+- **Requirements received:** each is recorded in the requester's words, with the problem behind it and how they will know it works.
+- **Ideas:** each needs a stated problem to become a candidate.
+- **No ideas, or only some:** the AI looks where ideas hide (deferred features, pain points in your evidence, blocking defects, weak journey steps) and scans competitors only if you approve the cost.
 
-**If you have received requirements**, the AI records each one in the requester's words, asks what problem sits behind it and how they will know it works, and notes who asked.
-
-**If you have ideas**, the AI captures each one and asks what problem it solves. An idea without a stated problem does not become a candidate.
-
-**If you have no ideas or only some**, the AI looks at the places ideas usually hide: features you deferred earlier, pain points in your evidence, known defects that block the goal, weak steps in your user journey, and (only if you approve the cost) a competitor and trend scan.
-
-Each candidate has an ID, a one-line description, the problem it solves, a source (including who requested it), a size (S / M / L), and a label: **evidence** or **hypothesis**. The AI never presents a guess as evidence. There are at most 10 candidates. A candidate that is really a bug is moved to the bug-fix workflow.
-
-The result is saved as `docs/iterations/<release-slug>/discover.md`. You review the list and add, remove, or accept candidates before the AI moves on.
+Each candidate has an ID, a problem, a source, a size (S / M / L) and a label: **evidence** or **hypothesis**. There are at most 10, and a guess is never presented as evidence. The result is `docs/iterations/<release-slug>/discover.md`; you add, remove or accept candidates before the AI moves on.
 
 ### Step 2 — Prioritise (hard gate)
 
@@ -89,10 +80,7 @@ Approve only when the scope is what you actually want to build in this release.
 
 Before anything is built, the AI designs the **whole wave** in one pass, so features that touch the same data cannot conflict later. It first estimates each feature's **design delta** (`none`, `data-only`, `flow`, `screens`) in an **Impact** table, then writes one proposal, `docs/iterations/<release-slug>/design.md`:
 
-- **Data model:** every new or changed entity, field, and relationship for all features.
-- **Flows:** new and changed flows, transitions, and hand-offs between features.
-- **Architecture, constitution, design system:** new services, dependencies, rules, tokens, components.
-- **Screens:** designs for every feature that needs them (the Phase 1 Step 5 re-entry, run as one batch).
+The design is written to `docs/iterations/<release-slug>/design.md` with one section each for the data model, flows, architecture/constitution/design system, and screens (designs for every feature that needs them, run as one batch).
 
 It also builds a **Shared Surface** table: every data point (entity or field, route, event, screen, setting) that two or more features touch, each with exactly **one owner** feature and a conflict rule where two features write it. The AI checks every pair of features and resolves contradictions before you see the design.
 
