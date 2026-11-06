@@ -32,7 +32,6 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/spec.md` | `docs/specs/<slug>/spec.md` (or `docs/specs/spec.md` for scope `all`) | Agent | Phase 2 Step 1 |
 | `templates/plan.md` | `docs/specs/<slug>/plan.md` (or `docs/specs/plan.md` for scope `all`) | Agent | Phase 2 Step 2 |
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |
-| `templates/admin-scope.md` | `docs/admin/scope.md` | Agent | Admin workflow Step 1 |
 | `templates/onboarding.html` | `docs/ONBOARDING.html` | Agent | Developer Onboarding workflow |
 | `templates/craft-kit.json` | `docs/.craft-kit.json` | Agent | Phase 1 Step 8, Adopt closeout, Project Upgrade report (records the kit version) |
 | `templates/adopt-survey.md` | `docs/adopt/survey.md` | Agent | Adopt Step 1 |

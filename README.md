@@ -131,17 +131,9 @@ All experimental — not yet validated in a test round.
 | Project Upgrade | `phase-upgrade.md` | Documents come from an older kit: detects what is missing and runs the one-time modules (roadmap migration, docs backfill, test accounts backfill, verification backfill). |
 | Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess (hard) → Fix → Verify. Reproduce first; the fix stays inside the assessed scope. |
 | Phase 3 — Iterate | `phase-3-iterate.md` | Discover → Prioritise (hard) → Design (hard) → Handoff → Closeout: turn customer requirements into one approved design for the whole wave, split into work packages built in parallel by Phase 2; handles scope changes after approval. Repeats for every new batch of requirements. |
-| Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). Fixed Next.js stack; the admin app only calls `/api/admin/*` on your backend. Run after Phase 2. |
+| Admin Site | `phase-admin.md` | The built app needs an administrator site: Scope (hard) → Spec & Plan → Implement → Review & E2E → Ship (hard). The admin app uses your project's stack and only calls `/api/admin/*` on your backend. Run after Phase 2. |
 | Developer Onboarding | `phase-onboarding.md` | A new developer is joining: Gather → Draft → Review (hard) → Write. Produces `docs/ONBOARDING.html` (one self-contained page; re-run to refresh) from your docs and code. |
 | Session Handover | `guides/session-handover.md` | A long run must continue in a fresh session. |
-
-To start the Admin Site workflow (after Phase 2 has shipped), share `kit/phase-admin.md` with your agent and say:
-
-```
-"Build the admin site using kit/phase-admin.md."
-```
-
-The agent drafts `docs/admin/scope.md` and asks you to edit it; the two hard gates (Scope, Ship) need your approval.
 
 To produce a guide for a developer joining the project (any time, new or existing project), say `"Run developer onboarding using kit/phase-onboarding.md."`. The agent drafts `docs/ONBOARDING.html` from your docs and code and asks you to review it at one hard gate; re-run the same prompt to refresh it.
 
@@ -221,8 +213,8 @@ All work uses your platform's general-purpose agent.
 | `stack-catalog.md` | Stack baseline and deviation model for the Architecture step |
 | `task-agent-rubric.md` | Task type → specialist agent routing |
 | `steps/phase-1/`, `steps/phase-2/` | Step detail files `p1-01` … `p1-08`, `p2-01` … `p2-07` |
-| `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, admin scope, adopt survey, PR description, kit version record |
-| `guides/` | `admin-blueprint.md`, `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
+| `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, adopt survey, PR description, kit version record |
+| `guides/` | `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
 | `CHANGELOG.md` | Kit change history — kept in this repo, not installed |
 
 ---

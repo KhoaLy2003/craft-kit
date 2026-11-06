@@ -12,7 +12,7 @@ Used in **Phase 2, Step 2 — Plan**. Every task runs on `task`, your platform's
 |---|---|---|
 | UI visual quality: "visual quality", "design upgrade", "polish", "premium UI" | `task + design-taste-frontend` | `design-taste-frontend` (**required** for these signals) |
 | Diagrams: entity-relationship, architecture, screen flow, data flow, sequence | `task + archify` | `archify` (**required** for the HTML render; see `kit/guides/diagrams.md`) |
-| Admin site screens under `admin/` | `task` | none; build from `kit/guides/admin-blueprint.md` §3 and §6 |
+| Admin site screens under `admin/` | `task` | none; build from the Blueprint's screen contracts in `kit/phase-admin.md` and `docs/DESIGN.md` |
 
 Everything else (frontend, backend, database, auth, infrastructure, tests, research) needs no `Specialist:` line. Review skills are loaded by Step 4 itself (`kit/steps/phase-2/p2-04-review.md`).
 

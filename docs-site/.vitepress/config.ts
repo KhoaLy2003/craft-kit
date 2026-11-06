@@ -81,7 +81,6 @@ const GUIDES: Page[] = [
   kit('guides/phase-2-feature-scope',       'guides/phase-2-feature-scope',      'Phase 2 Feature Scope'),
   kit('guides/change-control',              'guides/change-control',             'Change Control'),
   kit('guides/design-mcp',                  'guides/design-mcp',                 'Designs via MCP'),
-  kit('guides/admin-blueprint',             'guides/admin-blueprint',            'Admin Blueprint'),
 ]
 
 const REFERENCE_SETUP: Page[] = [
@@ -174,7 +173,7 @@ const SIDEBAR = [
   group('Change a shipped product', pick(
     'guides/fixing-a-bug', 'phases/bug-fix', 'phases/phase-3-iterate', 'guides/phase-3-iterate',
     'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control',
-    'guides/admin-site', 'phases/admin', 'guides/admin-blueprint',
+    'guides/admin-site', 'phases/admin',
   ), true),
   {
     text: 'Existing code', collapsed: true,

@@ -2,7 +2,7 @@
 
 Use this workflow after Phase 2 has shipped, when your product needs an administrator site: managing users and roles, an audit log, settings, and modules for things like payments or content.
 
-It is experimental: not yet validated in a test round. The stack and layout are fixed (see [Admin Blueprint](/guides/admin-blueprint)); this workflow decides **what** the admin site manages, then builds it.
+It is experimental: not yet validated in a test round. The admin site uses your project's own stack, and its screen and security rules are fixed in the [workflow file](/phases/admin); this workflow decides **what** the admin site manages, then builds it.
 
 It needs a running app with Phase 2 shipped, and no open `feature/*` branch that touches the backend areas the admin will use.
 
@@ -59,14 +59,12 @@ The data model and architecture documents are updated at the Scope approval with
 
 ## When Something Goes Wrong
 
-- **You want a different stack.** The stack is fixed by the blueprint. This workflow does not support another one.
 - **You approve zero modules.** The workflow ends as blocked, with no code changes.
-- **Another feature branch is open on the backend.** The AI stops until it is merged, so the two do not collide.
+- **Another feature branch is open on the backend.** The AI stops until it is merged.
 - **The app was built without the kit.** The AI writes minimal architecture and constitution documents from your code first, and asks you to approve each.
-- **A shell check fails.** The AI fixes the shell before building any module.
 
 ---
 
 ## Reference
 
-The files the AI follows, shown in full: [Admin Site Workflow](/phases/admin) and [Admin Blueprint](/guides/admin-blueprint).
+The file the AI follows, shown in full: [Admin Site Workflow](/phases/admin).
