@@ -172,6 +172,8 @@ spec-screen.md         — Step 5 / Phase 2 specs (per-screen)
 07-constitution.md     — Step 7
 08-scaffold-checklist.md — Step 8
 MODELS.md              — model tier map (→ docs/MODELS.md)
+spec.md                — Phase 2 Step 1 (→ docs/specs/[<feature-slug>/]spec.md)
+plan.md                — Phase 2 Step 2 (→ docs/specs/[<feature-slug>/]plan.md)
 e2e-tests.md           — Phase 2 Step 5 (→ docs/E2E-TESTS.md)
 admin-scope.md         — Admin Step 1 (→ docs/admin/scope.md)
 onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)

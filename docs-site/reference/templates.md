@@ -29,6 +29,8 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/backlog.json` | `docs/backlog.json` | Agent | Phase 1 Step 4 (feature list source; validated and rendered by `kit/scripts/render-backlog.js`) |
 | `templates/backlog.html` | `docs/backlog.html` (generated, git-ignored) | Script | Rendered view of the backlog; never edit |
 | `templates/test-accounts.json` | `.test-accounts.json` at the project root (git-ignored) | Agent | Any step that needs sign-in; see [Test Accounts](/guides/test-accounts) |
+| `templates/spec.md` | `docs/specs/<slug>/spec.md` (or `docs/specs/spec.md` for scope `all`) | Agent | Phase 2 Step 1 |
+| `templates/plan.md` | `docs/specs/<slug>/plan.md` (or `docs/specs/plan.md` for scope `all`) | Agent | Phase 2 Step 2 |
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |
 | `templates/admin-scope.md` | `docs/admin/scope.md` | Agent | Admin workflow Step 1 |
 | `templates/onboarding.html` | `docs/ONBOARDING.html` | Agent | Developer Onboarding workflow |
