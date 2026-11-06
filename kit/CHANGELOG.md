@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.47] - 2026-11-06
+
+**Summary:** Cheaper agent reading cost · Phase 3 split into step files · Admin in one file · docs-site overhaul
+
 Token-cost release: the files an agent re-reads each step are shorter, long detail moved to on-demand guides. No gate or rule changes unless noted.
 
 ### Changed
@@ -19,6 +25,8 @@ Token-cost release: the files an agent re-reads each step are shorter, long deta
 - **`design-reference.md`**: the 23.6K sample `DESIGN.md` is human-only; agents are told not to read it (also `p1-03`, `03c-design-system.md`).
 - **`orchestrator-conventions.md`**, `task-agent-rubric.md`, `stack-catalog.md`, `session-logging.md`: notice linking the docs page *What to Say to the AI*. `phase-1-bootstrap.md` points to *Skills & Agents*.
 - Repo only: `tests/measure-reading-set.mjs` reports worst case and read-once and covers Phase 3; `AGENTS.md` 19.9K → 16.0K, `README.md` 14.4K → 9.0K; docs-site gets Phase 3 step pages and summaries.
+
+---
 
 ---
 
