@@ -15,10 +15,10 @@ Run the project upgrade using kit/phase-upgrade.md.
 ## Steps
 
 0. **Version check.** Compare `docs/.craft-kit.json` with `.craft-kit-version` in the kit directory. Missing or older: say so (expected on an older project). Newer: warn that the installed kit is older than the one that produced the docs and suggest reinstalling with `--force`. Never block.
-1. **Detect.** For each row of the registry below, evaluate the *Needed when* condition against the project's `docs/` folder. Show a table: document, needed or up to date, module.
+1. **Detect.** For each row of the registry below, evaluate the *Needed when* condition against the project's `docs/` folder. Show a table: document, needed or up to date, module. A row marked *Retired* is never run automatically; show its note.
 2. **Confirm.** Ask which needed modules to run now (default all, in registry order). A skipped module stays pending; the preflight that needs it asks again.
 3. **Run.** Run each chosen module to completion before the next. The upgrade adds no gate of its own. Each module keeps its hard review gate, but the user may answer "defaults" once at the first one: every later module then applies its proposed defaults, still shows its summary, and re-opens a gate only for an item marked `unknown`, a conflict between code and docs, or a decision it cannot default.
-4. **Report.** List what was created, skipped, or left `unknown`. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` (`recorded_by: upgrade`, `kit_version` from `.craft-kit-version`, `recorded_at` today; conventions rule 10), then run `node kit/scripts/lint-docs.js` (rule 11). If the `## Workflow (craft-kit)` block in `AGENTS.md` or `CLAUDE.md` pins an install version, show the current block (`orchestrator-conventions.md` → "Project workflow block") as a diff and replace it on approval. To share the exact version: `npx github:KhoaLy2003/craft-kit#v<kit_version>`.
+4. **Report.** List what was created, skipped, or left `unknown`. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` (`recorded_by: upgrade`, `kit_version` from `.craft-kit-version`, `recorded_at` today; conventions rule 10), then run `node kit/scripts/lint-docs.js` (rule 11). If the `## Workflow (craft-kit)` block in `AGENTS.md` or `CLAUDE.md` pins an install version, show the current block (`guides/conventions-detail.md` → "Project workflow block") as a diff and replace it on approval. To share the exact version: `npx github:KhoaLy2003/craft-kit#v<kit_version>`.
 
 If nothing is needed, say so, write the version record only if missing or older, and end.
 
@@ -29,6 +29,7 @@ Every module below, whether run from here or from Adopt, follows these; module f
 - **Nothing is invented.** An item the code or files do not settle is `unknown` (or `n/a — <reason>` when the stack has no such step).
 - **Code beats docs.** A conflict between code and an existing document is reported to the user, never resolved silently.
 - **Monorepo.** Ask once per run which app or package the modules cover.
+- **Done means:** the hard review gate was approved, nothing was invented, and the module's Completion criteria hold. Then return to the workflow that sent you here (the Phase 2 Docs preflight, Phase 3, Adopt, or this upgrade).
 
 ## Registry
 
@@ -36,12 +37,14 @@ Order matters: a later module may read what an earlier one writes.
 
 | # | Document | Needed when | Module |
 |---|---|---|---|
-| 1 | `docs/backlog.json` (+ `backlog.html`) | `docs/roadmap.md` exists and `docs/backlog.json` does not | `kit/phase-roadmap-migrate.md` |
+| 1 | `docs/backlog.json` (+ `backlog.html`) | `docs/roadmap.md` exists and `docs/backlog.json` does not | Retired after 0.0.46. For a hand-kept roadmap table, install the release that still ships the module (`npx github:KhoaLy2003/craft-kit#v0.0.46` into a temporary folder), copy its phase-roadmap-migrate module file into the project's kit folder, and run it; or ask for `docs/backlog.json` to be built from `kit/templates/backlog.json` as Adopt Step 4 does |
 | 2 | `docs/data-model.md`, `docs/flows.md` | `docs/architecture.md` exists and either file is missing | `kit/phase-docs-backfill.md` |
 | 3 | `.test-accounts.json` | the project has test credentials (`.env` keys, `docs/E2E-TESTS.md` credential table, or a seed script that creates users) and `.test-accounts.json` does not exist | `kit/phase-test-accounts-backfill.md` |
 | 4 | `## Verification Commands` in `docs/constitution.md` | `docs/constitution.md` exists and lacks a `## Verification Commands` section | `kit/phase-verification-backfill.md` |
 | 5 | `docs/api.md` | `docs/architecture.md` exists, `docs/api.md` does not, and the code exposes an API (route or controller files, server actions, or an OpenAPI or GraphQL schema) | `kit/phase-api-backfill.md` |
 | 6 | `docs/phase-2-session.md`, `docs/E2E-TESTS.md` (shipped units collapsed) | `node kit/scripts/lint-docs.js` reports a `growth:` warning on `docs/phase-2-session.md` or `docs/E2E-TESTS.md` | `kit/phase-log-collapse.md` |
+
+**Retirement.** Rows 2–5 are permanent: Adopt runs them for any existing codebase. Row 1 was retired once Phase 1 had written `backlog.json` for many releases. Row 6 is new (0.0.45); review it at 0.0.50. Retire a module by deleting its file and registry row and pointing the row at the last release that ships it, as row 1 does.
 
 ## Adding a document in a future kit version
 

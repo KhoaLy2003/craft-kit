@@ -1,6 +1,6 @@
 # DESIGN.md
 
-<!-- Skeleton for a user who writes their own design system file (downloaded files from getdesign.md or freedesignmd.com usually already have this shape; see kit/guides/design-reference.md for a full example).
+<!-- Skeleton for a user who writes their own design system file (downloaded files from getdesign.md or freedesignmd.com usually already have this shape; the user may open kit/guides/design-reference.md for a full example; agents do not read it).
      The orchestrator validates the saved `docs/DESIGN.md` against the 7-criterion table in kit/steps/phase-1/p1-03-prototype-design.md (Phase B) and never edits it.
      The numbers below match that table; criterion 7 is a minimum of 300 words overall. -->
 

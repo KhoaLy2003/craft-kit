@@ -23,8 +23,6 @@ Send this to your AI, from the project root:
 Run the API backfill using kit/phase-api-backfill.md.
 ```
 
-What happens next: the AI lists the route, handler, schema, and interface files it will read, reverse-engineers endpoints and internal interfaces from them, and shows you every item that is not plainly confirmed by code. You decide per item: keep, correct, drop, or mark unknown. Nothing is written until you approve.
-
 What to have ready: `docs/architecture.md`. `docs/data-model.md` is used when present.
 
 ## Steps
@@ -87,12 +85,6 @@ Gate summary: *"The API has [N] endpoints ([a] as-built, [p] planned, [u] unknow
 
 - [ ] `docs/api.md` exists and is `approved`
 - [ ] Every endpoint and interface has a Source and a label
-- [ ] The user approved at the Step 3 gate
-- [ ] No invented items, and no validation rule that the code does not show
-
-## Transition
-
-Done. Return to the workflow that sent you here (`kit/phase-upgrade.md` or `kit/phase-adopt.md`).
 
 ## Exceptions
 

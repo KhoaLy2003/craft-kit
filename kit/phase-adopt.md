@@ -65,7 +65,7 @@ If the user replied "defaults" at Step 2, set both documents `approved` on writi
 
 ## Step 4 — Baseline roadmap (hard gate)
 
-1. Read the allowed values in `kit/scripts/render-backlog.js` (statuses, priority, size, event types, sources, `by`) and follow `kit/phase-roadmap-migrate.md` Step 4 conventions (`schema_version`, `phase2_scope`, `admin_site`, event order, `status` = latest status event).
+1. Read the allowed values in `kit/scripts/render-backlog.js` (statuses, priority, size, event types, sources, `by`) and build it from `kit/templates/backlog.json`: `schema_version: 1`; `project`; `phase2_scope` and `admin_site` from the roadmap metadata; per feature, a `created` event then the event matching its status (`started`, `shipped`, `deferred`) with the `by`, `source` and `evidence` values the script allows; `status` equals the latest status event (the validator enforces it); `release: null` for `Won't` or `deferred` features. Put the generated-table markers `<!-- BEGIN FEATURES -->` and `<!-- END FEATURES -->` in `docs/roadmap.md` and run `node kit/scripts/render-backlog.js` (exit 0).
 2. Infer features from routes, screens, and API surfaces in the survey, and cross-check them against the survey's business context (a transaction with no matching feature, or a feature no transaction explains, goes to you as a question instead of being added or dropped silently), grouped in one release `r0-baseline` (`shipped`). Each feature: short name, priority `Must`, size estimate, `depends_on` where evident, `status: shipped`, `release: "r0-baseline"`, events `created` then `shipped`. With no date evidence, an event is just `{"type": "created"}`: the validator reads an omitted `at` as undated (`source: unknown`) and defaults `by` to `orchestrator`, so write no null fields and no note. A user-supplied date gets `at`, `source: "backfill-confirmed"`, `evidence: "user-supplied"`. Use only validator values.
 3. Write `docs/roadmap.md` from `kit/templates/04-roadmap.md` (short narrative, feature table between the generated markers, `Non-functional Requirements` filled only from evidence in code or docs, else `unknown`). Set `Phase 2 Scope` per `p1-04-roadmap.md`, defaulting to `feature`.
 4. Run `node kit/scripts/render-backlog.js` (exit 0; fix from its errors).
@@ -75,7 +75,7 @@ Gate summary: *"The baseline has [N] features inferred from routes and screens, 
 
 ## Step 5 — Backfill modules
 
-Run the registry in `kit/phase-upgrade.md` (Detect, Confirm, Run): data-model and flows (`phase-docs-backfill.md`), the API document (`phase-api-backfill.md`) if the code exposes an API, test accounts (`phase-test-accounts-backfill.md`) if the project has test credentials, verification (`phase-verification-backfill.md`) only if Step 3 did not write it. Each module keeps its own gate. Skip `phase-roadmap-migrate.md`: Step 4 wrote the backlog.
+Run the registry in `kit/phase-upgrade.md` (Detect, Confirm, Run): data-model and flows (`phase-docs-backfill.md`), the API document (`phase-api-backfill.md`) if the code exposes an API, test accounts (`phase-test-accounts-backfill.md`) if the project has test credentials, verification (`phase-verification-backfill.md`) only if Step 3 did not write it. Each module keeps its own gate.
 
 ## Step 6 — DESIGN.md
 
@@ -87,7 +87,7 @@ Run the "Model tiers" section of `kit/phase-1-bootstrap.md`.
 
 ## Step 8 — AGENTS.md
 
-Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`), ending with the `## Workflow (craft-kit)` section from `kit/orchestrator-conventions.md` → "Project workflow block" (it carries no version number). Without it a fresh session does not know `kit/` exists and codes backlog features directly. If `AGENTS.md` exists, show a diff and apply only on approval; never overwrite a hand-written file. If a `CLAUDE.md` exists, propose the same section for it under the same rule.
+Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`), ending with the `## Workflow (craft-kit)` section from `kit/guides/conventions-detail.md` → "Project workflow block" (it carries no version number). Without it a fresh session does not know `kit/` exists and codes backlog features directly. If `AGENTS.md` exists, show a diff and apply only on approval; never overwrite a hand-written file. If a `CLAUDE.md` exists, propose the same section for it under the same rule.
 
 ## Step 9 — Closeout
 

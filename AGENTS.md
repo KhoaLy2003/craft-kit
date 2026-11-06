@@ -34,43 +34,17 @@ There is no harness detection; install instructions for every supported harness 
 
 ### Kit Workflow Phases
 
-```
-Phase 1 (Bootstrap, once per project) — 8 steps
-  1 Ideation → 2 Market Research → 3 Prototype & Design → 4 Roadmap →
-  5 Full Screen Design → 6 Architecture → 7 Constitution → 8 Scaffold
-  Output: docs/{idea-brief,market-notes,DESIGN,roadmap,architecture,data-model,flows,constitution,
-                scaffold-checklist,MODELS}.md (+ backlog.json, backlog.html); docs/prototype/, docs/preview/, docs/designs/
-          docs/.craft-kit.json (kit version record, committed); docs/phase-1-session.md; one Phase 1 commit; Phase 2 handoff prompt (pinned install command)
-  Step 1 has two modes (kickoff `Source Mode`): idea, or requirements (reads a BRD/PRD/tickets first; Source Trace; [Src: ...] on features)
-  Step 4 also records the Non-functional Requirements table; Step 7 maps each NFR to a MUST or a Verification Commands row
+Owned by the phase files; this is the index only (`kit/START.md` routes between them).
 
-Phase 2 (Build) — one track, 7 steps, parameterised by scope
-  1 Spec → 2 Plan → 3 Implement → 4 Review → 5 E2E → 6 Manual Check → 7 Ship
-  scope all     = every Must feature in one cycle (validated)
-  scope feature = one feature per cycle (experimental)
-  Scope is decided in p1-04-roadmap.md (the only place the selection rule lives)
-  and recorded as `Phase 2 Scope: all | feature` in docs/roadmap.md.
-  Output: docs/specs/[<feature-slug>/]{spec,plan}.md + docs/E2E-TESTS.md + code on feature/<slug>
-          docs/phase-2-session.md (one section per feature)
+| Workflow | Entry file | Steps / output |
+|---|---|---|
+| Phase 1 Bootstrap (once) | `kit/phase-1-bootstrap.md` | 8 steps → `docs/` foundation set, `docs/.craft-kit.json`, one commit, Phase 2 handoff prompt |
+| Phase 2 Build | `kit/phase-2.md` | 7 steps, scope `all` (validated) or `feature` (experimental), set in `docs/roadmap.md` |
+| Phase 3 Iterate | `kit/phase-3-iterate.md` | 5 step files in `kit/steps/phase-3/` → release in `docs/backlog.json`, one wave design |
+| Adopt / Upgrade | `kit/phase-adopt.md`, `kit/phase-upgrade.md` | existing code without kit docs / older projects; upgrade modules in `kit/phase-*-backfill.md` etc. |
+| Bug Fix, Admin, Onboarding | `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | see each file |
 
-Other workflows (all experimental — not yet validated in a test round)
-  START (read-only router, no banner, no session log): inspects the project → prints workflow + prompt   kit/START.md
-  Adopt (existing codebase without kit docs, once, 9 steps): Survey → Architecture as-is → Constitution → Baseline roadmap → Backfill modules → DESIGN.md → MODELS.md → AGENTS.md → Closeout   kit/phase-adopt.md
-              docs/adopt/survey.md, docs/adopt-session.md, chore/adopt-craftkit → PR; source code never modified
-  Project Upgrade (existing projects, once): detect missing docs → run modules   kit/phase-upgrade.md
-    modules: Roadmap Migration (kit/phase-roadmap-migrate.md), Docs Backfill (kit/phase-docs-backfill.md), API Backfill (kit/phase-api-backfill.md),
-             Test Accounts Backfill (kit/phase-test-accounts-backfill.md), Verification Backfill (kit/phase-verification-backfill.md),
-             Log Collapse (kit/phase-log-collapse.md)
-  Bug Fix: Assess → Fix → Verify         docs/specs/bugs/<bug-slug>/assess.md, fix/<bug-slug> → PR
-  Phase 3: Discover → Prioritise → Design → Handoff → Closeout
-  Admin Site: Scope → Spec & Plan → Implement → Review & E2E → Ship
-              docs/admin/scope.md, docs/specs/admin/{spec,plan}.md, feature/admin → one PR (main-backend changes + admin/)
-  Developer Onboarding (on demand, re-runnable): Gather → Draft → Review → Write & verify   kit/phase-onboarding.md
-              docs/ONBOARDING.html (self-contained page, light/dark)
-  Session Handover: guides/session-handover.md
-```
-
-Session logs, one per phase, never per project folder: `docs/phase-1-session.md`, `docs/phase-2-session.md`, `docs/bug-session.md`, `docs/phase-3-session.md`, `docs/admin-session.md`, `docs/adopt-session.md`. Updated at gates and at completion, not after every step. START.md is a read-only router and keeps no log.
+Everything except Phase 1 + Phase 2 `scope: all` is experimental. One session log per phase (`docs/phase-N-session.md`, `bug-session`, `admin-session`, `adopt-session`; format in `kit/session-logging.md`). START.md keeps none.
 
 ### Gate System
 
@@ -92,9 +66,10 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; B
 | `kit/` | Publishable workflow kit — orchestration scripts, templates, step files, guides |
 | `kit/steps/phase-1/` | `p1-01-ideation.md` … `p1-08-scaffold.md` |
 | `kit/steps/phase-2/` | `p2-01-spec.md` … `p2-07-ship.md` |
+| `kit/steps/phase-3/` | `p3-01-discover.md` … `p3-05-closeout.md` |
+| `kit/guides/` (on-demand detail) | `conventions-detail.md` and the guides listed below; read only when a rule points there |
 | `kit/templates/` | Fill-in output templates; copied to `<project>/docs/` — **never edit during a run** |
 | `kit/guides/` | `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
-| `kit/guides/admin-blueprint.md` | Admin workflow's fixed stack, behavior contracts, module registry, backend conventions |
 | `kit/resource/` | `step-specification-template.md` — dev-only, **not installed** |
 | `tests/` | `cli.test.mjs`, `render-backlog.test.mjs`, `kit-consistency.test.mjs`, `lint-docs.test.mjs`; `tests/fixtures/lint-docs/` holds the lint fixture projects |
 | `testing/` | Narrative E2E validation rounds; each under `testing/round-NN/<project-slug>/` |
@@ -132,6 +107,7 @@ Banner (one line, defined only in that file):
 ```
 ## Step N — <Name> | Gate: <none|soft|hard> | Model: <tier>
 ```
+`| Model: <tier>` is appended only when `docs/MODELS.md` maps tiers to different models (conventions → Step Banner).
 
 ### Step File Structure
 
@@ -152,29 +128,9 @@ Every generated artifact starts with:
 
 `draft` → `approved` at each phase's hard gate.
 
-### Template Numbering
+### Templates
 
-Phase 1 templates follow the Phase 1 steps (no template for Step 5 — it uses `spec-screen.md`):
-```
-phase-1-kickoff.md     — user-filled intake form
-01-idea-brief.md       — Step 1
-02-market-notes.md     — Step 2
-03a-journey-map.md     — Step 3 (→ docs/prototype/journey-map.md)
-03b-prototype-brief.md — Step 3 (→ docs/prototype/prototype-brief.md)
-03c-design-system.md   — Step 3 (→ docs/DESIGN.md)
-04-roadmap.md          — Step 4 (feature table generated from backlog.json)
-backlog.json           — Step 4 (→ docs/backlog.json; validated and rendered by kit/scripts/render-backlog.js)
-spec-screen.md         — Step 5 / Phase 2 specs (per-screen)
-06-architecture.md     — Step 6
-06b-data-model.md     — Step 6 (→ docs/data-model.md)
-06c-flows.md          — Step 6 (→ docs/flows.md)
-07-constitution.md     — Step 7
-08-scaffold-checklist.md — Step 8
-MODELS.md              — model tier map (→ docs/MODELS.md)
-e2e-tests.md           — Phase 2 Step 5 (→ docs/E2E-TESTS.md)
-admin-scope.md         — Admin Step 1 (→ docs/admin/scope.md)
-onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
-```
+`kit/templates/` files are numbered by Phase 1 step (`01-idea-brief.md` … `08-scaffold-checklist.md`; letters for sub-documents, no template for Step 5). Phase 2 uses `spec.md`, `plan.md`, `spec-screen.md`, `e2e-tests.md`. The full table is `docs-site/reference/templates.md`.
 
 ### Bug Fix Scope Discipline
 
@@ -191,14 +147,10 @@ onboarding.html        — Developer Onboarding (→ docs/ONBOARDING.html)
 | `kit/phase-1-bootstrap.md` | Phase 1 orchestration, "Model tiers" section (absorbed `setup-models.md`) |
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
 | `kit/START.md` | Entry router (read-only): Detect → workflow + prompt; reuses the Detect step of `phase-upgrade.md` |
+| `kit/phase-adopt.md`, `kit/phase-upgrade.md` and the upgrade modules (`kit/phase-*-backfill.md`, `phase-log-collapse.md`) | Existing-project workflows. Upgrade is the registry of one-time modules: add a row there for every future migration. Adopt writes `docs/adopt-session.md`. Template exceptions to the metadata-header rule: `craft-kit.json`, `pr-description.md`, `adopt-survey.md` |
 | `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows |
-| `kit/phase-adopt.md` | Adopt: brings a codebase with no kit documents into the kit (9 steps, hard gates 2, 3, 4); writes `docs/adopt-session.md` |
-| `kit/phase-upgrade.md` | Single entry point for existing projects; registry of one-time modules (`phase-roadmap-migrate.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md`) — add a row here for every future migration |
-| `kit/phase-roadmap-migrate.md`, `kit/phase-docs-backfill.md`, `kit/phase-api-backfill.md`, `kit/phase-verification-backfill.md`, `kit/phase-log-collapse.md` | Upgrade modules: roadmap table → `backlog.json`; reverse-engineered `data-model.md` / `flows.md`; reverse-engineered `api.md` (endpoints and internal interfaces); constitution `Verification Commands` table from scripts and CI config; shipped units archived out of `phase-2-session.md` / `E2E-TESTS.md` |
 | `kit/scripts/lint-docs.js` | Read-only docs lint shipped with the kit: valid `Status`, `Last updated` format, `stale` warnings, `.craft-kit.json` schema, growth warnings for the session log and E2E doc (conventions rule 11) |
-| `kit/templates/craft-kit.json`, `kit/templates/pr-description.md`, `kit/templates/adopt-survey.md` | Kit version record; Ship's PR body; Adopt survey (metadata-header rule exempts the first two) |
 | `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
-| `kit/templates/onboarding.html` | Developer-onboarding page template; filled by the agent (no render script), light/dark via `prefers-color-scheme` like `backlog.html` |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |
 | `kit/stack-catalog.md` | Architecture-step stack reference: Canonical Baseline, Deviation Triggers, Additions Catalog |
 | `kit/session-logging.md` | Session log format and conventions |
@@ -232,7 +184,7 @@ Every version cut in `kit/CHANGELOG.md` needs matching state in three places: (1
 
 ### Framework
 
-`node:test` with `node:assert/strict`. No external libraries. Four files: `tests/cli.test.mjs` (installer), `tests/render-backlog.test.mjs` (backlog validator and renderer, run against the real script), `tests/kit-consistency.test.mjs` (the kit's own drift lint), and `tests/lint-docs.test.mjs` (the shipped docs lint, run against fixtures in `tests/fixtures/lint-docs/`).
+`node:test` with `node:assert/strict`. No external libraries. Five files: `tests/docs-site.test.mjs` (hand-written docs-site pages: links, skill list, step counts), `tests/cli.test.mjs` (installer), `tests/render-backlog.test.mjs` (backlog validator and renderer, run against the real script), `tests/kit-consistency.test.mjs` (the kit's own drift lint), and `tests/lint-docs.test.mjs` (the shipped docs lint, run against fixtures in `tests/fixtures/lint-docs/`).
 
 ### Test Strategy
 

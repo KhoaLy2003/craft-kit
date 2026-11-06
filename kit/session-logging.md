@@ -3,6 +3,8 @@
 > One session log per phase. It records what ran and where the outputs are; it does not replace the artifacts it points to.
 > Update it at each gate and at completion (`kit/orchestrator-conventions.md`), not after every step.
 
+**Resuming:** to continue an unfinished log, send `Start using kit/START.md.` and then the prompt it prints (conventions rule 18).
+
 ## Log files
 
 | Phase | File | Layout |

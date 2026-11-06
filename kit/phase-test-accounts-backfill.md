@@ -20,8 +20,6 @@ Send this to your AI, from the project root:
 Run the test accounts backfill using kit/phase-test-accounts-backfill.md.
 ```
 
-What happens next: the AI locates the credentials the project already uses, shows you each candidate (passwords masked), and after your approval writes the registry and tries to sign in with every account.
-
 What to have ready: the app (and its database) able to start locally, so sign-in can be verified. If it cannot start, accounts stay `unverified`.
 
 ## Steps
@@ -62,13 +60,8 @@ Gate summary: *"[N] test accounts found ([roles]). Record them in `.test-account
 
 - [ ] `.test-accounts.json` exists, parses, is git-ignored, and is untracked
 - [ ] Every kept account has an entry with a status
-- [ ] The user approved at the Step 2 gate
 - [ ] Every `invalid` or `unverified` account was reported to the user
 - [ ] No password was written to any committed file or printed unmasked
-
-## Transition
-
-Done. Return to the workflow that sent you here (`kit/phase-upgrade.md`).
 
 ## Exceptions
 

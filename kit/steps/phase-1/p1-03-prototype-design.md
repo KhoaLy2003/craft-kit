@@ -45,7 +45,7 @@
 
 1. If `docs/DESIGN.md` exists and has content, go straight to validation. Otherwise tell the user (substitute the real project path):
 
-   > The prototype brief is ready. Before building, I need a design system file: pick one from **getdesign.md** (https://getdesign.md/design-md) or **freedesignmd.com** (https://freedesignmd.com), rename it `DESIGN.md`, and save it to `<project-root>/docs/DESIGN.md`. If those sites fail, search the web for another "DESIGN.md" source, or write your own (`templates/03c-design-system.md` is the skeleton, `kit/guides/design-reference.md` a full example). Reply "ready" when it is in place.
+   > The prototype brief is ready. Before building, I need a design system file: pick one from **getdesign.md** (https://getdesign.md/design-md) or **freedesignmd.com** (https://freedesignmd.com), rename it `DESIGN.md`, and save it to `<project-root>/docs/DESIGN.md`. If those sites fail, search the web for another "DESIGN.md" source, or write your own (`templates/03c-design-system.md` is the skeleton, `kit/guides/design-reference.md` a full example for the user; do not read it yourself). Reply "ready" when it is in place.
 
    Wait. If the file is still missing, say so and wait; never assume another path.
 2. **Validate** by reading the file (no agent):

@@ -1,8 +1,8 @@
 # Templates
 
-Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fills these templates with content and saves the result to your project's `docs/` folder.
+Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fills these templates and saves the result to your project's `docs/` folder. The only copy you make yourself is the kickoff form (see [Kickoff Template](#kickoff-template)).
 
-**Rule:** Copy templates into your project's `docs/`. Never edit files inside `kit/`.
+**Rule:** Never edit files inside `kit/`; `--force` updates overwrite them.
 
 ---
 
@@ -22,12 +22,16 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/06-architecture.md` | `docs/architecture.md` | Agent | Phase 1 Step 6 |
 | `templates/06b-data-model.md` | `docs/data-model.md` | Agent | Phase 1 Step 6 (Stage 4); Docs Backfill |
 | `templates/06c-flows.md` | `docs/flows.md` | Agent | Phase 1 Step 6 (Stage 4); Docs Backfill |
-| `templates/06d-api.md` | `docs/api.md` | Agent | API Backfill |
+| `templates/06d-api.md` | `docs/api.md` | Agent | API Backfill only; Phase 1 does not write an API document |
 | `templates/known-issues.md` | `docs/known-issues.md` | Agent | Phase 2 Review / Ship |
 | `templates/07-constitution.md` | `docs/constitution.md` | Agent | Phase 1 Step 7 |
 | `templates/08-scaffold-checklist.md` | Used as a checklist in the session | Agent | Phase 1 Step 8 |
+| `templates/backlog.json` | `docs/backlog.json` | Agent | Phase 1 Step 4 (feature list source; validated and rendered by `kit/scripts/render-backlog.js`) |
+| `templates/backlog.html` | `docs/backlog.html` (generated, git-ignored) | Script | Rendered view of the backlog; never edit |
+| `templates/test-accounts.json` | `.test-accounts.json` at the project root (git-ignored) | Agent | Any step that needs sign-in; see [Test Accounts](/guides/test-accounts) |
+| `templates/spec.md` | `docs/specs/<slug>/spec.md` (or `docs/specs/spec.md` for scope `all`) | Agent | Phase 2 Step 1 |
+| `templates/plan.md` | `docs/specs/<slug>/plan.md` (or `docs/specs/plan.md` for scope `all`) | Agent | Phase 2 Step 2 |
 | `templates/e2e-tests.md` | `docs/E2E-TESTS.md` | Agent | Phase 2 Step 5 |
-| `templates/admin-scope.md` | `docs/admin/scope.md` | Agent | Admin workflow Step 1 |
 | `templates/onboarding.html` | `docs/ONBOARDING.html` | Agent | Developer Onboarding workflow |
 | `templates/craft-kit.json` | `docs/.craft-kit.json` | Agent | Phase 1 Step 8, Adopt closeout, Project Upgrade report (records the kit version) |
 | `templates/adopt-survey.md` | `docs/adopt/survey.md` | Agent | Adopt Step 1 |

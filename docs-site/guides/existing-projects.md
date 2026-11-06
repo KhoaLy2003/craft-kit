@@ -108,15 +108,7 @@ As Phase 2 runs, the orchestrator appends `started` and then `shipped` events an
 
 ## Migrating an Existing Roadmap
 
-If your `docs/roadmap.md` already has a hand-maintained feature table, do not rewrite it by hand. Send this to your AI, from the project root:
-
-```text
-Run the roadmap migration using kit/phase-roadmap-migrate.md.
-```
-
-The AI shows you each feature with the dates it found in git history, and asks you to confirm, correct, or mark each date unknown. Long feature names are proposed as shorter titles, with the full original text kept as the description; you approve each title. Features marked Won't or deferred are kept but not built. Dates it could not confirm are shown as unverified in the HTML.
-
-Nothing is written to `docs/backlog.json` until you approve the migration. If your roadmap has a legacy `Phase 2 Track` section, the AI reports it and leaves it alone unless you ask it to rewrite the section. See the step file for the limitations.
+If your `docs/roadmap.md` has a hand-maintained feature table and no `docs/backlog.json`, the roadmap migration module was retired after kit 0.0.46. Either ask the AI to build `docs/backlog.json` from the table, following Adopt Step 4 in `kit/phase-adopt.md`, or install the last release that ships the module (`npx github:KhoaLy2003/craft-kit#v0.0.46` into a temporary folder), copy its phase-roadmap-migrate module file into your kit folder, and run it. That version shows each feature with the dates found in git history and asks you to confirm, correct or mark them unknown.
 
 ---
 
@@ -140,7 +132,7 @@ If the project lacks `docs/backlog.json`, `docs/data-model.md` or `docs/flows.md
 Run the project upgrade using kit/phase-upgrade.md.
 ```
 
-The AI checks which documents are missing and runs the matching one-time module in order: the roadmap migration (described above), the docs backfill, which reverse-engineers the data model and flows from your code (schema, migrations, routes) and asks you to keep, correct or drop every item it is not sure about before anything is written, the API backfill, which does the same for your HTTP endpoints (request and response shapes, validation, access) and the interfaces your modules expose to each other, writing `docs/api.md`, the test accounts backfill, and the verification backfill, which proposes the Verification Commands table from your scripts and CI config for you to review. Phase 2 stops at its Docs preflight and points here if a document is missing. At the end the upgrade writes `docs/.craft-kit.json`, which records the kit version the documents were produced with; Phase 2 and `kit/START.md` warn (never block) when it is older than the installed kit.
+The AI checks which documents are missing and runs the matching one-time module in order: the docs backfill, which reverse-engineers the data model and flows from your code (schema, migrations, routes) and asks you to keep, correct or drop every item it is not sure about before anything is written, the API backfill, which does the same for your HTTP endpoints (request and response shapes, validation, access) and the interfaces your modules expose to each other, writing `docs/api.md`, the test accounts backfill, and the verification backfill, which proposes the Verification Commands table from your scripts and CI config for you to review. Phase 2 stops at its Docs preflight and points here if a document is missing. At the end the upgrade writes `docs/.craft-kit.json`, which records the kit version the documents were produced with; Phase 2 and `kit/START.md` warn (never block) when it is older than the installed kit.
 
 ---
 

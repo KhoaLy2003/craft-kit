@@ -197,7 +197,7 @@ If provisioning takes more than a few lines, put the step-by-step walkthrough in
 
 ## 8. Run Log
 
-<!-- One row per run, one line of about 200 characters at most, appended and never rewritten. Evidence lives in `docs/e2e-runs/` (git-ignored); only the path is committed. Findings and incidents go to the evidence folder or `docs/known-issues.md`, not here. Ship removes a shipped feature's rows to `docs/archive/e2e/<feature-slug>.md`. -->
+<!-- One row per run, one line of about 200 characters at most, appended and never rewritten. Evidence lives in `docs/e2e-runs/` (git-ignored); only the path is committed. Findings and incidents go to the evidence folder or `docs/known-issues.md`, never here or in the session log. Ship removes a shipped feature's rows to `docs/archive/e2e/<feature-slug>.md`. -->
 
 | Date | Command | Scope | PASS | FAIL | BLOCKED | Evidence path |
 |------|---------|-------|------|------|---------|---------------|

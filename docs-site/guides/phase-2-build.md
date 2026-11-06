@@ -59,7 +59,7 @@ Features that depend on each other are built in dependency order. The build orde
 
 ## Pausing Between Sessions
 
-Long runs can hit the limits of a single conversation. The AI can save a handover file (`docs/handover.md`) at a clean point, after the plan, the implementation, or the review, and you resume from it in a new session. It offers this at those points; you do not need to ask. The same mechanism covers all of Phase 2; the one-time Phase 1 to Phase 2 handoff prompt is separate.
+Long runs can outgrow one conversation. The AI offers a session checkpoint at every clean seam: after the plan, the implementation, the review, and (with `scope: feature` and features left) after Ship. Say "hand over" to save `docs/handover.md` and continue in a new session. You can also ask at any time. If you simply close the chat, open a new one and say `Start using kit/START.md`: it finds the first unfinished step in `docs/phase-2-session.md` and gives you the prompt to resume. See [Resuming in a New Session](/guides/resuming-a-session). The one-time Phase 1 to Phase 2 handoff prompt is separate.
 
 ---
 

@@ -7,6 +7,19 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+Token-cost release: the files an agent re-reads each step are shorter, long detail moved to on-demand guides. No gate or rule changes unless noted.
+
+### Changed
+
+- **`orchestrator-conventions.md`** 14.3K → 11.5K. Rules 9, 10, 11, 18 keep their core sentence; detail and the Project workflow block moved to new **`guides/conventions-detail.md`**. Rule numbers unchanged.
+- **Phase 3** is split like Phases 1 and 2: `phase-3-iterate.md` 21.3K → 4.8K, plus **`steps/phase-3/p3-01-discover.md`** … **`p3-05-closeout.md`**.
+- **Phase 2 steps** (`p2-01-spec`, `p2-02-plan`, `p2-04-review`, `p2-05-e2e`, `p2-07-ship`) rewritten as numbered procedures and tables; output skeletons moved to new **`templates/spec.md`**, **`templates/plan.md`** and `e2e-tests.md`. The "add one known feature to a finished release" recipe moved to `guides/phase-2-feature-scope.md`. `phase-2.md` Docs preflight and Entry guard are lists.
+- **Admin** is one file: `guides/admin-blueprint.md` and `templates/admin-scope.md` are removed and folded into `phase-admin.md`. The fixed admin stack is replaced by constraints (project's own stack, no database, proxy-held httpOnly token, `/api/admin/*` only), which also resolves the conflict with `stack-catalog.md` D3. Added `GET /api/admin/dashboard`. Steps, gates and security checks unchanged.
+- **`phase-roadmap-migrate.md`** retired; `phase-upgrade.md` row 1 points to release v0.0.46, and Adopt Step 4 states the backlog conventions itself. The backfill modules and `phase-log-collapse.md` lost repeated Transition and completion text; `phase-upgrade.md` now states "Done means" once and a Retired row is never run automatically.
+- **`design-reference.md`**: the 23.6K sample `DESIGN.md` is human-only; agents are told not to read it (also `p1-03`, `03c-design-system.md`).
+- **`orchestrator-conventions.md`**, `task-agent-rubric.md`, `stack-catalog.md`, `session-logging.md`: notice linking the docs page *What to Say to the AI*. `phase-1-bootstrap.md` points to *Skills & Agents*.
+- Repo only: `tests/measure-reading-set.mjs` reports worst case and read-once and covers Phase 3; `AGENTS.md` 19.9K → 16.0K, `README.md` 14.4K → 9.0K; docs-site gets Phase 3 step pages and summaries.
+
 ---
 
 ## [0.0.46] - 2026-11-04

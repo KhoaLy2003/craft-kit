@@ -23,8 +23,6 @@ Send this to your AI, from the project root:
 Run the log collapse using kit/phase-log-collapse.md.
 ```
 
-What happens next: the AI lists the shipped units, shows the stub it would leave for each and the size before and after, and writes nothing until you approve.
-
 What to have ready: `docs/phase-2-session.md`, `docs/E2E-TESTS.md` (either may be absent), `docs/backlog.json`.
 
 ## Steps
@@ -69,13 +67,8 @@ Gate summary: *"[n] shipped units, about [x] KB in the session log and [y] KB in
 
 - [ ] Every approved shipped unit has an archive file holding its original text
 - [ ] The session log and E2E doc hold only stubs for those units
-- [ ] The user approved at the Step 3 gate
 - [ ] Nothing invented in a stub (`unknown` where the text did not settle it)
 - [ ] The lint shows no not-collapsed warning for an approved unit
-
-## Transition
-
-Done. Return to the workflow that sent you here (`kit/phase-upgrade.md`).
 
 ## Exceptions
 
