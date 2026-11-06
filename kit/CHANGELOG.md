@@ -7,8 +7,6 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
-## [0.0.47] - 2026-11-06
-
 Token-cost release: the files an agent re-reads each step are shorter, long detail moved to on-demand guides. No gate or rule changes unless noted.
 
 ### Changed
