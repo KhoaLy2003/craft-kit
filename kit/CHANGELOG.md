@@ -7,6 +7,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+## [0.0.47] - 2026-11-06
+
 ### Changed
 
 - **`orchestrator-conventions.md`**, new **`guides/conventions-detail.md`** — token trim: conventions (re-read at every step) 14.3K → 11.5K. Rule numbers unchanged. Rules 9, 10, 11 and 18 keep their core sentence; their detail and the Project workflow block text moved to the new guide, read only when a rule points there. Rule 14 and 17 shortened (the Entry guard in `phase-2.md` owns the detail).
@@ -16,9 +18,7 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`phase-adopt.md`**, **`phase-upgrade.md`**, **`steps/phase-1/p1-08-scaffold.md`** — the Project workflow block is now cited from `guides/conventions-detail.md`.
 - **`phase-roadmap-migrate.md`** (removed), **`phase-upgrade.md`**, **`phase-adopt.md`** — the roadmap-migration module is retired: Phase 1 has written `backlog.json` from the start for many releases, and Adopt only borrowed its Step 4 conventions, which Adopt now states itself. Registry row 1 points to release v0.0.46 for the rare project with a hand-kept roadmap table. A short Retirement note records which modules are permanent.
 - **`phase-docs-backfill.md`**, **`phase-api-backfill.md`**, **`phase-test-accounts-backfill.md`**, **`phase-verification-backfill.md`**, **`phase-log-collapse.md`** — removed the Transition section, the "What happens next" paragraph (the docs-site summary carries it) and the Completion criteria bullets that repeat the gate and the nothing-invented rule; `phase-upgrade.md` → Shared module rules now states "Done means" once.
-- Repo (not shipped): size-budget tests in `tests/kit-consistency.test.mjs`; `tests/measure-reading-set.mjs` now reports worst case and read-once, and covers Phase 3; `AGENTS.md` 19.9K → 16.0K, `README.md` 14.4K → 9.0K, `docs-site/index.md` 10.2K → 8.7K; docs-site gets Phase 3 step pages and summaries.
-
-### Changed
+- Repo (not shipped): `tests/measure-reading-set.mjs` now reports worst case and read-once, and covers Phase 3; `AGENTS.md` 19.9K → 16.0K, `README.md` 14.4K → 9.0K, `docs-site/index.md` 10.2K → 8.7K; docs-site gets Phase 3 step pages and summaries.
 
 - **`phase-admin.md`**, **`task-agent-rubric.md`**; removed **`guides/admin-blueprint.md`** and **`templates/admin-scope.md`** — the Admin workflow is one file: the Blueprint (stack, screen contracts, module registry, backend rules) is now a closing section of `phase-admin.md`, and Step 1 lists the `scope.md` sections inline instead of copying a template. The steps, gates, shell checkpoint, and security checks are unchanged. The fixed stack is gone: the admin app follows the project's own stack (`docs/architecture.md`, else the `stack-catalog.md` baseline), and the Blueprint states constraints instead (no database, proxy-held httpOnly token, `/api/admin/*` only). This also resolves the conflict with `stack-catalog.md` D3. Screen contracts, the registry (now a field list), and the audit record were shortened. Also dropped the "When to Use" table and Output Checklist, shortened the Step 4 checklist to one line per rule, added `GET /api/admin/dashboard`, named the env-var targets (`admin/` versus root), and clarified shell check 2.
 
