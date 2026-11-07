@@ -192,8 +192,8 @@ function printQuickStart (rel) {
   ${SYM.dot} ${bold('Bug fix')}
     Share  ${yellow(rel + '/phase-bug-fix.md')}  and describe the problem
 
-  ${SYM.dot} ${bold('Admin site')}  ${dim('(after Phase 2 has shipped)')}
-    Share  ${yellow(rel + '/phase-admin.md')}  and say:  ${yellow('"Build the admin site using ' + rel + '/phase-admin.md."')}
+  ${SYM.dot} ${bold('Admin site')}  ${dim('(an admin feature, after Phase 2 has shipped)')}
+    Share  ${yellow(rel + '/phase-maintenance.md')}  and describe the admin feature; the intake loads  ${yellow(rel + '/guides/admin-checklist.md')}
 
   ${SYM.dot} ${bold('Developer onboarding')}  ${dim('(any time)')}
     Share  ${yellow(rel + '/phase-onboarding.md')}  and say:  ${yellow('"Run developer onboarding using ' + rel + '/phase-onboarding.md."')}

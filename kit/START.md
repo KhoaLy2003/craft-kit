@@ -29,7 +29,7 @@ Send this to your AI, from the project root: `Start using <install directory>/ST
 | A shipped feature is broken | `kit/phase-bug-fix.md` |
 | Add a new feature, or unsure whether to add one or fix a bug | `kit/phase-maintenance.md` (asks feature or bug, then routes) |
 | Build or implement pending features (an ID, "the next feature", "all pending") | `kit/phase-2.md`, starting at Step 1 (Spec); never code straight from `docs/`. No `pending` features in `docs/backlog.json` (for example right after Adopt)? `kit/phase-maintenance.md` first |
-| Admin site | `kit/phase-admin.md` |
+| Admin site (`/api/admin/*`, the `admin/` app, or an audit log) | `kit/phase-maintenance.md`; its intake loads `kit/guides/admin-checklist.md` for the admin feature and its Shell |
 | A developer is joining | `kit/phase-onboarding.md` |
 
 ## Output

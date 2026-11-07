@@ -28,7 +28,7 @@ Single command, no subcommands. Execution order:
 6. If `--skip-setup`: print quick-start and exit
 7. **Non-TTY** (CI / pipe): print Superpowers install instructions + `design-taste-frontend`, `archify` and the four review-skill commands, then quick-start
 8. **TTY interactive**: same Superpowers text, then prompt for (a) `npx skills add design-taste-frontend` and `npx skills add archify` → `.agents/skills/`, (b) the four review skills (`code-review-and-quality`, `code-simplification`, `security-and-hardening`, `performance-optimization`) from addyosmani/agent-skills via `npx skills add`
-9. Print quick-start with the relative kit path, led by "Not sure where to start? Say: Start using `<rel>/START.md`" (then Phase 1 = `phase-1-bootstrap.md`, existing project = `phase-2.md`, with the Adopt path `phase-adopt.md` for a codebase with no kit documents and the upgrade path `phase-upgrade.md`, bug fix = `phase-bug-fix.md`, admin site = `phase-admin.md`, developer onboarding = `phase-onboarding.md`). The post-install missing-docs hint also names the constitution's `Verification Commands` section
+9. Print quick-start with the relative kit path, led by "Not sure where to start? Say: Start using `<rel>/START.md`" (then Phase 1 = `phase-1-bootstrap.md`, existing project = `phase-2.md`, with the Adopt path `phase-adopt.md` for a codebase with no kit documents and the upgrade path `phase-upgrade.md`, bug fix = `phase-bug-fix.md`, developer onboarding = `phase-onboarding.md`). The post-install missing-docs hint also names the constitution's `Verification Commands` section
 
 There is no harness detection; install instructions for every supported harness are always printed.
 
@@ -42,9 +42,10 @@ Owned by the phase files; this is the index only (`kit/START.md` routes between 
 | Phase 2 Build | `kit/phase-2.md` | 7 steps, scope `all` (validated) or `feature` (experimental), set in `docs/roadmap.md` |
 | Maintenance | `kit/phase-maintenance.md` | Choose feature or bug → bug: `kit/phase-bug-fix.md`; feature: intake + fit check → backlog/roadmap entry → Phase 2 `scope: feature` |
 | Adopt / Upgrade | `kit/phase-adopt.md`, `kit/phase-upgrade.md` | existing code without kit docs / older projects; upgrade modules in `kit/phase-*-backfill.md` etc. |
-| Bug Fix, Admin, Onboarding | `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | see each file |
+| Bug Fix, Onboarding | `kit/phase-bug-fix.md`, `kit/phase-onboarding.md` | see each file |
+| Admin feature | `kit/phase-maintenance.md` + `kit/guides/admin-checklist.md` | admin-tagged feature: Maintenance intake loads the checklist, then Phase 2 |
 
-Everything except Phase 1 + Phase 2 `scope: all` is experimental. One session log per phase (`docs/phase-N-session.md`, `bug-session`, `admin-session`, `adopt-session`; format in `kit/session-logging.md`). START.md keeps none.
+Everything except Phase 1 + Phase 2 `scope: all` is experimental. One session log per phase (`docs/phase-N-session.md`, `bug-session`, `adopt-session`; format in `kit/session-logging.md`). START.md keeps none.
 
 ### Gate System
 
@@ -54,7 +55,7 @@ Everything except Phase 1 + Phase 2 `scope: all` is experimental. One session lo
 | `soft` | Orchestrator presents summary; advances unless user objects |
 | `hard` | Full stop — emit a Gate Summary naming the decision, wait for explicit approval |
 
-Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Maintenance Intake only when the feature does not fit; Admin Scope, Admin Ship; Onboarding Review. Full definition: `kit/orchestrator-conventions.md` → Gates.
+Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Maintenance Intake only when the feature does not fit; Onboarding Review. Full definition: `kit/orchestrator-conventions.md` → Gates.
 
 ---
 
@@ -147,7 +148,7 @@ Every generated artifact starts with:
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
 | `kit/START.md` | Entry router (read-only): Detect → workflow + prompt; reuses the Detect step of `phase-upgrade.md` |
 | `kit/phase-adopt.md`, `kit/phase-upgrade.md` and the upgrade modules (`kit/phase-*-backfill.md`, `phase-log-collapse.md`) | Existing-project workflows. Upgrade is the registry of one-time modules: add a row there for every future migration. Adopt writes `docs/adopt-session.md`. Template exceptions to the metadata-header rule: `craft-kit.json`, `pr-description.md`, `adopt-survey.md` |
-| `kit/phase-maintenance.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows. Maintenance writes `docs/maintenance-session.md` |
+| `kit/phase-maintenance.md`, `kit/phase-bug-fix.md`, `kit/phase-onboarding.md` | Other workflows. Maintenance writes `docs/maintenance-session.md`. `kit/guides/admin-checklist.md` is the admin reference, loaded at Maintenance intake |
 | `kit/scripts/lint-docs.js` | Read-only docs lint shipped with the kit: valid `Status`, `Last updated` format, `stale` warnings, `.craft-kit.json` schema, growth warnings for the session log and E2E doc (conventions rule 11) |
 | `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |

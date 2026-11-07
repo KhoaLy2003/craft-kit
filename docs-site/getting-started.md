@@ -252,13 +252,13 @@ Maintenance needs `docs/backlog.json`, `roadmap.md`, `constitution.md` and `arch
 
 ## Building an Admin Site
 
-After Phase 2 has shipped, share `kit/phase-admin.md` with your AI and send:
+Admin features are built through the Maintenance workflow, not a separate one. After Phase 2 has shipped, send:
 
 ```text
-Build the admin site using kit/phase-admin.md.
+Run Maintenance using kit/phase-maintenance.md.
 ```
 
-Before you start, the app must have shipped through Phase 2, and no unfinished `feature/*` branch may touch the backend areas the admin site needs. The AI proposes modules in `docs/admin/scope.md` and asks you to edit it. You approve at two hard gates: Scope, and Ship. Before Ship, you sign in as each role and walk through the modules yourself. See [Admin Site Workflow](/phases/admin) for the full process. This workflow is experimental.
+Choose "add a new feature", then describe the admin feature. Maintenance intake reads `kit/guides/admin-checklist.md` as the reference. Before you start, the app must have shipped through Phase 2, and no unfinished `feature/*` branch may touch the backend areas the admin site needs. The AI proposes the modules and roles and asks you to agree them; the first admin feature is the `Admin Shell`, and modules depend on it. Before Ship, you sign in as each role and walk through the modules yourself. See [Building an Admin Site](/guides/admin-site). This is experimental.
 
 ---
 

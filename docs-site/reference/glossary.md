@@ -47,7 +47,7 @@ A natural stopping point where nothing is half-finished and all state is on disk
 
 ## Shell checkpoint
 
-A mandatory check in the Admin Site workflow, made before any module is built: the admin shell (sign-in, role-filtered menu, access rules, an example module, and audit logging) is verified against the running app so modules are built on a working base. See [Admin Site Workflow](/phases/admin).
+A mandatory check in the admin checklist (`kit/guides/admin-checklist.md`), made before any module is built: the admin shell (sign-in, role-filtered menu, access rules, an example module, and audit logging) is verified against the running app so modules are built on a working base.
 
 ## Constitution
 

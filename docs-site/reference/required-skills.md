@@ -25,18 +25,18 @@ Skills are instruction sets for a specific task. The kit uses them when they exi
 | Skill | Used in |
 |---|---|
 | `brainstorming` | Phase 1 Step 1 (ideation); Phase 2 Step 1 (spec) |
-| `writing-plans` | Phase 2 Step 2 (implementation planning); Admin planning |
-| `subagent-driven-development` | Phase 2 Step 3 (building); Admin |
-| `dispatching-parallel-agents` | Phase 2 Step 3 (parallel build tasks); Admin |
-| `using-git-worktrees` | Admin (isolated `feature/admin` branch); listed in the Phase 2 pre-flight |
+| `writing-plans` | Phase 2 Step 2 (implementation planning, including admin features) |
+| `subagent-driven-development` | Phase 2 Step 3 (building) |
+| `dispatching-parallel-agents` | Phase 2 Step 3 (parallel build tasks) |
+| `using-git-worktrees` | Listed in the Phase 2 pre-flight |
 | `design-taste-frontend` | Phase 1 Step 3 (prototype build); Phase 2 Steps 2 and 3 (UI quality for new UI work) |
 | `archify` | Phase 1 Step 6: renders the entity-relationship diagram plus a small, filtered set of others (system overview, large screen flows, core journeys; at most 6) to `docs/diagrams/*.html`. Phase 2 Step 1: re-renders those an amendment changed. Also used by Adopt. Needs Archify 3 or later for the ER type. Source: [tt-a1i/archify](https://github.com/tt-a1i/archify) |
 | `requesting-code-review` | Listed in the Phase 2 pre-flight; not named by any step file |
-| `code-review-and-quality` | Phase 2 Step 4 and Admin Step 4 (five-axis review). Source: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) |
-| `security-and-hardening` | Phase 2 Step 4 and Admin Step 4 (security axis) |
+| `code-review-and-quality` | Phase 2 Step 4 (five-axis review, including admin features). Source: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) |
+| `security-and-hardening` | Phase 2 Step 4 (security axis, including admin features) |
 | `performance-optimization` | Phase 2 Step 4 (performance axis) |
 | `code-simplification` | Phase 2 Step 4 (readability fixes without changing behavior) |
-| `finishing-a-development-branch` | Phase 2 Step 7 (shipping); Admin |
+| `finishing-a-development-branch` | Phase 2 Step 7 (shipping) |
 | `verification-before-completion` | Phase 1 pre-flight (confirming files were created correctly) |
 
 ---

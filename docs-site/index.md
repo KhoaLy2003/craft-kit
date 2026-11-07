@@ -138,7 +138,7 @@ Everything the AI produces lands in your project folder. Never edit `kit/`: an u
 
 [**Maintenance**<br>Add a feature or fix a bug on a shipped app](/phases/phase-maintenance)
 
-[**Admin Site**<br>Add a role-based admin site to a shipped app](/phases/admin)
+[**Admin Site**<br>Add a role-based admin site to a shipped app](/guides/admin-site)
 
 [**Developer Onboarding**<br>Generate a one-page guide for a new developer](/phases/onboarding)
 

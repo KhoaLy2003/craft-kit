@@ -22,6 +22,7 @@ const EVENT_BY = ['orchestrator', 'user', 'migration'];
 const STATUS_OF_EVENT = { created: 'pending', started: 'in-progress', shipped: 'shipped', deferred: 'deferred', cancelled: 'cancelled' };
 const STATUS_EVENT_TYPES = Object.keys(STATUS_OF_EVENT);
 const UNASSIGNED_RELEASE_ALLOWED = ['pending', 'deferred', 'cancelled'];
+const STARTED_STATUSES = ['in-progress', 'shipped'];
 const SHARED_TIMESTAMP_WARN = 3;
 const SHORT_NAME_MAX = 80;
 const BEGIN = '<!-- BEGIN FEATURES -->';
@@ -113,6 +114,16 @@ function validate(doc) {
     }
     if (f.release === null && !UNASSIGNED_RELEASE_ALLOWED.includes(f.status)) {
       err(`${id}: status ${f.status} requires a release (null is allowed only for: ${UNASSIGNED_RELEASE_ALLOWED.join(', ')})`);
+    }
+
+    // A feature that has started (or shipped) must not run ahead of an unshipped dependency.
+    if (STARTED_STATUSES.includes(f.status) && Array.isArray(f.depends_on)) {
+      for (const dep of f.depends_on) {
+        const d = doc.features.find((x) => x && x.id === dep);
+        if (d && d.status !== 'shipped') {
+          err(`${id}: status ${f.status} but depends on ${dep} (status ${d.status}); a dependency must be shipped first`);
+        }
+      }
     }
 
     validateEvents(f, err);
