@@ -12,7 +12,7 @@ Send this to your AI, from the project root: `Start using <install directory>/ST
 
 1. **Resume.** Either signal, read-only:
    - `docs/handover.md` exists. Name its phase, unit and step; the prompt is the Resumption Prompt at its end (`kit/guides/session-handover.md`).
-   - A `docs/*-session.md` (Phase 1, Phase 2, Phase 3, bug fix, admin, adopt) has a unit with a step that is not `complete` or `skipped`: `in progress`, `blocked`, or `pending` after a `complete` step. A unit collapsed to an `Outcome:` line is finished. If the log shows no such step but the next step's artifact is `draft`, that step is the one to resume. Name the workflow file, the unit and the first unfinished step, and print: `Resume <workflow> (<phase file>) for <unit>, per kit/orchestrator-conventions.md rule 18.`
+   - A `docs/*-session.md` (Phase 1, Phase 2, Maintenance, bug fix, admin, adopt) has a unit with a step that is not `complete` or `skipped`: `in progress`, `blocked`, or `pending` after a `complete` step. A unit collapsed to an `Outcome:` line is finished. If the log shows no such step but the next step's artifact is `draft`, that step is the one to resume. Name the workflow file, the unit and the first unfinished step, and print: `Resume <workflow> (<phase file>) for <unit>, per kit/orchestrator-conventions.md rule 18.`
 
    Several unfinished logs: list each and ask which to resume.
 2. **New product.** No source code and no `docs/`. Route to `kit/phase-1-bootstrap.md`. Ask one question: "Do you already have requirements documents (BRD, PRD, SRS, or tickets)?" If yes, tell the user to put them in `docs/requirements/` (exported to markdown, CSV or JSON for tickets) and set `Mode: requirements` and the sources in the kickoff's `Source Mode` section; the Phase 1 prompt is the same. If no, no further question.
@@ -27,9 +27,8 @@ Send this to your AI, from the project root: `Start using <install directory>/ST
 | Intent | Workflow |
 |---|---|
 | A shipped feature is broken | `kit/phase-bug-fix.md` |
-| One known feature to add | Direct path in `kit/phase-3-iterate.md`, then `kit/phase-2.md` with `scope: feature` |
-| New requirements, decide what to build | `kit/phase-3-iterate.md` |
-| Build or implement pending features (an ID, "the next feature", "all pending") | `kit/phase-2.md`, starting at Step 1 (Spec); never code straight from `docs/`. No `pending` features in `docs/backlog.json` (for example right after Adopt)? `kit/phase-3-iterate.md` first |
+| Add a new feature, or unsure whether to add one or fix a bug | `kit/phase-maintenance.md` (asks feature or bug, then routes) |
+| Build or implement pending features (an ID, "the next feature", "all pending") | `kit/phase-2.md`, starting at Step 1 (Spec); never code straight from `docs/`. No `pending` features in `docs/backlog.json` (for example right after Adopt)? `kit/phase-maintenance.md` first |
 | Admin site | `kit/phase-admin.md` |
 | A developer is joining | `kit/phase-onboarding.md` |
 

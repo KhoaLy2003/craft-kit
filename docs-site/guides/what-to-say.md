@@ -25,7 +25,7 @@ Send the prompt as written in a conversation that can read your project folder. 
 | **Resume** an unfinished run | `Start using kit/START.md.` and send the prompt it prints | Continues at the first unfinished step; finished steps are not repeated |
 | Pause on purpose | `hand over` | Saves `docs/handover.md`; see [Resuming in a New Session](/guides/resuming-a-session) |
 | Fix a bug | `Run the bug fix workflow using kit/phase-bug-fix.md. The problem is: [what is wrong and where].` | Assess (you approve), fix, verify |
-| Plan the next release | `Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth.` | Experimental |
+| Add a feature or fix a bug | `Run Maintenance using kit/phase-maintenance.md.` | Experimental. Asks which one, checks a feature against your design, registers it, then gives the Phase 2 prompt |
 | Bring in existing code | `Run Adopt using kit/phase-adopt.md.` | Writes the planning documents from your code |
 | Update an older project | `Run the project upgrade using kit/phase-upgrade.md.` | Runs only the modules you need |
 | Add an admin site | `Build the admin site using kit/phase-admin.md.` | Experimental |

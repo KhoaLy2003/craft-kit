@@ -116,12 +116,12 @@
       "width": 160
     },
     {
-      "id": "p3",
+      "id": "maint",
       "lane": "after",
       "col": 3,
       "type": "cloud",
-      "label": "Phase 3 — Iterate",
-      "sublabel": "requirements to design",
+      "label": "Maintenance",
+      "sublabel": "add a feature or fix a bug",
       "width": 150
     },
     {
@@ -197,18 +197,26 @@
     {
       "id": "e6",
       "from": "shipped",
-      "to": "p3",
-      "label": "new requirements",
+      "to": "maint",
+      "label": "new work",
       "variant": "dashed",
       "role": "branch"
     },
     {
       "id": "e7",
-      "from": "p3",
+      "from": "maint",
       "to": "p2",
-      "label": "parallel features",
+      "label": "feature to build",
       "variant": "dashed",
       "role": "return"
+    },
+    {
+      "id": "e12",
+      "from": "maint",
+      "to": "bugfix",
+      "label": "bug",
+      "variant": "dashed",
+      "role": "branch"
     },
     {
       "id": "e8",
@@ -253,7 +261,7 @@
         "Closed the chat? Say \"Start using kit/START.md\": it finds the first unfinished step in the session log and prints the resume prompt",
         "Session checkpoints are offered at every clean seam; each workflow keeps its own session log in docs/",
         "Developer Onboarding writes docs/ONBOARDING.html for a new joiner, any time",
-        "Phase 3 designs a whole release once; Phase 2 then builds its features, in parallel where independent"
+        "Maintenance asks: add a feature or fix a bug? A feature is checked against the design and registered, then Phase 2 builds it; a bug goes to Bug Fix"
       ]
     }
   ]

@@ -24,7 +24,7 @@ Skills are instruction sets for a specific task. The kit uses them when they exi
 
 | Skill | Used in |
 |---|---|
-| `brainstorming` | Phase 1 Step 1 (ideation); Phase 2 Step 1 (spec); Phase 3 Discover |
+| `brainstorming` | Phase 1 Step 1 (ideation); Phase 2 Step 1 (spec) |
 | `writing-plans` | Phase 2 Step 2 (implementation planning); Admin planning |
 | `subagent-driven-development` | Phase 2 Step 3 (building); Admin |
 | `dispatching-parallel-agents` | Phase 2 Step 3 (parallel build tasks); Admin |

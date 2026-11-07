@@ -1,7 +1,7 @@
 # Phase 1 — Bootstrap
 
 > **Run once per project, from raw idea to a ready-to-code codebase.**
-> Existing project: start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). No kit documents at all: `kit/phase-adopt.md` first. Missing documents this version expects (`docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`): `kit/phase-upgrade.md` first. What to build next on a shipped product: `kit/phase-3-iterate.md`. Unsure: `kit/START.md` routes you.
+> Existing project: start at `kit/phase-2.md` (run only "Model tiers" below if `docs/MODELS.md` is missing). No kit documents at all: `kit/phase-adopt.md` first. Missing documents this version expects (`docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`): `kit/phase-upgrade.md` first. Add a feature or fix a bug on a shipped product: `kit/phase-maintenance.md`. Unsure: `kit/START.md` routes you.
 
 Universal rules are in `kit/orchestrator-conventions.md` (every dispatch: rules 1–3). Session log: `docs/phase-1-session.md` (`kit/session-logging.md`).
 

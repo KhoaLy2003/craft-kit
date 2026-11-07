@@ -75,7 +75,7 @@ A run-once workflow that brings an existing codebase into the kit by reading the
 
 ## Unit
 
-What one session log section tracks: a feature in Phase 2 under scope `feature` (the project under scope `all`), a bug in Bug Fix, a release in Phase 3. Resume works per unit.
+What one session log section tracks: a feature in Phase 2 under scope `feature` (the project under scope `all`), a bug in Bug Fix, a feature slug in Maintenance. Resume works per unit.
 
 ## Resume
 

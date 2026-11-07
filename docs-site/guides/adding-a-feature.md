@@ -1,8 +1,8 @@
 # Adding a Single Feature
 
-Use this when your app has already shipped and you know exactly one feature you want to add, and it fits the existing architecture. You skip the planning phase and go straight to building it with Phase 2, one feature per cycle.
+Use this when your app has already shipped and you want to add one feature. The usual way is the [Maintenance workflow](/phases/phase-maintenance): it asks whether you want to add a feature or fix a bug, checks the feature against your architecture, constitution, data model, flows and designs, registers it, and prints the Phase 2 prompt. This guide shows what Maintenance writes, so you can do the same steps by hand when you prefer. Building is always Phase 2, one feature per cycle.
 
-If you are not sure what to build, or the feature may change the architecture, a service, the data model, auth, or the designs, use [Phase 3 — Iterate](/guides/phase-3-iterate) instead. Phase 3 checks those things before anything is built. This path does not.
+The manual path below does no fit check. If the feature may change the architecture, a service, the data model, auth, or the designs, use Maintenance instead.
 
 > **Status: experimental.** Phase 2 `feature` scope has not been validated in a test round.
 
@@ -98,7 +98,7 @@ Phase 2 picks the next `pending` feature in build order, which is your new featu
 
 The AI never merges to `main`.
 
-When the cycle ends, the feature and its release are `shipped`. If no `pending` features are left, the AI offers the next step: [Phase 3](/guides/phase-3-iterate) to decide what to build next, or the bug-fix workflow for a reported problem.
+When the cycle ends, the feature and its release are `shipped`. If no `pending` features are left, the AI offers the next step: [Maintenance](/phases/phase-maintenance) to add another feature, or the bug-fix workflow for a reported problem.
 
 ---
 
@@ -106,4 +106,4 @@ When the cycle ends, the feature and its release are `shipped`. If no `pending` 
 
 - The feature needs a new service, a database change, or a new login or permission model.
 - The feature needs screens that have no designs. Phase 2 can build from `DESIGN.md` alone, but the result is less precise. Run the screen-design step first if layout matters.
-- You have several ideas and need help choosing. Use Phase 3.
+- You are not sure whether the feature fits the existing design. Use Maintenance; it runs the fit check.

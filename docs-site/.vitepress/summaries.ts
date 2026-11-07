@@ -46,11 +46,11 @@ const WORKFLOWS: Record<string, Summary> = {
     produces: '`docs/specs/bugs/<bug-slug>/assess.md`, and a fix on `fix/<bug-slug>` opened as a pull request.',
     experimental: true,
   },
-  'phases/phase-3-iterate': {
-    when: 'A release has shipped and new requirements or ideas arrived. Runs again for every batch.',
-    prompt: 'Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth.',
-    you: ['Choose a release slug, for example `r2-growth`.', 'Approve the scope (Prioritise) and the single design for the release (Design).'],
-    produces: 'A new release in `docs/backlog.json` and `docs/roadmap.md`, `docs/iterations/<slug>/`, and a Phase 2 prompt per feature that can start now. No feature code.',
+  'phases/phase-maintenance': {
+    when: 'A release has shipped and you want to add a feature or fix a bug. Runs again for every feature.',
+    prompt: 'Run Maintenance using kit/phase-maintenance.md.',
+    you: ['Say whether you want to add a feature or fix a bug.', 'For a feature: describe it and approve the intake and fit check.'],
+    produces: 'For a feature: `docs/specs/<feature-slug>/intake.md`, a release and feature in `docs/backlog.json` and `docs/roadmap.md`, and the Phase 2 prompt. For a bug: the bug-fix prompt. No feature code.',
     experimental: true,
   },
   'phases/admin': {

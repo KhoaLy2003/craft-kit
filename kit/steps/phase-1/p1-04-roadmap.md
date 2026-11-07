@@ -43,7 +43,7 @@
 ## Artifact Rules
 
 - Write `docs/backlog.json` from `templates/backlog.json`. Fill `project` (the project name), `phase2_scope`, and `admin_site` with the same values as the roadmap metadata; the validator rejects empty values. Whenever `Phase 2 Scope` or `Admin Site` changes later, update both places. Then run `node kit/scripts/render-backlog.js`; never hand-edit the generated table or `docs/backlog.html`. Write the rest of `docs/roadmap.md` from the template.
-- Keep the template's metadata block and section numbering (Phase 3 appends release blocks and reads Section 4).
+- Keep the template's metadata block and section numbering (Maintenance appends release blocks and reads Section 4).
 - Set `Status: approved` when the human confirms scope and Phase 2 Scope at the gate.
 
 ## Completion Criteria

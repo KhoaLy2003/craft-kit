@@ -98,10 +98,8 @@ Read the PR's check status **once** (needs a CI row in Verification Commands or 
 
 **Otherwise** (`scope: all`, or none left). The release is complete; offer:
 
-- `kit/phase-3-iterate.md` Step 5 (Closeout), if the release came from a Phase 3 round
-- a new Phase 3 round, when new requirements arrive (works with or without ideas)
+- `kit/phase-maintenance.md`, to add the next feature or report a bug
 - `kit/phase-bug-fix.md`, for a reported defect
-- one known feature to add: follow "Adding one feature to a finished release" in `kit/guides/phase-2-feature-scope.md`
 
 ## References
 

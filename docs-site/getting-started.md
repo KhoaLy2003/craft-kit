@@ -230,23 +230,23 @@ You decide at the Assess step: the AI confirms the root cause and the files it w
 
 ---
 
-## Planning the Next Release
+## Adding a Feature or Fixing a Bug
 
-After a release has shipped, open a **new AI session in your project root** (the kit must be installed there, so `kit/phase-3-iterate.md` exists) and send:
-
-```text
-Run Phase 3 using kit/phase-3-iterate.md. The release slug is [your-release-slug].
-```
-
-The **release slug** is a short name you choose for this release: lowercase letters, digits and hyphens, no spaces. The AI uses it for the folder `docs/iterations/<slug>/` and the `## Release <slug>` block in `docs/roadmap.md`. A `r<number>-<theme>` pattern works well, for example `r2-growth`.
-
-**Real-world example.** Your online bookstore shipped its first release. The client now asks for a wishlist, order-tracking emails, and a CSV export of orders. Collect those requests (emails, tickets, notes) and send:
+After a release has shipped, open a **new AI session in your project root** (the kit must be installed there, so `kit/phase-maintenance.md` exists) and send:
 
 ```text
-Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-client-requests.
+Run Maintenance using kit/phase-maintenance.md.
 ```
 
-The AI asks what the release should achieve, whether customers have sent requirements (paste them, with who asked), what other evidence you have, and whether you have ideas; each candidate is kept only if it states the problem it solves. You approve the scope, then approve one design for the whole release (data model, flows, architecture, screens, and the data features share). Nothing is written to the backlog or your design documents before those approvals. At the end, the AI splits the release into work packages and gives you a Phase 2 prompt per feature that can start now, so features can be built in parallel. Phase 3 needs `docs/backlog.json`, `roadmap.md`, `constitution.md`, `architecture.md`, `data-model.md`, `flows.md` and `DESIGN.md`; if `backlog.json` is missing, run `kit/phase-roadmap-migrate.md` first. See [Phase 3 — Iterate](/guides/phase-3-iterate) for each step and gate.
+The AI asks one question: do you want to add a new feature or fix an existing bug? There is no release slug to choose.
+
+**Real-world example.** Your online bookstore shipped its first release. The client now asks for a CSV export of orders. Send the prompt above and answer *add a new feature*.
+
+- **Fix a bug.** The AI prints the prompt for the [Bug Fix Workflow](/phases/bug-fix) and stops. Send it in a new session.
+- **Add a feature.** The AI asks what the feature does, who it is for, and what it touches. It then checks the feature against `architecture.md`, `constitution.md`, `data-model.md`, `flows.md` and `DESIGN.md` and tells you whether it fits, extends the data model or flows, or does not fit (in which case you decide whether to amend the document, cut the feature down, or drop it). You approve the intake; the AI writes `docs/specs/<feature-slug>/intake.md`.
+- **Register.** The AI adds the feature and its release to `docs/backlog.json` and `docs/roadmap.md`, sets the Phase 2 scope to `feature`, and prints the Phase 2 prompt: `Run Phase 2 using kit/phase-2.md for feature <F-id>.` Send it in a new session to build the feature. Maintenance never writes feature code.
+
+Maintenance needs `docs/backlog.json`, `roadmap.md`, `constitution.md` and `architecture.md`; if `backlog.json` is missing, run `kit/phase-roadmap-migrate.md` first. See [Maintenance Workflow](/phases/phase-maintenance) for the full process. This workflow is experimental.
 
 ---
 

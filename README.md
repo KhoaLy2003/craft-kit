@@ -82,13 +82,13 @@ Not sure where to start? Say `Start using kit/START.md.` The router inspects the
 | Phase 2 — Build (7 steps) | `phase-2.md` | Build features: Spec → Plan → Implement → Review → E2E → Manual Check → Ship. Scope `all` builds every Must feature in one cycle; `feature` builds one per cycle | `all` validated, `feature` experimental |
 | Adopt | `phase-adopt.md` | Existing codebase with no kit documents | experimental |
 | Project Upgrade | `phase-upgrade.md` | Documents from an older kit; runs the one-time modules it detects | experimental |
-| Phase 3 — Iterate (5 steps) | `phase-3-iterate.md` | Plan the next release: requirements → one approved design for the whole wave | experimental |
+| Maintenance (3 steps) | `phase-maintenance.md` | Add a feature (intake, fit check, backlog entry, then Phase 2) or fix a bug (routes to Bug Fix) | experimental |
 | Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess → Fix → Verify | experimental |
 | Admin Site | `phase-admin.md` | The app needs an administrator site | experimental |
 | Developer Onboarding | `phase-onboarding.md` | A developer is joining; writes `docs/ONBOARDING.html` | experimental |
 | Session Handover | `guides/session-handover.md` | A long run continues in a fresh session | experimental |
 
-Start Phase 2 with `"Run Phase 2 using kit/phase-2.md."` and Phase 3 with `"Run Phase 3 using kit/phase-3-iterate.md. The release slug is r2-growth."` (the slug is a short lowercase-hyphen name you choose). Adding one known feature to a shipped app: [Adding a Feature](https://khoaly2003.github.io/craft-kit/guides/adding-a-feature).
+Start Phase 2 with `"Run Phase 2 using kit/phase-2.md."` and Maintenance with `"Run Maintenance using kit/phase-maintenance.md."` It asks whether you want to add a feature or fix a bug. Adding one known feature to a shipped app: [Adding a Feature](https://khoaly2003.github.io/craft-kit/guides/adding-a-feature).
 
 ---
 
@@ -129,7 +129,7 @@ All work uses your platform's general-purpose agent.
 | `orchestrator-conventions.md` | Universal rules: step banner, PROJECT_ROOT, write verification, gates, Definition of Done, version record, docs lint |
 | `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
-| `phase-3-iterate.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
+| `phase-maintenance.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
 | `phase-upgrade.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
 | `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`) |
 | `session-logging.md` | Session log format |

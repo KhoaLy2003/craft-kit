@@ -64,7 +64,6 @@ function phaseTable(file) {
 const PHASES = [
   { dir: 'phase-1', prefix: 'p1', file: join(KIT, 'phase-1-bootstrap.md') },
   { dir: 'phase-2', prefix: 'p2', file: join(KIT, 'phase-2.md') },
-  { dir: 'phase-3', prefix: 'p3', file: join(KIT, 'phase-3-iterate.md') },
 ]
 
 describe('step files', () => {
@@ -130,7 +129,6 @@ describe('hard-gate list in AGENTS.md', () => {
   })
 
   for (const { dir, file } of PHASES) {
-    if (dir === 'phase-3') continue // named in the list by step name, checked below
     const label = dir === 'phase-1' ? 'Phase 1' : 'Phase 2'
     test(`${label} steps match the steps declaring "Gate: hard"`, () => {
       const declared = [...phaseTable(file)].filter(([, r]) => r.gate === 'hard').map(([n]) => n)
@@ -139,12 +137,10 @@ describe('hard-gate list in AGENTS.md', () => {
     })
   }
 
-  for (const [workflow, file] of [['Phase 3', 'phase-3-iterate.md'], ['Bug Fix', 'phase-bug-fix.md'], ['Admin', 'phase-admin.md']]) {
+  for (const [workflow, file] of [['Bug Fix', 'phase-bug-fix.md'], ['Admin', 'phase-admin.md']]) {
     test(`${workflow}: every step headed "Gate: hard" is named in the list`, () => {
       const text = read(join(KIT, file))
-      const hard = workflow === 'Phase 3' // Phase 3 declares gates in its step table, not in headings
-        ? [...text.matchAll(/^\| \d+ \| (\w+) \| hard \|/gm)].map(m => m[1])
-        : [...text.matchAll(/^## Step \d+ — (.+?) \| Gate: hard/gm)].map(m => m[1])
+      const hard = [...text.matchAll(/^## Step \d+ — (.+?) \| Gate: hard/gm)].map(m => m[1])
       assert.ok(hard.length > 0, `${file}: no "Gate: hard" step headings found`)
       const missing = hard.filter(name => !line.toLowerCase().includes(name.toLowerCase().split(/[ &]/)[0]))
       assert.deepEqual(missing, [])
@@ -204,8 +200,8 @@ describe('project workflow block', () => {
     }
   })
 
-  test('Phase 1 and Phase 3 handoffs both say to open a new session and emit a Phase 2 prompt', () => {
-    for (const f of ['steps/phase-1/p1-08-scaffold.md', 'steps/phase-3/p3-04-handoff.md']) {
+  test('Phase 1 handoff says to open a new session and emit a Phase 2 prompt', () => {
+    for (const f of ['steps/phase-1/p1-08-scaffold.md']) {
       const text = read(join(KIT, f))
       assert.match(text, /close this session and open a new one for Phase 2/, `${f} lacks the new-session instruction`)
       assert.match(text, /Then run Phase 2 \(scope: /, `${f} lacks the Phase 2 prompt`)
@@ -214,7 +210,7 @@ describe('project workflow block', () => {
 })
 
 describe('resume and handover coverage', () => {
-  const WORKFLOWS = ['phase-1-bootstrap', 'phase-2', 'phase-3-iterate', 'phase-bug-fix', 'phase-admin', 'phase-adopt']
+  const WORKFLOWS = ['phase-1-bootstrap', 'phase-2', 'phase-maintenance', 'phase-bug-fix', 'phase-admin', 'phase-adopt']
   const conventions = read(join(KIT, 'orchestrator-conventions.md'))
 
   test('conventions define resume on re-entry (rule 18) and session checkpoint (rule 19)', () => {

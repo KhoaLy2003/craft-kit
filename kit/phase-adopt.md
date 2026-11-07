@@ -101,7 +101,7 @@ Create the root `AGENTS.md` from the survey and constitution (Commands from `## 
 2. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` with `recorded_by: adopt`, `kit_version` from `.craft-kit-version` in the installed kit directory, and `recorded_at` today (conventions rule 10).
 3. Finalise `docs/adopt-session.md`.
 4. Branch `chore/adopt-craftkit`, one commit (`adopt: add craft-kit documents`), then push and open a PR per the pre-flight, local-only fallback, and never-merge rules in `p2-07-ship.md`.
-5. Emit the handoff prompt, brackets filled, for Phase 2, Phase 3 (`kit/phase-3-iterate.md`), or Bug Fix (`kit/phase-bug-fix.md`) as chosen, with the pinned install command `npx github:KhoaLy2003/craft-kit#v<kit_version>` (from `docs/.craft-kit.json`; `kit/` is git-ignored).
+5. Emit the handoff prompt, brackets filled, for Phase 2, Maintenance (`kit/phase-maintenance.md`), or Bug Fix (`kit/phase-bug-fix.md`) as chosen, with the pinned install command `npx github:KhoaLy2003/craft-kit#v<kit_version>` (from `docs/.craft-kit.json`; `kit/` is git-ignored).
 
 ## Completion criteria
 
@@ -114,7 +114,7 @@ Create the root `AGENTS.md` from the survey and constitution (Commands from `## 
 
 ## Transition
 
-Done. Close this session; run the next workflow in a new one with the handoff prompt. Every `r0-baseline` feature is `shipped`, so Phase 2 has nothing to build until features are `pending`: choose `kit/phase-3-iterate.md` (decide what to build; its Direct path covers one known feature) to add them, then `kit/phase-2.md` to build them, or `kit/phase-bug-fix.md` for a defect. Unsure: `kit/START.md`. Offer `kit/phase-onboarding.md` when a developer is about to join.
+Done. Close this session; run the next workflow in a new one with the handoff prompt. Every `r0-baseline` feature is `shipped`, so Phase 2 has nothing to build until features are `pending`: choose `kit/phase-maintenance.md` (add a feature or fix a bug; it registers the feature) to add them, then `kit/phase-2.md` to build them, or `kit/phase-bug-fix.md` for a defect. Unsure: `kit/START.md`. Offer `kit/phase-onboarding.md` when a developer is about to join.
 
 ## Exceptions
 

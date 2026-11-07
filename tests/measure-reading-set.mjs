@@ -10,7 +10,6 @@ const base = ['orchestrator-conventions.md', 'session-logging.md']
 const phases = [
   ['Phase 1', 'phase-1-bootstrap.md', 'steps/phase-1'],
   ['Phase 2', 'phase-2.md', 'steps/phase-2'],
-  ['Phase 3', 'phase-3-iterate.md', 'steps/phase-3'],
 ]
 
 let grand = 0
@@ -34,8 +33,8 @@ ${name}: single file ${size(phaseFile)}`); grandOnce += size(phaseFile) + base.m
   const onceTotal = [...once].map(size).reduce((a, b) => a + b)
   console.log(`  ${'worst case (sum of steps)'.padEnd(34)} ${String(total).padStart(6)}`)
   console.log(`  ${'read once'.padEnd(34)} ${String(onceTotal).padStart(6)}`)
-  if (name !== 'Phase 3') grand += total
+  grand += total
   grandOnce += onceTotal
 }
 console.log(`\nTOTAL worst case, Phase 1 + 2: ${grand}`)
-console.log(`TOTAL read once, Phase 1 + 2 + 3 (shared files counted per phase): ${grandOnce}`)
+console.log(`TOTAL read once, Phase 1 + 2 (shared files counted per phase): ${grandOnce}`)

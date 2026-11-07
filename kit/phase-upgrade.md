@@ -29,7 +29,7 @@ Every module below, whether run from here or from Adopt, follows these; module f
 - **Nothing is invented.** An item the code or files do not settle is `unknown` (or `n/a — <reason>` when the stack has no such step).
 - **Code beats docs.** A conflict between code and an existing document is reported to the user, never resolved silently.
 - **Monorepo.** Ask once per run which app or package the modules cover.
-- **Done means:** the hard review gate was approved, nothing was invented, and the module's Completion criteria hold. Then return to the workflow that sent you here (the Phase 2 Docs preflight, Phase 3, Adopt, or this upgrade).
+- **Done means:** the hard review gate was approved, nothing was invented, and the module's Completion criteria hold. Then return to the workflow that sent you here (the Phase 2 Docs preflight, Maintenance, Adopt, or this upgrade).
 
 ## Registry
 
