@@ -2,41 +2,37 @@
 
 > **Status: experimental — not yet validated in a test round.**
 >
-> **Run once per project**, from the project root, on a codebase that has no kit documents. Output: `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/backlog.json`, `docs/data-model.md`, `docs/flows.md`, `docs/api.md` (when the code exposes an API), `docs/MODELS.md`, `AGENTS.md` (and `CLAUDE.md` when present), `docs/.craft-kit.json`, and `docs/DESIGN.md` when the project has a UI. Source code is never modified.
+> **Run once per project**, from the project root, on a codebase that has no kit documents. Writes `docs/` (architecture, constitution, roadmap, backlog.json, data-model, flows, MODELS, `.craft-kit.json`; `api.md` when the code exposes an API; `DESIGN.md` when there is a UI) and `AGENTS.md` (and `CLAUDE.md` when present). Source code is never modified.
 
 Universal rules: `kit/orchestrator-conventions.md`. Session log: `docs/adopt-session.md`.
 
-**Resume and handover.** A session that finds `docs/adopt-session.md` with unfinished steps resumes per conventions rule 18, from the documents already written (never regenerate an approved one). Seams: after Steps 2, 3, 4 and 8 (rule 19, `kit/guides/session-handover.md`; Adopt commits only at Step 9, so keep the same checkout).
+**Resume and handover.** A session that finds `docs/adopt-session.md` with unfinished steps resumes per conventions rule 18, from the documents already written (never regenerate an approved one). Seams: after Steps 2, 3, 4 and 6 (rule 19, `kit/guides/session-handover.md`; Adopt commits only at Step 7, so keep the same checkout).
 
-## Limitations (read before running)
+## Limitations
 
 - **Describes what exists**, including debt. Nothing aspirational becomes a MUST without approval.
-- **Nothing is invented.** Every fact is labelled `from-code`, `from-docs`, or `unknown` (survey template: `kit/templates/adopt-survey.md`).
-- **Code beats docs.** A conflict is reported, never silently resolved.
-- **Commands are copied verbatim** from scripts, Makefile, or CI config, never reconstructed.
+- **Nothing is invented.** Every fact is `from-code`, `from-docs`, or `unknown` (`kit/templates/adopt-survey.md`). Code beats docs: a conflict is reported, never silently resolved.
+- **Commands are copied verbatim** from scripts, Makefile, or CI config.
 - **Secrets stay out.** `.env*` files are read for variable names only.
-- **Source code is never modified**; nothing is refactored.
-- **Scope.** One repository (one deployable, or a monorepo sharing one `docs/`). Multi-repo: run once per repository.
+- **One repository per run** (one deployable, or a monorepo sharing one `docs/`).
 
 ## How to start
 
 Send this to your AI, from the project root: `Run Adopt using kit/phase-adopt.md.`
 
-The AI surveys the repository read-only, drafts each document, and puts every unconfirmed item to you at the hard gates (Steps 2, 3, 4); reply "defaults" to answer Steps 2 and 3 together. Nothing is `approved` until you approve it. Have ready: which app or package (monorepo), and your view of the existing features.
+The AI surveys read-only, drafts each document, and puts every unconfirmed item to you at the hard gates (Steps 2, 3, 4); reply "defaults" to answer Steps 2 and 3 together. Nothing is `approved` until you approve it. Have ready: which app or package (monorepo), and your view of the existing features.
 
 ## Steps
 
-| # | Step | Gate | Model | Output |
-|---|---|---|---|---|
-| 1 | Survey | `soft` | `fast` | `docs/adopt/survey.md`: stack, layout, scripts, CI, test setup, existing docs, commit and branch conventions, whether it is a monorepo, business context (description, transactions, term dictionary) |
-| 2 | Architecture (as-is) | `hard` | `capable` | `docs/architecture.md` with `Provenance: reverse-engineered (Adopt)`. No stack-catalog or deviation triggers; technical debt and `unknown` items recorded |
-| 3 | Constitution from observed conventions | `hard` | `balanced` | `docs/constitution.md` with `Provenance: reverse-engineered (Adopt)`, including the Verification Commands table. A rule is MUST only when tooling enforces it (lint or format config) or it is observed consistently in a file sample; everything else is SHOULD |
-| 4 | Baseline roadmap | `hard` | `balanced` | `docs/roadmap.md` and `docs/backlog.json`: a release `r0-baseline` already `shipped`, features inferred from routes and screens, each confirmed by you; the NFR table recorded as `unknown` where nothing is found |
-| 5 | Backfill modules | each module's own gate | per module | Runs the registry of `kit/phase-upgrade.md`: data-model, flows, test accounts, verification |
-| 6 | DESIGN.md | `soft` | `balanced` | Only when there is a UI: tokens extracted into `docs/DESIGN.md` |
-| 7 | MODELS.md | `none` | — | `docs/MODELS.md` from the "Model tiers" section of `kit/phase-1-bootstrap.md` |
-| 8 | AGENTS.md | `soft` | `fast` | Root `AGENTS.md` from the survey and constitution, or a proposed diff when one exists |
-| 9 | Closeout | `soft` | `fast` | Checklist; `docs/.craft-kit.json`; `docs/adopt-session.md`; one commit on `chore/adopt-craftkit` and a PR; a handoff prompt |
+| # | Step | Gate | Model |
+|---|---|---|---|
+| 1 | Survey | `soft` | `fast` |
+| 2 | Architecture (as-is) | `hard` | `capable` |
+| 3 | Constitution from observed conventions | `hard` | `balanced` |
+| 4 | Baseline roadmap | `hard` | `balanced` |
+| 5 | Backfill modules and MODELS.md | each module's own gate | per module |
+| 6 | DESIGN.md | `soft` | `balanced` |
+| 7 | Closeout | `soft` | `fast` |
 
 ## Before Step 1
 
@@ -47,17 +43,25 @@ The AI surveys the repository read-only, drafts each document, and puts every un
 
 ## Step 1 — Survey
 
-Read-only static analysis by one general-purpose agent. Fill `kit/templates/adopt-survey.md` into `docs/adopt/survey.md` (stack and versions, layout, scripts, CI, test setup, env variable names, existing docs, commit/branch conventions, monorepo or not, the conventions evidence Step 3 uses, and the business context: what the system does, the business transactions the code implements, and the domain terms it uses, each labelled and sourced). Large repositories: sample files by directory and record the sample size and what was not sampled. Present a short summary; advance unless the user objects.
+Read-only static analysis by one general-purpose agent. Fill `kit/templates/adopt-survey.md` into `docs/adopt/survey.md`, including the conventions evidence Step 3 uses and the business context (what the system does, its business transactions, its domain terms), each fact labelled and sourced. Large repositories: sample files by directory; record the sample size and what was not sampled. Present a short summary; advance unless the user objects.
 
 ## Step 2 — Architecture (as-is) (hard gate)
 
-Draft `docs/architecture.md` from `kit/templates/06-architecture.md` as the system is, with `Provenance: reverse-engineered (Adopt)`. No stack catalog or deviation triggers. In the key components table, fill `Type` (application, infrastructure, model, client, or test) and `Depends on` for each component; use `unknown` when it cannot be determined from code. Record technical debt and every `unknown`; label facts as in the survey; list docs-versus-code conflicts separately; NFR lines only where code or docs show them, else `unknown`.
+Draft `docs/architecture.md` from `kit/templates/06-architecture.md` as the system is, with `Provenance: reverse-engineered (Adopt)`. No stack catalog or deviation triggers.
+
+- Key components table: fill `Type` and `Depends on` for each component; `unknown` when code does not show it.
+- Record technical debt and every `unknown`; list docs-versus-code conflicts separately.
+- NFR lines only where code or docs show them, else `unknown`.
 
 Gate summary: *"The architecture records [stack] as built, with [k] debt items and [u] unknowns. Confirm it describes the system, or name what to correct. Reply 'defaults' to approve this and the constitution together."*
 
 ## Step 3 — Constitution from observed conventions (hard gate)
 
-Draft `docs/constitution.md` from `kit/templates/07-constitution.md` with `Provenance: reverse-engineered (Adopt)`. Every MUST cites evidence: a config file (lint, format, compiler, CI check) or the observed file ratio in the survey sample; anything else is SHOULD, and aspirational rules are not written. Fill `## Verification Commands` via Steps 1–2 of `kit/phase-verification-backfill.md` (survey scripts and CI config); this gate is the review. Set `**Base branch:**` from the survey (conventions rule 17) and the CI row's `runs on PRs to:` note from the workflow triggers; a base branch outside those triggers is stated once there, so Ship does not rediscover it. Rules with thin evidence are listed for you to decide.
+Draft `docs/constitution.md` from `kit/templates/07-constitution.md` with `Provenance: reverse-engineered (Adopt)`.
+
+- Every MUST cites evidence: a config file (lint, format, compiler, CI check) or the observed file ratio in the survey sample. Everything else is SHOULD; write no aspirational rules. List thin-evidence rules for the user to decide.
+- Fill `## Verification Commands` via Steps 1–2 of `kit/phase-verification-backfill.md`; this gate is the review.
+- Set `**Base branch:**` from the survey (conventions rule 17) and the CI row's `runs on PRs to:` note from the workflow triggers. State a base branch outside those triggers once there, so Ship does not rediscover it.
 
 Gate summary: *"[m] MUST rules each backed by config or observed usage, [s] SHOULD rules, and [v] of 8 verification commands found. Approve the constitution, or name a rule to change."*
 
@@ -65,52 +69,53 @@ If the user replied "defaults" at Step 2, set both documents `approved` on writi
 
 ## Step 4 — Baseline roadmap (hard gate)
 
-1. Read the allowed values in `kit/scripts/render-backlog.js` (statuses, priority, size, event types, sources, `by`) and build it from `kit/templates/backlog.json`: `schema_version: 1`; `project`; `phase2_scope` and `admin_site` from the roadmap metadata; per feature, a `created` event then the event matching its status (`started`, `shipped`, `deferred`) with the `by`, `source` and `evidence` values the script allows; `status` equals the latest status event (the validator enforces it); `release: null` for `Won't` or `deferred` features. Put the generated-table markers `<!-- BEGIN FEATURES -->` and `<!-- END FEATURES -->` in `docs/roadmap.md` and run `node kit/scripts/render-backlog.js` (exit 0).
-2. Infer features from routes, screens, and API surfaces in the survey, and cross-check them against the survey's business context (a transaction with no matching feature, or a feature no transaction explains, goes to you as a question instead of being added or dropped silently), grouped in one release `r0-baseline` (`shipped`). Each feature: short name, priority `Must`, size estimate, `depends_on` where evident, `status: shipped`, `release: "r0-baseline"`, events `created` then `shipped`. With no date evidence, an event is just `{"type": "created"}`: the validator reads an omitted `at` as undated (`source: unknown`) and defaults `by` to `orchestrator`, so write no null fields and no note. A user-supplied date gets `at`, `source: "backfill-confirmed"`, `evidence: "user-supplied"`. Use only validator values.
-3. Write `docs/roadmap.md` from `kit/templates/04-roadmap.md` (short narrative, feature table between the generated markers, `Non-functional Requirements` filled only from evidence in code or docs, else `unknown`). Set `Phase 2 Scope` per `p1-04-roadmap.md`, defaulting to `feature`.
-4. Run `node kit/scripts/render-backlog.js` (exit 0; fix from its errors).
+1. Infer features from routes, screens, and API surfaces in the survey; cross-check them against its business context. A transaction with no feature, or a feature no transaction explains, goes to you as a question, never added or dropped silently.
+2. Build `docs/backlog.json` from `kit/templates/backlog.json`, using only values `kit/scripts/render-backlog.js` allows. One release `r0-baseline`; per feature: short name, priority `Must`, size, `depends_on` where evident, `status: shipped`, `release: "r0-baseline"`, events `created` then `shipped`. `phase2_scope` and `admin_site` match the roadmap metadata.
+3. Dates: with no date evidence an event is just `{"type": "created"}` (undated; no null fields, no note). A user-supplied date gets `at`, `source: "backfill-confirmed"`, `evidence: "user-supplied"`.
+4. Write `docs/roadmap.md` from `kit/templates/04-roadmap.md`: short narrative, the feature table between `<!-- BEGIN FEATURES -->` and `<!-- END FEATURES -->`, `Non-functional Requirements` only from evidence in code or docs (else `unknown`), `Phase 2 Scope` per `p1-04-roadmap.md` (default `feature`). Run `node kit/scripts/render-backlog.js` (exit 0; fix from its errors).
 5. Ask per feature: **keep / correct / drop**. You confirm every `r0-baseline` feature before approval.
 
 Gate summary: *"The baseline has [N] features inferred from routes and screens, all marked shipped with unknown dates. Confirm the list, or name what to correct."*
 
-## Step 5 — Backfill modules
+## Step 5 — Backfill modules and MODELS.md
 
-Run the registry in `kit/phase-upgrade.md` (Detect, Confirm, Run): data-model and flows (`phase-docs-backfill.md`), the API document (`phase-api-backfill.md`) if the code exposes an API, test accounts (`phase-test-accounts-backfill.md`) if the project has test credentials, verification (`phase-verification-backfill.md`) only if Step 3 did not write it. Each module keeps its own gate.
+Run the registry in `kit/phase-upgrade.md` (Detect, Confirm, Run); each module keeps its own gate:
+
+- data-model and flows (`phase-docs-backfill.md`);
+- the API document (`phase-api-backfill.md`) if the code exposes an API;
+- test accounts (`phase-test-accounts-backfill.md`) if the project has test credentials;
+- verification (`phase-verification-backfill.md`) only if Step 3 did not write it.
+
+Then write `docs/MODELS.md` by running the "Model tiers" section of `kit/phase-1-bootstrap.md`.
 
 ## Step 6 — DESIGN.md
 
-Skip when the project has no UI (record `skipped (no UI)`). Otherwise `docs/DESIGN.md` must exist when this step ends. If the project already has a hand-written design file (for example a root `DESIGN.md` or a design-system doc), use it as the source: write `docs/DESIGN.md` from it in the template's format, name its path under `Based on`, and leave the original untouched. Otherwise extract tokens from the tailwind config, CSS variables, and theme files using `kit/templates/03c-design-system.md`, each token `from-code`. Create no `docs/preview/`: the Design dispatch contract treats it as optional (`design_md_fallback`).
+Skip when the project has no UI (record `skipped (no UI)`). Otherwise `docs/DESIGN.md` must exist when this step ends:
 
-## Step 7 — MODELS.md
+- A hand-written design file exists (for example a root `DESIGN.md` or a design-system doc): write `docs/DESIGN.md` from it in the template's format, name its path under `Based on`, and leave the original untouched.
+- Otherwise extract tokens from the tailwind config, CSS variables, and theme files using `kit/templates/03c-design-system.md`, each token `from-code`.
 
-Run the "Model tiers" section of `kit/phase-1-bootstrap.md`.
+Create no `docs/preview/`: the Design dispatch contract treats it as optional (`design_md_fallback`).
 
-## Step 8 — AGENTS.md
+## Step 7 — Closeout
 
-Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`), ending with the `## Workflow (craft-kit)` section from `kit/guides/conventions-detail.md` → "Project workflow block" (it carries no version number). Without it a fresh session does not know `kit/` exists and codes backlog features directly. If `AGENTS.md` exists, show a diff and apply only on approval; never overwrite a hand-written file. If a `CLAUDE.md` exists, propose the same section for it under the same rule.
-
-## Step 9 — Closeout
-
-1. Checklist, every item must pass:
-   - [ ] `docs/architecture.md`, `docs/constitution.md`, `docs/roadmap.md`, `docs/data-model.md`, `docs/flows.md`, `docs/MODELS.md` are `approved`; `docs/api.md` too, or the code exposes no API; `docs/DESIGN.md` too, or the skip is recorded
-   - [ ] `docs/backlog.json` passes `node kit/scripts/render-backlog.js` with exit 0 and every `r0-baseline` feature was confirmed by you
-   - [ ] Every MUST in the constitution has evidence (config file, or an observed ratio recorded in `docs/adopt/survey.md`)
-   - [ ] `AGENTS.md` at the project root with a meaningful project summary and the `## Workflow (craft-kit)` section
-   - [ ] `node kit/scripts/lint-docs.js` reports no errors (conventions rule 11); warnings are shown to you
-   - [ ] Only `docs/`, `AGENTS.md`, `CLAUDE.md`, and `.gitignore` changed in the repository (plus `.test-accounts.json`, already ignored); source code is untouched
-2. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` with `recorded_by: adopt`, `kit_version` from `.craft-kit-version` in the installed kit directory, and `recorded_at` today (conventions rule 10).
-3. Finalise `docs/adopt-session.md`.
-4. Branch `chore/adopt-craftkit`, one commit (`adopt: add craft-kit documents`), then push and open a PR per the pre-flight, local-only fallback, and never-merge rules in `p2-07-ship.md`.
-5. Emit the handoff prompt, brackets filled, for Phase 2, Maintenance (`kit/phase-maintenance.md`), or Bug Fix (`kit/phase-bug-fix.md`) as chosen, with the pinned install command `npx github:KhoaLy2003/craft-kit#v<kit_version>` (from `docs/.craft-kit.json`; `kit/` is git-ignored).
+1. **AGENTS.md.** Create the root `AGENTS.md` from the survey and constitution (Commands from `## Verification Commands`), ending with the `## Workflow (craft-kit)` section from `kit/guides/conventions-detail.md` → "Project workflow block" (no version number). Without it a fresh session does not know `kit/` exists and codes backlog features directly. If `AGENTS.md` exists, show a diff and apply only on approval; never overwrite a hand-written file. Same rule for `CLAUDE.md` when one exists.
+2. Run the Completion criteria below; every item must pass. Run `node kit/scripts/lint-docs.js` (conventions rule 11) and show warnings to you.
+3. Write `docs/.craft-kit.json` from `kit/templates/craft-kit.json` with `recorded_by: adopt`, `kit_version` from `.craft-kit-version` in the installed kit directory, and `recorded_at` today (conventions rule 10).
+4. Finalise `docs/adopt-session.md`.
+5. Branch `chore/adopt-craftkit`, one commit (`adopt: add craft-kit documents`), then push and open a PR per the pre-flight, local-only fallback, and never-merge rules in `p2-07-ship.md`.
+6. Emit the handoff prompt, brackets filled, for Phase 2, Maintenance (`kit/phase-maintenance.md`), or Bug Fix (`kit/phase-bug-fix.md`) as chosen, with the pinned install command `npx github:KhoaLy2003/craft-kit#v<kit_version>` (from `docs/.craft-kit.json`; `kit/` is git-ignored).
 
 ## Completion criteria
 
-- [ ] All 9 steps are `complete` or `skipped` in `docs/adopt-session.md`
+- [ ] All 7 steps are `complete` or `skipped` in `docs/adopt-session.md`; you approved the Steps 2, 3 and 4 gates
+- [ ] `docs/architecture.md`, `constitution.md`, `roadmap.md`, `data-model.md`, `flows.md`, `MODELS.md` are `approved`; `docs/api.md` too, or the code exposes no API; `docs/DESIGN.md` too, or the skip is recorded
+- [ ] `docs/backlog.json` passes `node kit/scripts/render-backlog.js` with exit 0 and you confirmed every `r0-baseline` feature
+- [ ] Every MUST in the constitution has evidence (config file, or an observed ratio recorded in `docs/adopt/survey.md`)
+- [ ] `AGENTS.md` at the project root has a meaningful project summary and the `## Workflow (craft-kit)` section
+- [ ] `node kit/scripts/lint-docs.js` reports no errors
 - [ ] The Phase 2 Docs preflight in `kit/phase-2.md` passes without any file written by hand
-- [ ] Every MUST in the constitution has evidence
-- [ ] `docs/backlog.json` passes the render script with exit 0
-- [ ] Only `docs/`, `AGENTS.md`, `CLAUDE.md`, and `.gitignore` changed; source code untouched
-- [ ] The user approved at the Steps 2, 3 and 4 gates
+- [ ] Only `docs/`, `AGENTS.md`, `CLAUDE.md`, and `.gitignore` changed (plus `.test-accounts.json`, already ignored); source code untouched
 
 ## Transition
 
@@ -118,7 +123,7 @@ Done. Close this session; run the next workflow in a new one with the handoff pr
 
 ## Exceptions
 
-- **Project already has some kit documents:** use `kit/phase-upgrade.md` instead; Adopt is for a codebase with no kit documents.
+- **Project already has some kit documents:** use `kit/phase-upgrade.md`; Adopt is for a codebase with no kit documents.
 - **Monorepo:** one app or package per run; list it in the survey.
 - **No tests, no CI, or no scripts:** the matching Verification Commands rows are `unknown` or `n/a — <reason>`; never guess common commands.
 - **Existing hand-written `docs/architecture.md` or `docs/constitution.md`:** never overwrite. Write the draft to a `.generated.md` sibling, say so, and let the user merge.

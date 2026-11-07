@@ -10,7 +10,7 @@
 - **Based on**: `architecture.md`, `DESIGN.md`, `roadmap.md`
 - **Provenance**: `designed (Phase 1 Step 7)` | `reverse-engineered (Adopt)`
 
-> Read by every Phase 2 step. Every principle must be concrete enough to change at least one downstream plan or diff; remove any that wouldn't. Personal workflow preferences (branching habits, PR etiquette) do not belong here, only rules that shape code and architecture output. The one exception is the `Spec Evolution` section added at Ship.
+> Read by every Phase 2 step. Every principle must be concrete enough to change at least one downstream plan or diff; remove any that wouldn't. Personal workflow preferences (branching habits, PR etiquette) do not belong here, only rules that shape code and architecture output.
 
 ---
 

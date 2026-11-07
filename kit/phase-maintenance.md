@@ -28,7 +28,7 @@ Ask exactly one question: *"Do you want to add a new feature or fix an existing 
 
 - **Fix a bug.** Ask one follow-up if the report is missing: what is wrong and where. Print the prompt and stop; the user sends it in a new session: `Run the bug fix workflow using kit/phase-bug-fix.md. The problem is: <what is wrong and where>.`
 - **Add a feature.** Continue with Step 2.
-- Something shipped needs *different behavior* (not broken, not new): `kit/guides/evolving-specs.md`, then `kit/phase-2.md`.
+- Something shipped needs *different behavior* (not broken, not new): continue with Step 2 and register it as a new entry (the backlog is append-only; the `created` event's `note` names the feature it changes). The name chooses the spec: a new name gets its own `docs/specs/<feature-slug>/` and the original stays as the record; exactly the original's name reuses its slug, so the existing spec is edited in place. Phase 2 skips Step 1 when that spec exists, so edit `spec.md` and get it approved first, then start Phase 2 at Step 2 (the plan is regenerated; carry over rationale that still matters).
 - The core idea, audience or stack has fundamentally changed: a new project, `kit/phase-1-bootstrap.md`.
 
 ---

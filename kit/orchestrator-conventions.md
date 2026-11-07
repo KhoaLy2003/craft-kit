@@ -104,7 +104,7 @@ Test accounts live in one git-ignored `.test-accounts.json` at PROJECT_ROOT, reu
 
 ## Project workflow block
 
-Phase 1 Step 8 and Adopt Step 8 write a `## Workflow (craft-kit)` section into the project-root `AGENTS.md` (and `CLAUDE.md`). Text and rules: `kit/guides/conventions-detail.md` → "Project workflow block".
+Phase 1 Step 8 and Adopt Step 7 (Closeout) write a `## Workflow (craft-kit)` section into the project-root `AGENTS.md` (and `CLAUDE.md`). Text and rules: `kit/guides/conventions-detail.md` → "Project workflow block".
 
 ---
 

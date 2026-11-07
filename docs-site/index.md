@@ -148,8 +148,6 @@ Everything the AI produces lands in your project folder. Never edit `kit/`: an u
 
 [**Resuming a Session**<br>Continue any workflow in a new conversation](/guides/resuming-a-session)
 
-[**Evolving Specs**<br>How to update your feature plan after something has shipped](/guides/evolving-specs)
-
 [**Skills & Agents**<br>Skills and agents the kit uses (one is required for visual work), and how it checks for them](/reference/required-skills)
 
 [**Glossary**<br>Must, gate, scope, domain, seam, and other terms in plain words](/reference/glossary)

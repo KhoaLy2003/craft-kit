@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed
+
+- **`phase-adopt.md`** condensed 13.7K to 10.9K characters (~20%); 9 steps become 7: MODELS.md folds into Step 5 (Backfill modules and MODELS.md) and AGENTS.md into Step 7 (Closeout). Gates (Steps 2, 3, 4), the "defaults" rule and all other rules are unchanged. The Steps table lost its Output column, the Step 9 checklist merged into Completion criteria, Step 4 lists only Adopt-specific backlog rules (field values come from `render-backlog.js` and `templates/backlog.json`), Limitations lost items repeated elsewhere. Handover seams are now after Steps 2, 3, 4 and 6; `orchestrator-conventions.md`, `guides/conventions-detail.md` and `guides/session-handover.md` use the new numbers.
+- **`guides/evolving-specs.md`** removed (5.3K). Its working rule, a changed shipped feature is a new backlog entry whose name chooses a new spec or an in-place edit of the original, now lives in **`phase-maintenance.md`** Step 1; **`guides/change-control.md`** points there. The Ship rule that asked once how specs evolve and wrote a `Spec Evolution` section into the constitution is removed (nothing read that section), with its exemptions in **`p2-07-ship.md`**, **`templates/07-constitution.md`** and **`steps/phase-1/p1-07-constitution.md`**. Constitutions that already have the section stay valid. Repo only: `README.md`, `AGENTS.md`, docs-site index and `config.ts` drop the page.
+- Repo only: docs-site page *Adding a Single Feature* removed (the Maintenance workflow page replaces it; it omitted the roadmap release block and the fit check). `README.md`, `fixing-a-bug.md`, `phase-2-build.md` and `config.ts` point to Maintenance; `getting-started.md` no longer names the retired `phase-roadmap-migrate.md`.
+
 ---
 
 ## [0.0.48] - 2026-11-07
