@@ -137,7 +137,7 @@ describe('hard-gate list in AGENTS.md', () => {
     })
   }
 
-  for (const [workflow, file] of [['Bug Fix', 'phase-bug-fix.md'], ['Admin', 'phase-admin.md']]) {
+  for (const [workflow, file] of [['Bug Fix', 'phase-bug-fix.md']]) {
     test(`${workflow}: every step headed "Gate: hard" is named in the list`, () => {
       const text = read(join(KIT, file))
       const hard = [...text.matchAll(/^## Step \d+ — (.+?) \| Gate: hard/gm)].map(m => m[1])
@@ -210,7 +210,7 @@ describe('project workflow block', () => {
 })
 
 describe('resume and handover coverage', () => {
-  const WORKFLOWS = ['phase-1-bootstrap', 'phase-2', 'phase-maintenance', 'phase-bug-fix', 'phase-admin', 'phase-adopt']
+  const WORKFLOWS = ['phase-1-bootstrap', 'phase-2', 'phase-maintenance', 'phase-bug-fix', 'phase-adopt']
   const conventions = read(join(KIT, 'orchestrator-conventions.md'))
 
   test('conventions define resume on re-entry (rule 18) and session checkpoint (rule 19)', () => {

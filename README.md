@@ -84,7 +84,6 @@ Not sure where to start? Say `Start using kit/START.md.` The router inspects the
 | Project Upgrade | `phase-upgrade.md` | Documents from an older kit; runs the one-time modules it detects | experimental |
 | Maintenance (3 steps) | `phase-maintenance.md` | Add a feature (intake, fit check, backlog entry, then Phase 2) or fix a bug (routes to Bug Fix) | experimental |
 | Bug Fix | `phase-bug-fix.md` | Something shipped is broken: Assess → Fix → Verify | experimental |
-| Admin Site | `phase-admin.md` | The app needs an administrator site | experimental |
 | Developer Onboarding | `phase-onboarding.md` | A developer is joining; writes `docs/ONBOARDING.html` | experimental |
 | Session Handover | `guides/session-handover.md` | A long run continues in a fresh session | experimental |
 
@@ -129,7 +128,8 @@ All work uses your platform's general-purpose agent.
 | `orchestrator-conventions.md` | Universal rules: step banner, PROJECT_ROOT, write verification, gates, Definition of Done, version record, docs lint |
 | `phase-1-bootstrap.md` | Phase 1 orchestration, model tiers |
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
-| `phase-maintenance.md`, `phase-bug-fix.md`, `phase-admin.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
+| `phase-maintenance.md`, `phase-bug-fix.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
+| `guides/admin-checklist.md` | Admin site reference, loaded by Maintenance intake for admin features |
 | `phase-upgrade.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
 | `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`) |
 | `session-logging.md` | Session log format |

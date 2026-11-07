@@ -28,7 +28,7 @@ Send the prompt as written in a conversation that can read your project folder. 
 | Add a feature or fix a bug | `Run Maintenance using kit/phase-maintenance.md.` | Experimental. Asks which one, checks a feature against your design, registers it, then gives the Phase 2 prompt |
 | Bring in existing code | `Run Adopt using kit/phase-adopt.md.` | Writes the planning documents from your code |
 | Update an older project | `Run the project upgrade using kit/phase-upgrade.md.` | Runs only the modules you need |
-| Add an admin site | `Build the admin site using kit/phase-admin.md.` | Experimental |
+| Add an admin site | `Run Maintenance using kit/phase-maintenance.md.` | Experimental. Admin features go through the Maintenance workflow, which loads the admin checklist |
 | Onboard a developer | `Run developer onboarding using kit/phase-onboarding.md.` | Experimental |
 
 ---

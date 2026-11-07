@@ -29,7 +29,6 @@ const PHASES: Page[] = [
   kit('phase-2',                'phases/phase-2',        'Phase 2 — Build (workflow)'),
   kit('phase-bug-fix',          'phases/bug-fix',        'Bug Fix Workflow'),
   kit('phase-maintenance',      'phases/phase-maintenance', 'Maintenance Workflow'),
-  kit('phase-admin',            'phases/admin',          'Admin Site Workflow'),
   kit('phase-adopt',            'phases/adopt',          'Adopt — Existing Codebase'),
   kit('phase-upgrade',          'phases/upgrade',        'Project Upgrade'),
   kit('phase-docs-backfill',    'phases/docs-backfill',  'Docs Backfill'),
@@ -76,6 +75,7 @@ const GUIDES: Page[] = [
   kit('guides/test-accounts',               'guides/test-accounts',              'Test Accounts'),
   kit('guides/phase-2-feature-scope',       'guides/phase-2-feature-scope',      'Phase 2 Feature Scope'),
   kit('guides/change-control',              'guides/change-control',             'Change Control'),
+  kit('guides/admin-checklist',              'guides/admin-checklist',            'Admin Site Checklist'),
   kit('guides/design-mcp',                  'guides/design-mcp',                 'Designs via MCP'),
   kit('guides/conventions-detail',          'guides/conventions-detail',         'Conventions Detail'),
 ]
@@ -173,7 +173,8 @@ const SIDEBAR = [
       ...pick('guides/fixing-a-bug', 'phases/bug-fix', 'phases/phase-maintenance').map(item),
       ...pick(
         'guides/change-control',
-        'guides/admin-site', 'phases/admin',
+        'guides/admin-site',
+        'guides/admin-checklist',
       ).map(item),
     ],
   },
@@ -286,14 +287,14 @@ export default defineConfig({
         text: 'Workflows',
         items: pick(
           'start', 'phases/phase-1', 'phases/phase-2', 'phases/bug-fix', 'phases/phase-maintenance',
-          'phases/admin', 'phases/adopt', 'phases/upgrade', 'phases/onboarding',
+          'phases/adopt', 'phases/upgrade', 'phases/onboarding',
         ).map(item),
       },
       {
         text: 'Guides',
         items: pick(
           'guides/existing-projects', 'guides/phase-1-bootstrap', 'guides/phase-2-build',
-          'guides/fixing-a-bug', 'guides/admin-site',
+          'guides/fixing-a-bug', 'guides/admin-site', 'guides/admin-checklist',
         ).map(item),
       },
       { text: 'Reference', link: '/reference/glossary' },

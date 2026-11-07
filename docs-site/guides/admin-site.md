@@ -1,8 +1,8 @@
 # Building an Admin Site
 
-Use this workflow after Phase 2 has shipped, when your product needs an administrator site: managing users and roles, an audit log, settings, and modules for things like payments or content.
+Use this when your product needs an administrator site: managing users and roles, an audit log, settings, and modules for things like payments or content.
 
-It is experimental: not yet validated in a test round. The admin site uses your project's own stack, and its screen and security rules are fixed in the [workflow file](/phases/admin); this workflow decides **what** the admin site manages, then builds it.
+It is experimental: not yet validated in a test round. Admin features are not a separate workflow. They run through the [Maintenance workflow](/phases/phase-maintenance) and then Phase 2, like any other feature. Maintenance intake loads `kit/guides/admin-checklist.md` for any admin-tagged feature; that checklist holds the sequencing, scope and security rules.
 
 It needs a running app with Phase 2 shipped, and no open `feature/*` branch that touches the backend areas the admin will use.
 
@@ -11,34 +11,20 @@ It needs a running app with Phase 2 shipped, and no open `feature/*` branch that
 ## Starting
 
 ```text
-Build the admin site using kit/phase-admin.md.
+Run Maintenance using kit/phase-maintenance.md.
 ```
 
-In Phase 1 the roadmap records whether you expect an admin site (`yes`, `no` or `later`). It is only a hint. You can run this workflow either way.
+Choose "add a new feature", then describe the admin feature you want. In Phase 1 the roadmap records whether you expect an admin site (`yes`, `no` or `later`). It is only a hint.
 
 ---
 
-## The Five Steps
+## How It Runs
 
-| Step | What the AI does | Your part |
-|---|---|---|
-| 1. Scope | Reads your app and proposes the modules the admin site should manage, the roles, and who can do what | **Edit the module list, then approve it** (hard gate) |
-| 2. Spec & Plan | Writes one spec with acceptance criteria per module, and a plan: the shell first, then one group per module | Read the summary. It continues unless you object |
-| 3. Implement | Builds on `feature/admin`. Before any module starts, it proves the shell works: sign-in, role-filtered menu, blocked non-admins, one audited action | Nothing |
-| 4. Review & E2E | Reviews the whole branch for security, then runs end-to-end tests for each role against each module action | Nothing |
-| 5. Ship | Starts the app and the admin site, then waits for you | **Sign in as each role, walk through the modules, and approve** (hard gate). Then it commits and opens one pull request |
+1. **Intake.** Maintenance intake marks the feature as admin and reads the admin checklist. The AI proposes the modules, roles and permissions the admin needs and records the agreed scope in the feature's `intake.md`. You review and approve it at the intake gate, including the impact on your main app: new admin routes, an access guard and an audit log.
+2. **Admin Shell first.** The first admin feature is the `Admin Shell`: sign-in, role-filtered menu, blocked non-admins, one audited action. Every module feature depends on it, and `render-backlog` rejects a module that starts before the Shell has shipped.
+3. **Phase 2.** Each admin feature is then built, reviewed and shipped through Phase 2 like any other feature.
 
----
-
-## The Decisions That Matter
-
-**Scope (Step 1).** Every proposed module points to something real in your app (an entity or a feature). Add what is missing, remove what you do not want, and the AI re-checks for conflicts (for example, "Contracts depends on Users, which you removed"). You are approving three things at once:
-
-- the list of modules
-- the roles and what each can do
-- the **impact on your main app**: the admin site adds `/api/admin/*` routes, an access guard and an audit table to your backend, and may add a role field or an admin login. The pull request changes the main app as well as adding `admin/`.
-
-**Ship (Step 5).** Walk through the site as *each* role, not only as an admin. The aim is to see that a role cannot reach what it should not. The AI gives you the accounts and URLs. Passwords come from your git-ignored `.test-accounts.json`.
+At Ship, walk through the site as *each* role, not only as an admin, to see that a role cannot reach what it should not. Passwords come from your git-ignored `.test-accounts.json`.
 
 ---
 
@@ -46,25 +32,13 @@ In Phase 1 the roadmap records whether you expect an admin site (`yes`, `no` or 
 
 | You get | Where |
 |---|---|
-| The approved scope: modules, roles, permission matrix, impact | `docs/admin/scope.md` |
-| Spec and plan | `docs/specs/admin/spec.md`, `docs/specs/admin/plan.md` |
-| The admin site and the backend changes | `admin/` and your backend, on `feature/admin` |
+| The agreed scope: modules, roles, permissions, impact | `intake.md` in the feature's spec folder |
+| The admin code and the backend changes | your repository, as backlog features |
 | An "Admin" block in the end-to-end tests | `docs/E2E-TESTS.md` |
-| One pull request | Never merged for you |
-| A log | `docs/admin-session.md` |
-
-The data model and architecture documents are updated at the Scope approval with the audit table, any role field, and an "Admin Site" section.
 
 ---
 
 ## When Something Goes Wrong
 
-- **You approve zero modules.** The workflow ends as blocked, with no code changes.
+- **You approve zero modules.** The work ends as blocked, with no code changes.
 - **Another feature branch is open on the backend.** The AI stops until it is merged.
-- **The app was built without the kit.** The AI writes minimal architecture and constitution documents from your code first, and asks you to approve each.
-
----
-
-## Reference
-
-The file the AI follows, shown in full: [Admin Site Workflow](/phases/admin).

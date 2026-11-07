@@ -13,7 +13,6 @@
 | Phase 2 | `docs/phase-2-session.md` | one section per feature (`## <feature-slug>`); `scope: all` uses the project slug |
 | Bug fix | `docs/bug-session.md` | one section per bug (`## <bug-slug>`) |
 | Maintenance | `docs/maintenance-session.md` | one section per feature (`## <feature-slug>`) |
-| Admin site | `docs/admin-session.md` | one table |
 | Adopt | `docs/adopt-session.md` | one table |
 
 ## Format

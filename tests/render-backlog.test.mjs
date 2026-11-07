@@ -183,6 +183,29 @@ describe('render-backlog: validation failures', () => {
     assert.match(result.stderr, /depends_on cycle: F01 -> F02 -> F01/);
   });
 
+  it('rejects a started feature whose dependency has not shipped', () => {
+    const root = tempProject({
+      backlog: backlog([
+        baseFeature({ id: 'F01', name: 'Admin Shell' }),
+        baseFeature({
+          id: 'F02',
+          name: 'Admin users',
+          depends_on: ['F01'],
+          status: 'in-progress',
+          events: [
+            { at: '2026-09-02T08:00:00Z', type: 'created', source: 'live', by: 'orchestrator', evidence: null, note: '' },
+            { at: '2026-09-03T08:00:00Z', type: 'started', source: 'live', by: 'orchestrator', evidence: null, note: '' },
+          ],
+        }),
+      ]),
+      roadmap: roadmapWithMarkers,
+    });
+    const result = run(root);
+
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /F02: status in-progress but depends on F01 \(status pending\); a dependency must be shipped first/);
+  });
+
   it('rejects an event date that is not ISO 8601', () => {
     const root = tempProject({
       backlog: backlog([
@@ -301,7 +324,15 @@ describe('render-backlog: presentation', () => {
     const longName = 'Daily check-in with streak count and a very long description '.repeat(3).trim();
     const root = tempProject({
       backlog: backlog([
-        baseFeature({ id: 'F01', name: 'Sign in' }),
+        baseFeature({
+          id: 'F01',
+          name: 'Sign in',
+          status: 'shipped',
+          events: [
+            { at: '2026-09-02T08:00:00Z', type: 'created', source: 'live', by: 'orchestrator', evidence: null, note: '' },
+            { at: '2026-09-10T09:00:00Z', type: 'shipped', source: 'live', by: 'orchestrator', evidence: 'PR #3', note: '' },
+          ],
+        }),
         baseFeature({
           id: 'F02',
           name: longName,

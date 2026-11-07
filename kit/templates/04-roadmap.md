@@ -6,7 +6,7 @@
 - **Last updated**: <!-- YYYY-MM-DD -->
 - **Based on**: `idea-brief.md`, `market-notes.md`, `prototype/`, `DESIGN.md`
 - **Phase 2 Scope**: `all` | `feature` <!-- recommended from the criteria in kit/steps/phase-1/p1-04-roadmap.md; confirmed by the user -->
-- **Admin Site**: `yes` | `no` | `later` <!-- asked at Step 4; a hint for kit/phase-admin.md only. Never a feature row; not counted in the Phase 2 Scope criteria. -->
+- **Admin Site**: `yes` | `no` | `later` <!-- asked at Step 4; a hint for kit/guides/admin-checklist.md only. Never a feature row; not counted in the Phase 2 Scope criteria. -->
 
 > Product-scope decision, not a technical one. Assume no tech stack. Features are read from `docs/backlog.json`; the orchestrator uses it to pick the next feature for Phase 2.
 

@@ -53,11 +53,11 @@ const WORKFLOWS: Record<string, Summary> = {
     produces: 'For a feature: `docs/specs/<feature-slug>/intake.md`, a release and feature in `docs/backlog.json` and `docs/roadmap.md`, and the Phase 2 prompt. For a bug: the bug-fix prompt. No feature code.',
     experimental: true,
   },
-  'phases/admin': {
+  'guides/admin-site': {
     when: 'Phase 2 has shipped and the app needs an administrator site.',
-    prompt: 'Build the admin site using kit/phase-admin.md.',
-    you: ['Edit and approve the module list (Scope).', 'Sign in as each role and walk through the modules before Ship.'],
-    produces: '`docs/admin/scope.md`, a spec and plan, and `admin/` plus any backend changes on `feature/admin` as one pull request.',
+    prompt: 'Run Maintenance using kit/phase-maintenance.md.',
+    you: ['Edit and approve the module list (Scope) at Maintenance intake.', 'Sign in as each role and walk through the modules before Ship.'],
+    produces: 'the agreed admin scope in the feature\'s `intake.md`, then the `Admin Shell` and module features built through Phase 2.',
     experimental: true,
   },
   'phases/adopt': {

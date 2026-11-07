@@ -57,6 +57,7 @@ Collect what the feature is, and check it against what exists. Agree `<feature-s
 - **Does not fit:** state which `architecture.md` or constitution item it breaks and offer: (a) amend that document first (mark `draft`, show the edit, restore `approved` after the user's explicit approval, refresh `Last updated`), then continue; (b) cut the feature down until it fits; (c) drop it. Wait for the user's choice before continuing.
 - Compare against `docs/backlog.json`: if a `pending` or `deferred` feature already covers it, show it and ask whether to reuse that entry instead of adding one.
 - If the feature is large (would be `L`-sized, or spans more than one domain), say so and offer to split it into separate runs of this workflow; one feature per run.
+- **Admin feature.** If the feature is admin-tagged, read `kit/guides/admin-checklist.md` and add it to `intake.md`'s `Based on`. Its Shell is a separate feature (`Admin Shell`); the module lists it in `depends_on`. If no Shell feature is in `docs/backlog.json`, register the Shell first: the module is not registered until the Shell is.
 
 **Artifact:** `docs/specs/<feature-slug>/intake.md`. Preserve every field:
 
@@ -74,6 +75,8 @@ Collect what the feature is, and check it against what exists. Agree `<feature-s
 **Touches:** [screens, entities, existing features]
 
 **Depends on:** none | [feature IDs]
+
+**Admin:** no | yes — [yes if the feature adds admin screens, admin routes or an audit log; yes loads `kit/guides/admin-checklist.md`]
 
 **Fit:** fits | extends | does not fit — [one-line reason; for `extends`, the entities or flows added; for `does not fit`, the choice made and the amended document]
 ```
@@ -98,6 +101,7 @@ Write the feature to the backlog and roadmap, then hand off to Phase 2.
 - Add a `## Release <slug>` section to `docs/roadmap.md` below the template's final comment: the goal (the feature's value), the Build Order (the one feature), and the Impact (`intake.md` Fit line). Replace any "all features are shipped" sentence in the roadmap's Build Order section with a pointer to this block, so the roadmap never says nothing is left to build.
 - Set `Phase 2 Scope` in `docs/roadmap.md` and `phase2_scope` in `docs/backlog.json` to `feature`.
 - Refresh `Last updated` on `roadmap.md`; add `intake.md` to its `Based on`.
+- **Dependency gate.** Print no Phase 2 prompt while any `depends_on` feature is not `shipped` in `docs/backlog.json`; `render-backlog.js` rejects the state too once Phase 2 starts (`in-progress` with an unshipped dependency).
 - Commit nothing; Phase 2 Ship commits `backlog.json` and the roadmap with the feature. (A handover makes a WIP commit, `kit/guides/session-handover.md`.)
 - Print the Phase 2 prompt, then tell the user to close this session and open a new one for Phase 2: `Run Phase 2 using kit/phase-2.md for feature <F-id>.`
 
