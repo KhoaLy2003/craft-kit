@@ -8,6 +8,7 @@
 - **Gate**: `hard` — approval of the spec
 - **Inputs**:
   - `docs/backlog.json` (the feature entry, or all Must entries), `docs/roadmap.md` (build-order context), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`, `docs/data-model.md`, `docs/flows.md` (these are the **standard inputs**); `docs/known-issues.md` (open rows touching this feature's area), if it exists
+  - `docs/specs/<feature-slug>/intake.md` (Maintenance fit check and `Depends on`), if it exists
   - `docs/designs/<feature-slug>/` and `docs/specs/<feature-slug>/screens/*.md` — designs and briefs from Phase 1 Step 5 (including a re-entry for new features), if they exist
 - **Outputs**:
   - `scope: feature` → `docs/specs/<feature-slug>/spec.md`
@@ -38,14 +39,6 @@ Skipped when `kit/phase-2.md` skip detection applies. Work in this order.
 
 - **NFR applicable**: reference rows of `docs/roadmap.md` → Non-functional Requirements. An NFR the table lacks is raised with the user before approval and added to the roadmap table.
 - **Data & Flow Impact**: approved with the spec; a spec needing an unlisted entity or screen is incomplete.
-
-### Phase 3 release feature (wave design)
-
-Only when the release has an approved `docs/iterations/<release-slug>/design.md`; its entities, flows, and screens are already in `docs/data-model.md` and `docs/flows.md`.
-
-- Read only the feature's `### <F-id>` entry under `## Feature slices` and the sections it lists.
-- `## Data & Flow Impact` lists only the feature's slice (e.g. `see design.md: entities Wishlist, WishlistItem; flow wishlist-add`) or `none beyond the wave design`.
-- Anything missing is a design change request: stop and return to `kit/phase-3-iterate.md` Step 4. Never edit an item the Shared Surface table assigns to another feature.
 
 ## Completion Criteria
 

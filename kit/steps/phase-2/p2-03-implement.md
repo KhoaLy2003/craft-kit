@@ -29,7 +29,6 @@
 - A token or component `docs/DESIGN.md` lacks: use the closest existing one, or add it to `docs/DESIGN.md` with the user's explicit approval; never invent undocumented values. `docs/preview/` is not regenerated.
 - A foundational task fails or invalidates later tasks: stop and re-evaluate scope.
 - No per-task commits (Ship, or a handover, commits). Log the branch name.
-- Phase 3 release features: create `feature/<slug>` from the base branch after the `design/<release-slug>` PR is merged (from `design/<release-slug>` if local-only) so the branch has the wave design. Start only after every feature in earlier Work Packages groups has `shipped`.
 
 ## Completion Criteria
 

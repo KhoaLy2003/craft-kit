@@ -19,7 +19,7 @@
 **Entry guard (no code before Step 1).**
 
 - Before any source file changes for a unit, `docs/phase-2-session.md` has a section for it with Step 1 `in progress` or `skipped (spec exists)`, and its spec (`docs/specs/<feature-slug>/spec.md`, or `docs/specs/spec.md` under `scope: all`) is `approved`.
-- A request that skips this ("implement F12", "start the next feature") still starts at Step 1. `docs/iterations/<release>/design.md` and the backlog entry are Step 1 inputs, not the spec.
+- A request that skips this ("implement F12", "start the next feature") still starts at Step 1. `docs/specs/<feature-slug>/intake.md` and the backlog entry are Step 1 inputs, not the spec.
 - "Implement all pending features": under `scope: feature`, one full cycle per feature in build order, each ending at Ship (Ship asks before the next); under `scope: all`, the single cycle of every Must feature. Never batch features under `scope: feature`.
 
 **Conventions:** read `kit/orchestrator-conventions.md` and `kit/session-logging.md` before starting. Each step file is authoritative for its step; read it before running the step.

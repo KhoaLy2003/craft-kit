@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed
+
+- **Phase 3 Iterate is replaced by Maintenance** (`phase-maintenance.md`, one file, 3 steps). Step 1 asks whether to add a feature or fix a bug. A bug prints the `phase-bug-fix.md` prompt. A feature goes through Intake (one round of questions, fit check against architecture, constitution, data model, flows and `DESIGN.md`; writes `docs/specs/<feature-slug>/intake.md`; hard gate only when the feature does not fit) and Register (append-only release and feature in `docs/backlog.json`, release block in `docs/roadmap.md`, scope `feature`), then hands off to Phase 2. One feature per run; session log `docs/maintenance-session.md`.
+- Removed with Phase 3: `phase-3-iterate.md`, `steps/phase-3/*`, the wave design (`docs/iterations/<release>/design.md`, Shared Surface, Amendment log, Work Packages, Feature slices), Closeout, and the Phase 2 text that consumed them. `START.md`, Adopt, `session-logging.md`, `change-control.md`, `session-handover.md` and Phase 2 references now point to Maintenance. Existing projects with `docs/phase-3-session.md` keep it as history; new work logs to `docs/maintenance-session.md`.
+- Repo only: `kit-consistency.test.mjs` and `measure-reading-set.mjs` drop Phase 3; `AGENTS.md`, `README.md` and the docs site name Maintenance.
+
 ---
 
 ## [0.0.47] - 2026-11-06

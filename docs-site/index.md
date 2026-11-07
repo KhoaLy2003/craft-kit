@@ -36,12 +36,12 @@ features:
     link: /phases/bug-fix
     linkText: Bug fix workflow
   - icon:
-      src: /icons/phase-3.svg
-      alt: Phase 3 Iterate
-    title: Phase 3 — Iterate
-    details: After release, turn customer requirements into one approved design for the whole release, split into work packages that Phase 2 builds, in parallel where independent. Experimental.
-    link: /phases/phase-3-iterate
-    linkText: Iterate
+      src: /icons/maintenance.svg
+      alt: Maintenance
+    title: Maintenance
+    details: Add a feature or fix a bug on a shipped app. A feature is checked against your design, registered, and built by Phase 2. Experimental.
+    link: /phases/phase-maintenance
+    linkText: Maintenance
   - icon:
       src: /icons/install.svg
       alt: One Command to Install
@@ -136,7 +136,7 @@ Everything the AI produces lands in your project folder. Never edit `kit/`: an u
 
 [**Not sure where to start?**<br>The Start router inspects your project and prints the workflow and prompt to use](/start)
 
-[**Phase 3 — Iterate**<br>Turn new requirements into one approved release design](/guides/phase-3-iterate)
+[**Maintenance**<br>Add a feature or fix a bug on a shipped app](/phases/phase-maintenance)
 
 [**Admin Site**<br>Add a role-based admin site to a shipped app](/phases/admin)
 

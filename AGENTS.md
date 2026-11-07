@@ -40,7 +40,7 @@ Owned by the phase files; this is the index only (`kit/START.md` routes between 
 |---|---|---|
 | Phase 1 Bootstrap (once) | `kit/phase-1-bootstrap.md` | 8 steps → `docs/` foundation set, `docs/.craft-kit.json`, one commit, Phase 2 handoff prompt |
 | Phase 2 Build | `kit/phase-2.md` | 7 steps, scope `all` (validated) or `feature` (experimental), set in `docs/roadmap.md` |
-| Phase 3 Iterate | `kit/phase-3-iterate.md` | 5 step files in `kit/steps/phase-3/` → release in `docs/backlog.json`, one wave design |
+| Maintenance | `kit/phase-maintenance.md` | Choose feature or bug → bug: `kit/phase-bug-fix.md`; feature: intake + fit check → backlog/roadmap entry → Phase 2 `scope: feature` |
 | Adopt / Upgrade | `kit/phase-adopt.md`, `kit/phase-upgrade.md` | existing code without kit docs / older projects; upgrade modules in `kit/phase-*-backfill.md` etc. |
 | Bug Fix, Admin, Onboarding | `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | see each file |
 
@@ -54,7 +54,7 @@ Everything except Phase 1 + Phase 2 `scope: all` is experimental. One session lo
 | `soft` | Orchestrator presents summary; advances unless user objects |
 | `hard` | Full stop — emit a Gate Summary naming the decision, wait for explicit approval |
 
-Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Phase 3 Prioritise, Design; Admin Scope, Admin Ship; Onboarding Review. Full definition: `kit/orchestrator-conventions.md` → Gates.
+Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Maintenance Intake only when the feature does not fit; Admin Scope, Admin Ship; Onboarding Review. Full definition: `kit/orchestrator-conventions.md` → Gates.
 
 ---
 
@@ -66,7 +66,6 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; B
 | `kit/` | Publishable workflow kit — orchestration scripts, templates, step files, guides |
 | `kit/steps/phase-1/` | `p1-01-ideation.md` … `p1-08-scaffold.md` |
 | `kit/steps/phase-2/` | `p2-01-spec.md` … `p2-07-ship.md` |
-| `kit/steps/phase-3/` | `p3-01-discover.md` … `p3-05-closeout.md` |
 | `kit/guides/` (on-demand detail) | `conventions-detail.md` and the guides listed below; read only when a rule points there |
 | `kit/templates/` | Fill-in output templates; copied to `<project>/docs/` — **never edit during a run** |
 | `kit/guides/` | `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
@@ -148,7 +147,7 @@ Every generated artifact starts with:
 | `kit/phase-2.md` | Phase 2 orchestration, scope `all` / `feature` |
 | `kit/START.md` | Entry router (read-only): Detect → workflow + prompt; reuses the Detect step of `phase-upgrade.md` |
 | `kit/phase-adopt.md`, `kit/phase-upgrade.md` and the upgrade modules (`kit/phase-*-backfill.md`, `phase-log-collapse.md`) | Existing-project workflows. Upgrade is the registry of one-time modules: add a row there for every future migration. Adopt writes `docs/adopt-session.md`. Template exceptions to the metadata-header rule: `craft-kit.json`, `pr-description.md`, `adopt-survey.md` |
-| `kit/phase-3-iterate.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows |
+| `kit/phase-maintenance.md`, `kit/phase-bug-fix.md`, `kit/phase-admin.md`, `kit/phase-onboarding.md` | Other workflows. Maintenance writes `docs/maintenance-session.md` |
 | `kit/scripts/lint-docs.js` | Read-only docs lint shipped with the kit: valid `Status`, `Last updated` format, `stale` warnings, `.craft-kit.json` schema, growth warnings for the session log and E2E doc (conventions rule 11) |
 | `kit/scripts/render-backlog.js`, `kit/templates/backlog.json`, `kit/templates/backlog.html` | Backlog validator and renderer; JSON source and HTML template |
 | `kit/task-agent-rubric.md` | Task type → specialist agent routing |

@@ -163,7 +163,7 @@
       "items": [
         "scope all: every Must feature in one cycle (validated)",
         "scope feature: one feature per cycle, repeated (experimental)",
-        "Phase 3 release: features in the same work-package group run in parallel sessions, each on its own branch"
+        "Maintenance registers a feature; independent features can be built in separate sessions, each on its own branch"
       ]
     },
     {

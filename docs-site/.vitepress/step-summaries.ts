@@ -73,26 +73,4 @@ export const STEPS: Record<string, Summary> = {
     'Commits, pushes the branch and opens one pull request with a structured description, then records the feature as shipped.',
     ['Confirm the git remote when asked.', 'Review and merge the pull request yourself. The AI never merges.'],
     'A pushed branch, a pull request, and the feature marked `shipped` in `docs/backlog.json`. With no remote it commits locally and tells you how to publish.'),
-  'phases/steps/p3-01-discover': step(
-    'Asks for the release goal and any customer requirements or ideas, then lists up to ten evidence-backed candidates.',
-    ['Answer the questions; "none" is a valid answer.', 'Add, remove or accept the candidate list.'],
-    '`docs/iterations/<release>/discover.md`.'),
-  'phases/steps/p3-02-prioritise': step(
-    'Ranks the candidates against the goal and commits the chosen ones as a new release.',
-    ['Choose the cut line.', 'Approve the scope.'],
-    'A new release and features in `docs/backlog.json`, and a release block in `docs/roadmap.md`.',
-    ['The release is small enough to finish.', 'Everything you left out is deferred on purpose.']),
-  'phases/steps/p3-03-design': step(
-    'Designs the whole release at once: data model, flows, architecture and screens, with one owner for every shared data point.',
-    ['Review the design and the shared data points.', 'Approve it as the single basis for building every feature.'],
-    '`docs/iterations/<release>/design.md`, and the foundation documents amended once.',
-    ['Two features never change the same data point.', 'Every screen has a design or an accepted fallback.']),
-  'phases/steps/p3-04-handoff': step(
-    'Splits the release into work packages, commits the design, and prints one Phase 2 prompt per feature.',
-    ['Start a new session for each Phase 2 prompt.'],
-    'A Work Packages table, a design commit and the Phase 2 prompts. No feature code is written here.'),
-  'phases/steps/p3-05-closeout': step(
-    'Records what shipped, resolves leftover features and known issues, and closes the release.',
-    ['Say what to do with each feature still pending.', 'Share any feedback since the release.'],
-    'An Outcome section in the release block.'),
 }

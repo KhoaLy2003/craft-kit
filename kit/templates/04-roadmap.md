@@ -79,4 +79,4 @@
 |---|---|---|---|---|
 | | | | <!-- all features, or feature ids --> | <!-- Review, E2E case, or a Verification Commands row --> |
 
-<!-- Phase 3 appends `## Release <slug>` blocks below this line. Shipped features in docs/backlog.json are never edited or removed. -->
+<!-- Maintenance appends `## Release <slug>` blocks below this line. Shipped features in docs/backlog.json are never edited or removed. -->

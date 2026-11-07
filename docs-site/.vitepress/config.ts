@@ -28,7 +28,7 @@ const PHASES: Page[] = [
   kit('phase-1-bootstrap',      'phases/phase-1',        'Phase 1 — Bootstrap'),
   kit('phase-2',                'phases/phase-2',        'Phase 2 — Build (workflow)'),
   kit('phase-bug-fix',          'phases/bug-fix',        'Bug Fix Workflow'),
-  kit('phase-3-iterate',        'phases/phase-3-iterate', 'Phase 3 — Iterate (workflow)'),
+  kit('phase-maintenance',      'phases/phase-maintenance', 'Maintenance Workflow'),
   kit('phase-admin',            'phases/admin',          'Admin Site Workflow'),
   kit('phase-adopt',            'phases/adopt',          'Adopt — Existing Codebase'),
   kit('phase-upgrade',          'phases/upgrade',        'Project Upgrade'),
@@ -61,20 +61,11 @@ const PHASE_2_STEPS = steps('phase-2', [
   ['p2-07-ship',         'Step 7 — Ship'],
 ])
 
-const PHASE_3_STEPS = steps('phase-3', [
-  ['p3-01-discover',   'Step 1 — Discover'],
-  ['p3-02-prioritise', 'Step 2 — Prioritise'],
-  ['p3-03-design',     'Step 3 — Design'],
-  ['p3-04-handoff',    'Step 4 — Handoff'],
-  ['p3-05-closeout',   'Step 5 — Closeout'],
-])
-
 const GUIDES: Page[] = [
   docs('guides/what-to-say',                'guides/what-to-say',                'What to Say to the AI'),
   docs('guides/existing-projects',          'guides/existing-projects',          'Existing Projects'),
   docs('guides/phase-1-bootstrap',          'guides/phase-1-bootstrap',          'Phase 1 — Bootstrap (guide)'),
   docs('guides/phase-2-build',              'guides/phase-2-build',              'Phase 2 — Build (guide)'),
-  docs('guides/phase-3-iterate',            'guides/phase-3-iterate',            'Phase 3 — Iterate (guide)'),
   docs('guides/adding-a-feature',           'guides/adding-a-feature',           'Adding a Single Feature'),
   docs('guides/fixing-a-bug',               'guides/fixing-a-bug',               'Fixing a Bug'),
   docs('guides/admin-site',                 'guides/admin-site',                 'Building an Admin Site'),
@@ -111,7 +102,7 @@ const OTHER: Page[] = [
 ]
 
 const PAGES = [
-  ...PHASES, ...PHASE_1_STEPS, ...PHASE_2_STEPS, ...PHASE_3_STEPS, ...GUIDES,
+  ...PHASES, ...PHASE_1_STEPS, ...PHASE_2_STEPS, ...GUIDES,
   ...REFERENCE_SETUP, ...REFERENCE_ORCHESTRATOR, ...OTHER,
 ]
 
@@ -181,10 +172,9 @@ const SIDEBAR = [
   {
     text: 'Change a shipped product', collapsed: true,
     items: [
-      ...pick('guides/fixing-a-bug', 'phases/bug-fix').map(item),
-      withChildren(byTo.get('phases/phase-3-iterate')!, PHASE_3_STEPS),
+      ...pick('guides/fixing-a-bug', 'phases/bug-fix', 'phases/phase-maintenance').map(item),
       ...pick(
-        'guides/phase-3-iterate', 'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control',
+        'guides/adding-a-feature', 'guides/evolving-specs', 'guides/change-control',
         'guides/admin-site', 'phases/admin',
       ).map(item),
     ],
@@ -297,14 +287,14 @@ export default defineConfig({
       {
         text: 'Workflows',
         items: pick(
-          'start', 'phases/phase-1', 'phases/phase-2', 'phases/bug-fix', 'phases/phase-3-iterate',
+          'start', 'phases/phase-1', 'phases/phase-2', 'phases/bug-fix', 'phases/phase-maintenance',
           'phases/admin', 'phases/adopt', 'phases/upgrade', 'phases/onboarding',
         ).map(item),
       },
       {
         text: 'Guides',
         items: pick(
-          'guides/existing-projects', 'guides/phase-1-bootstrap', 'guides/phase-2-build', 'guides/phase-3-iterate',
+          'guides/existing-projects', 'guides/phase-1-bootstrap', 'guides/phase-2-build',
           'guides/adding-a-feature', 'guides/fixing-a-bug', 'guides/admin-site',
           'guides/onboarding-a-developer', 'guides/resuming-a-session',
         ).map(item),

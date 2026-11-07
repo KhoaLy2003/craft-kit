@@ -2,7 +2,7 @@
 
 > **Status:** experimental — not yet validated in a test round.
 >
-> The one mid-phase handover mechanism for every phase (Phase 1, Phase 2, Phase 3, bug fix). Produces `docs/handover.md`, the single file a new session needs to resume. Works with any AI harness.
+> The one mid-phase handover mechanism for every phase (Phase 1, Phase 2, Maintenance, bug fix). Produces `docs/handover.md`, the single file a new session needs to resume. Works with any AI harness.
 >
 > **Relation to the Phase 1 → 2 handoff:** that one-time prompt, printed when Phase 1 ends and owned by `kit/phase-1-bootstrap.md`, starts Phase 2 in a fresh session. This guide covers pauses *inside* a phase, including inside Phase 2 after the handoff. The two never overlap: the handoff prompt is not written to `docs/handover.md`, and a handover never replaces it.
 
@@ -22,7 +22,7 @@ Natural seams (nothing mid-flight, state is on disk):
 |---|---|
 | Phase 1 | Any step whose hard gate has just cleared |
 | Phase 2 | After Step 2 (Plan: spec and plan on disk, no code), Step 3 (Implement: code on the feature branch; the handover commits it), Step 4 (Review: findings fixed; the handover commits it), Step 7 (Ship, `scope: feature` with `pending` features left: everything committed; the Unit is the next feature and the resume step is Step 1) |
-| Phase 3 / bug fix / admin site | After any hard gate (admin: after the Scope gate, or after the shell checkpoint passes) |
+| Maintenance / bug fix / admin site | After any hard gate (Maintenance: after the Intake gate; admin: after the Scope gate, or after the shell checkpoint passes) |
 | Adopt | Any step whose hard gate has just cleared (Steps 2, 3, 4), and after Step 8 |
 
 Offer format (blockquote, then wait for the reply). Do not offer at other steps.
@@ -53,8 +53,8 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 - [ ] Project name (`docs/idea-brief.md` or `package.json → name`)
 - [ ] Phase, unit (feature slug / bug slug / release slug), current step number and name
 - [ ] Sub-progress: what within the step is done, what remains
-- [ ] Session log status per step for the current unit only (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Phase 3: `docs/phase-3-session.md`; admin: `docs/admin-session.md`; Adopt: `docs/adopt-session.md`); never read or copy other units' sections
-- [ ] Paths and approval status of the step's artifacts (spec, plan, assess.md, discover.md …); plan task counts if applicable
+- [ ] Session log status per step for the current unit only (Phase 1: `docs/phase-1-session.md`; Phase 2: `docs/phase-2-session.md`; bug fix: `docs/bug-session.md`; Maintenance: `docs/maintenance-session.md`; admin: `docs/admin-session.md`; Adopt: `docs/adopt-session.md`); never read or copy other units' sections
+- [ ] Paths and approval status of the step's artifacts (spec, plan, intake.md …); plan task counts if applicable
 - [ ] Current branch (`git branch --show-current`) if code is involved
 - [ ] Decisions made this session not captured in an artifact
 - [ ] Blockers
@@ -81,8 +81,8 @@ Write to `docs/handover.md`. Fill every `[bracket]`.
 
 | Field | Value |
 |---|---|
-| Phase | [Phase 1 | Phase 2 (scope: all|feature) | Phase 3 | Bug fix | Admin site | Adopt] |
-| Unit | `[feature-slug | bug-slug | release-slug | project]` |
+| Phase | [Phase 1 | Phase 2 (scope: all|feature) | Maintenance | Bug fix | Admin site | Adopt] |
+| Unit | `[feature-slug | bug-slug | project]` |
 | Step | Step [N] — [Step Name] |
 | Status | [complete | in progress — sub-progress] |
 

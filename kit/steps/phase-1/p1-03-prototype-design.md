@@ -10,7 +10,7 @@
 - **Outputs**:
   - `docs/prototype/journey-map.md` — one persona, one scenario, end-to-end journey
   - `docs/prototype/prototype-brief.md` — screens, interactions, mock data, state coverage, faked parts
-  - `docs/DESIGN.md` — user-provided, validated, not modified by this step (later amendments only with explicit user approval: Phase 3 Step 3 or Phase 2 Step 3)
+  - `docs/DESIGN.md` — user-provided, validated, not modified by this step (later amendments only with explicit user approval: Maintenance Step 2 or Phase 2 Step 3)
   - `docs/preview/` — the HTML prototype (no real backend; opens as `file://`)
 - **Template**: `templates/03a-journey-map.md`, `templates/03b-prototype-brief.md`, `templates/03c-design-system.md` (skeleton for a user who writes their own `DESIGN.md`)
 - **Gate**: `hard` — one gate for flow and look together.

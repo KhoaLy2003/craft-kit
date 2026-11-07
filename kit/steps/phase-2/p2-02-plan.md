@@ -40,7 +40,6 @@ These win over `writing-plans` defaults and any user-level setting:
 
 | Variant | Rule |
 |---|---|
-| Phase 3 release feature | A task that creates or alters a Shared Surface item exists only in its owner feature's plan. Other plans consume the owner's contract from `design.md` (Feature slices entry and the sections it lists) and `docs/data-model.md`, with no migration or schema task for it |
 | `scope: all`, a second **domain** (`p1-04-roadmap.md`; UI + API is one) holds ≥ 20% of the tasks | Recommend `scope: feature` (**experimental — not yet validated**); staying is valid. Ask; never switch on your own. If confirmed, follow the Mid-Cycle Escape in `kit/guides/phase-2-feature-scope.md` |
 
 ## Completion Criteria
