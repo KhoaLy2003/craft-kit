@@ -246,7 +246,7 @@ The AI asks one question: do you want to add a new feature or fix an existing bu
 - **Add a feature.** The AI asks what the feature does, who it is for, and what it touches. It then checks the feature against `architecture.md`, `constitution.md`, `data-model.md`, `flows.md` and `DESIGN.md` and tells you whether it fits, extends the data model or flows, or does not fit (in which case you decide whether to amend the document, cut the feature down, or drop it). You approve the intake; the AI writes `docs/specs/<feature-slug>/intake.md`.
 - **Register.** The AI adds the feature and its release to `docs/backlog.json` and `docs/roadmap.md`, sets the Phase 2 scope to `feature`, and prints the Phase 2 prompt: `Run Phase 2 using kit/phase-2.md for feature <F-id>.` Send it in a new session to build the feature. Maintenance never writes feature code.
 
-Maintenance needs `docs/backlog.json`, `roadmap.md`, `constitution.md` and `architecture.md`; if `backlog.json` is missing, run `kit/phase-roadmap-migrate.md` first. See [Maintenance Workflow](/phases/phase-maintenance) for the full process. This workflow is experimental.
+Maintenance needs `docs/backlog.json`, `roadmap.md`, `constitution.md` and `architecture.md`; if `backlog.json` is missing, see [Existing Projects](/guides/existing-projects). See [Maintenance Workflow](/phases/phase-maintenance) for the full process. This workflow is experimental.
 
 ---
 

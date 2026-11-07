@@ -73,14 +73,13 @@ Read the PR's check status **once** (needs a CI row in Verification Commands or 
 ### 6. Other rules
 
 - **No deploy.** Ship never deploys. If the PR's checks include a preview URL, report it.
-- **Spec persistence (ask once).** If `docs/constitution.md` has no "Spec Evolution" section, ask how specs will evolve, record it there (models: `kit/guides/evolving-specs.md`), and set `Last amended` to today.
 
 ## Completion Criteria
 
 - [ ] Committed; user-confirmed remote pushed and PR open, or the local-only fallback recorded in the Outcome line
 - [ ] CI status reported (a failing run returned to Step 4 at most once)
 - [ ] `shipped` events with PR (or local commit) evidence for every feature built; releases closed; render script exits 0
-- [ ] Impact merge done; unit collapsed and archived; spec persistence decision recorded; `AGENTS.md` and root `CHANGELOG.md` updated where applicable; lint-docs reports no errors and no growth warning for this unit
+- [ ] Impact merge done; unit collapsed and archived; `AGENTS.md` and root `CHANGELOG.md` updated where applicable; lint-docs reports no errors and no growth warning for this unit
 - [ ] `scope: feature` with `pending` features left: the user answered the next-step question; nothing started unprompted
 
 ## Transitions
@@ -104,4 +103,3 @@ Read the PR's check status **once** (needs a CI row in Verification Commands or 
 ## References
 
 - `finishing-a-development-branch` skill
-- `kit/guides/evolving-specs.md`

@@ -69,4 +69,4 @@ Long runs can outgrow one conversation. The AI offers a session checkpoint at ev
 - **The plan is too big.** Under `scope: all`, the AI may suggest switching to `scope: feature`. Agree only if you want the release split.
 - **The manual check fails.** Describe what you saw. The AI fixes it on the same branch, reruns the affected tests, and asks you to check again.
 - **A bug turns up after shipping.** Use the [bug-fix workflow](/phases/bug-fix), not another Phase 2 run.
-- **One feature should be added.** Use [Adding a Single Feature](/guides/adding-a-feature).
+- **One feature should be added.** Use the [Maintenance workflow](/phases/phase-maintenance).

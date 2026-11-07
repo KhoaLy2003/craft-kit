@@ -88,7 +88,7 @@ Not sure where to start? Say `Start using kit/START.md.` The router inspects the
 | Developer Onboarding | `phase-onboarding.md` | A developer is joining; writes `docs/ONBOARDING.html` | experimental |
 | Session Handover | `guides/session-handover.md` | A long run continues in a fresh session | experimental |
 
-Start Phase 2 with `"Run Phase 2 using kit/phase-2.md."` and Maintenance with `"Run Maintenance using kit/phase-maintenance.md."` It asks whether you want to add a feature or fix a bug. Adding one known feature to a shipped app: [Adding a Feature](https://khoaly2003.github.io/craft-kit/guides/adding-a-feature).
+Start Phase 2 with `"Run Phase 2 using kit/phase-2.md."` and Maintenance with `"Run Maintenance using kit/phase-maintenance.md."` It asks whether you want to add a feature or fix a bug, and registers a new feature before Phase 2 builds it.
 
 ---
 
@@ -137,7 +137,7 @@ All work uses your platform's general-purpose agent.
 | `task-agent-rubric.md` | Task type → specialist agent routing |
 | `steps/phase-1/`, `steps/phase-2/` | Step detail files `p1-01` … `p1-08`, `p2-01` … `p2-07` |
 | `templates/` | Output templates for Phase 1 artifacts, specs, E2E plan, model map, adopt survey, PR description, kit version record |
-| `guides/` | `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
+| `guides/` | `design-reference.md`, `session-handover.md` |
 | `CHANGELOG.md` | Kit change history — kept in this repo, not installed |
 
 ---

@@ -14,7 +14,7 @@
 ## Scope
 
 - **In**: concrete coding standards (naming, structure, module boundaries, forbidden patterns); architectural rules derived from `docs/architecture.md`; an Amendment Procedure; depth sized to the project.
-- **Out**: personal workflow preferences that do not change code or architecture output (except the `Spec Evolution` section Phase 2 Ship adds); roadmap decisions; deployment procedures; aspirational principles.
+- **Out**: personal workflow preferences that do not change code or architecture output; roadmap decisions; deployment procedures; aspirational principles.
 
 > Every principle must be concrete enough to change at least one downstream plan, diff, or agent output. If deleting a rule would change none, delete the rule.
 
@@ -34,7 +34,7 @@ Write the file to `docs/constitution.md`. Set `Status: approved` after the user 
 ## Completion Criteria
 
 - [ ] Every principle states at least one MUST rule in measurable terms and would change a real decision if removed.
-- [ ] No personal workflow preferences (the Ship-added `Spec Evolution` section is exempt).
+- [ ] No personal workflow preferences.
 - [ ] Amendment Procedure and versioning are filled in with an actionable process.
 - [ ] `Verification Commands` table filled: every row has a command or `n/a — <reason>`, status `planned`.
 - [ ] Every Non-functional Requirement with a measurable target is listed in `NFR Mapping` with a MUST or Verification Commands row.

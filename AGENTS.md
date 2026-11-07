@@ -68,7 +68,7 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; B
 | `kit/steps/phase-2/` | `p2-01-spec.md` … `p2-07-ship.md` |
 | `kit/guides/` (on-demand detail) | `conventions-detail.md` and the guides listed below; read only when a rule points there |
 | `kit/templates/` | Fill-in output templates; copied to `<project>/docs/` — **never edit during a run** |
-| `kit/guides/` | `design-reference.md`, `evolving-specs.md`, `session-handover.md` |
+| `kit/guides/` | `design-reference.md`, `session-handover.md` |
 | `kit/resource/` | `step-specification-template.md` — dev-only, **not installed** |
 | `tests/` | `cli.test.mjs`, `render-backlog.test.mjs`, `kit-consistency.test.mjs`, `lint-docs.test.mjs`; `tests/fixtures/lint-docs/` holds the lint fixture projects |
 | `testing/` | Narrative E2E validation rounds; each under `testing/round-NN/<project-slug>/` |

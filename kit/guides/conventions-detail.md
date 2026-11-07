@@ -26,7 +26,7 @@ Read only the current unit's log section and the artifacts it points to, then ac
 
 ## Project workflow block
 
-`kit/` is git-ignored, so a fresh session sees only the project files. Phase 1 Step 8 and Adopt Step 8 therefore write this section into the project-root `AGENTS.md`, and into `CLAUDE.md` too when the project has one (existing file: show a diff, apply on approval). Substitute the real install directory for `kit/`. Never write a version number into it: `docs/.craft-kit.json` is the one record, so the block cannot go stale.
+`kit/` is git-ignored, so a fresh session sees only the project files. Phase 1 Step 8 and Adopt Step 7 (Closeout) therefore write this section into the project-root `AGENTS.md`, and into `CLAUDE.md` too when the project has one (existing file: show a diff, apply on approval). Substitute the real install directory for `kit/`. Never write a version number into it: `docs/.craft-kit.json` is the one record, so the block cannot go stale.
 
 ```markdown
 ## Workflow (craft-kit)

@@ -4,7 +4,7 @@ Use the bug-fix workflow when something you already shipped is broken. It diagno
 
 It needs a runnable app and `docs/constitution.md`. It is experimental: not yet validated in a test round.
 
-Not a bug but a missing feature? Use [Adding a Single Feature](/guides/adding-a-feature).
+Not a bug but a missing feature? Use the [Maintenance workflow](/phases/phase-maintenance).
 
 ---
 

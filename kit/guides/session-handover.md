@@ -42,7 +42,7 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 3. For partial code, apply the one rule: **commit only what compiles cleanly; every other uncommitted change is stashed (`git stash push -m "handover: <task>"`, listed under In-Progress State) or discarded, and its task is flagged "restarted in new session" in the session log.** Never leave partial writes in the working tree.
 4. Set the step to `blocked` in the session log with reason `session handover`.
 
-**Phase 1 and Adopt exception:** both make exactly one commit (Phase 1 at Step 8, Adopt at Step 9), so their documents stay uncommitted at a handover. Do not commit. List every file under `docs/` in the handover document and tell the user to keep the working folder (the same checkout) for the new session.
+**Phase 1 and Adopt exception:** both make exactly one commit (Phase 1 at Step 8, Adopt at Step 7), so their documents stay uncommitted at a handover. Do not commit. List every file under `docs/` in the handover document and tell the user to keep the working folder (the same checkout) for the new session.
 
 **Rule (all other phases):** after these steps the working tree is clean apart from `docs/handover.md` and the session log (`git status` shows no other uncommitted change). Never hand over with uncommitted writes; a new session cannot recover unsaved work. A stash is saved work only if it is named in the handover document.
 
