@@ -7,12 +7,20 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.50] - 2026-11-07
+
+**Summary:** Admin site is one checklist under Maintenance · stricter backlog dependency check
+
 ### Changed
 
 - **Admin site is one checklist, not a phase.** `kit/phase-admin.md` is removed. Its Blueprint (stack, module registry, guard, RBAC, audit record, token, screen contracts), Shell checkpoint and security review are now the single file **`guides/admin-checklist.md`**, kept generic enough for any stack. Admin features run through **`phase-maintenance.md`** intake (new `Admin:` field in `intake.md`; the checklist is added to `Based on`) and then Phase 2. The admin session log (`docs/admin-session.md`) is gone; the feature's Maintenance section carries it.
 - **`scripts/render-backlog.js`** rejects a feature that is `in-progress` or `shipped` while a `depends_on` feature is not `shipped`. Admin modules depend on the `Admin Shell` feature, so they cannot start before it ships. **`phase-maintenance.md`** Step 3 prints no Phase 2 prompt while a dependency is unshipped.
 - **`steps/phase-1/p1-04-roadmap.md`** and `templates/04-roadmap.md` point the Admin Site hint at the checklist.
 - Repo only: `README.md`, `AGENTS.md`, `START.md`, `bin/cli.js` quick-start and the docs-site admin pages point to the Maintenance flow.
+
+---
 
 ---
 
