@@ -195,15 +195,20 @@ describe('view-docs --prepare', () => {
     assert.ok(texts('Session logs').includes('Phase 2 session'))
   })
 
-  test('the mirrored copy gets a readable first heading and a folded Metadata section; docs/ stays as written', () => {
-    const root = project()
-    const site = prepare(scripts, root, tempDir())
-    const copy = readFileSync(join(site, 'content', 'prototype', 'journey-map.md'), 'utf8')
-    assert.match(copy, /^# Journey map$/m)
-    assert.match(copy, /<details class="ck-metadata">\n<summary>Metadata<\/summary>\n\n- \*\*Status\*\*/)
-    assert.match(copy, /\n<\/details>\n\n## 1\. Persona/)
-    assert.match(readFileSync(join(root, 'docs', 'prototype', 'journey-map.md'), 'utf8'), /^# journey-map\.md$/m)
-  })
+  for (const [name, eol] of [['LF', '\n'], ['CRLF', '\r\n']]) {
+    test(`the mirrored copy gets a readable first heading and a folded Metadata section (${name} document); docs/ stays as written`, () => {
+      const root = project()
+      const original = ['# journey-map.md', '', '## Metadata', '', '- **Status**: `approved`', '', '## 1. Persona', '', 'One persona.', ''].join(eol)
+      writeFileSync(join(root, 'docs', 'prototype', 'journey-map.md'), original)
+      const site = prepare(scripts, root, tempDir())
+      const copy = readFileSync(join(site, 'content', 'prototype', 'journey-map.md'), 'utf8')
+      assert.match(copy, /^# Journey map\r?$/m)
+      assert.doesNotMatch(copy, /# journey-map\.md/)
+      assert.match(copy, /<details class="ck-metadata">\n<summary>Metadata<\/summary>\n\r?\n- \*\*Status\*\*/)
+      assert.match(copy, /<\/details>\n\r?\n## 1\. Persona/)
+      assert.equal(readFileSync(join(root, 'docs', 'prototype', 'journey-map.md'), 'utf8'), original)
+    })
+  }
 
   test('a second run follows docs/: new files appear, deleted and renamed ones go', () => {
     const root = project()

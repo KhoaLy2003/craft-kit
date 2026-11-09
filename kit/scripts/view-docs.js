@@ -273,7 +273,7 @@ function writeIfChanged(file, text) {
 //  - the "## Metadata" section, which repeats the status badge, folds into a closed <details>.
 function transformMarkdown(text) {
   let out = text;
-  const h1 = /^#[ \t]+(.+?)[ \t]*$/m.exec(out);
+  const h1 = /^#[ \t]+(.+?)[ \t]*(?=\r?$)/m.exec(out);
   if (h1 && FILE_TITLE.test(h1[1])) {
     out = out.slice(0, h1.index) + `# ${prettify(path.posix.basename(h1[1]))}` + out.slice(h1.index + h1[0].length);
   }
