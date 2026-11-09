@@ -7,6 +7,18 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Added
+
+- **Docs viewer.** `scripts/view-docs.js` shows a project's `docs/` folder as a VitePress website. `node kit/scripts/view-docs.js` runs a dev server that follows changes in `docs/`; `--build [--out DIR] [--base /path/]` writes a static site. It is read-only: `docs/` is mirrored into `~/.craft-kit/viewer/sites/<project>-<hash>/` (override with `CRAFT_KIT_HOME`), and dotfiles, JSON files and non-web file types are never copied. VitePress and Mermaid are installed once into `~/.craft-kit/viewer/` (the only network use); the theme and config in `kit/viewer/` are synced on every run, so a kit update reaches the viewer immediately.
+  - **Navigation:** sidebar by document group; Specs and the Archive nest by folder, with feature folders named from `docs/backlog.json` (`F16 Audit trail…`), screens grouped under each feature, and `Spec` / `Plan` leaves. Titles that are only a file name (`# architecture.md`) show a readable name; same-title documents are named from their file.
+  - **Reading:** a wider column (about 850 px at 1440 px, plus a `Wide view` toggle for the full width), tables that wrap text and scroll inside their own box with a fade on the overflowing side, a status badge with the document's own Metadata section folded away, lint findings per page, and a not-found page that says what happened.
+  - **Generated pages:** Overview, Documents (`Based on` links resolve to documents in subfolders), Backlog board, and Artifacts (folders collapsed; files open inside the viewer so navigation stays on screen, images too).
+  - **Diagrams:** Mermaid is drawn in place, with an `Expand` button that shows a wide diagram at natural size.
+  - **Test output:** machine-written test-run files (Playwright `*-report/`, `*-artifacts/`, `test-results/`) stay reachable but are kept out of the sidebar and lists.
+- **`scripts/docs-index.js`** scans `docs/` into one JSON index (documents, status headers, `Based on` links, backlog summary, lint findings; `schema: 1`). The viewer reads only this index, so other tools can consume it.
+- **`bin/cli.js`** quick start lists the viewer. No document migration is needed: the viewer reads existing documents, and a document without a `Status` header simply shows no badge.
+- Repo only: `tests/view-docs.test.mjs` (index, mirror, update path from an older install; an opt-in real build with `CRAFT_KIT_VIEWER_BUILD=1`), `README.md`, `AGENTS.md`, docs-site guide.
+
 ---
 
 ## [0.0.50] - 2026-11-07
