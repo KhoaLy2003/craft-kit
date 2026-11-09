@@ -7,6 +7,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.51] - 2026-11-09
+
 ### Added
 
 - **Docs viewer.** `scripts/view-docs.js` shows a project's `docs/` folder as a VitePress website. `node kit/scripts/view-docs.js` runs a dev server that follows changes in `docs/`; `--build [--out DIR] [--base /path/]` writes a static site. It is read-only: `docs/` is mirrored into `~/.craft-kit/viewer/sites/<project>-<hash>/` (override with `CRAFT_KIT_HOME`), and dotfiles, JSON files and non-web file types are never copied. VitePress and Mermaid are installed once into `~/.craft-kit/viewer/` (the only network use); the theme and config in `kit/viewer/` are synced on every run, so a kit update reaches the viewer immediately.
@@ -19,6 +23,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`scripts/docs-index.js`** scans `docs/` into one JSON index (documents, status headers, `Based on` links, backlog summary, lint findings; `schema: 1`). The viewer reads only this index, so other tools can consume it.
 - **`bin/cli.js`** quick start lists the viewer. No document migration is needed: the viewer reads existing documents, and a document without a `Status` header simply shows no badge.
 - Repo only: `tests/view-docs.test.mjs` (index, mirror, update path from an older install; an opt-in real build with `CRAFT_KIT_VIEWER_BUILD=1`), `README.md`, `AGENTS.md`, docs-site guide.
+
+---
 
 ---
 
