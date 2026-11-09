@@ -10,7 +10,7 @@ import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
 import {
-  mkdtempSync, writeFileSync, readFileSync, cpSync,
+  mkdtempSync, writeFileSync, readFileSync, cpSync, mkdirSync,
   rmSync, existsSync, readdirSync, statSync,
 } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
@@ -129,6 +129,14 @@ describe('docs-index: titles, groups and generated files', () => {
     assert.deepEqual(idx.docs.filter((d) => d.generated).map((d) => d.path), ['e2e-runs/run-1/auth-report/data/abc123.md'])
   })
 
+  test('hand-written folders named *-report stay visible; only e2e-runs output is flagged', () => {
+    const root = project()
+    mkdirSync(join(root, 'docs', 'bug-report'), { recursive: true })
+    writeFileSync(join(root, 'docs', 'bug-report', 'summary.md'), '# Bug report\n')
+    const idx = indexOf(root)
+    assert.equal(idx.docs.find((d) => d.path === 'bug-report/summary.md').generated, false)
+  })
+
   test('archive and prototype documents get their own groups', () => {
     const idx = indexOf(project())
     assert.equal(idx.docs.find((d) => d.path === 'archive/phase-2-session/login.md').group, 'Archive')
@@ -154,6 +162,35 @@ describe('view-docs --prepare', () => {
     const before = treeHash(root)
     prepare(scripts, root, tempDir())
     assert.equal(treeHash(root), before)
+  })
+
+  test('a fenced Metadata heading or file-name heading is left alone; link text with brackets is escaped', () => {
+    const root = project()
+    writeFileSync(join(root, 'docs', 'notes.md'), '# Notes [v2]\n\n```md\n# fake.md\n## Metadata\n```\n')
+    const site = prepare(scripts, root, tempDir())
+    const mirrored = readFileSync(join(site, 'content', 'notes.md'), 'utf8')
+    assert.ok(!mirrored.includes('<details'), mirrored)
+    assert.match(mirrored, /# fake\.md/)
+    assert.match(readFileSync(join(site, 'content', 'craft-kit', 'documents.md'), 'utf8'), /\[Notes \\\[v2\\\]\]\(\/notes\.md\)/)
+  })
+
+  test('--build --out refuses the project, docs/, the working directory and a non-site folder, deleting nothing', () => {
+    const root = project()
+    const other = tempDir()
+    writeFileSync(join(other, 'keep.txt'), 'x')
+    for (const out of [root, join(root, 'docs'), join(root, 'docs', 'specs'), other]) {
+      const res = node([join(scripts, 'view-docs.js'), root, '--build', '--out', out], { CRAFT_KIT_HOME: tempDir() })
+      assert.equal(res.status, 1, `${out}: ${res.stdout}${res.stderr}`)
+      assert.match(res.stderr, /--out/)
+    }
+    assert.ok(existsSync(join(root, 'docs', 'idea-brief.md')))
+    assert.ok(existsSync(join(other, 'keep.txt')))
+  })
+
+  test('an option without a value is rejected', () => {
+    const res = node([join(scripts, 'view-docs.js'), project(), '--build', '--out'], { CRAFT_KIT_HOME: tempDir() })
+    assert.equal(res.status, 1)
+    assert.match(res.stderr, /--out needs a value/)
   })
 
   test('generates overview, documents, backlog and artifacts pages', () => {
@@ -332,6 +369,8 @@ describe('update path: install a newer kit over an older one, then use the viewe
 describe('real build', { skip: process.env.CRAFT_KIT_VIEWER_BUILD !== '1' }, () => {
   test('builds the fixture project to static HTML with status badges and a Mermaid component', () => {
     const root = project()
+    // Vue must not evaluate braces or directives that come from a document.
+    writeFileSync(join(root, 'docs', 'braces.md'), '# Braces\n\n<details>\n{{ 1+1 }}\n<span @click="x()">hi</span>\n</details>\n')
     const out = join(tempDir(), 'site')
     const res = spawnSync('node', [join(ROOT, 'kit', 'scripts', 'view-docs.js'), root, '--build', '--out', out], {
       encoding: 'utf8', timeout: 600_000, env: { ...process.env, CRAFT_KIT_HOME: tempDir() },
@@ -341,6 +380,8 @@ describe('real build', { skip: process.env.CRAFT_KIT_VIEWER_BUILD !== '1' }, () 
     assert.match(html('idea-brief.html'), /class="[^"]*\bck-badge\b[^"]*"[^>]*>approved</)
     assert.match(html('idea-brief.html'), /&lt;feature-slug&gt;/)
     assert.match(html('architecture.html'), /ck-mermaid/)
+    assert.match(html('braces.html'), /\{\{ 1\+1 \}\}/)
+    assert.ok(!/<span[^>]*@click/.test(html('braces.html')))
     assert.match(html('prototype/journey-map.html'), /<details class="ck-metadata">/)
     assert.match(html('prototype/journey-map.html'), /<h1[^>]*>Journey map/)
     assert.ok(statSync(join(out, 'preview', 'index.html')).isFile())

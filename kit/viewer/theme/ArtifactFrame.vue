@@ -5,7 +5,8 @@ import { withBase } from 'vitepress'
 // The artifact to show comes from the URL hash: /craft-kit/artifact.html#/preview/index.html
 const target = ref('')
 const read = () => {
-  const raw = decodeURIComponent(window.location.hash.slice(1))
+  let raw = ''
+  try { raw = decodeURIComponent(window.location.hash.slice(1)) } catch { /* malformed escape: show the empty state */ }
   // Only paths inside this site: no scheme, no protocol-relative URL.
   target.value = raw.startsWith('/') && !raw.startsWith('//') && !raw.includes(':') ? raw : ''
 }
@@ -15,7 +16,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => window.removeEventListener('hashchange', read))
 
-const url = computed(() => (target.value ? withBase(encodeURI(target.value)) : ''))
+const url = computed(() => (target.value ? withBase(encodeURI(target.value).replace(/[#?]/g, (c) => (c === '#' ? '%23' : '%3F'))) : ''))
 const isImage = computed(() => /\.(png|jpe?g|gif|svg|webp|ico)$/i.test(target.value))
 </script>
 

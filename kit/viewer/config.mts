@@ -1,6 +1,6 @@
 // Copied into <site>/.vitepress/ by view-docs.js on every run; do not edit the copy.
 // Sidebar, nav and title come from generated.json (rewritten when docs/ changes).
-import { readFileSync } from 'node:fs'
+import { readFileSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
@@ -19,15 +19,33 @@ const ALLOWED_TAGS = new Set([
 const escapeText = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\{/g, '&#123;')
 
+// Attributes Vue would compile or the browser would run: event handlers, Vue directives and
+// bindings (`v-*`, `@x`, `:x`, `#x`), and `javascript:` URLs.
+const UNSAFE_ATTR = /\s(?:on[\w-]+|v-[\w:.-]+|[@:#][\w:.-]+)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi
+const JS_URL = /((?:href|src)\s*=\s*["']?)\s*javascript:/gi
+
+// Documents are the user's own, but they are AI-written and may hold anything: disallowed
+// tags are escaped, risky attributes dropped, and `{{` is neutralised across the whole block
+// (text between tags included), because Vue would evaluate it.
 function sanitizeHtml(html: string): string {
   return html
     .replace(/<(\/?)([a-zA-Z][\w-]*)([^>]*)>/g, (m, _slash, name) =>
-      ALLOWED_TAGS.has(String(name).toLowerCase()) ? m.replace(/\{\{/g, '&#123;&#123;') : escapeText(m))
+      ALLOWED_TAGS.has(String(name).toLowerCase()) ? m.replace(UNSAFE_ATTR, '').replace(JS_URL, '$1#') : escapeText(m))
+    .replace(/\{\{/g, '&#123;&#123;')
+}
+
+// index.json is re-read only when it changes, not once per page.
+let metaCache: { mtime: number, index: any } | null = null
+function readIndex() {
+  const file = resolve(here, '..', 'index.json')
+  const mtime = statSync(file).mtimeMs
+  if (!metaCache || metaCache.mtime !== mtime) metaCache = { mtime, index: JSON.parse(readFileSync(file, 'utf8')) }
+  return metaCache.index
 }
 
 function pageMeta(relativePath: string) {
   try {
-    const index = JSON.parse(readFileSync(resolve(here, '..', 'index.json'), 'utf8'))
+    const index = readIndex()
     const doc = index.docs.find((d: { path: string }) => d.path === relativePath)
     const lint = index.lint.filter((f: { file: string }) => f.file === `docs/${relativePath}`)
     return doc ? { status: doc.status, updated: doc.updated, updatedLabel: doc.updated_label, lint } : null

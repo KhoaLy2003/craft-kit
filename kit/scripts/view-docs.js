@@ -24,10 +24,14 @@ const TEMPLATE_DIR = path.join(__dirname, '..', 'viewer');
 
 // ─── Markdown helpers ─────────────────────────────────────────────────────────
 
-const cell = (s) => String(s ?? '').replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/</g, '&lt;').replace(/\{/g, '&#123;').replace(/\r?\n/g, ' ');
+const cell = (s) => String(s ?? '').replace(/[\\|[\]*_`]/g, '\\$&').replace(/</g, '&lt;').replace(/\{/g, '&#123;').replace(/\r?\n/g, ' ');
+// Same idea for raw HTML (artifact list): text and attribute values.
+const html = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\{/g, '&#123;');
+// encodeURI leaves # ? ( ) alone, which break a link target.
+const encodePath = (p) => encodeURI(p).replace(/[#?()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`);
 // Non-breaking hyphens keep a date such as 2026-11-04 on one line inside a narrow table cell.
 const nb = (s) => cell(s).replace(/-/g, '\u2011');
-const docLink = (rel) => `/${rel.replace(/\\/g, '/')}`;
+const docLink = (rel) => encodePath(`/${rel.replace(/\\/g, '/')}`);
 const mdLink = (title, rel) => `[${cell(title)}](${docLink(rel)})`;
 const routeOf = (rel) => `/${rel.replace(/\.md$/, '')}`.replace(/\/index$/, '/');
 const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -168,7 +172,7 @@ function artifactsPage(index, base = '/') {
     return lines.join('\n');
   }
   const preview = index.artifacts.find((a) => a.path === 'preview/index.html');
-  if (preview) lines.push('## Prototype preview', '', `<iframe src="${base}${encodeURI(preview.path)}" style="width:100%;height:640px;border:1px solid var(--vp-c-divider);border-radius:8px"></iframe>`, '');
+  if (preview) lines.push('## Prototype preview', '', `<iframe src="${html(base + encodePath(preview.path))}" style="width:100%;height:640px;border:1px solid var(--vp-c-divider);border-radius:8px"></iframe>`, '');
   const folders = new Map();
   for (const a of index.artifacts) {
     const parts = a.path.split('/');
@@ -178,8 +182,8 @@ function artifactsPage(index, base = '/') {
   }
   lines.push(`## All files (${index.artifacts.length})`, '');
   for (const [folder, items] of [...folders].sort((x, y) => x[0].localeCompare(y[0]))) {
-    const rows = items.map((a) => `<li><a href="${base}craft-kit/artifact.html#/${encodeURI(a.path)}" target="_self" title="${cell(a.path)}">${cell(artifactLabel(a.path))}</a> <small>${a.kind}</small></li>`).join('');
-    lines.push(`<details><summary>${cell(folder)} (${items.length})</summary><ul>${rows}</ul></details>`, '');
+    const rows = items.map((a) => `<li><a href="${html(`${base}craft-kit/artifact.html#/${encodePath(a.path)}`)}" target="_self" title="${html(a.path)}">${html(artifactLabel(a.path))}</a> <small>${a.kind}</small></li>`).join('');
+    lines.push(`<details><summary>${html(folder)} (${items.length})</summary><ul>${rows}</ul></details>`, '');
   }
   return lines.join('\n');
 }
@@ -268,26 +272,51 @@ function writeIfChanged(file, text) {
   return true;
 }
 
+// Which lines are real markdown: not YAML front matter and not inside a fenced code block.
+function liveLines(lines) {
+  const live = new Array(lines.length).fill(true);
+  let i = 0;
+  if (/^---\r?$/.test(lines[0] || '')) {
+    const close = lines.findIndex((l, j) => j > 0 && /^---\r?$/.test(l));
+    if (close > 0) {
+      for (let j = 0; j <= close; j++) live[j] = false;
+      i = close + 1;
+    }
+  }
+  let fence = null;
+  for (; i < lines.length; i++) {
+    const m = /^ {0,3}(`{3,}|~{3,})/.exec(lines[i]);
+    if (fence) {
+      live[i] = false;
+      if (m && m[1][0] === fence[0] && m[1].length >= fence.length && lines[i].slice(m[0].length).trim() === '') fence = null;
+    } else if (m) {
+      fence = m[1];
+      live[i] = false;
+    }
+  }
+  return live;
+}
+
 // Edits applied to the mirrored copy only (docs/ is never touched):
 //  - a first heading that is just a file name ("# architecture.md") becomes a readable title;
 //  - the "## Metadata" section, which repeats the status badge, folds into a closed <details>.
+// Front matter and fenced code blocks are left alone.
 function transformMarkdown(text) {
-  let out = text;
-  const h1 = /^#[ \t]+(.+?)[ \t]*(?=\r?$)/m.exec(out);
-  if (h1 && FILE_TITLE.test(h1[1])) {
-    out = out.slice(0, h1.index) + `# ${prettify(path.posix.basename(h1[1]))}` + out.slice(h1.index + h1[0].length);
+  const lines = text.split('\n');
+  const live = liveLines(lines);
+  const h1 = lines.findIndex((l, i) => live[i] && /^#[ \t]+\S/.test(l));
+  if (h1 >= 0) {
+    const m = /^#[ \t]+(.+?)[ \t]*\r?$/.exec(lines[h1]);
+    if (m && FILE_TITLE.test(m[1])) lines[h1] = `# ${prettify(path.posix.basename(m[1]))}${lines[h1].endsWith('\r') ? '\r' : ''}`;
   }
-  const lines = out.split('\n');
-  const start = lines.findIndex((l) => /^##[ \t]+Metadata[ \t]*\r?$/.test(l));
-  if (start >= 0) {
-    let end = lines.findIndex((l, i) => i > start && /^#{1,2}[ \t]/.test(l));
-    if (end < 0) end = lines.length;
-    const blank = (l) => l === undefined || l.trim() === '';
-    lines.splice(end, 0, ...(blank(lines[end - 1]) ? [] : ['']), '</details>', '');
-    lines.splice(start, 1, '<details class="ck-metadata">', '<summary>Metadata</summary>', ...(blank(lines[start + 1]) ? [] : ['']));
-    out = lines.join('\n');
-  }
-  return out;
+  const start = lines.findIndex((l, i) => live[i] && /^##[ \t]+Metadata[ \t]*\r?$/.test(l));
+  if (start < 0) return lines.join('\n');
+  let end = lines.findIndex((l, i) => i > start && live[i] && /^#{1,2}[ \t]/.test(l));
+  if (end < 0) end = lines.length;
+  const blank = (l) => l === undefined || l.trim() === '';
+  lines.splice(end, 0, ...(blank(lines[end - 1]) ? [] : ['']), '</details>', '');
+  lines.splice(start, 1, '<details class="ck-metadata">', '<summary>Metadata</summary>', ...(blank(lines[start + 1]) ? [] : ['']));
+  return lines.join('\n');
 }
 
 // Markdown goes to content/, other servable files to content/public/. Files the viewer
@@ -405,6 +434,32 @@ function ensureDeps(home) {
 
 // ─── CLI ──────────────────────────────────────────────────────────────────────
 
+// Same path or inside it?
+const within = (dir, p) => {
+  const r = path.relative(dir, p);
+  return r === '' || (!r.startsWith('..') && !path.isAbsolute(r));
+};
+
+// --out is deleted and rewritten, so it must never be the project, its docs/, the viewer
+// folders, or the current directory (or a parent of any of them); an existing non-empty
+// folder must look like a previous static site.
+function checkOutDir(out, root, site, home) {
+  const docsDir = path.join(root, 'docs');
+  const bad = [root, site, home, process.cwd()].some((p) => within(out, p)) || within(docsDir, out);
+  if (bad) throw new Error(`--out ${out} would overwrite the project or the viewer; choose a separate folder`);
+  let entries = [];
+  try { entries = fs.readdirSync(out); } catch { /* new folder */ }
+  if (entries.length && !entries.includes('index.html')) {
+    throw new Error(`--out ${out} is not empty and does not look like a previous static site; choose an empty or new folder`);
+  }
+}
+
+function optionValue(args, i, flag) {
+  const v = args[i + 1];
+  if (v === undefined || v.startsWith('--')) throw new Error(`${flag} needs a value`);
+  return v;
+}
+
 function parseArgs(argv) {
   const opts = { root: '.', port: null, build: false, prepare: false, out: null, base: '/' };
   const args = argv.slice(2);
@@ -412,9 +467,9 @@ function parseArgs(argv) {
     const a = args[i];
     if (a === '--build') opts.build = true;
     else if (a === '--prepare') opts.prepare = true;
-    else if (a === '--port') opts.port = args[++i];
-    else if (a === '--out') opts.out = args[++i];
-    else if (a === '--base') opts.base = args[++i];
+    else if (a === '--port') opts.port = optionValue(args, i++, a);
+    else if (a === '--out') opts.out = optionValue(args, i++, a);
+    else if (a === '--base') opts.base = optionValue(args, i++, a);
     else if (a.startsWith('-')) throw new Error(`unknown flag ${a}`);
     else opts.root = a;
   }
@@ -432,6 +487,13 @@ function main(argv) {
   const root = path.resolve(opts.root);
   const home = viewerHome();
   const site = siteDirFor(home, root);
+
+  if (opts.build && opts.out) {
+    try { checkOutDir(path.resolve(opts.out), root, site, home); } catch (err) {
+      console.error(`view-docs: ${err.message}`);
+      return 1;
+    }
+  }
 
   try {
     fs.mkdirSync(path.join(site, 'content'), { recursive: true });
@@ -488,6 +550,11 @@ function main(argv) {
   process.on('SIGINT', stop);
   process.on('SIGTERM', stop);
   child.on('exit', (code) => { clearInterval(timer); process.exitCode = code || 0; });
+  child.on('error', (err) => {
+    clearInterval(timer);
+    console.error(`view-docs: could not start VitePress (${err.message})`);
+    process.exitCode = 1;
+  });
   return null;
 }
 

@@ -54,9 +54,11 @@ function groupOf(rel) {
   return DIR_GROUP[parts[0]] || 'Other';
 }
 
-// Machine-written test-run output (Playwright reports, per-test artifacts). It stays
-// reachable but is kept out of navigation and counts.
-const GENERATED = /(^|\/)(playwright-report|test-results|[^/]*-report|[^/]*-artifacts)\//;
+// Machine-written test-run output (Playwright reports, per-test artifacts): the standard
+// Playwright folders anywhere, and `*-report/` / `*-artifacts/` folders under e2e-runs/.
+// Hand-written folders such as `bug-report/` stay visible. It stays reachable but is kept
+// out of navigation and counts.
+const GENERATED = /(^|\/)(playwright-report|test-results)\/|^e2e-runs\/(?:.*\/)?[^/]*-(report|artifacts)\//;
 const isGenerated = (rel) => GENERATED.test(rel);
 
 // A heading that is just a file name ("# architecture.md") says nothing; show the name instead.
