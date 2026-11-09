@@ -70,6 +70,15 @@ Already have a codebase? Say: "Run Adopt using kit/phase-adopt.md."
 Not sure where to start? Say: "Start using kit/START.md." It inspects the project and prints the workflow and the exact prompt to run.
 ```
 
+**Browse your project documents in a browser** (read-only; needs Node ≥ 18, and network on the first run to install VitePress into `~/.craft-kit/viewer/`):
+
+```bash
+node kit/scripts/view-docs.js            # dev server, follows changes in docs/
+node kit/scripts/view-docs.js --build    # static site (add --out <dir> and --base /path/)
+```
+
+It shows status badges, a backlog board, Mermaid diagrams, HTML prototypes, and lint findings. Credentials, dotfiles and JSON files in `docs/` are never served, and `docs/` itself is never modified.
+
 ---
 
 ## Workflows
@@ -131,7 +140,8 @@ All work uses your platform's general-purpose agent.
 | `phase-maintenance.md`, `phase-bug-fix.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
 | `guides/admin-checklist.md` | Admin site reference, loaded by Maintenance intake for admin features |
 | `phase-upgrade.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
-| `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`) |
+| `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`), `docs-index.js` + `view-docs.js` (docs viewer) |
+| `viewer/` | VitePress config and theme used by `scripts/view-docs.js` |
 | `session-logging.md` | Session log format |
 | `stack-catalog.md` | Stack baseline and deviation model for the Architecture step |
 | `task-agent-rubric.md` | Task type → specialist agent routing |

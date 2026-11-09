@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "project": "Todo App",
+  "phase2_scope": "all",
+  "releases": [
+    {
+      "id": "R1",
+      "name": "MVP",
+      "status": "in-progress"
+    }
+  ],
+  "features": [
+    {
+      "id": "F1",
+      "name": "Login",
+      "priority": "Must",
+      "size": "M",
+      "status": "shipped",
+      "release": "R1",
+      "depends_on": [],
+      "events": [
+        {
+          "type": "shipped",
+          "at": "2026-11-05T10:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "F2",
+      "name": "Add | todo",
+      "priority": "Must",
+      "size": "S",
+      "status": "pending",
+      "release": "R1",
+      "depends_on": [
+        "F1"
+      ],
+      "events": []
+    }
+  ]
+}

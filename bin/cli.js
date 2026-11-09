@@ -198,6 +198,9 @@ function printQuickStart (rel) {
   ${SYM.dot} ${bold('Developer onboarding')}  ${dim('(any time)')}
     Share  ${yellow(rel + '/phase-onboarding.md')}  and say:  ${yellow('"Run developer onboarding using ' + rel + '/phase-onboarding.md."')}
 
+  ${SYM.dot} ${bold('Browse project docs')}  ${dim('(any time; read-only web view of docs/, needs Node and network on first run)')}
+    Run  ${yellow('node ' + rel + '/scripts/view-docs.js')}  from the project root; add  ${yellow('--build')}  for a static site
+
   ${SYM.dot} ${bold('Docs')}  ${dim('https://khoaly2003.github.io/craft-kit')}
   ${HR}
 `)

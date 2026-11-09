@@ -69,6 +69,7 @@ const GUIDES: Page[] = [
   docs('guides/admin-site',                 'guides/admin-site',                 'Building an Admin Site'),
   docs('guides/onboarding-a-developer',     'guides/onboarding-a-developer',     'Onboarding a New Developer'),
   docs('guides/resuming-a-session',         'guides/resuming-a-session',         'Resuming in a New Session'),
+  docs('guides/browsing-docs',              'guides/browsing-docs',              'Browsing Project Docs'),
   kit('guides/session-handover',            'guides/session-handover',           'Session Handover'),
   kit('guides/design-reference',            'guides/design-reference',           'Design Reference'),
   kit('guides/diagrams',                    'guides/diagrams',                   'Diagram Rendering'),
@@ -187,7 +188,7 @@ const SIDEBAR = [
     ],
   },
   group('Sessions, designs, tests', pick(
-    'guides/resuming-a-session', 'guides/session-handover', 'guides/design-reference',
+    'guides/resuming-a-session', 'guides/browsing-docs', 'guides/session-handover', 'guides/design-reference',
     'guides/design-mcp', 'guides/diagrams', 'guides/test-accounts', 'guides/conventions-detail',
   ), true),
   group('Reference', [...REFERENCE_SETUP, ...REFERENCE_ORCHESTRATOR], true),
