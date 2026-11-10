@@ -229,6 +229,7 @@ export default defineConfig({
     'tests/**',
     '.github/**',
     'bin/**',
+    'kit-lite/**',
     // Fill-in forms and dev-only files (resource/ is not installed either).
     ...KIT_NOT_PUBLISHED.map(p => `${p}**`),
     // Root-level markdown that is not a docs page.
