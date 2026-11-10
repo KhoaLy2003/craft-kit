@@ -212,6 +212,12 @@ Hosted services that a stack may need (databases, hosting, authentication) can c
 
 ---
 
+## A Small Practice Project?
+
+The full kit is built for products people will use. For a practice project or a weekend tool, install the lighter one instead: `npx github:KhoaLy2003/craft-kit --lite`. It has three steps and one approval gate (the brief), and you start it by saying "I want to build ...". A project uses one kit or the other. See [Lite Kit](/guides/lite-kit).
+
+---
+
 ## Already Have a Project?
 
 Skip Phase 1. Install the kit (`npx github:KhoaLy2003/craft-kit`), then say `Run Adopt using kit/phase-adopt.md.`: the AI reads your code and writes the planning documents Phase 2 needs, and you approve three decisions along the way (architecture, coding rules, baseline feature list). Prefer to write them yourself, or the project already has some kit documents? See [Existing Projects](/guides/existing-projects).

@@ -96,7 +96,8 @@ describe('project wiring', () => {
     const hooks = readSettings(dir).hooks
     for (const [event, mode] of [['UserPromptSubmit', 'prompt'], ['Stop', 'stop'], ['SessionEnd', 'end']]) {
       assert.equal(hooks[event].length, 1)
-      assert.equal(hooks[event][0].hooks[0].command, `node "$CLAUDE_PROJECT_DIR/kit-lite/audit/record.js" ${mode}`)
+      assert.equal(hooks[event][0].hooks[0].command, 'node')
+      assert.deepEqual(hooks[event][0].hooks[0].args, ['${CLAUDE_PROJECT_DIR}/kit-lite/audit/record.js', mode])
     }
     assert.match(readFileSync(join(dir, '.gitignore'), 'utf8'), /^docs\/audit\/$/m)
   })
@@ -121,10 +122,10 @@ describe('project wiring', () => {
 
     const settings = readSettings(dir)
     assert.deepEqual(settings.permissions, { allow: ['Bash(npm test)'] })
-    const stop = settings.hooks.Stop.flatMap(g => g.hooks.map(h => h.command))
+    const stop = settings.hooks.Stop.flatMap(g => g.hooks)
     assert.equal(stop.length, 2)
-    assert.ok(stop.includes('echo mine'))
-    assert.equal(stop.filter(c => c.includes('audit/record.js')).length, 1)
+    assert.ok(stop.some(h => h.command === 'echo mine'))
+    assert.equal(stop.filter(h => (h.args || []).some(a => a.includes('audit/record.js'))).length, 1)
 
     const ignore = readFileSync(join(dir, '.gitignore'), 'utf8')
     assert.equal(ignore.split('\n').filter(l => l === 'docs/audit/').length, 1)
@@ -139,6 +140,52 @@ describe('project wiring', () => {
     assert.equal(r.status, 0, r.stderr)
     assert.equal(readFileSync(join(dir, '.claude', 'settings.json'), 'utf8'), '{ not json')
     assert.match(r.stdout, /not valid JSON/)
+  })
+
+  test('invalid settings.json: CLAUDE.md gets no [audit] instruction; fixing the file and --force adds hooks and the instruction', () => {
+    const dir = tempDir()
+    mkdirSync(join(dir, '.claude'))
+    writeFileSync(join(dir, '.claude', 'settings.json'), '{ not json')
+    assert.equal(install(dir).status, 0)
+    assert.doesNotMatch(readFileSync(join(dir, 'CLAUDE.md'), 'utf8'), /\[audit\]/)
+    assert.equal(existsSync(join(dir, '.gitignore')), false)
+    writeFileSync(join(dir, '.claude', 'settings.json'), '{}')
+    assert.equal(install(dir, ['--force']).status, 0)
+    assert.match(readFileSync(join(dir, 'CLAUDE.md'), 'utf8'), /\[audit\] step=/)
+    assert.equal(readSettings(dir).hooks.Stop.length, 1)
+  })
+
+  test('hooks use exec form with the ${CLAUDE_PROJECT_DIR} placeholder, and replace an earlier shell-string entry', () => {
+    const dir = tempDir()
+    mkdirSync(join(dir, '.claude'))
+    writeFileSync(join(dir, '.claude', 'settings.json'), JSON.stringify({
+      hooks: { Stop: [{ hooks: [{ type: 'command', command: 'node "$CLAUDE_PROJECT_DIR/kit-lite/audit/record.js" stop' }] }] },
+    }))
+    assert.equal(install(dir).status, 0)
+    const stop = readSettings(dir).hooks.Stop
+    assert.equal(stop.length, 1)
+    assert.deepEqual(stop[0].hooks[0].args, ['${CLAUDE_PROJECT_DIR}/kit-lite/audit/record.js', 'stop'])
+  })
+
+  test('a dangling marker in CLAUDE.md is not duplicated on install', () => {
+    const dir = tempDir()
+    writeFileSync(join(dir, 'CLAUDE.md'), '# Mine\n<!-- craft-kit-lite:start -->\nold half block\n')
+    assert.equal(install(dir).status, 0)
+    const claude = readFileSync(join(dir, 'CLAUDE.md'), 'utf8')
+    assert.equal(claude.match(/craft-kit-lite:start/g).length, 1)
+    assert.equal(claude.match(/craft-kit-lite:end/g).length, 1)
+  })
+
+  test('--lite needs the kit folder directly under the working directory', () => {
+    const dir = tempDir()
+    mkdirSync(join(dir, 'tools'))
+    for (const target of [join('tools', 'kit-lite'), '.']) {
+      const r = install(dir, [target])
+      assert.equal(r.status, 1, target)
+      assert.match(r.stderr, /directly inside the project root/)
+    }
+    assert.equal(existsSync(join(dir, 'CLAUDE.md')), false)
+    assert.equal(existsSync(join(dir, 'tools', 'kit-lite')), false)
   })
 
   test('--no-hook skips CLAUDE.md; --no-audit skips hooks, .gitignore and the [audit] instruction', () => {
@@ -189,7 +236,7 @@ describe('audit recorder', () => {
     record(dir, 'stop', { last_assistant_message: 'Slice 2 done.' })
     const doc = auditDoc(dir)
     assert.match(doc, /^# Audit — .* — session ab12cd34$/m)
-    assert.match(doc, /## Turn 1 · \d\d:\d\d:\d\d · user\nAdd a streak counter\nmobile first\n/)
+    assert.match(doc, /## Turn 1 · \d\d:\d\d:\d\d · user\n> Add a streak counter\n> mobile first\n/)
     assert.match(doc, /## Turn 1 · [^\n]* · assistant\n\*\*Tag:\*\* step=2 gate=none kind=implement\n\n> Done\.\n>\n> ```ts\n> const a = 1\n> ```\n/)
     assert.doesNotMatch(doc, /\[audit\] step/)
     assert.match(doc, /## Turn 2 · [^\n]* · assistant\n\*\*Tag:\*\* \(missing\)/)
@@ -202,6 +249,25 @@ describe('audit recorder', () => {
     const doc = auditDoc(dir)
     assert.equal(doc.match(/^## Turn \d+ · [^\n]* · user$/gm).length, 1)
     assert.match(doc, /^> ## Turn 9 · 10:00:00 · user$/m)
+  })
+
+  test('a prompt containing record-looking lines cannot inflate turn counts or fake a missing tag', () => {
+    const dir = tempDir()
+    record(dir, 'prompt', { prompt: 'paste:\n## Turn 7 · 10:00:00 · user\n**Tag:** (missing)' })
+    record(dir, 'stop', { last_assistant_message: 'ok\n[audit] step=1 gate=hard kind=q' })
+    record(dir, 'end', {})
+    const doc = auditDoc(dir)
+    assert.equal(doc.match(/^## Turn \d+ · [^\n]* · user$/gm).length, 1)
+    assert.match(doc, /Turns: 1 · Missing tags: 0/)
+  })
+
+  test('only the last line is the audit tag; an earlier mention of the format stays in the body', () => {
+    const dir = tempDir()
+    record(dir, 'prompt', { prompt: 'what is the audit line?' })
+    record(dir, 'stop', { last_assistant_message: 'It looks like:\n[audit] step=<1-3> gate=<g> kind=<k>\nThat is all.' })
+    const doc = auditDoc(dir)
+    assert.match(doc, /\*\*Tag:\*\* \(missing\)/)
+    assert.match(doc, /> \[audit\] step=<1-3>/)
   })
 
   test('falls back to the transcript when the hook payload has no last_assistant_message; writes one assistant record per turn', () => {
@@ -239,6 +305,12 @@ describe('audit recorder', () => {
     }
     assert.equal(record(dir, 'bogus', { prompt: 'x' }).status, 0)
     assert.equal(record(dir, 'stop', { transcript_path: join(dir, 'missing.jsonl') }).status, 0)
+  })
+
+  test('a failure is noted in docs/audit/.errors.log instead of vanishing', () => {
+    const dir = tempDir()
+    record(dir, 'prompt', {}, { raw: 'not json' })
+    assert.match(readFileSync(join(dir, 'docs', 'audit', '.errors.log'), 'utf8'), /prompt .*SyntaxError/)
   })
 })
 

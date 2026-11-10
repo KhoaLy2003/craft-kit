@@ -14,6 +14,13 @@ const HOOKS       = [['UserPromptSubmit', 'prompt'], ['Stop', 'stop'], ['Session
 
 const posix = p => p.split(path.sep).join('/')
 
+// True for a hook entry written by this kit, in the current exec form or the earlier shell-string form.
+function isLiteHook (h) {
+  if (!h) return false
+  if (typeof h.command === 'string' && h.command.includes(RECORDER)) return true
+  return Array.isArray(h.args) && h.args.some(a => typeof a === 'string' && a.includes(RECORDER))
+}
+
 function workflowBlock (rel, audit) {
   const lines = [
     BLOCK_START,
@@ -39,12 +46,14 @@ function upsertBlock (file, block) {
     return 'created'
   }
   const start = text.indexOf(BLOCK_START)
-  const end   = text.indexOf(BLOCK_END)
+  const end   = text.indexOf(BLOCK_END, start + 1)
   if (start !== -1 && end > start) {
     fs.writeFileSync(file, text.slice(0, start) + block + text.slice(end + BLOCK_END.length), 'utf8')
     return 'updated'
   }
-  fs.writeFileSync(file, text.replace(/\s*$/, '') + '\n\n' + block + '\n', 'utf8')
+  // A dangling marker (one half of a block, e.g. after a hand edit) would otherwise be duplicated on append.
+  const cleaned = text.split(BLOCK_START).join('').split(BLOCK_END).join('')
+  fs.writeFileSync(file, cleaned.replace(/\s*$/, '') + '\n\n' + block + '\n', 'utf8')
   return 'added'
 }
 
@@ -60,6 +69,8 @@ function writeWorkflowBlock (projectRoot, rel, audit) {
 }
 
 // Merge our three hooks into .claude/settings.json, replacing earlier lite entries and keeping everything else.
+// Exec form (`command` + `args`, no shell) so it behaves the same under sh, Git Bash and PowerShell;
+// Claude Code substitutes ${CLAUDE_PROJECT_DIR} itself.
 // Returns 'ok', or 'invalid' when the existing file is not valid JSON (it is then left untouched).
 function wireAuditHooks (projectRoot, rel) {
   const file = path.join(projectRoot, '.claude', 'settings.json')
@@ -74,11 +85,11 @@ function wireAuditHooks (projectRoot, rel) {
     const groups = Array.isArray(settings.hooks[event]) ? settings.hooks[event] : []
     const kept = []
     for (const g of groups) {
-      const inner = g && Array.isArray(g.hooks) ? g.hooks.filter(h => !(h && typeof h.command === 'string' && h.command.includes(RECORDER))) : null
+      const inner = g && Array.isArray(g.hooks) ? g.hooks.filter(h => !isLiteHook(h)) : null
       if (inner === null) kept.push(g)
       else if (inner.length) kept.push({ ...g, hooks: inner })
     }
-    kept.push({ hooks: [{ type: 'command', command: `node "$CLAUDE_PROJECT_DIR/${posix(rel)}/${RECORDER}" ${mode}` }] })
+    kept.push({ hooks: [{ type: 'command', command: 'node', args: [`\${CLAUDE_PROJECT_DIR}/${posix(rel)}/${RECORDER}`, mode] }] })
     settings.hooks[event] = kept
   }
 
@@ -138,4 +149,4 @@ function findOtherKit (projectRoot, target, wanted) {
   return found.find(x => x.kind !== wanted) || null
 }
 
-module.exports = { workflowBlock, writeWorkflowBlock, wireAuditHooks, ensureGitignore, hasFullKitBlock, findOtherKit }
+module.exports = { workflowBlock, writeWorkflowBlock, wireAuditHooks, ensureGitignore, hasFullKitBlock, findOtherKit, posix }

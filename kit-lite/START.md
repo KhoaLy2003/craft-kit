@@ -30,7 +30,7 @@ Open each step with a banner: `## Step N — <Name> | Gate: <none|soft|hard>`.
 2. **One question per message**, at most 5 in Step 1. Prefer multiple choice. Propose a default when the user has no preference.
 3. **Done means run.** A slice is done only after its tests pass and the app (or CLI) was started and the changed path was exercised. Say what you ran and saw.
 4. **Tests for core logic only**: calculations, data handling, parsing, APIs. Test first for those. No tests for layout, config or glue.
-5. **One git commit per slice**, message `feat: ...`, `fix: ...`, `chore: ...`. If the folder is not a git repo, run `git init` first.
+5. **One git commit per slice**, message `feat: ...`, `fix: ...`, `chore: ...`. If the folder is not inside a git work tree (`git rev-parse --is-inside-work-tree` fails), run `git init` first.
 6. **Few documents.** Only `docs/BRIEF.md`, `docs/NOTES.md` and `README.md`. Each stays about one page. Do not create specs, plans, logs, roadmaps or per-screen docs.
 7. **Write, then verify.** After writing a file, confirm it exists and has the expected content before saying it is written.
 8. **UI projects.** Build screens straight from the brief's visual line. If the `design-taste-frontend` skill is installed, use it. Do not write design documents.

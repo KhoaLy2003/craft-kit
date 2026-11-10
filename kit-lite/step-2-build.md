@@ -5,7 +5,7 @@
 
 ## Do
 
-**Scaffold (once, slice 0).** If there is no project yet: `git init` if needed, create the project with the stack from the brief, add the test runner, and commit `chore: scaffold`. Verify the scaffold builds or starts before continuing.
+**Scaffold (once, slice 0).** If there is no project yet: `git init` unless the folder is already inside a git work tree, create the project with the stack from the brief, add the test runner, and commit `chore: scaffold`. Verify the scaffold builds or starts before continuing.
 
 **Then, for each feature in the brief's order, one slice:**
 

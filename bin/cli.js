@@ -244,6 +244,7 @@ function usage () {
                     small personal projects; adds a workflow block to CLAUDE.md
                     and conversation-audit hooks to .claude/settings.json
     --no-hook       With --lite: do not write the workflow block into CLAUDE.md / AGENTS.md
+                    (the AI is then not asked for audit tags either)
     --no-audit      With --lite: do not wire the audit hooks or the .gitignore entry
     --version       Print version and exit
     --help          Show this message
@@ -332,12 +333,22 @@ async function main () {
     process.exit(1)
   }
   const kitDirName = isLite ? 'kit-lite' : 'kit'
+  const cwd       = process.cwd()
   const targetArg = args.find(a => !a.startsWith('-'))
-  const target    = targetArg ? path.resolve(process.cwd(), targetArg) : path.join(process.cwd(), kitDirName)
-  const rel       = path.relative(process.cwd(), target) || '.'
+  const target    = targetArg ? path.resolve(cwd, targetArg) : path.join(cwd, kitDirName)
+  const rel       = path.relative(cwd, target) || '.'
   const src       = path.join(__dirname, '..', kitDirName)
 
   if (!fs.existsSync(src)) die(`Internal error: ${kitDirName}/ directory not found in this package.`)
+
+  // The project root: the working directory when the target is inside it (so a nested target never makes a
+  // subfolder look like the project), otherwise the target's parent.
+  const relToCwd    = path.relative(cwd, target)
+  const projectRoot = relToCwd && !relToCwd.startsWith('..') && !path.isAbsolute(relToCwd) ? cwd : path.dirname(target)
+  // Lite wires CLAUDE.md and .claude/settings.json at the project root, and its hook paths are relative to it.
+  if (isLite && (target === cwd || path.dirname(target) !== projectRoot)) {
+    die(`--lite needs the kit folder directly inside the project root (the current directory), e.g. ./kit-lite. Got ${rel}/. Run from the project root, or pass a folder name without subfolders.`)
+  }
 
   // Lite ships in the same release as the full kit: one package version, one changelog.
   const kitVersion = PKG.version
@@ -345,7 +356,7 @@ async function main () {
   const changelog = 'https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md'
 
   // One project, one kit: the full and lite kits cannot be mixed, and --force does not override this.
-  const otherKit = lite.findOtherKit(path.resolve(target, '..'), target, isLite ? 'lite' : 'full')
+  const otherKit = lite.findOtherKit(projectRoot, target, isLite ? 'lite' : 'full')
   if (otherKit) {
     const have = otherKit.kind === 'full' ? 'the full kit' : 'the lite kit'
     const want = isLite ? 'the lite kit' : 'the full kit'
@@ -422,27 +433,29 @@ ${versionLine}
     console.log(`  ${dim('No install manifest found: files renamed or removed since an older version may linger — delete the kit folder and reinstall for a clean copy.')}\n`)
   }
 
-  // Lite: wire the project (workflow block, audit hooks, .gitignore). The project root is the target's parent.
+  // Lite: wire the project (workflow block, audit hooks, .gitignore) at the project root.
+  // Hooks go first: the workflow block asks the AI for the `[audit]` tag line only when the hooks that read it were written.
   const wired = { hook: false, audit: false }
   if (isLite) {
-    const projectRoot = path.resolve(target, '..')
     const relFromRoot = path.relative(projectRoot, target)
-    if (!noHook) {
-      const written = lite.writeWorkflowBlock(projectRoot, relFromRoot.split(path.sep).join('/'), !noAudit)
-      wired.hook = true
-      if (lite.hasFullKitBlock(projectRoot)) {
-        console.log(`  ${yellow('!')}  The full kit's "Workflow (craft-kit)" block is also in CLAUDE.md / AGENTS.md. Both blocks tell the AI where to start; keep the one you want for this project.\n`)
-      }
-      console.log(`  ${SYM.check}  Workflow block  ${SYM.arrow}  ${written.map(([f, how]) => `${f} (${how})`).join(', ')}\n`)
-    }
     if (!noAudit) {
       if (lite.wireAuditHooks(projectRoot, relFromRoot) === 'ok') {
         lite.ensureGitignore(projectRoot)
         wired.audit = true
         console.log(`  ${SYM.check}  Audit hooks  ${SYM.arrow}  .claude/settings.json ${dim('(records to docs/audit/, git-ignored)')}\n`)
       } else {
-        console.log(`  ${yellow('!')}  .claude/settings.json is not valid JSON; audit hooks not written. Fix the file and re-run with --lite --force.\n`)
+        console.log(`  ${yellow('!')}  .claude/settings.json is not valid JSON; audit hooks not written, and the AI is not asked for audit tags. Fix the file and re-run with --lite --force.\n`)
       }
+    }
+    if (!noHook) {
+      const written = lite.writeWorkflowBlock(projectRoot, lite.posix(relFromRoot), wired.audit)
+      wired.hook = true
+      if (lite.hasFullKitBlock(projectRoot)) {
+        console.log(`  ${yellow('!')}  The full kit's "Workflow (craft-kit)" block is also in CLAUDE.md / AGENTS.md. Both blocks tell the AI where to start; keep the one you want for this project.\n`)
+      }
+      console.log(`  ${SYM.check}  Workflow block  ${SYM.arrow}  ${written.map(([f, how]) => `${f} (${how})`).join(', ')}\n`)
+    } else if (wired.audit) {
+      console.log(`  ${dim('--no-hook: the AI is not asked to add the [audit] tag line, so every reply is recorded with Tag: (missing).')}\n`)
     }
   }
 
