@@ -50,6 +50,14 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; B
 
 ---
 
+## Lite kit
+
+`kit-lite/` is a separate, deliberately tiny kit for small personal projects (`node bin/cli.js --lite`, default target `./kit-lite`): `START.md`, three step files (Idea `hard`, Build `none`, Wrap-up `soft`), `templates/BRIEF.md` and `NOTES.md`, and `audit/record.js`. It shares nothing with `kit/` and is outside the kit-consistency drift lint and the docs site. `bin/lite.js` writes the project wiring: a marked workflow block in `CLAUDE.md` (and `AGENTS.md` when present), Claude Code hooks (`UserPromptSubmit`, `Stop`, `SessionEnd`; exec form with `${CLAUDE_PROJECT_DIR}`) in `.claude/settings.json` that run the recorder, and a `docs/audit/` `.gitignore` entry. `--no-hook` and `--no-audit` opt out. Its changes are recorded in `kit/CHANGELOG.md` like any kit change.
+
+The two kits are released together (one `package.json` version, one `kit/CHANGELOG.md`; lite changes go under `[Unreleased]` there) but installed independently: a normal install or `--force` never touches `kit-lite/`, and `--lite` never touches `kit/`. The upgrade hint for lite names `--lite`.
+
+**One project, one kit.** The installer refuses `--lite` in a project that already has the full kit, and the full install in a project that already has the lite kit; `--force` does not override it, and updating the same kit still works. Detection (`findOtherKit` in `bin/lite.js`) looks only at kit-specific signals under the project root (the working directory when the target is inside it, else the target's parent; `--lite` additionally requires the target to sit directly under the working directory, since its hook paths and wiring files are relative to it): a folder directly under it whose `.craft-kit-manifest.json` lists `phase-2.md` (full) or `step-1-idea.md` (lite), `docs/.craft-kit.json` (full), and the lite workflow block in `CLAUDE.md` / `AGENTS.md`. It deliberately does not scan deeper or the working directory, so other projects under a shared parent never block an install.
+
 ## Key Directories
 
 | Path | Purpose |
@@ -136,7 +144,8 @@ Zero deps. `tests/measure-reading-set.mjs` is a dev-only script, not part of `np
 | `tests/docs-site.test.mjs` | Hand-written docs pages: links, skill list, step counts |
 
 - `cli.test.mjs` spawns the real CLI with `spawnSync` and `input: ''` (non-TTY, no prompts, no network) in temp dirs; path assertions there use `[/\\]` because CI runs Windows.
-- `npm test` lists the six files explicitly in `package.json`; a new `*.test.mjs` must be added there.
+- `npm test` lists the seven files explicitly in `package.json`; a new `*.test.mjs` must be added there.
+- `kit-lite.test.mjs` covers the lite kit: `--lite` install, the `CLAUDE.md` / `.claude/settings.json` / `.gitignore` wiring (idempotent, never clobbers user content), and `kit-lite/audit/record.js` fed sample hook payloads.
 - Keep the `Hard gates:` line above at column 0 and in sync with each step's `Gate:` bullet, or `kit-consistency` fails. `docs-site.test.mjs` hard-codes the 8 / 7 step counts.
 
 ### E2E validation rounds

@@ -62,6 +62,7 @@ const PHASE_2_STEPS = steps('phase-2', [
 
 const GUIDES: Page[] = [
   docs('guides/what-to-say',                'guides/what-to-say',                'What to Say to the AI'),
+  docs('guides/lite-kit',                   'guides/lite-kit',                   'Lite Kit (small projects)'),
   docs('guides/existing-projects',          'guides/existing-projects',          'Existing Projects'),
   docs('guides/phase-1-bootstrap',          'guides/phase-1-bootstrap',          'Phase 1 — Bootstrap (guide)'),
   docs('guides/phase-2-build',              'guides/phase-2-build',              'Phase 2 — Build (guide)'),
@@ -159,6 +160,7 @@ const withChildren = (p: Page, children: Page[]) =>
 
 const SIDEBAR = [
   group('Start here', pick('getting-started', 'guides/what-to-say', 'start')),
+  group('Small personal projects', pick('guides/lite-kit')),
   {
     text: 'Build a new product',
     items: [
@@ -229,6 +231,7 @@ export default defineConfig({
     'tests/**',
     '.github/**',
     'bin/**',
+    'kit-lite/**',
     // Fill-in forms and dev-only files (resource/ is not installed either).
     ...KIT_NOT_PUBLISHED.map(p => `${p}**`),
     // Root-level markdown that is not a docs page.
@@ -284,6 +287,7 @@ export default defineConfig({
     nav: [
       { text: 'Get Started', link: '/getting-started' },
       { text: 'What to Say', link: '/guides/what-to-say' },
+      { text: 'Lite Kit', link: '/guides/lite-kit' },
       {
         text: 'Workflows',
         items: pick(
