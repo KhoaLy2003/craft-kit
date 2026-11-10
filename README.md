@@ -81,6 +81,16 @@ It shows status badges, a backlog board, Mermaid diagrams, HTML prototypes, and 
 
 ---
 
+### Lite kit (small personal projects)
+
+A much lighter workflow for practice projects: three steps (Idea, Build, Wrap-up), one approval gate, about three documents.
+
+```bash
+npx github:KhoaLy2003/craft-kit --lite
+```
+
+Then open your AI tool in the project and say "I want to build ...". The installer adds a workflow block to `CLAUDE.md` (and `AGENTS.md` if present) so the AI loads `kit-lite/START.md` by itself, and wires Claude Code hooks that record the conversation (your prompts and the AI's final replies) to `docs/audit/<date>-<session>.md`, git-ignored. Opt out with `--no-hook` (no `CLAUDE.md` block) or `--no-audit` (no hooks). The audit works in Claude Code only. For production work use the full kit above.
+
 ## Workflows
 
 Not sure where to start? Say `Start using kit/START.md.` The router inspects the project and prints the right workflow and prompt. Step-by-step pages for every workflow are in the [documentation](https://khoaly2003.github.io/craft-kit).

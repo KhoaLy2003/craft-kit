@@ -7,6 +7,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Added
+
+- **Lite kit** (`kit-lite/`, installed with `npx github:KhoaLy2003/craft-kit --lite`). A separate, much lighter workflow for small personal and practice projects: three steps (Idea with one hard gate, Build slice by slice, Wrap-up), `docs/BRIEF.md` and `docs/NOTES.md` instead of the full document set. It ships in the same release and version as this kit but is installed and updated on its own: `--lite` never touches `kit/`, and a normal install or `--force` never touches `kit-lite/`.
+  - **Auto-start:** `--lite` writes a marked `## Workflow (craft-kit-lite)` block into `CLAUDE.md` (and `AGENTS.md` if it exists), so a first message such as "I want to build ..." starts the workflow. It warns when this kit's `## Workflow (craft-kit)` block is also present. `--no-hook` skips the block.
+  - **Conversation audit (Claude Code):** hooks in `.claude/settings.json` run `kit-lite/audit/record.js`, which writes each user prompt (verbatim) and the final assistant reply (quoted, with an `[audit]` tag line) to `docs/audit/<date>-<session>.md`, git-ignored. `--no-audit` skips the hooks.
+  - **Installer:** the upgrade hint and error messages name `--lite`, so following them updates the right kit.
+  - **One kit per project:** `--lite` is refused in a project that already has the full kit, and the full install is refused where the lite kit is installed (also with `--force`); updating the same kit still works. The error names what was found and how to switch.
+
 ---
 
 ## [0.0.51] - 2026-11-09

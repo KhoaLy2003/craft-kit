@@ -8,6 +8,7 @@ const readline  = require('readline')
 const { spawnSync } = require('child_process')
 
 const PKG = require('../package.json')
+const lite = require('./lite')
 
 // ─── ANSI helpers (stripped automatically when stdout is not a TTY) ───────────
 
@@ -57,7 +58,7 @@ const REVIEW_SKILLS_CMD  = REVIEW_SKILL_NAMES.map(n => `npx skills add ${REVIEW_
 
 const VERSION_FILE  = '.craft-kit-version'
 const MANIFEST_FILE = '.craft-kit-manifest.json'
-const KNOWN_FLAGS   = new Set(['--force', '--skip-setup', '--help', '-h', '--version', '-v'])
+const KNOWN_FLAGS   = new Set(['--force', '--skip-setup', '--lite', '--no-hook', '--no-audit', '--help', '-h', '--version', '-v'])
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -154,7 +155,7 @@ function printSuperpowers () {
   console.log(`\n  Full guide: ${dim('https://github.com/obra/superpowers#installation')}`)
 }
 
-function printBanner () {
+function printBanner (version) {
   // Generated with: npx figlet-cli "CRAFT-KIT" (Standard font)
   const art = [
     '   ____ ____      _    _____ _____     _  _____ _____ ',
@@ -166,7 +167,7 @@ function printBanner () {
   console.log()
   art.forEach(row => console.log(bCyan(bold(row))))
   console.log()
-  console.log(`  ${dim('AI-agent workflow kit')}  ${dim('·')}  ${dim('v' + PKG.version)}`)
+  console.log(`  ${dim('AI-agent workflow kit')}  ${dim('·')}  ${dim('v' + version)}`)
   console.log()
 }
 
@@ -206,6 +207,25 @@ function printQuickStart (rel) {
 `)
 }
 
+function printLiteQuickStart (rel, wired) {
+  console.log(`
+  ${HR}
+  ${bCyan('Quick start (lite)')}
+  ${HR}
+
+  ${SYM.dot} ${bold('Open your AI assistant in this project and just describe what you want:')}
+    ${yellow('"I want to build ..."')}
+    ${dim(wired.hook ? 'CLAUDE.md now points the AI at ' + rel + '/START.md automatically.' : 'No workflow block written (--no-hook). Start with: "Start using ' + rel + '/START.md."')}
+
+  ${SYM.dot} ${bold('Conversation audit')}  ${dim(wired.audit ? '(Claude Code only)' : '')}
+    ${wired.audit ? 'Recorded to ' + yellow('docs/audit/<date>-<session>.md') + ' (git-ignored).' : dim('Off (--no-audit).')}
+
+  ${SYM.dot} ${bold('UI project?')}  ${dim('optional')}
+    ${TASTE_SKILL_CMD}
+  ${HR}
+`)
+}
+
 function usage () {
   return `
   ${bold('craft-kit')} v${PKG.version}
@@ -220,6 +240,11 @@ function usage () {
     --force         Update an existing install (overwrites kit files, removes
                     kit files dropped since the last install)
     --skip-setup    Copy kit files only; skip skill/agent setup
+    --lite          Install the lightweight kit (kit-lite/, default ./kit-lite) for
+                    small personal projects; adds a workflow block to CLAUDE.md
+                    and conversation-audit hooks to .claude/settings.json
+    --no-hook       With --lite: do not write the workflow block into CLAUDE.md / AGENTS.md
+    --no-audit      With --lite: do not wire the audit hooks or the .gitignore entry
     --version       Print version and exit
     --help          Show this message
 
@@ -298,12 +323,39 @@ async function main () {
 
   const force     = args.includes('--force')
   const skipSetup = args.includes('--skip-setup')
+  const isLite    = args.includes('--lite')
+  const noHook    = args.includes('--no-hook')
+  const noAudit   = args.includes('--no-audit')
+  if ((noHook || noAudit) && !isLite) {
+    console.error(`\n  ${SYM.cross}  --no-hook and --no-audit only apply with --lite`)
+    console.error(usage())
+    process.exit(1)
+  }
+  const kitDirName = isLite ? 'kit-lite' : 'kit'
   const targetArg = args.find(a => !a.startsWith('-'))
-  const target    = targetArg ? path.resolve(process.cwd(), targetArg) : path.join(process.cwd(), 'kit')
+  const target    = targetArg ? path.resolve(process.cwd(), targetArg) : path.join(process.cwd(), kitDirName)
   const rel       = path.relative(process.cwd(), target) || '.'
-  const src       = path.join(__dirname, '..', 'kit')
+  const src       = path.join(__dirname, '..', kitDirName)
 
-  if (!fs.existsSync(src)) die('Internal error: kit/ directory not found in this package.')
+  if (!fs.existsSync(src)) die(`Internal error: ${kitDirName}/ directory not found in this package.`)
+
+  // Lite ships in the same release as the full kit: one package version, one changelog.
+  const kitVersion = PKG.version
+  const flagHint  = isLite ? ' --lite' : ''
+  const changelog = 'https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md'
+
+  // One project, one kit: the full and lite kits cannot be mixed, and --force does not override this.
+  const otherKit = lite.findOtherKit(path.resolve(target, '..'), target, isLite ? 'lite' : 'full')
+  if (otherKit) {
+    const have = otherKit.kind === 'full' ? 'the full kit' : 'the lite kit'
+    const want = isLite ? 'the lite kit' : 'the full kit'
+    console.error(`
+  ${SYM.cross}  This project already uses ${bold(have)} (${otherKit.where}).
+     One project uses one kit, so installing ${want} here is blocked (--force does not override this).
+     To switch, first remove ${have}: its folder, ${otherKit.kind === 'full' ? 'docs/.craft-kit.json' : 'the "craft-kit-lite" block in CLAUDE.md / AGENTS.md'} and its hooks/blocks. Or use a different project folder.
+`)
+    process.exit(1)
+  }
 
   // Preflight
   let existing = []
@@ -319,20 +371,20 @@ async function main () {
   if (existing.length > 0 && !force) {
     const versionLine = !prevVersion
       ? `  ${dim('Installed:')}  ${dim('unknown version')}`
-      : prevVersion === PKG.version
+      : prevVersion === kitVersion
         ? `  ${dim('Installed:')}  v${prevVersion}  ${dim('(already up to date)')}`
-        : `  ${dim('Installed:')}  ${yellow('v' + prevVersion)}  ${SYM.arrow}  ${bold('v' + PKG.version)}  ${dim('(update available)')}`
+        : `  ${dim('Installed:')}  ${yellow('v' + prevVersion)}  ${SYM.arrow}  ${bold('v' + kitVersion)}  ${dim('(update available)')}`
     console.error(`
   ${SYM.cross}  ${bold(rel + '/')} already exists.
 ${versionLine}
 
   To upgrade:
-     npx github:KhoaLy2003/craft-kit --force
+     npx github:KhoaLy2003/craft-kit${flagHint} --force
 `)
     process.exit(1)
   }
 
-  printBanner()
+  printBanner(kitVersion)
 
   // Copy
   const files = listKitFiles(src)
@@ -355,12 +407,12 @@ ${versionLine}
     }
   }
 
-  fs.writeFileSync(path.join(target, VERSION_FILE), PKG.version + '\n', 'utf8')
+  fs.writeFileSync(path.join(target, VERSION_FILE), kitVersion + '\n', 'utf8')
   fs.writeFileSync(path.join(target, MANIFEST_FILE), JSON.stringify(files, null, 2) + '\n', 'utf8')
 
-  if (force && prevVersion && prevVersion !== PKG.version) {
-    console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + PKG.version)}  ${dim('(' + rel + '/')}\n`)
-    console.log(`  ${dim('What changed:')}  ${cyan('https://github.com/KhoaLy2003/craft-kit/blob/main/kit/CHANGELOG.md')}\n`)
+  if (force && prevVersion && prevVersion !== kitVersion) {
+    console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + kitVersion)}  ${dim('(' + rel + '/')}\n`)
+    console.log(`  ${dim('What changed:')}  ${cyan(changelog)}\n`)
   } else {
     console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
   }
@@ -368,6 +420,30 @@ ${versionLine}
     console.log(`  ${dim(`Removed ${removed} file${removed > 1 ? 's' : ''} no longer part of the kit.`)}\n`)
   } else if (force && !prevManifest && existing.length > 0) {
     console.log(`  ${dim('No install manifest found: files renamed or removed since an older version may linger — delete the kit folder and reinstall for a clean copy.')}\n`)
+  }
+
+  // Lite: wire the project (workflow block, audit hooks, .gitignore). The project root is the target's parent.
+  const wired = { hook: false, audit: false }
+  if (isLite) {
+    const projectRoot = path.resolve(target, '..')
+    const relFromRoot = path.relative(projectRoot, target)
+    if (!noHook) {
+      const written = lite.writeWorkflowBlock(projectRoot, relFromRoot.split(path.sep).join('/'), !noAudit)
+      wired.hook = true
+      if (lite.hasFullKitBlock(projectRoot)) {
+        console.log(`  ${yellow('!')}  The full kit's "Workflow (craft-kit)" block is also in CLAUDE.md / AGENTS.md. Both blocks tell the AI where to start; keep the one you want for this project.\n`)
+      }
+      console.log(`  ${SYM.check}  Workflow block  ${SYM.arrow}  ${written.map(([f, how]) => `${f} (${how})`).join(', ')}\n`)
+    }
+    if (!noAudit) {
+      if (lite.wireAuditHooks(projectRoot, relFromRoot) === 'ok') {
+        lite.ensureGitignore(projectRoot)
+        wired.audit = true
+        console.log(`  ${SYM.check}  Audit hooks  ${SYM.arrow}  .claude/settings.json ${dim('(records to docs/audit/, git-ignored)')}\n`)
+      } else {
+        console.log(`  ${yellow('!')}  .claude/settings.json is not valid JSON; audit hooks not written. Fix the file and re-run with --lite --force.\n`)
+      }
+    }
   }
 
   // Existing project missing documents the current kit expects: point at the single upgrade entry point.
@@ -384,11 +460,15 @@ ${versionLine}
     const constitution = fs.readFileSync(path.join(docsDir, 'constitution.md'), 'utf8')
     if (!/^## Verification Commands\s*$/m.test(constitution)) missing.push('the Verification Commands section in docs/constitution.md')
   }
-  if (missing.length > 0) {
+  if (!isLite && missing.length > 0) {
     console.log(`  ${dim('Existing project detected: missing ' + missing.join(', ') + '. Run: "Run the project upgrade using ' + rel + '/phase-upgrade.md."')}\n`)
   }
 
-  // Post-install: skills
+  // Post-install: skills (full kit only; lite prints its own quick start)
+  if (isLite) {
+    printLiteQuickStart(rel, wired)
+    return
+  }
   if (!skipSetup) {
     if (process.stdin.isTTY) {
       await interactiveSetup()
