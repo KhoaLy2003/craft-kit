@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.52] - 2026-11-11
+
+**Summary:** Lite kit for small personal projects (--lite) · one kit per project · conversation audit
+
 ### Added
 
 - **Lite kit** (`kit-lite/`, installed with `npx github:KhoaLy2003/craft-kit --lite`). A separate, much lighter workflow for small personal and practice projects: three steps (Idea with one hard gate, Build slice by slice, Wrap-up), `docs/BRIEF.md` and `docs/NOTES.md` instead of the full document set. It ships in the same release and version as this kit but is installed and updated on its own: `--lite` never touches `kit/`, and a normal install or `--force` never touches `kit-lite/`.
@@ -15,6 +21,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
   - **Project root:** `--lite` requires the kit folder directly under the working directory; a nested target is rejected before anything is written. Kit detection scans the working directory, not the target's parent.
   - **Installer:** the upgrade hint and error messages name `--lite`, so following them updates the right kit.
   - **One kit per project:** `--lite` is refused in a project that already has the full kit, and the full install is refused where the lite kit is installed (also with `--force`); updating the same kit still works. The error names what was found and how to switch.
+
+---
 
 ---
 
