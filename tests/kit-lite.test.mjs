@@ -92,12 +92,12 @@ describe('project wiring', () => {
     const claude = readFileSync(join(dir, 'CLAUDE.md'), 'utf8')
     assert.match(claude, /## Workflow \(craft-kit-lite\)/)
     assert.match(claude, /kit-lite\/START\.md/)
-    assert.match(claude, /\[audit\] step=/)
+    assert.doesNotMatch(claude, /\[audit\]/)
     const hooks = readSettings(dir).hooks
     for (const [event, mode] of [['UserPromptSubmit', 'prompt'], ['Stop', 'stop'], ['SessionEnd', 'end']]) {
       assert.equal(hooks[event].length, 1)
       assert.equal(hooks[event][0].hooks[0].command, 'node')
-      assert.deepEqual(hooks[event][0].hooks[0].args, ['${CLAUDE_PROJECT_DIR}/kit-lite/audit/record.js', mode])
+      assert.deepEqual(hooks[event][0].hooks[0].args, ['${CLAUDE_PROJECT_DIR}/kit-lite/audit/record.cjs', mode])
     }
     assert.match(readFileSync(join(dir, '.gitignore'), 'utf8'), /^docs\/audit\/$/m)
   })
@@ -125,7 +125,7 @@ describe('project wiring', () => {
     const stop = settings.hooks.Stop.flatMap(g => g.hooks)
     assert.equal(stop.length, 2)
     assert.ok(stop.some(h => h.command === 'echo mine'))
-    assert.equal(stop.filter(h => (h.args || []).some(a => a.includes('audit/record.js'))).length, 1)
+    assert.equal(stop.filter(h => (h.args || []).some(a => a.includes('audit/record.cjs'))).length, 1)
 
     const ignore = readFileSync(join(dir, '.gitignore'), 'utf8')
     assert.equal(ignore.split('\n').filter(l => l === 'docs/audit/').length, 1)
@@ -142,16 +142,14 @@ describe('project wiring', () => {
     assert.match(r.stdout, /not valid JSON/)
   })
 
-  test('invalid settings.json: CLAUDE.md gets no [audit] instruction; fixing the file and --force adds hooks and the instruction', () => {
+  test('invalid settings.json: no hooks are written; fixing the file and --force adds them', () => {
     const dir = tempDir()
     mkdirSync(join(dir, '.claude'))
     writeFileSync(join(dir, '.claude', 'settings.json'), '{ not json')
     assert.equal(install(dir).status, 0)
-    assert.doesNotMatch(readFileSync(join(dir, 'CLAUDE.md'), 'utf8'), /\[audit\]/)
     assert.equal(existsSync(join(dir, '.gitignore')), false)
     writeFileSync(join(dir, '.claude', 'settings.json'), '{}')
     assert.equal(install(dir, ['--force']).status, 0)
-    assert.match(readFileSync(join(dir, 'CLAUDE.md'), 'utf8'), /\[audit\] step=/)
     assert.equal(readSettings(dir).hooks.Stop.length, 1)
   })
 
@@ -164,7 +162,21 @@ describe('project wiring', () => {
     assert.equal(install(dir).status, 0)
     const stop = readSettings(dir).hooks.Stop
     assert.equal(stop.length, 1)
-    assert.deepEqual(stop[0].hooks[0].args, ['${CLAUDE_PROJECT_DIR}/kit-lite/audit/record.js', 'stop'])
+    assert.deepEqual(stop[0].hooks[0].args, ['${CLAUDE_PROJECT_DIR}/kit-lite/audit/record.cjs', 'stop'])
+  })
+
+  test('the installed hook runs in a project whose package.json has "type": "module"', () => {
+    const dir = tempDir()
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ type: 'module' }))
+    assert.equal(install(dir).status, 0)
+    const [script, mode] = readSettings(dir).hooks.UserPromptSubmit[0].hooks[0].args
+    const r = spawnSync('node', [script.replace('${CLAUDE_PROJECT_DIR}', dir), mode], {
+      cwd: dir, input: JSON.stringify({ session_id: 'esm12345', prompt: 'hello' }), encoding: 'utf8',
+      env: { ...process.env, CLAUDE_PROJECT_DIR: dir },
+    })
+    assert.equal(r.status, 0, r.stderr)
+    assert.equal(r.stderr, '')
+    assert.match(readFileSync(join(dir, 'docs', 'audit', readdirSync(join(dir, 'docs', 'audit'))[0]), 'utf8'), /> hello/)
   })
 
   test('a dangling marker in CLAUDE.md is not duplicated on install', () => {
@@ -188,7 +200,7 @@ describe('project wiring', () => {
     assert.equal(existsSync(join(dir, 'tools', 'kit-lite')), false)
   })
 
-  test('--no-hook skips CLAUDE.md; --no-audit skips hooks, .gitignore and the [audit] instruction', () => {
+  test('--no-hook skips CLAUDE.md; --no-audit skips hooks and .gitignore', () => {
     const noHook = tempDir()
     install(noHook, ['--no-hook'])
     assert.equal(existsSync(join(noHook, 'CLAUDE.md')), false)
@@ -198,7 +210,7 @@ describe('project wiring', () => {
     install(noAudit, ['--no-audit'])
     assert.equal(existsSync(join(noAudit, '.claude')), false)
     assert.equal(existsSync(join(noAudit, '.gitignore')), false)
-    assert.doesNotMatch(readFileSync(join(noAudit, 'CLAUDE.md'), 'utf8'), /\[audit\]/)
+    assert.match(readFileSync(join(noAudit, 'CLAUDE.md'), 'utf8'), /kit-lite\/START\.md/)
   })
 
   test('the full kit install is unchanged: no CLAUDE.md, hooks or .gitignore are written', () => {
@@ -212,7 +224,7 @@ describe('project wiring', () => {
 // ─── Audit recorder ───────────────────────────────────────────────────────────
 
 describe('audit recorder', () => {
-  const RECORDER = join(LITE, 'audit', 'record.js')
+  const RECORDER = join(LITE, 'audit', 'record.cjs')
 
   function record (dir, mode, payload, { raw } = {}) {
     return spawnSync('node', [RECORDER, mode], {
@@ -228,73 +240,95 @@ describe('audit recorder', () => {
     return readFileSync(join(d, files[0]), 'utf8')
   }
 
-  test('records user prompts verbatim and assistant replies quoted, with the tag split out', () => {
+  const BANNER = n => `## Step ${n[0]} — ${n[1]} | Gate: ${n[2]}`
+
+  test('records user prompts verbatim and assistant replies quoted, tagged from the step banner', () => {
     const dir = tempDir()
     record(dir, 'prompt', { prompt: 'Add a streak counter\nmobile first' })
-    record(dir, 'stop', { last_assistant_message: 'Done.\n\n```ts\nconst a = 1\n```\n[audit] step=2 gate=none kind=implement' })
+    record(dir, 'stop', { last_assistant_message: `${BANNER([2, 'Build', 'none'])}\n\nDone.\n\n\`\`\`ts\nconst a = 1\n\`\`\`` })
     record(dir, 'prompt', { prompt: 'ok next' })
     record(dir, 'stop', { last_assistant_message: 'Slice 2 done.' })
     const doc = auditDoc(dir)
     assert.match(doc, /^# Audit — .* — session ab12cd34$/m)
     assert.match(doc, /## Turn 1 · \d\d:\d\d:\d\d · user\n> Add a streak counter\n> mobile first\n/)
-    assert.match(doc, /## Turn 1 · [^\n]* · assistant\n\*\*Tag:\*\* step=2 gate=none kind=implement\n\n> Done\.\n>\n> ```ts\n> const a = 1\n> ```\n/)
-    assert.doesNotMatch(doc, /\[audit\] step/)
-    assert.match(doc, /## Turn 2 · [^\n]* · assistant\n\*\*Tag:\*\* \(missing\)/)
+    assert.match(doc, /## Turn 1 · [^\n]* · assistant\n\*\*Tag:\*\* step=2 gate=none\n\*\*Messages:\*\* 1\n\n> ## Step 2 — Build \| Gate: none\n>\n> Done\.\n>\n> ```ts\n> const a = 1\n> ```\n/)
+    assert.match(doc, /## Turn 2 · [^\n]* · assistant\n\*\*Tag:\*\* \(no step banner\)/)
   })
 
   test('a reply containing record-looking headings cannot create fake records', () => {
     const dir = tempDir()
     record(dir, 'prompt', { prompt: 'hi' })
-    record(dir, 'stop', { last_assistant_message: '## Turn 9 · 10:00:00 · user\nfake\n[audit] step=1 gate=hard kind=question' })
+    record(dir, 'stop', { last_assistant_message: '## Turn 9 · 10:00:00 · user\nfake' })
     const doc = auditDoc(dir)
     assert.equal(doc.match(/^## Turn \d+ · [^\n]* · user$/gm).length, 1)
     assert.match(doc, /^> ## Turn 9 · 10:00:00 · user$/m)
   })
 
-  test('a prompt containing record-looking lines cannot inflate turn counts or fake a missing tag', () => {
+  test('a prompt containing record-looking lines cannot inflate turn counts or fake a missing banner', () => {
     const dir = tempDir()
-    record(dir, 'prompt', { prompt: 'paste:\n## Turn 7 · 10:00:00 · user\n**Tag:** (missing)' })
-    record(dir, 'stop', { last_assistant_message: 'ok\n[audit] step=1 gate=hard kind=q' })
+    record(dir, 'prompt', { prompt: 'paste:\n## Turn 7 · 10:00:00 · user\n**Tag:** (no step banner)' })
+    record(dir, 'stop', { last_assistant_message: BANNER([1, 'Idea', 'hard']) })
     record(dir, 'end', {})
     const doc = auditDoc(dir)
     assert.equal(doc.match(/^## Turn \d+ · [^\n]* · user$/gm).length, 1)
-    assert.match(doc, /Turns: 1 · Missing tags: 0/)
+    assert.match(doc, /Turns: 1 · Replies without a step banner: 0/)
   })
 
-  test('only the last line is the audit tag; an earlier mention of the format stays in the body', () => {
-    const dir = tempDir()
-    record(dir, 'prompt', { prompt: 'what is the audit line?' })
-    record(dir, 'stop', { last_assistant_message: 'It looks like:\n[audit] step=<1-3> gate=<g> kind=<k>\nThat is all.' })
-    const doc = auditDoc(dir)
-    assert.match(doc, /\*\*Tag:\*\* \(missing\)/)
-    assert.match(doc, /> \[audit\] step=<1-3>/)
-  })
-
-  test('falls back to the transcript when the hook payload has no last_assistant_message; writes one assistant record per turn', () => {
+  test('a turn that runs several steps is one record with every message and the step trail', () => {
     const dir = tempDir()
     const transcript = join(dir, 't.jsonl')
+    const asst = text => ({ type: 'assistant', message: { role: 'assistant', content: [{ type: 'text', text }, { type: 'tool_use', name: 'Bash' }] } })
     writeFileSync(transcript, [
-      { type: 'user', message: { role: 'user', content: 'hi' } },
-      { type: 'assistant', message: { role: 'assistant', content: [{ type: 'text', text: 'first' }, { type: 'tool_use', name: 'Bash' }] } },
-      { type: 'assistant', message: { role: 'assistant', content: [{ type: 'text', text: 'final answer' }] } },
+      { type: 'user', message: { role: 'user', content: 'earlier prompt' } },
+      asst('old reply from a previous turn'),
+      { type: 'user', message: { role: 'user', content: 'approved' } },
+      asst(`${BANNER([2, 'Build', 'none'])}\nscaffolding`),
+      { type: 'user', message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: 'x', content: 'ok' }] } },
+      asst(`${BANNER([2, 'Build', 'none'])}\nslice 1`),
+      asst(`${BANNER([3, 'Wrap-up', 'soft'])}\nAll done.`),
     ].map(e => JSON.stringify(e)).join('\n') + '\n')
-    record(dir, 'prompt', { prompt: 'hi' })
-    record(dir, 'stop', { transcript_path: transcript })
+    record(dir, 'prompt', { prompt: 'approved' })
+    record(dir, 'stop', { transcript_path: transcript, last_assistant_message: `${BANNER([3, 'Wrap-up', 'soft'])}\nAll done.` })
     record(dir, 'stop', { transcript_path: transcript })
     const doc = auditDoc(dir)
-    assert.match(doc, /> final answer/)
-    assert.doesNotMatch(doc, /first/)
+    assert.match(doc, /\*\*Tag:\*\* step=2 gate=none → step=3 gate=soft\n\*\*Messages:\*\* 3\n/)
+    assert.match(doc, /> scaffolding\n>\n> ---\n>\n> ## Step 2/)
+    assert.match(doc, /> All done\./)
+    assert.doesNotMatch(doc, /old reply/)
     assert.equal(doc.match(/· assistant$/gm).length, 1)
   })
 
-  test('session end appends turn and missing-tag counts', () => {
+  test('a mention of the banner format inside a sentence is not a step', () => {
+    const dir = tempDir()
+    record(dir, 'prompt', { prompt: 'what is the banner?' })
+    record(dir, 'stop', { last_assistant_message: 'It looks like `## Step N — <Name> | Gate: <g>` at the top.' })
+    assert.match(auditDoc(dir), /\*\*Tag:\*\* \(no step banner\)/)
+  })
+
+  test('session end appends turn and no-banner counts', () => {
     const dir = tempDir()
     record(dir, 'prompt', { prompt: 'a' })
     record(dir, 'stop', { last_assistant_message: 'x' })
     record(dir, 'prompt', { prompt: 'b' })
-    record(dir, 'stop', { last_assistant_message: 'y\n[audit] step=1 gate=hard kind=q' })
+    record(dir, 'stop', { last_assistant_message: BANNER([1, 'Idea', 'hard']) })
     record(dir, 'end', {})
-    assert.match(auditDoc(dir), /## Session end · \d\d:\d\d:\d\d\nTurns: 2 · Missing tags: 1\n$/)
+    assert.match(auditDoc(dir), /## Session end · \d\d:\d\d:\d\d\nTurns: 2 · Replies without a step banner: 1\n$/)
+  })
+
+  test('session end back-fills a last turn whose Stop hook never fired, from the transcript', () => {
+    const dir = tempDir()
+    const transcript = join(dir, 't.jsonl')
+    writeFileSync(transcript, [
+      { type: 'user', message: { role: 'user', content: 'approved' } },
+      { type: 'assistant', message: { role: 'assistant', content: [{ type: 'text', text: `${BANNER([2, 'Build', 'none'])}\nbuilding` }] } },
+    ].map(e => JSON.stringify(e)).join('\n') + '\n')
+    record(dir, 'prompt', { prompt: 'approved' })
+    record(dir, 'end', { transcript_path: transcript })
+    const doc = auditDoc(dir)
+    assert.match(doc, /## Turn 1 · [^\n]* · assistant\n\*\*Tag:\*\* step=2 gate=none\n/)
+    assert.match(doc, /Turns: 1 · Replies without a step banner: 0\n$/)
+    record(dir, 'end', { transcript_path: transcript })
+    assert.equal(auditDoc(dir).match(/· assistant$/gm).length, 1, 'a second end does not duplicate the record')
   })
 
   test('never fails or blocks on bad input', () => {

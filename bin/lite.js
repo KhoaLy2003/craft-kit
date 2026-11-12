@@ -9,32 +9,28 @@ const path = require('path')
 
 const BLOCK_START = '<!-- craft-kit-lite:start -->'
 const BLOCK_END   = '<!-- craft-kit-lite:end -->'
-const RECORDER    = 'audit/record.js'
+// .cjs, not .js: a project whose package.json says "type": "module" would run a .js recorder as ESM and it would fail on `require`.
+const RECORDER    = 'audit/record.cjs'
+const OLD_RECORDER = 'audit/record.js'   // earlier name; its hook entries are replaced on re-install
 const HOOKS       = [['UserPromptSubmit', 'prompt'], ['Stop', 'stop'], ['SessionEnd', 'end']]
 
 const posix = p => p.split(path.sep).join('/')
 
-// True for a hook entry written by this kit, in the current exec form or the earlier shell-string form.
+// True for a hook entry written by this kit, in the current exec form or the earlier shell-string / record.js forms.
 function isLiteHook (h) {
   if (!h) return false
-  if (typeof h.command === 'string' && h.command.includes(RECORDER)) return true
-  return Array.isArray(h.args) && h.args.some(a => typeof a === 'string' && a.includes(RECORDER))
+  const mine = s => typeof s === 'string' && (s.includes(RECORDER) || s.includes(OLD_RECORDER))
+  return mine(h.command) || (Array.isArray(h.args) && h.args.some(mine))
 }
 
-function workflowBlock (rel, audit) {
-  const lines = [
+function workflowBlock (rel) {
+  return [
     BLOCK_START,
     '## Workflow (craft-kit-lite)',
     `When the user asks to build, add or fix something, first read \`${rel}/START.md\` and follow it.`,
     'Write no code before Step 1 of that file is approved.',
-  ]
-  if (audit) {
-    lines.push(
-      'End every reply with one last line `[audit] step=<1-3> gate=<none|soft|hard> kind=<one word>` (for example `[audit] step=2 gate=none kind=implement`). A hook records it.'
-    )
-  }
-  lines.push(BLOCK_END)
-  return lines.join('\n')
+    BLOCK_END,
+  ].join('\n')
 }
 
 // Replace the marked block in `file`, append it, or create the file. Content outside the markers is untouched.
@@ -58,8 +54,8 @@ function upsertBlock (file, block) {
 }
 
 // CLAUDE.md always (created if neither file exists); AGENTS.md only if it already exists.
-function writeWorkflowBlock (projectRoot, rel, audit) {
-  const block = workflowBlock(rel, audit)
+function writeWorkflowBlock (projectRoot, rel) {
+  const block = workflowBlock(rel)
   const out = []
   const claude = path.join(projectRoot, 'CLAUDE.md')
   const agents = path.join(projectRoot, 'AGENTS.md')

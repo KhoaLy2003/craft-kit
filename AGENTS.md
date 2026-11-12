@@ -52,7 +52,7 @@ Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; B
 
 ## Lite kit
 
-`kit-lite/` is a separate, deliberately tiny kit for small personal projects (`node bin/cli.js --lite`, default target `./kit-lite`): `START.md`, three step files (Idea `hard`, Build `none`, Wrap-up `soft`), `templates/BRIEF.md` and `NOTES.md`, and `audit/record.js`. It shares nothing with `kit/` and is outside the kit-consistency drift lint and the docs site. `bin/lite.js` writes the project wiring: a marked workflow block in `CLAUDE.md` (and `AGENTS.md` when present), Claude Code hooks (`UserPromptSubmit`, `Stop`, `SessionEnd`; exec form with `${CLAUDE_PROJECT_DIR}`) in `.claude/settings.json` that run the recorder, and a `docs/audit/` `.gitignore` entry. `--no-hook` and `--no-audit` opt out. Its changes are recorded in `kit/CHANGELOG.md` like any kit change.
+`kit-lite/` is a separate, deliberately tiny kit for small personal projects (`node bin/cli.js --lite`, default target `./kit-lite`): `START.md`, three step files (Idea `hard`, Build `none`, Wrap-up `soft`), `templates/BRIEF.md` and `NOTES.md`, and `audit/record.cjs` (CommonJS by extension so a project with `"type": "module"` can still run it). It shares nothing with `kit/` and is outside the kit-consistency drift lint and the docs site. `bin/lite.js` writes the project wiring: a marked workflow block in `CLAUDE.md` (and `AGENTS.md` when present), Claude Code hooks (`UserPromptSubmit`, `Stop`, `SessionEnd`; exec form with `${CLAUDE_PROJECT_DIR}`) in `.claude/settings.json` that run the recorder, and a `docs/audit/` `.gitignore` entry. `--no-hook` and `--no-audit` opt out. Its changes are recorded in `kit/CHANGELOG.md` like any kit change.
 
 The two kits are released together (one `package.json` version, one `kit/CHANGELOG.md`; lite changes go under `[Unreleased]` there) but installed independently: a normal install or `--force` never touches `kit-lite/`, and `--lite` never touches `kit/`. The upgrade hint for lite names `--lite`.
 
@@ -67,6 +67,7 @@ The two kits are released together (one `package.json` version, one `kit/CHANGEL
 | `kit/guides/` | On-demand detail (`conventions-detail.md`, `design-reference.md`, `session-handover.md`, `admin-checklist.md`, `change-control.md`, `diagrams.md`, `design-mcp.md`, `test-accounts.md`, `phase-2-feature-scope.md`); read only when a rule points there |
 | `kit/scripts/` | `lint-docs.js`, `render-backlog.js`, `docs-index.js`, `view-docs.js`, and a `package.json` pinning them to CommonJS (keep it, or ESM projects break) |
 | `kit/viewer/` | VitePress config (`config.mts`) and theme used by `view-docs.js`; ESM, copied into a per-project site folder on every run |
+| `scripts/sync-kit.js` | Dev-only (not published): runs `bin/cli.js --force --skip-setup` in a test project so working-tree `kit/` or `kit-lite/` changes can be tried without a release; auto-detects the installed kit type and folder, `--lite` for a fresh lite install, `--watch` to re-sync on change |
 | `kit/resource/` | `step-specification-template.md` — dev-only, not installed |
 | `tests/fixtures/lint-docs/`, `tests/fixtures/viewer/` | Fixture projects for the docs lint and viewer tests |
 
@@ -79,6 +80,11 @@ npm test                      # full suite; zero deps, no npm install needed
 node bin/cli.js ./out --skip-setup   # run the CLI from the working tree
 
 cd docs-site && npm run dev   # also: build, preview
+
+# Try working-tree kit changes in a test project, no release needed (runs bin/cli.js --force --skip-setup there):
+node scripts/sync-kit.js testing/round-06/my-app            # existing install: kit type and folder auto-detected
+node scripts/sync-kit.js testing/round-06/my-app --lite     # fresh lite install (--no-hook / --no-audit pass through)
+node scripts/sync-kit.js testing/round-06/my-app --watch    # re-sync on every change under kit/ or kit-lite/
 ```
 
 CI runs the suite on ubuntu + windows × Node 18 + 22.
@@ -145,7 +151,7 @@ Zero deps. `tests/measure-reading-set.mjs` is a dev-only script, not part of `np
 
 - `cli.test.mjs` spawns the real CLI with `spawnSync` and `input: ''` (non-TTY, no prompts, no network) in temp dirs; path assertions there use `[/\\]` because CI runs Windows.
 - `npm test` lists the seven files explicitly in `package.json`; a new `*.test.mjs` must be added there.
-- `kit-lite.test.mjs` covers the lite kit: `--lite` install, the `CLAUDE.md` / `.claude/settings.json` / `.gitignore` wiring (idempotent, never clobbers user content), and `kit-lite/audit/record.js` fed sample hook payloads.
+- `kit-lite.test.mjs` covers the lite kit: `--lite` install, the `CLAUDE.md` / `.claude/settings.json` / `.gitignore` wiring (idempotent, never clobbers user content), and `kit-lite/audit/record.cjs` fed sample hook payloads, including from a `"type": "module"` project.
 - Keep the `Hard gates:` line above at column 0 and in sync with each step's `Gate:` bullet, or `kit-consistency` fails. `docs-site.test.mjs` hard-codes the 8 / 7 step counts.
 
 ### E2E validation rounds

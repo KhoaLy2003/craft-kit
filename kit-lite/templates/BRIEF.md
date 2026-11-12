@@ -8,6 +8,7 @@
 **Goal:** <one sentence: what it does and for whom>
 **Stack:** <language, framework, storage, test runner>
 **Visual:** <one line, UI projects only; delete otherwise>
+**Project done when:** <one line: what must be true for the whole project to count as finished>
 
 ## Features (build order)
 

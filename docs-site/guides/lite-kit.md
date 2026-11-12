@@ -40,8 +40,8 @@ Every write is idempotent and touches only its own marked block or entries. Your
 | Option | Effect |
 |---|---|
 | `--force` | Update an existing lite install. Files the new version no longer ships are removed; files you added are not |
-| `--no-hook` | Do not write the workflow block. Start with `Start using kit-lite/START.md.` instead. The AI is then not asked for audit tags either, so each reply is recorded as `Tag: (missing)` |
-| `--no-audit` | Do not write the hooks or the `.gitignore` entry. The workflow block is still written, without the audit instruction |
+| `--no-hook` | Do not write the workflow block. Start with `Start using kit-lite/START.md.` instead |
+| `--no-audit` | Do not write the hooks or the `.gitignore` entry |
 | `--skip-setup` | Not needed: the lite install never prompts for skills. For a UI project the installer prints the `design-taste-frontend` install command; it is optional |
 
 The installer prints no skill prompts and makes no network calls for lite.
@@ -61,15 +61,16 @@ Or, without the workflow block: `Start using kit-lite/START.md.`
 `START.md` checks the project and picks the first match:
 
 1. **Resume.** `docs/NOTES.md` exists and its status is not `complete`. The AI says where it is resuming, reads the brief and notes, and continues from the **Next action** line. Nothing already answered is asked again.
-2. **Change to a finished project.** `docs/BRIEF.md` is `complete`. A new feature is added to the brief and built as one more slice; a bug is reproduced with a failing test, fixed, run, and committed.
-3. **New project.** Neither file exists: Step 1 starts.
+2. **Change to a finished project.** `docs/NOTES.md` exists and its status is `complete`. A new feature is added to the brief, the notes status is set back to a Step 2 slice, and the feature is built as one more slice (then the status returns to `complete`); a bug is reproduced with a failing test, fixed, run, and committed.
+3. **Brief not approved yet.** `docs/BRIEF.md` is a draft and there are no notes: Step 1 resumes at the approval question.
+4. **New project.** Neither file exists: Step 1 starts.
 
 ### The three steps
 
 | # | Step | Gate | What happens | Produces |
 |---|---|---|---|---|
-| 1 | Idea | **hard** | The AI asks at most five questions, one per message: who uses it, the 3 to 5 features you would use on day one, the stack, the look (UI only), and what "done" means. It writes the brief and waits for your approval | `docs/BRIEF.md` (approved), `docs/NOTES.md` |
-| 2 | Build | none | Scaffold once, then one slice per feature: a short task list, a failing test first for core logic, the implementation, a real run of the app, and one commit | Working code, one commit per slice, updated `docs/NOTES.md` |
+| 1 | Idea | **hard** | The AI asks at most five questions, one per message: who uses it, the features you would use on day one (3 to 8), the stack, the look (UI only), and what "done" means. Where you have no preference it proposes a default in the brief instead of asking. It writes the brief and waits for your approval | `docs/BRIEF.md` (approved), `docs/NOTES.md` |
+| 2 | Build | none | Scaffold once (with `test` and `start` scripts), then one slice per feature: a short task list, a failing test first for core logic, the implementation, a real run of the app including one edge case, a phone-width check for web apps, and one commit | Working code, one commit per slice, updated `docs/NOTES.md` |
 | 3 | Wrap-up | soft | Runs the full suite and the app once more, writes the README from commands it actually ran, closes the notes. You get a 3 to 5 line summary and can adjust or call it done | `README.md`, final `docs/NOTES.md` |
 
 `hard` stops until you say yes. `soft` shows a summary and moves on unless you object. `none` moves on by itself.
@@ -95,20 +96,20 @@ Resuming after a break needs nothing from you beyond opening a new session in th
 
 ## Conversation audit
 
-For a learning project it helps to look back at what you asked and what the AI answered. With the audit on, Claude Code hooks run a small recorder (`kit-lite/audit/record.js`) at three moments:
+For a learning project it helps to look back at what you asked and what the AI answered. With the audit on, Claude Code hooks run a small recorder (`kit-lite/audit/record.cjs`) at three moments:
 
 | Hook | Records |
 |---|---|
 | `UserPromptSubmit` | Your prompt |
-| `Stop` | The AI's final reply for the turn, with a one-line tag it was asked to end with: `[audit] step=<1-3> gate=<none\|soft\|hard> kind=<one word>` |
-| `SessionEnd` | Turn count and how many replies had no tag |
+| `Stop` | Every assistant message of the turn, with a `Tag` built from the step banners (`## Step N — Name \| Gate: g`) the AI showed, in order, for example `step=2 gate=none → step=3 gate=soft`. A turn that runs several steps is one record |
+| `SessionEnd` | Turn count and how many replies showed no step banner. If the `Stop` hook never fired for the last turn (crash, closed window), the reply is back-filled from the transcript |
 
-Output goes to `docs/audit/<date>-<session>.md`, one file per session, git-ignored. Both sides are stored quoted, so pasted text or code in a prompt or reply can never look like a new record. Only the last line of a reply counts as the tag.
+Output goes to `docs/audit/<date>-<session>.md`, one file per session, git-ignored. Both sides are stored quoted, so pasted text or code in a prompt or reply can never look like a new record. Messages of one turn are separated by a rule. The AI is not asked to add any extra line to its replies.
 
 - **Claude Code only.** Other tools get the workflow block but no recording.
 - **Never blocks the conversation.** The recorder always exits 0. If it cannot record, it notes why in `docs/audit/.errors.log` rather than failing silently.
 - **Works the same on every shell.** The hooks use Claude Code's exec form (`node` plus an argument list with `${CLAUDE_PROJECT_DIR}`), so they behave the same under bash, Git Bash and PowerShell. Claude Code substitutes the placeholder itself.
-- **Invalid `.claude/settings.json`.** If the file is not valid JSON, it is left untouched, the hooks are skipped, and the AI is **not** asked for audit tags (they would be recorded nowhere). Fix the file and re-run `npx github:KhoaLy2003/craft-kit --lite --force`.
+- **Invalid `.claude/settings.json`.** If the file is not valid JSON, it is left untouched and the hooks are skipped. Fix the file and re-run `npx github:KhoaLy2003/craft-kit --lite --force`.
 
 ---
 
