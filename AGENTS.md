@@ -46,7 +46,7 @@ Everything except Phase 1 and Phase 2 `scope: all` is experimental. One session 
 
 `none` auto-advances; `soft` presents a summary and advances unless the user objects; `hard` stops with a Gate Summary and waits for explicit approval (`kit/orchestrator-conventions.md` → Gates).
 
-Hard gates: Phase 1 Steps 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Maintenance Intake only when the feature does not fit; Onboarding Review.
+Hard gates: Phase 1 Steps 1, 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Maintenance Intake only when the feature does not fit; Onboarding Review.
 
 ---
 

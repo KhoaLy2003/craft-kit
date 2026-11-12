@@ -8,7 +8,7 @@
 - **Diagrams**: <!-- links to docs/diagrams/flows-*.html, or `none` -->
 - **Provenance**: `designed (Phase 1 Step 6)` | `backfilled from code on YYYY-MM-DD`
 
-> How screens connect and how data moves between screens, features and services. Entity names must match `data-model.md`.
+> How screens connect and how data moves between screens, features and services. Entity names must match `data-model.md`. When the idea brief says `Visual interface: no`, a "screen" is an entry point the product exposes (an API operation, a command, a scheduled job): put its route, command or schedule in the URL pattern column, and take its Source from the `prototype-brief.md` entry-point rows.
 
 ---
 

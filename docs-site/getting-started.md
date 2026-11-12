@@ -87,9 +87,13 @@ npx github:KhoaLy2003/craft-kit --force
 
 The installer may also offer to set up optional skills and an agent. See [What the installer writes](#what-the-installer-writes) for every path it touches.
 
-### Step 2 — Describe your idea
+### Step 2 — Gather your idea and documents
 
-Create the `docs/` folder and copy the kickoff form into it. This is the one place the kickoff lives: `docs/phase-1-kickoff.md`.
+Phase 1 starts from whatever you have. Any one of these works, and no template or mode is required:
+
+- **Your own documents**: requirements (a BRD, PRD or SRS), tickets, notes, research, decks, a pasted chat, links. Any format. Tell the AI where they are or paste them. It lists every document, tells you what it could not read, copies them into `docs/requirements/` (your originals are never changed), and asks only about gaps and conflicts instead of re-asking what they say. Market research then defaults to skipped.
+- **Just your idea**, in a few sentences. The AI asks short questions.
+- **The optional kickoff form**, if you would rather answer a list of prompts. Create `docs/`, copy the form in, and fill it in:
 
 ::::: code-group
 
@@ -105,39 +109,39 @@ cp kit/templates/phase-1-kickoff.md docs/phase-1-kickoff.md
 
 :::::
 
-Then fill in `docs/phase-1-kickoff.md`. It asks for:
+  The form asks for the problem and who has it, the target user, anything you already have (a rough design, tool preferences), hard limits (budget, deadline, must or must not include), and whether to run the optional market research step.
 
-- What problem you're solving and for whom
-- Who the target user is
-- Anything you already have (a rough design, a preference for certain tools, existing code)
-- Whether you already have requirements documents (a BRD, PRD, SRS or tickets): set the source mode to `requirements`, put the files in `docs/requirements/`, and Phase 1 Step 1 reads them first and asks only about gaps and conflicts instead of re-asking what they say. Market research then defaults to skipped
-- Whether to run the optional market research step
-- Any hard limits (budget, deadline, things that must or must not be included)
-
-Rough notes are fine — the AI will ask follow-up questions before committing to anything.
+Rough notes are fine — the AI asks follow-up questions before committing to anything. Whatever you supply, it also asks a few fixed questions: how the product is used (screen, API, command line, batch), where it runs, any mandatory language or runtime, and hosting or budget limits.
 
 ### Step 3 — Hand the kit to your AI and start
 
-Give your AI `kit/phase-1-bootstrap.md` and your filled-in `docs/phase-1-kickoff.md` (see [Give your AI access to the files](#give-your-ai-access-to-the-files)), then say:
+Give your AI `kit/phase-1-bootstrap.md` (see [Give your AI access to the files](#give-your-ai-access-to-the-files)), plus your documents or kickoff form if you have them, then say:
 
 ```text
-Start Phase 1 using the kickoff form I've shared.
+Start Phase 1 using kit/phase-1-bootstrap.md. My documents are at <paths>.
 ```
 
-The AI first checks that the skills and agents it uses are available and tells you about any that are missing, then reads both files and works through the eight steps. It announces each step as it starts.
+or, with only an idea:
+
+```text
+Start Phase 1 using kit/phase-1-bootstrap.md. Here is my idea: <a few sentences>.
+```
+
+The AI first checks that the skills and agents it uses are available and tells you about any that are missing, then reads what you supplied and works through the eight steps. It announces each step as it starts.
 
 ### Step 4 — Review and approve along the way
 
-Phase 1 has four moments where the AI stops and waits for your sign-off before continuing:
+Phase 1 has five moments where the AI stops and waits for your sign-off before continuing:
 
 | What the AI has done | What you decide |
 |---|---|
-| Designed the look and feel and built one clickable prototype with it | Does the design and flow match what you had in mind? |
+| Read your documents (or asked its questions), fixed what kind of product this is, and listed which steps your project runs or skips | Is this what you meant? Is every document accounted for? Is the plan of steps right? |
+| Designed the look and feel and built one clickable prototype with it *(a product with no screen gets example requests or transcripts instead)* | Does the design and flow match what you had in mind? |
 | Built the feature list, build order, and chosen how Phase 2 will run | Is the scope correct? Are the priorities right? |
-| Delivered full screen designs for every Must + Should feature *(skipped only when approved designs already exist, or every feature has one simple screen the prototype already covers)* | Do the screen designs accurately reflect the product? Approve before any code is written. |
+| Delivered full screen designs for every Must + Should feature *(skipped when the product has no screen, when approved designs already exist, or when every feature has one simple screen the prototype already covers)* | Do the screen designs accurately reflect the product? Approve before any code is written. |
 | Picked the tech stack and architecture | Is this the right foundation for what you want to build? |
 
-Three softer steps — ideation, market research (when you chose to run it), and the coding rules ("constitution") — show you a summary and move on unless you object. The coding rules are usually approved together with the architecture.
+Two softer steps — market research (when you chose to run it) and the coding rules ("constitution") — show you a summary and move on unless you object. The coding rules are usually approved together with the architecture.
 
 ### Step 5 — Move to building
 

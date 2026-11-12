@@ -22,10 +22,11 @@ Four stages. Never collapse them.
 
 ### Stage 1 — Research (catalog-first)
 
-1. Consult `kit/stack-catalog.md` before any web search, reading selectively: Section 1 (Baseline) in full; the Section 2 trigger headings (`### D1`…`### D6`), then the body of a trigger only if the roadmap matches it; the Section 3 domain headings (`### Auth`, `### Payments`, …), then the body of a domain only if the roadmap requires it. Apply the catalog's analysis protocol.
-2. Web-search only for a required service or library missing from the catalog, or for a volatile fact (pricing, free-tier limits) whose `Last verified` date is over 3 months old.
-3. Use a research or general-purpose agent only when a specific library needs source-verified confirmation.
-4. Any subagent dispatch that writes a file follows the fail-fast write instruction in `kit/orchestrator-conventions.md`.
+1. **Shape first.** Read `docs/idea-brief.md` Product Shape. The stack must satisfy it: a mandated or strongly preferred language/runtime, a non-web platform, or an environment limit removes every option that violates it, the catalog baseline included. `Interface` without a screen drops frontend entries; `open` constrains nothing. If the roadmap contradicts the shape, or no option satisfies it, stop and return to Step 1 rule 8 (amend the shape and plan, re-approve) before continuing.
+2. Consult `kit/stack-catalog.md` before any web search, reading selectively: Section 1 (Baseline) in full; the Section 2 trigger headings (`### D1`…`### D6`), then the body of a trigger only if the roadmap matches it; the Section 3 domain headings (`### Auth`, `### Payments`, …), then the body of a domain only if the roadmap requires it. Apply the catalog's analysis protocol.
+3. Web-search when the shape leaves no catalog option, for a required service or library missing from the catalog, or for a volatile fact (pricing, free-tier limits) whose `Last verified` date is over 3 months old. For a stack the catalog does not cover, also research its minimum local toolchain (runtime, package manager, version-check commands) and its test, lint and typecheck commands, and record them in `docs/architecture.md` (Decision → Toolchain) for Steps 7 and 8.
+4. Use a research or general-purpose agent only when a specific library needs source-verified confirmation.
+5. Any subagent dispatch that writes a file follows the fail-fast write instruction in `kit/orchestrator-conventions.md`.
 
 ### Stage 2 — Analysis (chat only)
 
@@ -58,6 +59,7 @@ The general-purpose agent posts the full proposed stack in chat (baseline layer,
 
 ## Completion Criteria
 
+- [ ] The stack satisfies the idea brief's Product Shape (language, platform, environment limits), or Step 1 was reopened to amend it.
 - [ ] `kit/stack-catalog.md` was consulted before any web search; baseline, deviations, and additions were walked as described.
 - [ ] The full proposed stack with rationale was surfaced in chat and the human named (or confirmed by name) the stack.
 - [ ] `docs/architecture.md` exists, was written from the template after confirmation, and is `Status: approved`.
@@ -69,6 +71,6 @@ Next: Step 7 — Constitution.
 
 ## Exceptions / Special Cases
 
-- The human rejects the proposal and names a technology not in the catalog: web-search it before writing the document; the stages and the confirmation still apply.
+- The human rejects the proposal and names a technology not in the catalog, or the Product Shape rules out the catalog: web-search it before writing the document (rule 3); the stages and the confirmation still apply.
 - Step 2 was skipped: research proceeds without `docs/market-notes.md`; flag any competitive assumptions made.
 - Step 5 was skipped: the `flows.md` screen inventory comes from `prototype-brief.md` §2 and the Source column says so.

@@ -60,12 +60,12 @@ npx github:KhoaLy2003/craft-kit --skip-setup
 Then:
 
 ```
-1. Copy kit/templates/phase-1-kickoff.md → docs/phase-1-kickoff.md
-2. Fill it in with your idea, target user, and any constraints. Have a `docs/DESIGN.md` design-system file ready too (Step 3 needs one; sources and a custom-file skeleton are in `kit/steps/phase-1/p1-03-prototype-design.md`).
+1. Gather what you have: your own documents in any format (requirements, notes, research, tickets), or just your idea. No template is needed. The kickoff form at kit/templates/phase-1-kickoff.md is optional.
+2. If your product has a screen, have a `docs/DESIGN.md` design-system file ready too (Step 3 needs one; sources and a custom-file skeleton are in `kit/steps/phase-1/p1-03-prototype-design.md`).
 3. Open your AI session and say:
-   "Start Phase 1 using kit/phase-1-bootstrap.md and docs/phase-1-kickoff.md."
+   "Start Phase 1 using kit/phase-1-bootstrap.md. My documents are at <paths>."  (or: "... Here is my idea: ...")
 
-Already have requirements (BRD, PRD, SRS, tickets)? Put them in docs/requirements/ and set the kickoff's Source Mode to `requirements`: Step 1 reads them first and asks only about gaps.
+Step 1 lists every document you give it, says what it could not read, and asks only about gaps and conflicts.
 Already have a codebase? Say: "Run Adopt using kit/phase-adopt.md."
 Not sure where to start? Say: "Start using kit/START.md." It inspects the project and prints the workflow and the exact prompt to run.
 ```

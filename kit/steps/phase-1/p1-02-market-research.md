@@ -5,7 +5,7 @@
 - **Purpose**: Validate demand, map comparable products, and surface feature inspirations before committing to development.
 - **Agent/Skill**: general-purpose agent
 - **Model**: `fast` (read-heavy synthesis, not implementation judgment)
-- **Trigger**: Step 1 recorded "run" (from the kickoff or the user).
+- **Trigger**: Step 1 recorded "run" (from a source, the kickoff form, or the user).
 - **Inputs**: `docs/idea-brief.md`
 - **Outputs**: `docs/market-notes.md`
 - **Template**: `templates/02-market-notes.md`

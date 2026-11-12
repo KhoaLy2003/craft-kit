@@ -42,14 +42,16 @@ Read each step's file before running it; it is authoritative.
 
 | Step | Name | Gate | Model | Agent | Output | Step file |
 |---|---|---|---|---|---|---|
-| 1 | Product Ideation *(kickoff `Mode: idea`)* or Requirements Intake *(kickoff `Mode: requirements`: reads the supplied BRD, PRD, SRS or tickets first and asks only about gaps and conflicts)* | `soft` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
-| 2 | Market Research *(optional; runs if the kickoff says run, or if you answer "run" to the one question Step 1 asks when the kickoff is blank; in requirements mode a blank decision means skip)* | `soft` | fast | general-purpose agent | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
-| 3 | Prototype & Design | `hard` | balanced | general-purpose agent; orchestrator builds the HTML | `docs/prototype/`, `docs/DESIGN.md`, `docs/preview/` | `kit/steps/phase-1/p1-03-prototype-design.md` |
+| 1 | Product Ideation: intake of whatever the user supplied (any documents or the optional kickoff form; none needs a template or a mode), asks only about gaps and conflicts; also fixes the Product Shape and the Process Plan | `hard` | capable | `brainstorming` | `docs/idea-brief.md` | `kit/steps/phase-1/p1-01-ideation.md` |
+| 2 | Market Research *(optional; runs if any source or the kickoff says run, or if you answer "run" to the one question Step 1 asks when none says; blank with sources supplied means skip)* | `soft` | fast | general-purpose agent | `docs/market-notes.md` | `kit/steps/phase-1/p1-02-market-research.md` |
+| 3 | Prototype & Design *(flow validation always runs; the `DESIGN.md` and HTML preview half is skipped when `Visual interface: no`)* | `hard` | balanced | general-purpose agent; orchestrator builds the HTML | `docs/prototype/`, `docs/DESIGN.md`, `docs/preview/` | `kit/steps/phase-1/p1-03-prototype-design.md` |
 | 4 | Roadmap (also sets Phase 2 scope) | `hard` | balanced | general-purpose agent | `docs/roadmap.md`, `docs/backlog.json`, `docs/backlog.html` | `kit/steps/phase-1/p1-04-roadmap.md` |
-| 5 | Full Screen Design *(skippable only when approved designs exist, or every feature has one simple screen already covered by `docs/preview/`)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
+| 5 | Full Screen Design *(skipped when `Visual interface: no`; otherwise skippable only when approved designs exist, or every feature has one simple screen already covered by `docs/preview/`)* | `hard` | balanced | orchestrator | `docs/specs/*/screens/`, `docs/designs/` | `kit/steps/phase-1/p1-05-screen-design.md` |
 | 6 | Tech Stack, Architecture & Data | `hard` | capable | general-purpose agent | `docs/architecture.md`, `docs/data-model.md`, `docs/flows.md` | `kit/steps/phase-1/p1-06-architecture.md` |
 | 7 | Constitution | `soft` | fast | general-purpose agent | `docs/constitution.md` | `kit/steps/phase-1/p1-07-constitution.md` |
 | 8 | Scaffold | `none` | balanced | general-purpose agent | runnable codebase, `AGENTS.md`, one commit | `kit/steps/phase-1/p1-08-scaffold.md` |
+
+**Process Plan.** Step 1 approves, in `docs/idea-brief.md`, a `keep` / `skip` / `adapt` row for every Step 2–8, derived from each step file's `Skip when` line and the Product Shape. Steps 4, 6, 7 and 8 are never skipped. A skipped step is logged `skipped (plan: <reason>)` in `docs/phase-1-session.md`, and its Gate is waived with it; never skip a step the plan keeps. Step 6 chooses the stack within the Product Shape.
 
 ## Closeout and handoff
 
@@ -58,7 +60,8 @@ Step 8 (`p1-08-scaffold.md`) holds the single closeout checklist and the Phase 2
 ## Flow
 
 ```
-Ideation → Market Research [optional, soft] → Prototype & Design [hard]
+Ideation + Product Shape + Process Plan [hard] → Market Research [optional, soft]
+    → Prototype & Design [hard; flow half only when no visual interface]
     → Roadmap [hard] → Full Screen Design [hard, skippable] → Architecture [hard]
     → Constitution [soft] → Scaffold → closeout checklist → one commit
                 │

@@ -9,6 +9,7 @@
 - **Agent/Skill**: `{{AGENT_OR_SKILL}}`
 - **Model**: `{{capable | balanced | fast | none}}`
 - **Gate**: {{none | soft | hard}} — {{CONDITION_IF_NOT_OBVIOUS}}
+- **Skip when**: {{PREDICATE_OVER_PRODUCT_SHAPE_OR_RECORDED_FACT; omit on core steps}} — evaluated by Phase 1 Step 1's Process Plan; the step is then logged `skipped (plan: <reason>)`. Name the half that survives if the step `adapt`s.
 - **Inputs**: {{INPUT_PATHS}}
 - **Outputs**: {{OUTPUT_PATHS}}
 - **Template**: {{TEMPLATE_PATH_OR_NONE}}

@@ -60,7 +60,7 @@ features:
       src: /icons/templates.svg
       alt: Templates Included
     title: Templates Included
-    details: Every planning step has a structured template. Copy the kickoff form once and fill it in; the AI fills everything else — research notes, feature list, tech choice, design guide. All saved as readable text files alongside your project.
+    details: Every planning step has a structured template. Bring your own documents or just your idea; the AI fills everything else — research notes, feature list, tech choice, design guide. All saved as readable text files alongside your project.
     link: /reference/templates
     linkText: View templates
 ---

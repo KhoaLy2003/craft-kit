@@ -12,6 +12,7 @@
   - `docs/designs/<feature-slug>/` — image files (Path A), or `design-manifest.json` (Path B)
 - **Template**: `kit/templates/spec-screen.md`
 - **Gate**: `hard` — one sign-off covering all features; no per-feature partial approval.
+- **Skip when**: `Visual interface: no` (idea brief Product Shape): no screens exist, so the step is `skipped (plan: visual interface: no)` and `docs/designs/` and `docs/specs/*/screens/` are not created. Otherwise `keep` in the Process Plan with reason `decided at Step 5`; rule 2 then decides whether designs already exist or the preview covers every feature.
 
 > **No designer?** At the "files"/"mcp" reply (or the Path A "ready" prompt) declare every screen skipped; each is recorded as `design_md_fallback` and Phase 2 builds from `docs/DESIGN.md` + `docs/preview/`. Briefs are still written.
 

@@ -7,7 +7,7 @@
 - **Model**: `capable`
 - **Gate**: `hard` — approval of the spec
 - **Inputs**:
-  - `docs/backlog.json` (the feature entry, or all Must entries), `docs/roadmap.md` (build-order context), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md`, `docs/data-model.md`, `docs/flows.md` (these are the **standard inputs**); `docs/known-issues.md` (open rows touching this feature's area), if it exists
+  - `docs/backlog.json` (the feature entry, or all Must entries), `docs/roadmap.md` (build-order context), `docs/constitution.md`, `docs/architecture.md`, `docs/DESIGN.md` *(visual interface only)*, `docs/data-model.md`, `docs/flows.md` (these are the **standard inputs**); `docs/known-issues.md` (open rows touching this feature's area), if it exists
   - `docs/specs/<feature-slug>/intake.md` (Maintenance fit check and `Depends on`), if it exists
   - `docs/designs/<feature-slug>/` and `docs/specs/<feature-slug>/screens/*.md` — designs and briefs from Phase 1 Step 5 (including a re-entry for new features), if they exist
 - **Outputs**:
@@ -36,6 +36,7 @@ Skipped when `kit/phase-2.md` skip detection applies. Work in this order.
 |---|---|
 | Designs exist in `docs/designs/<feature-slug>/`, or a Step 5 re-entry will supply them | *Behavior-only*: just what designs do not show (criteria, validation, data constraints, auth flows, errors, edge cases); no layout or visuals |
 | No designs, none planned | *Full*: also write the UI behavior in full |
+| No visual interface | *None*: write no UI behavior and no screens; the `## Screens` section says `n/a — no visual interface`. Entry-point behavior (inputs, outputs, errors) is covered by the acceptance criteria and edge cases |
 
 - **NFR applicable**: reference rows of `docs/roadmap.md` → Non-functional Requirements. An NFR the table lacks is raised with the user before approval and added to the roadmap table.
 - **Data & Flow Impact**: approved with the spec; a spec needing an unlisted entity or screen is incomplete.

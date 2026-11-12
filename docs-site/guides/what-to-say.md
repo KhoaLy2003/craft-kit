@@ -17,7 +17,7 @@ Send the prompt as written in a conversation that can read your project folder. 
 | You want to… | Say | What happens next |
 |---|---|---|
 | Not sure / come back after a break | `Start using kit/START.md.` | Prints the workflow and prompt to run |
-| Start a new product | `Start Phase 1 using the kickoff form I've shared.` (fill in `docs/phase-1-kickoff.md` first) | Eight steps; you approve at four gates |
+| Start a new product | `Start Phase 1 using kit/phase-1-bootstrap.md. My documents are at <paths>.` (or `... Here is my idea: <a few sentences>.`; no template needed) | Eight steps; you approve at five gates |
 | Build the planned features | `Run Phase 2 using kit/phase-2.md.` | Spec first; you approve it before any code |
 | **Build one specific feature** | `Run Phase 2 using kit/phase-2.md for feature F12.` | Same cycle, one feature |
 | **Check** the work | Nothing to say: review and E2E run inside Phase 2. At Manual Check the AI gives you a walkthrough; reply with what matches and what does not | Fixes loop back before shipping |

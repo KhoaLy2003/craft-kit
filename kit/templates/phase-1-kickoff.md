@@ -1,7 +1,12 @@
 # Phase 1 Kickoff
 
-<!-- How to use this template
+<!-- How to use this template (optional)
      ─────────────────────────────────────────────────────────────────────
+     You do not need this form. Phase 1 Step 1 also starts from your own
+     documents (requirements, notes, research, tickets, decks, pasted chat) or
+     from nothing at all: just tell your orchestrating agent where they are.
+     Use this form only if you would rather answer a list of prompts.
+
      Option A — AI-assisted (recommended):
        Open a fresh AI chat. Paste this file, describe your idea, and ask
        the AI to fill in each section from the conversation. Save the
@@ -67,14 +72,15 @@
 
 ---
 
-## Source Mode
+## Your Documents
 
-<!-- idea: you describe the idea and the orchestrator asks questions (default).
-     requirements: you already have requirements documents or tickets; the orchestrator
-     reads them first and asks only about gaps and conflicts.
+<!-- Anything you already wrote or received about this product: requirements
+     (BRD, PRD, SRS), tickets, notes, research, decks, chat exports, links.
+     Give the path or link, or paste the text below. Any format is fine; the
+     orchestrator lists every source, reads what it can, tells you what it
+     could not read, and asks only about gaps and conflicts. No mode to set.
 
-     Mode: idea / requirements
-     Requirement sources (paths in docs/requirements/, or ticket IDs): ___ -->
+     Where they are: ___ -->
 
 
 ---

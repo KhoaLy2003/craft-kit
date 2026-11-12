@@ -7,7 +7,7 @@
 - **Version**: 1.0.0
 - **Ratified**: <!-- YYYY-MM-DD, original adoption date -->
 - **Last amended**: <!-- YYYY-MM-DD; same as Ratified for the first version -->
-- **Based on**: `architecture.md`, `DESIGN.md`, `roadmap.md`
+- **Based on**: `architecture.md`, `DESIGN.md` *(if it exists)*, `roadmap.md`
 - **Provenance**: `designed (Phase 1 Step 7)` | `reverse-engineered (Adopt)`
 
 > Read by every Phase 2 step. Every principle must be concrete enough to change at least one downstream plan or diff; remove any that wouldn't. Personal workflow preferences (branching habits, PR etiquette) do not belong here, only rules that shape code and architecture output.

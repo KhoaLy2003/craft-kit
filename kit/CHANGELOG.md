@@ -7,6 +7,26 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+### Changed
+
+- **Phase 1 decides the product shape first and skips steps by recorded fact, not by exception.** Prompted by a discussion of using the kit for a Python AI project: the kit assumed a visual interface and a JS/TS stack, recorded a mandated language as a non-binding "preliminary signal", and fixed the platform only at Step 6, after Steps 2–5 had run.
+  - **`kit/steps/phase-1/p1-01-ideation.md`**, **`kit/templates/01-idea-brief.md`** — Step 1 now asks four closed shape questions (interface, platform, language/runtime, environment limits; each may be `open`; no frameworks, databases or vendors are proposed) and writes a Product Shape section (`Visual interface: yes | no` derived from the interface answer). It then derives a Process Plan: a `keep` / `skip` / `adapt` row with a reason for every Step 2–8, from each step's `Skip when` line. **Gate `soft` → `hard`**, since the plan waives later gates. Idea-brief sections after Known Constraints moved down (Product Shape is 6, Process Plan 7, Open Questions 8; see the intake entry below for 9–11).
+  - **`kit/resource/step-specification-template.md`** — new optional `Skip when` Overview bullet.
+  - **`kit/steps/phase-1/p1-03-prototype-design.md`** — never skipped; with `Visual interface: no` it runs in non-visual form (example requests, transcripts or sample input/output instead of screens) and Phases B and C (`DESIGN.md`, `docs/preview/`) are skipped. The platform acknowledgment reads Product Shape instead of Known Constraints.
+  - **`kit/steps/phase-1/p1-05-screen-design.md`** — `Skip when: Visual interface: no`.
+  - **`kit/phase-1-bootstrap.md`** — Step 1 gate `hard`; notes and a Process Plan paragraph; flow diagram updated.
+  - **`kit/steps/phase-1/p1-06-architecture.md`**, **`kit/stack-catalog.md`**, **`kit/templates/06-architecture.md`**, **`kit/steps/phase-1/p1-08-scaffold.md`** — the stack must satisfy the Product Shape; a mandated language or non-web platform removes the baseline as default; a stack outside the catalog records its toolchain (`Decision → Toolchain`), which the Step 8 pre-flight reads.
+  - **`kit/templates/06c-flows.md`** — with no visual interface a "screen" is an entry point (API operation, command, job).
+  - **`kit/phase-2.md`**, **`kit/steps/phase-2/p2-01-spec.md`**, **`kit/steps/phase-2/p2-03-implement.md`**, **`kit/templates/spec.md`**, `04`/`06`/`07` templates — `docs/DESIGN.md` is required only when the product has a visual interface; the spec has a no-visual-interface mode. This also resolves a contradiction: Adopt already allowed `skipped (no UI)` but the Phase 2 prerequisites required `DESIGN.md`.
+  - **Existing projects:** no migration module. A project whose idea brief has no Product Shape is treated as visual exactly when `docs/DESIGN.md` exists (`phase-2.md` Prerequisites).
+- **Step 1 accepts whatever the user supplies; the kickoff form is optional.** Prompted by the question of users who share their own documents instead of filling the template. Before, the trigger was a template-shaped file plus a declared `Mode: idea | requirements`, with sources limited to `docs/requirements/` in markdown, CSV or JSON, and nothing checked that every document was read.
+  - **`kit/steps/phase-1/p1-01-ideation.md`** — Trigger and Inputs accept files or folders at any path, pasted text, attachments, ticket exports, URLs, the kickoff form, or nothing. Rule 7 is now a generic **Intake**: collect (outside-repo sources copied to `docs/requirements/`, originals untouched; secrets, binaries and very large files referenced by path), inventory (type, readable yes/partly/no, role; an unreadable source is reported and never guessed), extract the intake facts with locators or `missing`, ask only about gaps and conflicts, and a **coverage check** so no source is silently dropped. No mode is declared: Provenance is `requirements` whenever any source exists, otherwise `conversation`. Market Research honours a run/skip stated in any source and defaults to skip when sources were supplied.
+  - **`kit/templates/01-idea-brief.md`** — new Source Inventory (section 9; Source Trace is 10, Gaps and conflicts 11, replacing the "requirements mode only" wording), a `Project name` field, and `Based on` lists the kickoff and sources only if they exist.
+  - **`kit/templates/phase-1-kickoff.md`** — marked optional; the "Source Mode" section is replaced by a free-form "Your Documents" section.
+  - **`kit/START.md`** — route 2 no longer requires "no `docs/`" (which contradicted the kickoff living in `docs/`) and asks for documents in any format instead of setting a mode.
+  - **`kit/phase-1-bootstrap.md`**, **`p1-02`**, **`p1-04`**, **`p1-07`**, **`p1-08`** — no step depends on the kickoff any more: the Step 2 trigger, the `[Src: …]` tags (keyed on Provenance), the base-branch lookup, the closeout checklist and the Phase 2 handoff project name (now `Project name` in the idea brief).
+  - **`bin/cli.js`**, README, docs-site — quick-start and getting-started wording; Step 1 now counted as a fifth hard gate in the docs.
+
 ---
 
 ## [0.0.52] - 2026-11-11

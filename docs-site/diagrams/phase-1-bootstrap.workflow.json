@@ -248,14 +248,14 @@
       "title": "Gates",
       "items": [
         "Hard gates: the AI stops until you explicitly approve",
-        "Ideation, Market Research and Constitution are soft: summary shown, advances unless you object"
+        "Market Research and Constitution are soft: summary shown, advances unless you object"
       ]
     },
     {
       "dot": "amber",
       "title": "Optional and Skippable",
       "items": [
-        "Step 2 runs or skips as the kickoff decides",
+        "Step 2 runs or skips as your documents or the kickoff form decide",
         "Step 5 is skipped when approved designs already exist"
       ]
     },
