@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.53] - 2026-11-12
+
+**Summary:** Phase 1 starts from any documents · product shape decided first · steps skipped by recorded fact
+
 ### Changed
 
 - **Phase 1 decides the product shape first and skips steps by recorded fact, not by exception.** Prompted by a discussion of using the kit for a Python AI project: the kit assumed a visual interface and a JS/TS stack, recorded a mandated language as a non-binding "preliminary signal", and fixed the platform only at Step 6, after Steps 2–5 had run.
@@ -26,6 +32,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
   - **`kit/START.md`** — route 2 no longer requires "no `docs/`" (which contradicted the kickoff living in `docs/`) and asks for documents in any format instead of setting a mode.
   - **`kit/phase-1-bootstrap.md`**, **`p1-02`**, **`p1-04`**, **`p1-07`**, **`p1-08`** — no step depends on the kickoff any more: the Step 2 trigger, the `[Src: …]` tags (keyed on Provenance), the base-branch lookup, the closeout checklist and the Phase 2 handoff project name (now `Project name` in the idea brief).
   - **`bin/cli.js`**, README, docs-site — quick-start and getting-started wording; Step 1 now counted as a fifth hard gate in the docs.
+
+---
 
 ---
 
