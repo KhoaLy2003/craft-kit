@@ -25,7 +25,7 @@ Behavior only: no file, class, function, or migration names. Size: about 8 KB an
 
 ## Screens
 
-<!-- Behavior-only mode: every screen; mark one with no design file `undesigned` (falls back to docs/DESIGN.md). Full mode: the UI behavior in full. -->
+<!-- Behavior-only mode: every screen; mark one with no design file `undesigned` (falls back to docs/DESIGN.md). Full mode: the UI behavior in full. No visual interface: write `n/a — no visual interface`. -->
 
 ## NFR applicable
 

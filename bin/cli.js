@@ -181,9 +181,9 @@ function printQuickStart (rel) {
     Say:  ${yellow('"Start using ' + rel + '/START.md."')}
 
   ${SYM.dot} ${bold('New project')}
-    ${cyan('1.')} Copy ${yellow(rel + '/templates/phase-1-kickoff.md')} to ${yellow('docs/phase-1-kickoff.md')} and fill it in with your idea
+    ${cyan('1.')} Have your documents ready (requirements, notes, research, tickets; any format, no template needed), or just your idea. ${dim('Optional form: ' + rel + '/templates/phase-1-kickoff.md')}
     ${cyan('2.')} Open your AI assistant with this folder as the working directory
-    ${cyan('3.')} Say:  ${yellow('"Start Phase 1 using ' + rel + '/phase-1-bootstrap.md."')}
+    ${cyan('3.')} Say:  ${yellow('"Start Phase 1 using ' + rel + '/phase-1-bootstrap.md. My documents are at <paths>, or here is my idea: ..."')}
 
   ${SYM.dot} ${bold('Existing project')}  ${dim('(skip Phase 1)')}
     Share  ${yellow(rel + '/phase-2.md')}  and say:  ${yellow('"Run Phase 2 using ' + rel + '/phase-2.md."')}

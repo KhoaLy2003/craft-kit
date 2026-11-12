@@ -4,7 +4,7 @@
 
 - **Status**: `draft` | `approved`
 - **Last updated**: <!-- YYYY-MM-DD -->
-- **Based on**: `idea-brief.md`, `market-notes.md` *(if market research ran)*, `DESIGN.md`, `roadmap.md`
+- **Based on**: `idea-brief.md`, `market-notes.md` *(if market research ran)*, `DESIGN.md` *(if it exists)*, `roadmap.md`
 - **Diagrams**: <!-- link to docs/diagrams/architecture-overview.html, or `none` -->
 - **Provenance**: `designed (Phase 1 Step 6)` | `reverse-engineered (Adopt)`
 
@@ -25,6 +25,8 @@
 <!-- The chosen stack, in active voice. Not a comparison: the answer. -->
 
 **Stack**:
+
+**Toolchain**: <!-- Stacks outside kit/stack-catalog.md only; delete otherwise. Runtime and version, package manager, version-check commands, and the install, start, test, lint, typecheck and E2E commands. Steps 7 and 8 read this. -->
 
 **High-level architecture**: <!-- e.g. monolith, modular monolith, client-server with X API style -->
 

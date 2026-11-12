@@ -1,6 +1,6 @@
 # Templates
 
-Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fills these templates and saves the result to your project's `docs/` folder. The only copy you make yourself is the kickoff form (see [Kickoff Template](#kickoff-template)).
+Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fills these templates and saves the result to your project's `docs/` folder. You fill in nothing yourself; the optional kickoff form (see [Kickoff Template](#kickoff-template)) is the only template meant for you.
 
 **Rule:** Never edit files inside `kit/`; `--force` updates overwrite them.
 
@@ -10,7 +10,7 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 
 | Template | Output location | Filled by | Used in |
 |---|---|---|---|
-| `templates/phase-1-kickoff.md` | `docs/phase-1-kickoff.md` | **You** — before starting Phase 1 | Before Step 1 |
+| `templates/phase-1-kickoff.md` | `docs/phase-1-kickoff.md` | **You**, optional | Before Step 1 |
 | `templates/MODELS.md` | `docs/MODELS.md` | Agent | Phase 1 "Model tiers" |
 | `templates/01-idea-brief.md` | `docs/idea-brief.md` | Agent | Phase 1 Step 1 |
 | `templates/02-market-notes.md` | `docs/market-notes.md` | Agent | Phase 1 Step 2 |
@@ -41,7 +41,7 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 
 ## Kickoff Template
 
-The only template you fill in yourself. Copy it to `docs/phase-1-kickoff.md` before starting Phase 1. It asks for the idea, the target user, what you already have (a design file, a tech preference, prior research), the source mode (`idea`, or `requirements` when you already have a BRD, PRD, SRS or tickets), whether to run market research, and any hard constraints. Rough notes are fine.
+Optional. Phase 1 also starts from your own documents in any format, or from just your idea, with no template. If you prefer a list of prompts, copy this form to `docs/phase-1-kickoff.md`. It asks for the idea, the target user, what you already have (a design file, a tech preference, prior research), hard constraints, whether to run market research, and where your documents are. Rough notes are fine.
 
 ---
 

@@ -10,10 +10,11 @@
 - **Outputs**:
   - `docs/prototype/journey-map.md` — one persona, one scenario, end-to-end journey
   - `docs/prototype/prototype-brief.md` — screens, interactions, mock data, state coverage, faked parts
-  - `docs/DESIGN.md` — user-provided, validated, not modified by this step (later amendments only with explicit user approval: Maintenance Step 2 or Phase 2 Step 3)
-  - `docs/preview/` — the HTML prototype (no real backend; opens as `file://`)
+  - `docs/DESIGN.md` — *(`Visual interface: yes` only)* user-provided, validated, not modified by this step (later amendments only with explicit user approval: Maintenance Step 2 or Phase 2 Step 3)
+  - `docs/preview/` — *(`Visual interface: yes` only)* the HTML prototype (no real backend; opens as `file://`)
 - **Template**: `templates/03a-journey-map.md`, `templates/03b-prototype-brief.md`, `templates/03c-design-system.md` (skeleton for a user who writes their own `DESIGN.md`)
 - **Gate**: `hard` — one gate for flow and look together.
+- **Skip when**: never skipped; `adapt` when `Visual interface: no` (idea brief Product Shape). Flow validation (Phase A and D) still runs in non-visual form; Phases B and C (`DESIGN.md`, `docs/preview/`) are `skipped (plan: visual interface: no)`.
 
 ## Scope
 
@@ -28,9 +29,9 @@
 
 ### Phase A — Journey map and prototype brief
 
-1. **Platform acknowledgment (first action).** Read `docs/idea-brief.md` Known Constraints and apply the matching case:
-   - *None, or web only*: proceed silently.
-   - *Single non-web platform*: tell the user the HTML prototype validates flows only and does not commit to a web product (platform is confirmed in Step 6); build for that viewport.
+1. **Platform acknowledgment (first action).** Read `docs/idea-brief.md` Product Shape → Platform and apply the matching case:
+   - *`open`, or web only*: proceed silently.
+   - *Single non-web platform*: tell the user the HTML prototype validates flows only and does not commit to a web product; build for that viewport.
    - *Multiple platforms*: ask which is primary if not explicit; say the prototype covers it only. List the others under **Deferred platforms** in `prototype-brief.md` Section 5.
 2. **Viewport**: mobile → `max-width: 390px`, centered, touch targets ≥ 44px, no hover-only states; desktop → `max-width: 1280px`; web → default browser width.
 3. **Priority order**: Flow → Function → Usability → Data → Visual polish.
@@ -39,9 +40,12 @@
    - **Realistic mock data**: plausible names, amounts, dates; never "Item 1" or "Lorem ipsum". Pre-populate lists where it helps the user judge the workflow.
    - **State coverage**: happy path, empty state, at least one validation/error state, and the success state after a key action.
    - **Faked parts**: every hardcoded value, simulated behaviour, and missing backend connection listed in the brief.
+   - **Non-visual form** (`Visual interface: no`): the "screens" of `prototype-brief.md` are the entry points the product exposes, each shown as a concrete example instead of a rendered screen. API: example request and response per operation. Command line: a transcript of invocations and output. Batch or pipeline: sample input, expected output and a run log. Mock data, state coverage (empty, error, success) and faked parts still apply. No `docs/preview/` is built.
 5. Verify both files exist before continuing. Tell the user the paths; no separate approval is needed here.
 
 ### Phase B — DESIGN.md
+
+> `Visual interface: no`: skip this phase (`skipped (plan: visual interface: no)`); no `docs/DESIGN.md` is required.
 
 1. If `docs/DESIGN.md` exists and has content, go straight to validation. Otherwise tell the user (substitute the real project path):
 
@@ -64,6 +68,8 @@
 
 ### Phase C — Build the prototype once
 
+> `Visual interface: no`: skip this phase (`skipped (plan: visual interface: no)`); there is nothing to build.
+
 Read `docs/DESIGN.md`, `docs/prototype/prototype-brief.md`, `docs/prototype/journey-map.md`, and `docs/idea-brief.md`. Build `docs/preview/` directly, with no subagent.
 
 - **Stack** (CDN-loaded, so the user needs internet; tell them): one `docs/preview/index.html` with JS screen switching (one file per screen if complex). CDN Tailwind (`<script src="https://cdn.tailwindcss.com">`) with an inline `tailwind.config` mapping the `DESIGN.md` color and font tokens; a `<style>` block for the rest; vanilla JS; Phosphor Icons via CDN (`https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css`), no hand-rolled SVG; fonts via `<link>`; `https://picsum.photos/seed/{seed}/{w}/{h}` for images. No build step.
@@ -73,6 +79,8 @@ Read `docs/DESIGN.md`, `docs/prototype/prototype-brief.md`, `docs/prototype/jour
 - **Verify**: `docs/preview/index.html` exists and its first 20 lines contain the Tailwind CDN script tag (not a stub). On a build error, report it and retry with a targeted fix; never advance with a broken prototype.
 
 ### Phase D — Review, feedback, and hard gate
+
+> `Visual interface: no`: in item 1, give the user the paths of `journey-map.md` and `prototype-brief.md` and walk its example interactions instead of opening a preview; in item 4, mark the Definition of Done items about `docs/preview/` and `DESIGN.md` as `n/a — no visual interface`; in item 5, use: *"The journey map and prototype brief cover [N flows]. Approving locks the product flow; changing it later may reopen the roadmap and architecture. Approve?"*
 
 1. Tell the user to open `docs/preview/index.html` (double-click or `open docs/preview/index.html`) and list the screens covered and the `DESIGN.md` tokens applied.
 2. Walk every flow in `docs/prototype/journey-map.md` Section 4 with the review questions (product behaviour first, appearance second):
@@ -96,8 +104,8 @@ Read `docs/DESIGN.md`, `docs/prototype/prototype-brief.md`, `docs/prototype/jour
 
 - [ ] `journey-map.md` covers one persona and one scenario (not a blended "average user"), with a pain point per phase where relevant and an explicit prototype scope.
 - [ ] `prototype-brief.md` documents all screens, interactions, mock data, state coverage, and faked parts; its Definition of Done is fully checked.
-- [ ] `docs/DESIGN.md` passed all 7 validation criteria.
-- [ ] `docs/preview/index.html` exists, applies `DESIGN.md`, and every screen in the journey map is reachable by clicking.
+- [ ] *(`Visual interface: yes`)* `docs/DESIGN.md` passed all 7 validation criteria.
+- [ ] *(`Visual interface: yes`)* `docs/preview/index.html` exists, applies `DESIGN.md`, and every screen in the journey map is reachable by clicking.
 - [ ] Review questions walked; user approved at the hard gate.
 
 ## Transition Rules

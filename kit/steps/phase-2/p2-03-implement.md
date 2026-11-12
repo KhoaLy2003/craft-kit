@@ -8,7 +8,7 @@
 - **Gate**: `none`
 - **Inputs**:
   - the plan and spec (`docs/specs/` or `docs/specs/<feature-slug>/`), `docs/constitution.md`
-  - `docs/DESIGN.md`, `docs/preview/` (when present), and `docs/designs/<feature-slug>/` (per feature, if it exists)
+  - `docs/DESIGN.md`, `docs/preview/` (when present), and `docs/designs/<feature-slug>/` (per feature, if it exists); all three only when the product has a visual interface
 - **Outputs**: code on the feature branch
 - **Template**: none
 

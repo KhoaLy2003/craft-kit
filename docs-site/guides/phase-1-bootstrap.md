@@ -1,6 +1,6 @@
 # Phase 1 — Bootstrap
 
-Phase 1 takes you from a rough idea to a project that is ready to build: planning documents, an approved design and stack, and a scaffolded app that starts but has no features yet. It runs once per project, in eight steps. You approve at four of them.
+Phase 1 takes you from a rough idea, or from the documents you already have, to a project that is ready to build: planning documents, an approved design and stack, and a scaffolded app that starts but has no features yet. It runs once per project, in eight steps. You approve at five of them.
 
 Already have code? Use [Existing Projects](/guides/existing-projects) instead.
 
@@ -9,14 +9,16 @@ Already have code? Use [Existing Projects](/guides/existing-projects) instead.
 ## Before You Start
 
 1. Install the kit and get your AI to read your project folder. See [Getting Started](/getting-started).
-2. Fill in the kickoff form, `docs/phase-1-kickoff.md`. Rough notes are fine: the problem, who has it, any hard constraints. The AI asks about whatever is missing.
-3. **Have a `DESIGN.md` ready** (your design-system file). Step 3 stops until you provide one, so having it ready saves a wait. See [Prepare your design-system file](/getting-started#prepare-your-design-system-file).
+2. Gather what you have: your own documents in any format (requirements, notes, research, tickets, a pasted chat), or just your idea in a few sentences. No template and no mode to set; the optional kickoff form, `docs/phase-1-kickoff.md`, is there only if you prefer prompts. The AI lists every document, tells you what it could not read, and asks about whatever is missing or contradictory.
+3. **If your product has a screen, have a `DESIGN.md` ready** (your design-system file). Step 3 stops until you provide one, so having it ready saves a wait. See [Prepare your design-system file](/getting-started#prepare-your-design-system-file). A product with no screen (an API, a command line tool, a batch job) does not need one.
 
 Then send:
 
 ```text
-Start Phase 1 using the kickoff form I've shared.
+Start Phase 1 using kit/phase-1-bootstrap.md. My documents are at <paths>.
 ```
+
+or, with only an idea: `Start Phase 1 using kit/phase-1-bootstrap.md. Here is my idea: <a few sentences>.`
 
 Before Step 1 the AI also checks which skills are installed and asks you which AI models to use for which kind of work. Answer in a sentence; it writes the result to `docs/MODELS.md`.
 
@@ -26,7 +28,7 @@ Before Step 1 the AI also checks which skills are installed and asks you which A
 
 | Step | What the AI does | Your part |
 |---|---|---|
-| 1. Ideation | Asks short questions about the problem, the user, the alternatives and what is out of scope, then writes the idea brief | Answer; say if the written brief is wrong. It continues unless you object |
+| 1. Ideation | Reads whatever you supplied, asks a few short questions about gaps and conflicts, the problem, the user and what is out of scope, plus four fixed questions (how it is used, where it runs, any mandatory language, hosting limits). Writes the idea brief and a plan of which steps run | **Approve the brief, the document list and the step plan** (hard gate) |
 | 2. Market Research *(optional)* | Looks at similar products, trends and reasons the idea might fail, and suggests features worth borrowing | Say **run** or **skip** at Step 1. If it runs, say **proceed**, **pivot** or **stop** |
 | 3. Prototype & Design | Writes a journey map and a prototype brief, checks your `DESIGN.md`, and builds a clickable HTML prototype | **Open the prototype and approve it** (hard gate) |
 | 4. Roadmap | Sorts features into Must / Should / Could / Won't, sets the build order and recommends how Phase 2 will run | **Approve the feature list and the scope** (hard gate) |
@@ -39,10 +41,11 @@ You can skip Step 5 only when approved designs already exist, or when every feat
 
 ---
 
-## The Four Decisions That Matter
+## The Five Decisions That Matter
 
 These are the points where a wrong answer is expensive, so the AI stops and waits.
 
+- **Brief and step plan (Step 1).** The plan decides which later steps run. Check that every document you gave is listed as used or ignored with a reason, that the product kind (screen, API, command line, batch) is right, and that no step you need is skipped. Skipping a step cannot be undone without reopening the plan.
 - **Prototype (Step 3).** This approves the flows and the look together. Click through it. Check the empty states and the error states, not only the happy path. The prototype is disposable; it proves the idea, not the architecture.
 - **Roadmap (Step 4).** This decides what gets built. Anything marked Won't or deferred is kept in a list, not dropped. The AI also recommends the Phase 2 scope (`all` or `feature`); you confirm it. See [Phase 2 — Build](/guides/phase-2-build#choose-a-scope).
 - **Screen design (Step 5).** One sign-off covers every feature. Changing a design after this costs more than changing it now.

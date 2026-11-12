@@ -20,7 +20,7 @@
 ## Execution Rules
 
 1. **Pre-flight, before dispatching the agent** (missing tooling fails mid-run and leaves a partial state).
-   - From `docs/architecture.md`, list every runtime needed (language, CLIs, platform SDKs), using the `Minimum local toolchain` and `Requires:` fields in `kit/stack-catalog.md` for the stack and each addition.
+   - From `docs/architecture.md`, list every runtime needed (language, CLIs, platform SDKs), using the `Minimum local toolchain` and `Requires:` fields in `kit/stack-catalog.md` for the stack and each addition, or the `Toolchain` line in `docs/architecture.md` for a stack the catalog does not cover.
    - Run `<tool> --version` (or the catalog's check command) for each; `git` first. For each failure give the tool, install URL, and a one-line instruction, and wait until the check passes.
    - Hosted stacks (Supabase, Neon, Firebase, Expo EAS, ...): confirm the user created the account/project and has the keys and URLs (the agent cannot fetch credentials); check free-tier limits in the catalog first.
    - Git remote: optional now, needed before Ship (or accept its local-only fallback).
@@ -65,7 +65,7 @@
 The single closeout checklist. Step 8 runs it; every item must pass before the Phase 1 commit and handoff.
 
 - [ ] `docs/MODELS.md` is `approved`; `docs/phase-1-session.md` shows every step `complete` or `skipped`
-- [ ] `docs/phase-1-kickoff.md`
+- [ ] `docs/phase-1-kickoff.md` *(if there was one)*; `docs/requirements/` holds every source that was copied in Step 1
 - [ ] `docs/idea-brief.md` is `approved`
 - [ ] `docs/market-notes.md` *(skip if Step 2 was skipped)*
 - [ ] `docs/prototype/` (journey-map.md and prototype-brief.md, Definition of Done checked), `docs/DESIGN.md`, and `docs/preview/index.html` (the approved prototype)
@@ -80,7 +80,7 @@ The single closeout checklist. Step 8 runs it; every item must pass before the P
 
 ## Phase handoff prompt
 
-After the closeout passes, **close this session and open a new one for Phase 2** (this one carries Phase 1 debate that raises cost and leaks stale reasoning). Emit this prompt with every bracket filled (scope from `Phase 2 Scope` in `docs/roadmap.md`, name from the kickoff); the user pastes it into a new session at the project root:
+After the closeout passes, **close this session and open a new one for Phase 2** (this one carries Phase 1 debate that raises cost and leaks stale reasoning). Emit this prompt with every bracket filled (scope from `Phase 2 Scope` in `docs/roadmap.md`, project name from `Project name` in `docs/idea-brief.md`); the user pastes it into a new session at the project root:
 
 ```
 Read these files before starting:

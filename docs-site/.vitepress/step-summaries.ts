@@ -7,9 +7,9 @@ const step = (does: string, you: string[], produces: string, check?: string[]): 
 
 export const STEPS: Record<string, Summary> = {
   'phases/steps/p1-01-ideation': step(
-    'Asks short questions about the problem, who has it, what they use today and what is out of scope, then writes the idea brief. With a requirements document it reads that first and asks only about gaps and conflicts.',
-    ['Answer the questions.', 'Say whether to run Market Research (Step 2) if the kickoff form left it blank.', 'Say what is wrong with the written brief; otherwise it continues.'],
-    '`docs/idea-brief.md`, and your kickoff form moved to `docs/phase-1-kickoff.md`.'),
+    'Reads whatever you supplied (documents in any format, notes, or the optional kickoff form), lists every source, then asks short questions only about gaps and conflicts, the problem, who has it, what they use today and what is out of scope, plus four fixed questions about how the product is used, where it runs, any mandatory language and hosting limits. Writes the idea brief and a plan of which later steps run.',
+    ['Point it at your documents or describe your idea.', 'Answer the questions.', 'Check that every document is accounted for, and that the step plan is right; then approve (hard gate).'],
+    '`docs/idea-brief.md` (with a source inventory when you supplied documents), your documents copied into `docs/requirements/`, and the kickoff form, if you used one, moved to `docs/phase-1-kickoff.md`.'),
   'phases/steps/p1-02-market-research': step(
     'Looks at similar products and trends, and lists reasons the idea might fail and features worth borrowing. Optional.',
     ['Read the findings, then say **proceed**, **pivot** or **stop**. Silence means proceed.'],

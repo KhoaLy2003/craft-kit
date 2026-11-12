@@ -26,10 +26,10 @@ const WORKFLOWS: Record<string, Summary> = {
   },
   'phases/phase-1': {
     when: 'A new product, once per project: from idea to a ready-to-code codebase.',
-    prompt: "Start Phase 1 using the kickoff form I've shared.",
+    prompt: "Start Phase 1 using kit/phase-1-bootstrap.md. My documents are at <paths>.",
     you: [
-      'Fill in `docs/phase-1-kickoff.md` and supply `docs/DESIGN.md` first.',
-      'Approve at four hard gates: Prototype & Design (Step 3), Roadmap (4), Full Screen Design (5) and Architecture (6).',
+      'Gather your documents (any format) or just your idea; supply `docs/DESIGN.md` first if the product has a screen.',
+      'Approve at five hard gates: Ideation and step plan (Step 1), Prototype & Design (Step 3), Roadmap (4), Full Screen Design (5) and Architecture (6).',
     ],
     produces: 'The planning documents in `docs/`, a scaffolded app with no features yet, one commit, and the prompt that starts Phase 2.',
   },
