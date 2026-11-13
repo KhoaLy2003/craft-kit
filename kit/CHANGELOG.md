@@ -7,6 +7,14 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+**Summary:** Phase 2 Plan discovers the installed skills and agents, picks the best fit per task, and waits for approval before Step 3
+
+- **`kit/steps/phase-2/p2-02-plan.md`** — Gate `soft` → `hard` (D1 agent and skill assignments, D2 parallel groups); Rule 1 inventories the installed skills and agents; the gate summary lists choices and rejected candidates.
+- **`kit/steps/phase-2/p2-02-plan.md`**, **`kit/templates/plan.md`** — task fields capped at one line of 300 characters; no preamble or extra sections (prompt: cloned test plans with 900–1175-character lines).
+- **`kit/task-agent-rubric.md`** — discovery (context lists, else skill and agent folders), per-task choice with a reason, the three old rows kept as required rows, and the `general-purpose` role resolved per harness instead of a hardcoded `task`.
+- **`kit/templates/plan.md`**, **`kit/steps/phase-2/p2-03-implement.md`** — `Specialist:` on every task and a `## Skills and Agents` table; Step 3 falls back to general-purpose when a named agent or skill is missing.
+- **`kit/phase-2.md`**, **`AGENTS.md`**, **`docs-site/reference/required-skills.md`** — Step 2 shown as hard; `Hard gates:` list, agent-routing text and the agents page updated.
+
 ---
 
 ## [0.0.53] - 2026-11-12
