@@ -244,7 +244,7 @@ function usage () {
                     small personal projects; adds a workflow block to CLAUDE.md
                     and conversation-audit hooks to .claude/settings.json
     --no-hook       With --lite: do not write the workflow block into CLAUDE.md / AGENTS.md
-                    (the AI is then not asked for audit tags either)
+                    (start with "Start using <kit-lite>/START.md." instead)
     --no-audit      With --lite: do not wire the audit hooks or the .gitignore entry
     --version       Print version and exit
     --help          Show this message
@@ -434,7 +434,7 @@ ${versionLine}
   }
 
   // Lite: wire the project (workflow block, audit hooks, .gitignore) at the project root.
-  // Hooks go first: the workflow block asks the AI for the `[audit]` tag line only when the hooks that read it were written.
+  // The audit reads the step banners the kit already asks for, so the hooks and the block are independent.
   const wired = { hook: false, audit: false }
   if (isLite) {
     const relFromRoot = path.relative(projectRoot, target)
@@ -444,18 +444,16 @@ ${versionLine}
         wired.audit = true
         console.log(`  ${SYM.check}  Audit hooks  ${SYM.arrow}  .claude/settings.json ${dim('(records to docs/audit/, git-ignored)')}\n`)
       } else {
-        console.log(`  ${yellow('!')}  .claude/settings.json is not valid JSON; audit hooks not written, and the AI is not asked for audit tags. Fix the file and re-run with --lite --force.\n`)
+        console.log(`  ${yellow('!')}  .claude/settings.json is not valid JSON; audit hooks not written. Fix the file and re-run with --lite --force.\n`)
       }
     }
     if (!noHook) {
-      const written = lite.writeWorkflowBlock(projectRoot, lite.posix(relFromRoot), wired.audit)
+      const written = lite.writeWorkflowBlock(projectRoot, lite.posix(relFromRoot))
       wired.hook = true
       if (lite.hasFullKitBlock(projectRoot)) {
         console.log(`  ${yellow('!')}  The full kit's "Workflow (craft-kit)" block is also in CLAUDE.md / AGENTS.md. Both blocks tell the AI where to start; keep the one you want for this project.\n`)
       }
       console.log(`  ${SYM.check}  Workflow block  ${SYM.arrow}  ${written.map(([f, how]) => `${f} (${how})`).join(', ')}\n`)
-    } else if (wired.audit) {
-      console.log(`  ${dim('--no-hook: the AI is not asked to add the [audit] tag line, so every reply is recorded with Tag: (missing).')}\n`)
     }
   }
 

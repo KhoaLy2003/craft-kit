@@ -7,10 +7,11 @@ Not for production work. If the project needs several users, a backend with real
 ## Detect (first match wins)
 
 1. **Resume.** `docs/NOTES.md` exists and its `## Status` is not `complete`. Say `Resume <step> at <slice>`, read `docs/BRIEF.md` and `docs/NOTES.md`, and continue from `## Next action`. Ask nothing already answered there.
-2. **Change to a finished project.** `docs/BRIEF.md` exists and `## Status` is `complete`. The user wants to add a feature or fix a bug.
-   - Feature: append it to the brief's feature table, set Status to `Step 2`, and run one more slice (`step-2-build.md`). No new gate unless the stack changes.
+2. **Change to a finished project.** `docs/NOTES.md` exists and its `## Status` is `complete` (the brief keeps its own `**Status:** approved`). The user wants to add a feature or fix a bug.
+   - Feature: append it to the brief's feature table, set the `## Status` in `docs/NOTES.md` to `Step 2 Build — slice <n>` (not `complete`), and run one more slice (`step-2-build.md`). When it is committed, set the status back to `complete`. No new gate unless the stack changes.
    - Bug: reproduce with a failing test, fix, run it, commit.
-3. **New project.** Neither file exists. Run `step-1-idea.md`.
+3. **Brief not approved yet.** `docs/BRIEF.md` exists with `**Status:** draft` and there is no `docs/NOTES.md`. Resume `step-1-idea.md` at the approval question.
+4. **New project.** Neither file exists. Run `step-1-idea.md`.
 
 ## Steps
 
@@ -22,12 +23,12 @@ Not for production work. If the project needs several users, a backend with real
 
 `hard` stops and waits for an explicit yes. `soft` presents a summary and advances unless the user objects. `none` advances on its own.
 
-Open each step with a banner: `## Step N — <Name> | Gate: <none|soft|hard>`.
+Start every reply with the banner of the step you are in (`## Step N — <Name> | Gate: <none|soft|hard>`), not only the first reply of a step. Questions, progress updates and the final summary of a turn all carry it; the audit trail reads the step from these banners.
 
 ## Rules
 
 1. **No code before the brief is approved.** Nothing else is gated.
-2. **One question per message**, at most 5 in Step 1. Prefer multiple choice. Propose a default when the user has no preference.
+2. **One question per message**, at most 5 in Step 1. Prefer multiple choice. Propose a default when the user has no preference; a default may replace a question the idea already answers, but say it in the brief so the user can change it.
 3. **Done means run.** A slice is done only after its tests pass and the app (or CLI) was started and the changed path was exercised. Say what you ran and saw.
 4. **Tests for core logic only**: calculations, data handling, parsing, APIs. Test first for those. No tests for layout, config or glue.
 5. **One git commit per slice**, message `feat: ...`, `fix: ...`, `chore: ...`. If the folder is not inside a git work tree (`git rev-parse --is-inside-work-tree` fails), run `git init` first.
