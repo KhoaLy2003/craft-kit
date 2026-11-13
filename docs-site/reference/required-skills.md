@@ -43,10 +43,10 @@ Skills are instruction sets for a specific task. The kit uses them when they exi
 
 ## Agents
 
-The kit uses your platform's **general-purpose agent** for all tasks (implementation, review, research, UI, testing, infrastructure). You never address it directly.
+At Phase 2 Step 2 the AI looks at the skills and agents installed on your machine, picks the best fit for each task (default: your platform's **general-purpose agent**), and shows its choices for your approval before any code is written. You never address the agents directly.
 
 ::: tip Different agent names?
-`kit/task-agent-rubric.md` is the only file that maps tasks to agent names. If your platform names the general-purpose agent differently, tell your AI at the start of the run. Editing the file works too, but `--force` updates overwrite it, so redo the edit after each update.
+The kit refers to a role, the general-purpose agent, and the AI maps it to whatever your platform calls it (`kit/task-agent-rubric.md` → Resolving the agent). You do not need to edit any file. If your platform has no subagents, the AI says so at the Step 2 gate and offers to run tasks inline.
 :::
 
 ---

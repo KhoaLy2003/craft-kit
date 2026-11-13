@@ -46,7 +46,7 @@ Everything except Phase 1 and Phase 2 `scope: all` is experimental. One session 
 
 `none` auto-advances; `soft` presents a summary and advances unless the user objects; `hard` stops with a Gate Summary and waits for explicit approval (`kit/orchestrator-conventions.md` → Gates).
 
-Hard gates: Phase 1 Steps 1, 3, 4, 5, 6; Phase 2 Steps 1, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Maintenance Intake only when the feature does not fit; Onboarding Review.
+Hard gates: Phase 1 Steps 1, 3, 4, 5, 6; Phase 2 Steps 1, 2, 6; Adopt Steps 2, 3, 4; Bug Fix Assess (Verify is soft, hard only when the symptom is UI-only); Maintenance Intake only when the feature does not fit; Onboarding Review.
 
 ---
 
@@ -90,7 +90,7 @@ CI runs the suite on ubuntu + windows × Node 18 + 22.
 - **Orchestrator rules live in one place**: `kit/orchestrator-conventions.md` (step banner, model tiers, PROJECT_ROOT injection, fail-fast writes, write verification, write-then-ask-for-review, English-only, session-log cadence, gates, frontend dispatch contract). Phase and step files point there; never restate.
 - **Step banner** (orchestrator output, defined in `kit/orchestrator-conventions.md`): `## Step N — <Name> | Gate: <none|soft|hard> | Model: <tier>`; `| Model:` appears only when `docs/MODELS.md` maps tiers to different models.
 - **Step files** follow `kit/resource/step-specification-template.md` (Overview, Scope, Rules, Artifacts, Completion Criteria, Transitions, optional Exceptions). Overview `Gate`/`Model` bullets must match the phase table.
-- **Agent routing** (`kit/task-agent-rubric.md`): all tasks go to the general-purpose agent; review tasks also load the review skills; Phase 2 Step 2 assigns `Specialist:` per task and marks parallel groups.
+- **Agent routing** (`kit/task-agent-rubric.md`): each task goes to the best-fitting installed agent and skills (default: the general-purpose agent), discovered from the machine at Step 2 and approved at its gate; review tasks also load the review skills; Phase 2 Step 2 assigns `Specialist:` per task and marks parallel groups.
 - **Artifact header** (`draft` → `approved` at the phase's hard gate): `Status`, `Last updated`, `Based on`, as `**Status:** …` or `- **Status**: …` (lint accepts both). Variants: `07-constitution.md` uses `Last amended`; `08-scaffold-checklist.md` uses `not-started | in-progress | complete`. Exempt set: `NO_METADATA` in `tests/kit-consistency.test.mjs`.
 - **Templates** are numbered by Phase 1 step (`01-idea-brief.md` … `08-scaffold-checklist.md`; letters for sub-documents, e.g. `03a-c`, `06b-d`). Phase 2 uses `spec.md`, `plan.md`, `e2e-tests.md`, `pr-description.md`; `spec-screen.md` belongs to Phase 1 Step 5. Full table: `docs-site/reference/templates.md`.
 - **Upgrade registry**: `kit/phase-upgrade.md` lists one-time migration modules; add a row for every future migration.

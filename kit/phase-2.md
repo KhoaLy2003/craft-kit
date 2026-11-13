@@ -31,7 +31,7 @@
 | # | Name | Gate | Model | Skill / Agent | Produces | Step file |
 |---|---|---|---|---|---|---|
 | 1 | Spec | `hard` | `capable` | `brainstorming` | `spec.md`, user approval | `kit/steps/phase-2/p2-01-spec.md` |
-| 2 | Plan | `soft` | `balanced` | `writing-plans`; `kit/task-agent-rubric.md` | `plan.md` with parallel groups and a `Specialist:` where a task needs a skill | `kit/steps/phase-2/p2-02-plan.md` |
+| 2 | Plan | `hard` | `balanced` | `writing-plans`; `kit/task-agent-rubric.md` | `plan.md` with parallel groups, a `Specialist:` on every task, and a Skills and Agents table | `kit/steps/phase-2/p2-02-plan.md` |
 | 3 | Implement | `none` | `balanced` | `subagent-driven-development` / `dispatching-parallel-agents` | Code on the feature branch | `kit/steps/phase-2/p2-03-implement.md` |
 | 4 | Review | `none` | `balanced` | general-purpose agent + `code-review-and-quality`, `security-and-hardening`, `performance-optimization`, `code-simplification` | Acceptance-criteria coverage verdict; critical and important findings fixed | `kit/steps/phase-2/p2-04-review.md` |
 | 5 | E2E | `soft` | `balanced` | general-purpose agent | `docs/E2E-TESTS.md`; test results | `kit/steps/phase-2/p2-05-e2e.md` |
@@ -39,7 +39,7 @@
 | 7 | Ship | `none` | `fast` | `finishing-a-development-branch` + general-purpose agent | Commit, PR, shipped events recorded | `kit/steps/phase-2/p2-07-ship.md` |
 
 ```
-[1] Spec ─hard→ [2] Plan ─soft→ [3] Implement → [4] Review → [5] E2E ─soft→ [6] Manual Check ─hard→ [7] Ship
+[1] Spec ─hard→ [2] Plan ─hard→ [3] Implement → [4] Review → [5] E2E ─soft→ [6] Manual Check ─hard→ [7] Ship
                                                                  ▲                  │
                                                                  └── fix → re-run ──┘  (affected E2E scope only)
 scope feature: Ship → next pending feature → [1]      scope all: Ship → Phase 2 complete

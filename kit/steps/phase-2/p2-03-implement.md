@@ -21,7 +21,7 @@
 
 ## Rules
 
-- Dispatch each task to `task`, adding the skill named on its `Specialist:` line if any. Sequential chains use `subagent-driven-development`; groups marked parallel in the plan use `dispatching-parallel-agents`.
+- Dispatch each task to the agent on its `Specialist:` line, adding its skills. If a named agent or skill is no longer installed (for example a resumed session on another machine), fall back to the general-purpose agent without it and note that in the session log. Sequential chains use `subagent-driven-development`; groups marked parallel in the plan use `dispatching-parallel-agents`.
 - Every UI dispatch follows the Design dispatch contract (conventions); visual-quality tasks also use `design-taste-frontend` (rubric).
 - Skip the skill's per-task and whole-branch review passes; Step 4 reviews the whole diff once.
 - Check each completed task against `docs/constitution.md` before the next.
