@@ -14,3 +14,6 @@ supabase
 
 # Test rounds
 testing/
+
+# Field reports: local-only outputs from other craft-kit projects (audit notes, session logs)
+/field-reports/
