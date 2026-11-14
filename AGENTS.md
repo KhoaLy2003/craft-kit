@@ -76,6 +76,7 @@ The two kits are released together (one `package.json` version, one `kit/CHANGEL
 
 ```bash
 npm test                      # full suite; zero deps, no npm install needed
+npm run hooks:install         # once per clone: enable the .githooks pre-commit gate
 node bin/cli.js ./out --skip-setup   # run the CLI from the working tree
 
 cd docs-site && npm run dev   # also: build, preview
@@ -96,7 +97,8 @@ CI runs the suite on ubuntu + windows × Node 18 + 22.
 - **Upgrade registry**: `kit/phase-upgrade.md` lists one-time migration modules; add a row for every future migration.
 - **New `kit/*.md` file**: also add it to `PAGES` (or `KIT_NOT_PUBLISHED`) in `docs-site/.vitepress/config.ts`, or the docs build throws.
 - **Bug fix scope**: `assess.md` fixes in/out-of-scope files; reproduce first; if the symptom persists at Verify, return to Assess, never patch around it.
-- **Changelog rule**: every `kit/` change goes in `kit/CHANGELOG.md` (newest-first, `[Unreleased]` until release) — the single source for kit file changes. `testing/testing-log.md` holds only test-round issues and lessons.
+- **Changelog rule**: every `kit/` change goes in `kit/CHANGELOG.md` (newest-first, `[Unreleased]` until release) — the single source for kit file changes. Keep each entry short: a one-line **Summary** plus brief bullets naming the file(s) and the prompt. `testing/testing-log.md` holds only test-round issues and lessons.
+- **Changelog gate (pre-commit)**: `npm run hooks:install` once per clone enables `.githooks/pre-commit`, which rejects a commit whose staged `kit/CHANGELOG.md` addition exceeds 30 lines or has a line over 300 characters (`CHANGELOG_MAX_ADDED_LINES`, `CHANGELOG_MAX_LINE_CHARS` override). When a commit is rejected, the agent that made it MUST shorten the entry itself (merge bullets, drop step-by-step detail, keep file names and the prompt), re-stage `kit/CHANGELOG.md`, and commit again. Never bypass with `--no-verify` unless the user asks for that length. Unit tests do not cover the gate; `.githooks/check-changelog.js` is verified by running it against a staged change.
 
 ---
 
