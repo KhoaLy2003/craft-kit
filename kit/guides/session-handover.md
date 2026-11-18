@@ -44,7 +44,7 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 
 **Phase 1 and Adopt exception:** both make exactly one commit (Phase 1 at Step 8, Adopt at Step 7), so their documents stay uncommitted at a handover. Do not commit. List every file under `docs/` in the handover document and tell the user to keep the working folder (the same checkout) for the new session.
 
-**Rule (all other phases):** after these steps the working tree is clean apart from `docs/handover.md` and the session log (`git status` shows no other uncommitted change). Never hand over with uncommitted writes; a new session cannot recover unsaved work. A stash is saved work only if it is named in the handover document.
+**Rule (all other phases):** after these steps the working tree is clean apart from `docs/handover.md` and the session log (`git status` shows no other uncommitted change). Untracked files outside the unit are allowed only if gitignored or named by path in the handover's In-Progress State. Never hand over with uncommitted writes; a new session cannot recover unsaved work. A stash is saved work only if it is named in the handover document.
 
 ---
 
@@ -65,7 +65,7 @@ Keep the document short: Where We Are, Next Action, and open decisions only. Any
 
 ## Handover Document
 
-Write to `docs/handover.md`. Fill every `[bracket]`.
+Write to `docs/handover.md`. Fill every `[bracket]`. Write each path as plain backticked text, never wrapped in a markdown link. Tables have no blank lines between rows.
 
 **If `docs/handover.md` already exists:** it is an unconsumed handover (the New Session Bootstrap deletes it once consumed). Read its `Generated`, Phase, Unit, and Step first.
 - Same phase and unit: the new document supersedes it. Overwrite, and mention the replaced one's step in Open Decisions if it differs.
@@ -102,11 +102,11 @@ Verify each path exists on disk before proceeding.
 
 ## Open Decisions
 
-[Decisions not yet reflected in the artifacts, or "None — all decisions are captured in the artifacts above."]
+[Unit-scoped decisions not yet reflected in the artifacts, or "None — all decisions are captured in the artifacts above." Standing project constraints go in known-issues or the constitution, not here.]
 
 ## Next Action
 
-[One specific instruction — the first thing the new session does.]
+[One specific instruction naming one step and one file: the first thing the new session does. Verify paths on disk; do not hedge.]
 
 ## Resumption Prompt
 
