@@ -26,6 +26,7 @@ The AI writes one file, `docs/handover.md`. It records:
 - which artifacts exist, such as the spec, plan, or diagnosis
 - what was half-done when you paused, and what the next action is
 - any decisions that were made in conversation but not yet written down
+- lasting rules from the conversation (a correction you made, a command that had to be discovered, a pitfall), proposed to you before the handover is written; only the ones you accept are added to `AGENTS.md` or `CLAUDE.md`
 
 If the work is in code, the AI commits it to the current branch before it saves, so nothing sits only in your working folder.
 
