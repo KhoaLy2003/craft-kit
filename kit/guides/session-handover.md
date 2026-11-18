@@ -31,9 +31,33 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 
 ---
 
+## Context Review
+
+Runs first on every handover (seam, stress or user request). Scan the current session's conversation only, from its first message to the trigger; never earlier sessions, other units' log sections or the repository. The only files read are `AGENTS.md` and `CLAUDE.md`. Look for lasting knowledge that belongs in the project-root `AGENTS.md` (and `CLAUDE.md` when the project has one), so the next session does not have to be told again.
+
+**Candidates** (only what is true beyond this unit and not already in a file the new session reads):
+- a user correction or stated preference about how to work (style, tools, "never do X", "always ask before Y")
+- a command, path, env var or setup step that was discovered by trial and error (build, test, run, lint, deploy)
+- a repo convention or pitfall found while working (naming, layout, a flaky or slow test, a file never to edit)
+- a repeated failure and the fix that worked
+- an architectural or workflow decision with no artifact yet
+
+**Not candidates:** step progress, the unit's own decisions (spec, plan, `docs/` and the session log own those), anything already in `AGENTS.md`, `CLAUDE.md` or the kit's project workflow block, one-off details, secrets.
+
+**Process:**
+1. Read the current `AGENTS.md` / `CLAUDE.md` first, so nothing is proposed twice. Use whichever exists; never create the other. If neither exists, propose creating `AGENTS.md` (the harness-neutral file) containing only the accepted lines, and say so in the permission request; the user may decline, and then the proposals are deferred (step 5).
+2. Draft at most 5 proposals, each one line: a category tag (`Preference`, `Command`, `Convention`, `Pitfall` or `Decision`, matching the candidate list), the rule as it would be written, the target file, and the point in the conversation that prompted it. None found: say "No project-context additions found" and go on.
+3. Ask permission before changing any file. Present the proposals as a numbered list, each with its exact text and target file, and wait. The user accepts all, some (by number), edits or rejects. No reply, or anything other than an explicit acceptance, means nothing is written.
+4. Write only the accepted lines, as a small change under the file's existing headings, and show the resulting diff. Never rewrite the file, never touch the kit's `## Workflow (craft-kit)` block.
+5. A proposal the user defers goes to Open Decisions in the handover document, never into the file unasked.
+
+Accepted edits (including a newly created file) are part of the handover: the WIP commit in Before Writing includes them (a seam with nothing else to commit makes a docs-only WIP commit), and under the Phase 1 and Adopt exception they stay uncommitted and are listed with the other files.
+
+---
+
 ## Before Writing
 
-**Clean seam:** confirm the completed step is `complete` in the phase's session log. If there are uncommitted code changes (Phase 2 after Implement or Review; bug fix at its Verify gate), WIP-commit them on the feature or fix branch. Then go to the Capture Checklist.
+**Clean seam:** confirm the completed step is `complete` in the phase's session log. If there are uncommitted code changes (Phase 2 after Implement or Review; bug fix at its Verify gate) or accepted Context Review edits, WIP-commit them on the feature or fix branch. Then go to the Capture Checklist.
 
 **Mid-step (user-triggered, typically Implement or E2E):** resolve partial work first.
 
@@ -42,7 +66,7 @@ Offer format (blockquote, then wait for the reply). Do not offer at other steps.
 3. For partial code, apply the one rule: **commit only what compiles cleanly; every other uncommitted change is stashed (`git stash push -m "handover: <task>"`, listed under In-Progress State) or discarded, and its task is flagged "restarted in new session" in the session log.** Never leave partial writes in the working tree.
 4. Set the step to `blocked` in the session log with reason `session handover`.
 
-**Phase 1 and Adopt exception:** both make exactly one commit (Phase 1 at Step 8, Adopt at Step 7), so their documents stay uncommitted at a handover. Do not commit. List every file under `docs/` in the handover document and tell the user to keep the working folder (the same checkout) for the new session.
+**Phase 1 and Adopt exception:** both make exactly one commit (Phase 1 at Step 8, Adopt at Step 7), so their documents stay uncommitted at a handover. Do not commit. List every file under `docs/`, plus `AGENTS.md` / `CLAUDE.md` when Context Review changed them, in the handover document and tell the user to keep the working folder (the same checkout) for the new session.
 
 **Rule (all other phases):** after these steps the working tree is clean apart from `docs/handover.md` and the session log (`git status` shows no other uncommitted change). Never hand over with uncommitted writes; a new session cannot recover unsaved work. A stash is saved work only if it is named in the handover document.
 

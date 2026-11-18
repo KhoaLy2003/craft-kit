@@ -7,6 +7,11 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+**Summary:** Handover reviews the session for lasting rules to add to `AGENTS.md` / `CLAUDE.md`
+
+- **`guides/session-handover.md`** — new Context Review section: the session is scanned for corrections, commands and pitfalls; up to 5 tagged proposals, written to `AGENTS.md` / `CLAUDE.md` only with explicit permission (creates `AGENTS.md` if neither exists); deferrals go to Open Decisions.
+- Repo only: `docs-site/guides/resuming-a-session.md` mentions the review.
+
 ---
 
 ## [0.0.54] - 2026-11-13
