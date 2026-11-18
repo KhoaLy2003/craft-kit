@@ -7,10 +7,18 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.55] - 2026-11-18
+
+**Summary:** Handover proposes AGENTS.md / CLAUDE.md additions
+
 **Summary:** Handover reviews the session for lasting rules to add to `AGENTS.md` / `CLAUDE.md`
 
 - **`guides/session-handover.md`** — new Context Review section: the session is scanned for corrections, commands and pitfalls; up to 5 tagged proposals, written to `AGENTS.md` / `CLAUDE.md` only with explicit permission (creates `AGENTS.md` if neither exists); deferrals go to Open Decisions.
 - Repo only: `docs-site/guides/resuming-a-session.md` mentions the review.
+
+---
 
 ---
 
