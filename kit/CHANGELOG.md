@@ -7,6 +7,10 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+**Summary:** Handover guide: plain paths, tables without blank lines, unit-scoped open decisions, untracked-file rule
+
+- **`kit/guides/session-handover.md`** — paths written as plain backticked text (no markdown links); no blank lines between table rows; untracked files allowed only if gitignored or listed; Open Decisions unit-scoped; Next Action names one step and one file.
+
 ---
 
 ## [0.0.54] - 2026-11-13
