@@ -7,10 +7,18 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.56] - 2026-11-20
+
+**Summary:** Ship deletes the unit's plan.md; Upgrade removes plans of shipped units
+
 **Summary:** Ship deletes the unit's `plan.md`; Upgrade removes plans of already shipped units
 
 - **`steps/phase-2/p2-07-ship.md`**, **`templates/plan.md`**, **`steps/phase-2/p2-04-review.md`** — Step 7 deletes the unit's `plan.md` in the collapse commit (Architecture Impact is already merged; specs unchanged); Review passes gap tasks straight to the dispatch when the plan is gone.
 - **`phase-upgrade.md`** — registry row 7 plus an inline procedure: lists plans of shipped units, flags unmerged Architecture Impact items, deletes on one hard gate.
+
+---
 
 ---
 
