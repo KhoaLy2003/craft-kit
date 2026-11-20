@@ -4,7 +4,7 @@
 **Last updated:** YYYY-MM-DD
 **Based on:** <!-- the spec path, plus extras only (design.md, a ticket) -->
 
-<!-- Copy to docs/specs/<feature-slug>/plan.md (scope: feature) or docs/specs/plan.md (scope: all). Delete this comment.
+<!-- Copy to docs/specs/<feature-slug>/plan.md (scope: feature) or docs/specs/plan.md (scope: all). Ship deletes this file once the unit ships, so keep nothing here that must outlive the cycle (decisions go to the spec, architecture changes to `## Architecture Impact`). Delete this comment.
 Replaces the writing-plans layout: metadata header only, no banner, goal block or preamble. Tasks in dependency order, at most 12 lines each, one line per field of at most 300 characters (longer reasoning goes in the spec; cite it), no code beyond a signature or type shape. Only the sections below. Cite AC IDs; never restate criterion text. -->
 
 ## Task 1: [name]

@@ -10,7 +10,7 @@
 - **Outputs**:
   - committed branch; pushed branch and PR against the base branch (conventions rule 17; unless local-only) from `kit/templates/pr-description.md`
   - `shipped` event in `docs/backlog.json` per shipped feature; regenerated `docs/roadmap.md` table (`docs/backlog.html` is regenerated locally and git-ignored)
-  - the unit collapsed in the session log and the E2E doc, archived under `docs/archive/`; CI status reported to the user
+  - the unit collapsed in the session log and the E2E doc, archived under `docs/archive/`; the unit's `plan.md` deleted; CI status reported to the user
 - **Template**: `kit/templates/pr-description.md`
 
 ## Rules
@@ -55,9 +55,10 @@ Push first: the PR reference is the shipped event's evidence. Then:
 4. **Collapse the unit (mandatory).** Set every step row of the unit to `complete` or `skipped`, then:
    - **Session log.** Move the unit's whole section from `docs/phase-2-session.md` to `docs/archive/phase-2-session/<unit-slug>.md` (create the folder; text unchanged). In its place keep the `## <unit>` heading, the steps table with every Output cell reduced to a path, and one line: `Outcome: shipped, <PR ref>; <n> of <n> acceptance criteria PASS; <n> known issues. Archive: <path>`. A local-only ship writes `Outcome: local-only: not pushed, commit <sha>; ...`.
    - **E2E doc.** For each feature shipped, move its Section 3 block and its Section 8 rows to `docs/archive/e2e/<feature-slug>.md` and leave one line where the block was: `Shipped <PR ref>; <n> of <n> PASS; archived: <path>`.
+   - **Plan.** Delete the unit's plan (`scope: feature`: `docs/specs/<feature-slug>/plan.md`; `scope: all`: `docs/specs/plan.md`). Its `## Architecture Impact` was merged in section 1, so nothing else in it outlives the cycle; git history keeps the file. The spec stays. The deletion rides the same commit as the collapse (item 6); a CI-failure return to Step 4 does not need the plan (`p2-04-review.md` rule 2).
    - Archived files are read only when a step names them (the restore rule in `p2-05-e2e.md`).
 5. Run `node kit/scripts/lint-docs.js` again: no growth warning for this unit may remain.
-6. Commit and push `docs/backlog.json`, `docs/roadmap.md`, the collapsed `docs/phase-2-session.md` and `docs/E2E-TESTS.md`, and `docs/archive/` to the same branch so the same PR carries them.
+6. Commit and push `docs/backlog.json`, `docs/roadmap.md`, the collapsed `docs/phase-2-session.md` and `docs/E2E-TESTS.md`, `docs/archive/`, and the plan deletion to the same branch so the same PR carries them.
 
 ### 5. CI status
 
@@ -79,7 +80,7 @@ Read the PR's check status **once** (needs a CI row in Verification Commands or 
 - [ ] Committed; user-confirmed remote pushed and PR open, or the local-only fallback recorded in the Outcome line
 - [ ] CI status reported (a failing run returned to Step 4 at most once)
 - [ ] `shipped` events with PR (or local commit) evidence for every feature built; releases closed; render script exits 0
-- [ ] Impact merge done; unit collapsed and archived; `AGENTS.md` and root `CHANGELOG.md` updated where applicable; lint-docs reports no errors and no growth warning for this unit
+- [ ] Impact merge done; unit collapsed and archived; plan deleted; `AGENTS.md` and root `CHANGELOG.md` updated where applicable; lint-docs reports no errors and no growth warning for this unit
 - [ ] `scope: feature` with `pending` features left: the user answered the next-step question; nothing started unprompted
 
 ## Transitions
