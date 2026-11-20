@@ -43,8 +43,18 @@ Order matters: a later module may read what an earlier one writes.
 | 4 | `## Verification Commands` in `docs/constitution.md` | `docs/constitution.md` exists and lacks a `## Verification Commands` section | `kit/phase-verification-backfill.md` |
 | 5 | `docs/api.md` | `docs/architecture.md` exists, `docs/api.md` does not, and the code exposes an API (route or controller files, server actions, or an OpenAPI or GraphQL schema) | `kit/phase-api-backfill.md` |
 | 6 | `docs/phase-2-session.md`, `docs/E2E-TESTS.md` (shipped units collapsed) | `node kit/scripts/lint-docs.js` reports a `growth:` warning on `docs/phase-2-session.md` or `docs/E2E-TESTS.md` | `kit/phase-log-collapse.md` |
+| 7 | `docs/specs/**/plan.md` (shipped plans deleted) | a `plan.md` exists for a unit whose features all have a `shipped` event in `docs/backlog.json` (`docs/specs/<slug>/plan.md` for one feature; `docs/specs/plan.md` when every feature it covers shipped) | Inline: see **Row 7 procedure** below |
 
 **Retirement.** Rows 2–5 are permanent: Adopt runs them for any existing codebase. Row 1 was retired once Phase 1 had written `backlog.json` for many releases. Row 6 is new (0.0.45); review it at 0.0.50. Retire a module by deleting its file and registry row and pointing the row at the last release that ships it, as row 1 does.
+
+## Row 7 procedure — delete shipped plans
+
+Ship deletes a unit's `plan.md` once it ships (`kit/steps/phase-2/p2-07-ship.md` → Record the shipped features); projects shipped on an older kit still carry them. One hard review gate:
+
+1. **List** every `plan.md` that matches row 7, with its feature slug and the `shipped` event's evidence. A plan whose feature is not `shipped` is never touched.
+2. **Check the Impact merge.** For each plan, compare its `## Architecture Impact` with `docs/architecture.md`. An item missing there is reported to the user, never merged silently (code beats docs).
+3. **Gate (hard).** Show the list and any unmerged item. Ask: **delete all / name plans to keep**. Nothing is lost: git history holds each file, and specs are not touched.
+4. **Delete** the approved files (`git rm` when tracked), then run `node kit/scripts/lint-docs.js`.
 
 ## Adding a document in a future kit version
 

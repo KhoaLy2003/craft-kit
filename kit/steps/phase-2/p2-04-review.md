@@ -40,7 +40,7 @@ Work in this order.
    | `Optional:` `Consider:` `Nit:` | minor |
    | `FYI` | not a finding |
 
-2. **Fix dispatch.** Append each GAP to the plan as a task. Fix every critical and important finding and implement every gap task in one implementer dispatch (specialists per the rubric), also loading `code-simplification` for readability findings; it must not change behavior. **Minor findings are not fixed:** add one row each to `docs/known-issues.md` (from `kit/templates/known-issues.md`; create it if missing), record only the count in the session log (`minor findings deferred: N`), and list them under Known limitations in the PR (Step 7).
+2. **Fix dispatch.** Append each GAP to the plan as a task (if Ship already deleted the plan, because this is the CI-failure return, pass the gap tasks to the dispatch directly). Fix every critical and important finding and implement every gap task in one implementer dispatch (specialists per the rubric), also loading `code-simplification` for readability findings; it must not change behavior. **Minor findings are not fixed:** add one row each to `docs/known-issues.md` (from `kit/templates/known-issues.md`; create it if missing), record only the count in the session log (`minor findings deferred: N`), and list them under Known limitations in the PR (Step 7).
 3. **Re-review loop.** Re-review the fix diff and the COVERED criteria the fixes touched, until zero critical or important findings and zero GAPs.
 
    | Roadmap size | Re-review | Verification Commands |
