@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.57] - 2026-11-23
+
+**Summary:** Lite kit: six hard-gated steps following Phase 2
+
 **Summary:** Lite kit follows the Phase 2 shape: six hard-gated steps, with subagent / new-session context management
 
 - **`kit-lite/`** — Idea/Build/Wrap-up replaced by Setup, Spec, Plan, Build, Verify, Ship (`step-1-setup.md` … `step-6-ship.md`), every gate `hard`; new `SPEC.md` and `PLAN.md` templates; `BRIEF.md` and `NOTES.md` extended. Prompt: follow Phase 2 without Phase 1's outputs.
@@ -14,6 +20,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`START.md` → Context:** per step, subagent or new session; checkpoint offers after Setup and Build, or after 3 steps in one session; `docs/NOTES.md` is the only handover (no `handover.md`).
 - **`bin/lite.js`** — audit tag is `step=<1-6>`; the workflow block says no code before brief, spec and plan are approved; kit detection accepts `step-1-setup.md` and the old `step-1-idea.md`.
 - **Docs and tests** — `docs-site/guides/lite-kit.md`, `index.md`, `getting-started.md`, `AGENTS.md`; `tests/kit-lite.test.mjs` checks six hard steps and templates.
+
+---
 
 ---
 
