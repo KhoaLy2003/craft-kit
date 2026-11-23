@@ -3,13 +3,13 @@
 <!-- Resume state, not a log. Rewrite, do not append. Keep under about 40 lines. Delete these comments. -->
 
 ## Status
-Step 2 Build — slice 0 — not started
+Step 2 Spec — not started
 
 ## Next action
 <one specific thing the next session does first>
 
-## Slices
-- [ ] 1 <feature>
+## Tasks
+- [ ] T0 scaffold
 
 ## Decisions
 - <decision a later session would otherwise re-ask>

@@ -53,7 +53,7 @@ features:
       src: /icons/install.svg
       alt: Lite Kit
     title: Lite Kit for Small Projects
-    details: A practice project does not need eight planning steps. `npx github:KhoaLy2003/craft-kit --lite` installs three steps and one approval gate — Idea, Build, Wrap-up — and you start with "I want to build ...". Optional conversation audit for Claude Code.
+    details: A practice project does not need eight planning steps. `npx github:KhoaLy2003/craft-kit --lite` installs six short steps — Setup, Spec, Plan, Build, Verify, Ship — each ending at your approval, and you start with "I want to build ...". Optional conversation audit for Claude Code.
     link: /guides/lite-kit
     linkText: Lite kit guide
   - icon:

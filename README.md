@@ -83,7 +83,7 @@ It shows status badges, a backlog board, Mermaid diagrams, HTML prototypes, and 
 
 ### Lite kit (small personal projects)
 
-A much lighter workflow for practice projects: three steps (Idea, Build, Wrap-up), one approval gate, about three documents.
+A much lighter workflow for practice projects: six short steps (Setup, Spec, Plan, Build, Verify, Ship), each ending at your approval, about five documents.
 
 ```bash
 npx github:KhoaLy2003/craft-kit --lite

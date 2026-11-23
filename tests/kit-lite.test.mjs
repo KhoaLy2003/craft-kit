@@ -81,6 +81,36 @@ describe('install --lite', () => {
     assert.ok(refs.length >= 3)
     for (const ref of refs) assert.ok(existsSync(join(LITE, ref)), `missing ${ref}`)
   })
+
+  test('six steps, every gate hard, and each step file agrees with the START.md table', () => {
+    const start = readFileSync(join(LITE, 'START.md'), 'utf8')
+    const rows = [...start.matchAll(/^\| (\d) \| (\w+) \| `(\w+)` \| `kit-lite\/(step-[^`]+)`/gm)]
+    assert.equal(rows.length, 6)
+    rows.forEach((m, i) => {
+      assert.equal(Number(m[1]), i + 1)
+      assert.equal(m[3], 'hard')
+      const body = readFileSync(join(LITE, m[4]), 'utf8')
+      assert.match(body, new RegExp(`^# Step ${m[1]} — ${m[2]}$`, 'm'))
+      assert.match(body, /^- \*\*Gate\*\*: `hard`/m)
+    })
+  })
+
+  test('every template a step names exists', () => {
+    for (const f of readdirSync(LITE).filter(n => /^step-/.test(n))) {
+      for (const m of readFileSync(join(LITE, f), 'utf8').matchAll(/`kit-lite\/(templates\/[^`]+)`/g)) {
+        assert.ok(existsSync(join(LITE, m[1])), `${f} names missing ${m[1]}`)
+      }
+    }
+  })
+
+  test('a manifest from the earlier three-step lite kit is still recognised as lite', () => {
+    const dir = tempDir()
+    mkdirSync(join(dir, 'kit-lite'))
+    writeFileSync(join(dir, 'kit-lite', '.craft-kit-manifest.json'), JSON.stringify(['START.md', 'step-1-idea.md']))
+    const r = spawnSync('node', [CLI, '--skip-setup'], { cwd: dir, input: '', encoding: 'utf8', timeout: 15_000 })
+    assert.equal(r.status, 1)
+    assert.match(r.stderr, /already uses the lite kit/)
+  })
 })
 
 // ─── Project wiring ───────────────────────────────────────────────────────────
@@ -264,10 +294,10 @@ describe('audit recorder', () => {
   test('only the last line is the audit tag; an earlier mention of the format stays in the body', () => {
     const dir = tempDir()
     record(dir, 'prompt', { prompt: 'what is the audit line?' })
-    record(dir, 'stop', { last_assistant_message: 'It looks like:\n[audit] step=<1-3> gate=<g> kind=<k>\nThat is all.' })
+    record(dir, 'stop', { last_assistant_message: 'It looks like:\n[audit] step=<1-6> gate=<g> kind=<k>\nThat is all.' })
     const doc = auditDoc(dir)
     assert.match(doc, /\*\*Tag:\*\* \(missing\)/)
-    assert.match(doc, /> \[audit\] step=<1-3>/)
+    assert.match(doc, /> \[audit\] step=<1-6>/)
   })
 
   test('falls back to the transcript when the hook payload has no last_assistant_message; writes one assistant record per turn', () => {

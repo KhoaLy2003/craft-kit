@@ -1,38 +1,71 @@
 # craft-kit lite: Start
 
-For small, personal, practice projects. Goal: working output fast, with the least paper. Three steps, one hard gate.
+For small, personal, practice projects. Goal: a working result that does what the user meant, with the least paper. Six steps, each ends at a hard gate: the user approves before the next step starts.
 
 Not for production work. If the project needs several users, a backend with real data, more than about 8 features, or production standards, stop and tell the user to use the full craft-kit (`npx github:KhoaLy2003/craft-kit`; for existing code, its `kit/phase-adopt.md`). Continue in lite only if the user insists.
 
 ## Detect (first match wins)
 
-1. **Resume.** `docs/NOTES.md` exists and its `## Status` is not `complete`. Say `Resume <step> at <slice>`, read `docs/BRIEF.md` and `docs/NOTES.md`, and continue from `## Next action`. Ask nothing already answered there.
-2. **Change to a finished project.** `docs/BRIEF.md` exists and `## Status` is `complete`. The user wants to add a feature or fix a bug.
-   - Feature: append it to the brief's feature table, set Status to `Step 2`, and run one more slice (`step-2-build.md`). No new gate unless the stack changes.
-   - Bug: reproduce with a failing test, fix, run it, commit.
-3. **New project.** Neither file exists. Run `step-1-idea.md`.
+1. **Resume.** `docs/NOTES.md` exists and its `## Status` is not `complete`. Say `Resume step <N> <name>`, read `docs/BRIEF.md`, `docs/NOTES.md` and any `docs/SPEC.md` / `docs/PLAN.md`, and continue from `## Next action`. Ask nothing already answered there.
+2. **Change to a finished project.** `docs/NOTES.md` exists and its `## Status` is `complete`.
+   - Feature: add it to the brief's feature table, then run Steps 2 to 6 for that feature only.
+   - Bug: reproduce with a failing test, fix, run it, commit. No gates.
+3. **New project.** `docs/NOTES.md` does not exist (a `draft` brief means Step 1 was never approved: resume it). Run `kit-lite/step-1-setup.md`.
 
 ## Steps
 
 | # | Name | Gate | File | Produces |
 |---|---|---|---|---|
-| 1 | Idea | `hard` | `kit-lite/step-1-idea.md` | `docs/BRIEF.md` (approved) |
-| 2 | Build | `none` | `kit-lite/step-2-build.md` | working code, one commit per slice, `docs/NOTES.md` |
-| 3 | Wrap-up | `soft` | `kit-lite/step-3-wrapup.md` | `README.md`, final `docs/NOTES.md` |
+| 1 | Setup | `hard` | `kit-lite/step-1-setup.md` | `docs/BRIEF.md` (approved), `docs/NOTES.md` |
+| 2 | Spec | `hard` | `kit-lite/step-2-spec.md` | `docs/SPEC.md` (approved) |
+| 3 | Plan | `hard` | `kit-lite/step-3-plan.md` | `docs/PLAN.md` (approved, deleted at Step 6) |
+| 4 | Build | `hard` | `kit-lite/step-4-build.md` | code on `feature/<slug>`, reviewed against the spec |
+| 5 | Verify | `hard` | `kit-lite/step-5-verify.md` | test and run results, user's manual check |
+| 6 | Ship | `hard` | `kit-lite/step-6-ship.md` | `README.md`, final `docs/NOTES.md`, merge or PR |
 
-`hard` stops and waits for an explicit yes. `soft` presents a summary and advances unless the user objects. `none` advances on its own.
+`hard` stops with a short summary and waits for an explicit yes. Open each step with a banner: `## Step N — <Name> | Gate: hard`.
 
-Open each step with a banner: `## Step N — <Name> | Gate: <none|soft|hard>`.
+Templates: `kit-lite/templates/BRIEF.md`, `kit-lite/templates/SPEC.md`, `kit-lite/templates/PLAN.md`, `kit-lite/templates/NOTES.md`.
+
+## Context
+
+One session cannot carry all six steps. Two tools keep it small. Pick by what the work needs.
+
+| Use | When | Why |
+|---|---|---|
+| **Subagent** | The work needs no answers from the user, its input is files and its output is files or a short report | The main session keeps only the summary. A fresh reader also gives an independent review |
+| **New session** | The work is a long exchange with the user, or the main session is full of material the next step does not need | A clean start. State lives in `docs/`, so nothing is lost |
+
+Where the harness has no subagents, every subagent below becomes a new-session offer.
+
+**Per step:**
+
+| Step | How |
+|---|---|
+| 1 Setup | Main session (long exchange with the user). Recommended seam: after approval |
+| 2 Spec, 3 Plan | A subagent drafts from the files; the main session shows the draft and handles the gate |
+| 4 Build | Subagents implement task groups; a separate fresh subagent reviews. Recommended seam: after approval |
+| 5 Verify | A subagent runs tests and the app and returns a table; the manual check happens in the main session |
+| 6 Ship | Main session |
+
+**Subagent brief.** Self-contained: the task, exact file paths to read, the files it may write, the rules from this file that apply (done means run, tests for core logic), and what to return (a report of at most 15 lines). A subagent never asks the user; it returns open questions and the main session asks. After it returns, check the files it wrote, not only its report.
+
+**Checkpoint.** After the user approves a step:
+1. Update `docs/NOTES.md` (Status, Next action, decisions not yet in a file). Commit any code.
+2. At a recommended seam, or when 3 or more steps have run in this session, or when the user says the session is long, offer one line, with your recommendation: `Step <N> done. Continue here, or open a new session? I recommend <choice> because <reason>.`
+3. If the user opens a new session, give them one line to paste: `Resume craft-kit lite: read kit-lite/START.md.` Detection above does the rest. No other handover file.
+
+At other gates, go straight on to the next step.
 
 ## Rules
 
-1. **No code before the brief is approved.** Nothing else is gated.
-2. **One question per message**, at most 5 in Step 1. Prefer multiple choice. Propose a default when the user has no preference.
-3. **Done means run.** A slice is done only after its tests pass and the app (or CLI) was started and the changed path was exercised. Say what you ran and saw.
+1. **No code before the brief, spec and plan are approved.**
+2. **Clarity before speed in Step 1.** Ask as many questions as it takes, one per message, until nothing important is a guess. Propose a default when the user has no preference.
+3. **Done means run.** A task is done only after its tests pass and the app (or CLI) was started and the changed path exercised. Say what you ran and saw.
 4. **Tests for core logic only**: calculations, data handling, parsing, APIs. Test first for those. No tests for layout, config or glue.
-5. **One git commit per slice**, message `feat: ...`, `fix: ...`, `chore: ...`. If the folder is not inside a git work tree (`git rev-parse --is-inside-work-tree` fails), run `git init` first.
-6. **Few documents.** Only `docs/BRIEF.md`, `docs/NOTES.md` and `README.md`. Each stays about one page. Do not create specs, plans, logs, roadmaps or per-screen docs.
+5. **Git.** If the folder is not inside a git work tree (`git rev-parse --is-inside-work-tree` fails), run `git init` first. Work on `feature/<slug>`; one commit per feature, `feat: ...`, `fix: ...`, `chore: ...`.
+6. **Few documents.** Only `docs/BRIEF.md`, `docs/SPEC.md`, `docs/PLAN.md` (temporary), `docs/NOTES.md` and `README.md`. Each stays short. Do not create logs, roadmaps, per-screen docs or design documents.
 7. **Write, then verify.** After writing a file, confirm it exists and has the expected content before saying it is written.
-8. **UI projects.** Build screens straight from the brief's visual line. If the `design-taste-frontend` skill is installed, use it. Do not write design documents.
+8. **UI projects.** Build screens from the brief's visual line. If the `design-taste-frontend` skill is installed, use it.
 9. **English only** in files and replies, unless the user asks otherwise.
 10. **Do not ask for what files can tell.** Read `docs/` first.
