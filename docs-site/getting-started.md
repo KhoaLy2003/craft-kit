@@ -218,7 +218,7 @@ Hosted services that a stack may need (databases, hosting, authentication) can c
 
 ## A Small Practice Project?
 
-The full kit is built for products people will use. For a practice project or a weekend tool, install the lighter one instead: `npx github:KhoaLy2003/craft-kit --lite`. It has three steps and one approval gate (the brief), and you start it by saying "I want to build ...". A project uses one kit or the other. See [Lite Kit](/guides/lite-kit).
+The full kit is built for products people will use. For a practice project or a weekend tool, install the lighter one instead: `npx github:KhoaLy2003/craft-kit --lite`. It has six short steps, each ending at your approval (Setup, Spec, Plan, Build, Verify, Ship), and you start it by saying "I want to build ...". A project uses one kit or the other. See [Lite Kit](/guides/lite-kit).
 
 ---
 

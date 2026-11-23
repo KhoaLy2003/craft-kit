@@ -26,11 +26,11 @@ function workflowBlock (rel, audit) {
     BLOCK_START,
     '## Workflow (craft-kit-lite)',
     `When the user asks to build, add or fix something, first read \`${rel}/START.md\` and follow it.`,
-    'Write no code before Step 1 of that file is approved.',
+    'Write no code before the brief, spec and plan are approved.',
   ]
   if (audit) {
     lines.push(
-      'End every reply with one last line `[audit] step=<1-3> gate=<none|soft|hard> kind=<one word>` (for example `[audit] step=2 gate=none kind=implement`). A hook records it.'
+      'End every reply with one last line `[audit] step=<1-6> gate=<none|soft|hard> kind=<one word>` (for example `[audit] step=2 gate=none kind=implement`). A hook records it.'
     )
   }
   lines.push(BLOCK_END)
@@ -122,7 +122,7 @@ function kindOfInstalledDir (dir) {
   try {
     const list = JSON.parse(fs.readFileSync(path.join(dir, '.craft-kit-manifest.json'), 'utf8'))
     if (!Array.isArray(list)) return null
-    if (list.includes('step-1-idea.md')) return 'lite'
+    if (list.includes('step-1-setup.md') || list.includes('step-1-idea.md')) return 'lite'
     if (list.includes('phase-2.md')) return 'full'
   } catch { /* not an installed kit */ }
   return null

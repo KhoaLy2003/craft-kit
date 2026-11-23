@@ -1,15 +1,15 @@
 # Lite Kit — Small Personal Projects
 
-The full kit is built for products that will be used and maintained: eight planning steps, a seven-step build cycle, and a dozen documents. For a practice project, a weekend tool or a script, that is more paper than code. The **lite kit** is a separate, much smaller workflow for that case: three steps, one approval gate, about three documents.
+The full kit is built for products that will be used and maintained: eight planning steps, a seven-step build cycle, and a dozen documents. For a practice project, a weekend tool or a script, that is more paper than code. The **lite kit** is a separate, much smaller workflow for that case: six short steps, each ending at your approval, about five documents.
 
 It is installed separately and never touches the full kit.
 
 | | Lite kit | Full kit |
 |---|---|---|
 | Use it for | Small personal or practice projects, up to about 8 features | Products with real users, data and standards |
-| Steps | 3 (Idea, Build, Wrap-up) | Phase 1 (8 steps), Phase 2 (7 steps), plus maintenance workflows |
-| Hard gates | 1 (approve the brief) | Several per phase |
-| Documents | `docs/BRIEF.md`, `docs/NOTES.md`, `README.md` | The full `docs/` set |
+| Steps | 6 (Setup, Spec, Plan, Build, Verify, Ship) | Phase 1 (8 steps), Phase 2 (7 steps), plus maintenance workflows |
+| Hard gates | Every step | Several per phase |
+| Documents | `docs/BRIEF.md`, `docs/SPEC.md`, `docs/PLAN.md` (temporary), `docs/NOTES.md`, `README.md` | The full `docs/` set |
 | Installed into | `kit-lite/` | `kit/` |
 
 If a project grows past lite (several users, a backend with real data, more than about 8 features), switch to the full kit in a new project folder. The lite workflow tells the AI to say so.
@@ -60,34 +60,46 @@ Or, without the workflow block: `Start using kit-lite/START.md.`
 
 `START.md` checks the project and picks the first match:
 
-1. **Resume.** `docs/NOTES.md` exists and its status is not `complete`. The AI says where it is resuming, reads the brief and notes, and continues from the **Next action** line. Nothing already answered is asked again.
-2. **Change to a finished project.** `docs/BRIEF.md` is `complete`. A new feature is added to the brief and built as one more slice; a bug is reproduced with a failing test, fixed, run, and committed.
-3. **New project.** Neither file exists: Step 1 starts.
+1. **Resume.** `docs/NOTES.md` exists and its status is not `complete`. The AI says where it is resuming, reads the brief, spec, plan and notes, and continues from the **Next action** line. Nothing already answered is asked again.
+2. **Change to a finished project.** `docs/NOTES.md` is `complete`. A new feature is added to the brief and goes through Steps 2 to 6 for that feature alone; a bug is reproduced with a failing test, fixed, run, and committed.
+3. **New project.** No `docs/NOTES.md` yet: Step 1 starts (or resumes, if a draft brief exists).
 
-### The three steps
+### The six steps
 
 | # | Step | Gate | What happens | Produces |
 |---|---|---|---|---|
-| 1 | Idea | **hard** | The AI asks at most five questions, one per message: who uses it, the 3 to 5 features you would use on day one, the stack, the look (UI only), and what "done" means. It writes the brief and waits for your approval | `docs/BRIEF.md` (approved), `docs/NOTES.md` |
-| 2 | Build | none | Scaffold once, then one slice per feature: a short task list, a failing test first for core logic, the implementation, a real run of the app, and one commit | Working code, one commit per slice, updated `docs/NOTES.md` |
-| 3 | Wrap-up | soft | Runs the full suite and the app once more, writes the README from commands it actually ran, closes the notes. You get a 3 to 5 line summary and can adjust or call it done | `README.md`, final `docs/NOTES.md` |
+| 1 | Setup | **hard** | The AI turns your loose idea into a clear brief. It asks one question per message, with **no limit on how many**, until nothing important is a guess: who uses it, what each feature must prove, what is out of scope, stack and commands, data, look, edge cases. It shows the brief as a playback and waits for approval | `docs/BRIEF.md` (approved), `docs/NOTES.md` |
+| 2 | Spec | **hard** | A subagent drafts 3 to 6 checkable acceptance criteria per feature; you approve the contract | `docs/SPEC.md` |
+| 3 | Plan | **hard** | A subagent drafts one-line tasks in dependency order, each tied to criteria; you approve | `docs/PLAN.md` |
+| 4 | Build | **hard** | On `feature/<slug>`, subagents implement the tasks (failing test first for core logic, a real run of each task), one commit per feature. A separate fresh subagent reviews the diff against the spec; gaps and serious findings are fixed | Working code, reviewed |
+| 5 | Verify | **hard** | A subagent runs the tests and walks every criterion through the real app and marks it PASS, FAIL or BLOCKED. Then you try the app yourself and approve | Statuses in `docs/SPEC.md` |
+| 6 | Ship | **hard** | README from commands that were actually run, notes closed, plan deleted. You choose: merge, open a PR, or leave the branch | `README.md`, final `docs/NOTES.md` |
 
-`hard` stops until you say yes. `soft` shows a summary and moves on unless you object. `none` moves on by itself.
+`hard` stops until you say yes. **No code is written before the brief, spec and plan are approved.**
 
-The single hard gate is the brief. **No code is written before you approve it.** After that the AI works without stopping until Wrap-up. It does not stop between slices.
+### Keeping the context small
+
+One session cannot carry six steps. At each gate the AI decides what fits:
+
+- **Subagent** for work that needs no answers from you and reads and writes files: drafting the spec and plan, implementing, reviewing, verifying. The main session keeps only the summary, and the reviewer is independent of the author.
+- **New session** for long exchanges or when the session is full of material the next step does not need. The AI recommends it after Setup and after Build, or when three steps have run in one session. You paste one line, `Resume craft-kit lite: read kit-lite/START.md.`; `docs/NOTES.md` carries the state, with no handover file.
+
+Where your AI tool has no subagents, those offers become new-session offers.
 
 ### Rules the AI follows
 
-- **Done means run.** A slice is done only when its tests pass and the app or CLI was started and the changed path used. The AI reports what it ran and saw. A test it cannot run (no credentials, missing service) goes under *Open issues*, never "passing".
+- **Done means run.** A task is done only when its tests pass and the app or CLI was started and the changed path used. The AI reports what it ran and saw. A test it cannot run (no credentials, missing service) goes under *Open issues*, never "passing".
 - **Tests for core logic only:** calculations, data handling, parsing, APIs. Not for layout, config or glue.
-- **One commit per slice**, `feat:` / `fix:` / `chore:`.
-- **Three documents.** No specs, plans, logs, roadmaps or per-screen design docs.
+- **One commit per feature**, `feat:` / `fix:` / `chore:`, on `feature/<slug>`.
+- **Few documents.** No logs, roadmaps or per-screen design docs.
 - **No re-asking.** It reads `docs/` before asking you anything.
 
 ### Documents
 
-- **`docs/BRIEF.md`** — about one page: goal, stack, one-line visual direction, the feature table in build order (each with a "done when" you can check by running something), a *Later* list, and *Out of scope*.
-- **`docs/NOTES.md`** — resume state, not a log: status, one specific next action, the slice checklist with commit hashes, decisions a later session would otherwise re-ask, and open issues. It is rewritten, not appended, and stays under about 40 lines.
+- **`docs/BRIEF.md`** — about one page: goal, users, stack, commands, data, one-line visual direction, the feature table in build order (each with a "done when"), edge cases, *Later*, *Out of scope* and *Assumptions*.
+- **`docs/SPEC.md`** — acceptance criteria per feature, with a Status column filled in at Verify.
+- **`docs/PLAN.md`** — task list for the build; deleted at Ship.
+- **`docs/NOTES.md`** — resume state, not a log: status, one specific next action, the task checklist, decisions a later session would otherwise re-ask, and open issues. It is rewritten, not appended, and stays under about 40 lines.
 
 Resuming after a break needs nothing from you beyond opening a new session in the same folder and saying what you want, or `Start using kit-lite/START.md.`.
 
@@ -100,7 +112,7 @@ For a learning project it helps to look back at what you asked and what the AI a
 | Hook | Records |
 |---|---|
 | `UserPromptSubmit` | Your prompt |
-| `Stop` | The AI's final reply for the turn, with a one-line tag it was asked to end with: `[audit] step=<1-3> gate=<none\|soft\|hard> kind=<one word>` |
+| `Stop` | The AI's final reply for the turn, with a one-line tag it was asked to end with: `[audit] step=<1-6> gate=<none\|soft\|hard> kind=<one word>` |
 | `SessionEnd` | Turn count and how many replies had no tag |
 
 Output goes to `docs/audit/<date>-<session>.md`, one file per session, git-ignored. Both sides are stored quoted, so pasted text or code in a prompt or reply can never look like a new record. Only the last line of a reply counts as the tag.
@@ -139,6 +151,6 @@ A normal install or `--force` never touches `kit-lite/`, and `--lite` never touc
 
 ## Not for production work
 
-The lite kit gives up planning documents, design gates, review and end-to-end test steps, and change control in exchange for speed. If the project needs several users, a backend with real data, more than about 8 features, or production standards, use the [full kit](/getting-started) instead. The lite workflow warns once when a project goes past that point and continues only if you insist.
+The lite kit gives up the Phase 1 document set, design gates, formal end-to-end test documents, and change control in exchange for speed. If the project needs several users, a backend with real data, more than about 8 features, or production standards, use the [full kit](/getting-started) instead. The lite workflow warns once when a project goes past that point and continues only if you insist.
 
 The lite kit's step files are not part of this site. Read them in the repository: [`kit-lite/`](https://github.com/KhoaLy2003/craft-kit/tree/main/kit-lite).
