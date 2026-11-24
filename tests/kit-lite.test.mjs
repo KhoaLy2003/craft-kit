@@ -226,16 +226,26 @@ describe('project wiring', () => {
 
     const noAudit = tempDir()
     install(noAudit, ['--no-audit'])
-    assert.equal(existsSync(join(noAudit, '.claude')), false)
+    assert.equal(existsSync(join(noAudit, '.claude', 'settings.json')), false)
+    assert.equal(existsSync(join(noAudit, '.claude', 'skills', 'report-kit-issue', 'SKILL.md')), true)
     assert.equal(existsSync(join(noAudit, '.gitignore')), false)
     assert.doesNotMatch(readFileSync(join(noAudit, 'CLAUDE.md'), 'utf8'), /\[audit\]/)
   })
 
-  test('the full kit install is unchanged: no CLAUDE.md, hooks or .gitignore are written', () => {
+  test('--lite also installs the kit skills into .claude/skills, next to the lite wiring', () => {
+    const dir = tempDir()
+    const r = spawnSync('node', [CLI, '--lite', '--skip-setup'], { cwd: dir, input: '', encoding: 'utf8' })
+    assert.equal(r.status, 0, r.stderr)
+    assert.ok(existsSync(join(dir, '.claude', 'skills', 'report-kit-issue', 'SKILL.md')))
+    assert.ok(existsSync(join(dir, '.claude', 'settings.json')))
+  })
+
+  test('the full kit install writes no lite wiring: no CLAUDE.md, hooks or .gitignore; only kit skills go into .claude/skills', () => {
     const dir = tempDir()
     const r = spawnSync('node', [CLI, '--skip-setup'], { cwd: dir, input: '', encoding: 'utf8' })
     assert.equal(r.status, 0, r.stderr)
-    assert.deepEqual(readdirSync(dir), ['kit'])
+    assert.deepEqual(readdirSync(dir).sort(), ['.claude', 'kit'])
+    assert.deepEqual(readdirSync(join(dir, '.claude')), ['skills'])
   })
 })
 

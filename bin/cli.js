@@ -98,13 +98,13 @@ async function offerSkill (yes, { question, display, repo, names, cmd }) {
 
 // ─── Kit files, manifest, stale cleanup ──────────────────────────────────────
 
-// Everything under kit/ except resource/ (dev-only) and the top-level CHANGELOG.md.
+// Everything under kit/ except resource/ (dev-only), skills/ (installed into .claude/skills/) and the top-level CHANGELOG.md.
 function listKitFiles (dir, base = dir) {
   const files = []
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const abs = path.join(dir, entry.name)
     const rel = path.relative(base, abs).split(path.sep).join('/')
-    if (rel === 'resource' || rel === 'CHANGELOG.md') continue
+    if (rel === 'resource' || rel === 'skills' || rel === 'CHANGELOG.md') continue
     if (entry.isDirectory()) files.push(...listKitFiles(abs, base))
     else if (entry.isFile()) files.push(rel)
   }
@@ -129,6 +129,32 @@ function removeStale (target, relFile) {
     try { fs.rmdirSync(d) } catch { break }   // throws while the directory is non-empty
   }
   return true
+}
+
+// Kit-owned skills: kit/skills/<name>/… is installed into <projectRoot>/.claude/skills/<name>/…
+// Their project-relative paths go in .craft-kit-skills.json so --force can remove them later.
+const SKILLS_MANIFEST_FILE = '.craft-kit-skills.json'
+const SKILLS_SRC_DIR       = 'skills'
+const SKILLS_DEST          = '.claude/skills'
+
+function installKitSkills (src, projectRoot) {
+  const skillsDir = path.join(src, SKILLS_SRC_DIR)
+  if (!fs.existsSync(skillsDir)) return []
+  const installed = []
+  for (const file of listKitFiles(skillsDir)) {
+    const dest = path.join(projectRoot, ...SKILLS_DEST.split('/'), ...file.split('/'))
+    fs.mkdirSync(path.dirname(dest), { recursive: true })
+    fs.copyFileSync(path.join(skillsDir, ...file.split('/')), dest)
+    installed.push(`${SKILLS_DEST}/${file}`)
+  }
+  return installed
+}
+
+function readJsonList (dir, name) {
+  try {
+    const list = JSON.parse(readKitFile(dir, name))
+    return Array.isArray(list) ? list.filter(f => typeof f === 'string') : null
+  } catch { return null }
 }
 
 // ─── Output blocks ────────────────────────────────────────────────────────────
@@ -378,6 +404,11 @@ async function main () {
   }
   const prevVersion  = (readKitFile(target, VERSION_FILE) || '').trim() || null
   const prevManifest = readManifest(target)
+  // Only entries under .claude/skills/ may ever be removed; anything else in the manifest is ignored.
+  const prevSkills   = (readJsonList(target, SKILLS_MANIFEST_FILE) || []).filter(f => f.startsWith(SKILLS_DEST + '/'))
+  // Skills go into .claude/skills/ of the project root, so only install them when the target sits inside the working directory (the project).
+  // A target elsewhere would put .claude/skills into an unrelated parent folder.
+  const withSkills   = projectRoot === cwd
 
   if (existing.length > 0 && !force) {
     const versionLine = !prevVersion
@@ -399,12 +430,15 @@ ${versionLine}
 
   // Copy
   const files = listKitFiles(src)
+  let skillFiles = []
   try {
     for (const file of files) {
       const dest = path.join(target, ...file.split('/'))
       fs.mkdirSync(path.dirname(dest), { recursive: true })
       fs.copyFileSync(path.join(src, ...file.split('/')), dest)
     }
+    // Skills come from the full kit's kit/skills/ for both kits: the lite kit ships no skills of its own.
+    if (withSkills) skillFiles = installKitSkills(path.join(__dirname, '..', 'kit'), projectRoot)
   } catch (err) {
     die(`Copy failed: ${err.message}`)
   }
@@ -417,15 +451,26 @@ ${versionLine}
       if (!current.has(file) && removeStale(target, file)) removed++
     }
   }
+  if (force && withSkills) {
+    const current = new Set(skillFiles)
+    for (const file of prevSkills) {
+      if (!current.has(file) && removeStale(projectRoot, file)) removed++
+    }
+  }
 
   fs.writeFileSync(path.join(target, VERSION_FILE), kitVersion + '\n', 'utf8')
   fs.writeFileSync(path.join(target, MANIFEST_FILE), JSON.stringify(files, null, 2) + '\n', 'utf8')
+  if (withSkills) fs.writeFileSync(path.join(target, SKILLS_MANIFEST_FILE), JSON.stringify(skillFiles, null, 2) + '\n', 'utf8')
 
   if (force && prevVersion && prevVersion !== kitVersion) {
     console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + kitVersion)}  ${dim('(' + rel + '/')}\n`)
     console.log(`  ${dim('What changed:')}  ${cyan(changelog)}\n`)
   } else {
     console.log(`  ${SYM.check}  Kit installed  ${SYM.arrow}  ${bold(rel + '/')}\n`)
+  }
+  if (skillFiles.length > 0) {
+    const names = [...new Set(skillFiles.map(f => f.slice(SKILLS_DEST.length + 1).split('/')[0]))]
+    console.log(`  ${SYM.check}  Kit skills  ${SYM.arrow}  ${dim(SKILLS_DEST + '/')}  ${dim('(' + names.join(', ') + ')')}\n`)
   }
   if (removed > 0) {
     console.log(`  ${dim(`Removed ${removed} file${removed > 1 ? 's' : ''} no longer part of the kit.`)}\n`)
