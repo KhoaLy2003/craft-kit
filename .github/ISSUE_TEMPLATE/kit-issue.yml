@@ -62,7 +62,7 @@ body:
     attributes:
       label: Step
       description: The step file or step name, if known (for example `p2-03-implement`)
-  
+
   - type: textarea
     id: what-happened
     attributes:

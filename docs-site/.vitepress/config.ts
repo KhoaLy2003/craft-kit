@@ -112,7 +112,8 @@ const item = (p: Page) => ({ text: p.text, link: `/${p.to}` })
 // Kit markdown that is deliberately not a docs page. Anything else under kit/
 // must be in the page table above — the check below fails the build otherwise,
 // so a new kit file can never leak out as an unlinked /kit/... page.
-const KIT_NOT_PUBLISHED = ['kit/templates/', 'kit/resource/']
+// kit/skills/ are agent instructions installed into .claude/skills/, not website pages.
+const KIT_NOT_PUBLISHED = ['kit/templates/', 'kit/resource/', 'kit/skills/']
 
 function listMarkdown(dir: string, prefix: string): string[] {
   return readdirSync(resolve(dir), { withFileTypes: true }).flatMap(e =>
