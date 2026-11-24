@@ -54,6 +54,18 @@ describe('docs-site pages', () => {
     }
   })
 
+  test('every skill the kit ships is named in the install docs', () => {
+    const skillsDir = join(ROOT, 'kit', 'skills')
+    const shipped = readdirSync(skillsDir).filter(n => statSync(join(skillsDir, n)).isDirectory())
+    assert.ok(shipped.length > 0, 'kit/skills has no skill folders to check')
+    const pages = ['getting-started.md', join('guides', 'lite-kit.md'), join('reference', 'required-skills.md')]
+    for (const n of shipped) {
+      for (const p of pages) {
+        assert.ok(read(join(SITE, p)).includes(n), `${p} does not mention the kit skill ${n}`)
+      }
+    }
+  })
+
   test('step counts stated in the docs match the step files', () => {
     const count = dir => readdirSync(join(ROOT, 'kit', 'steps', dir)).filter(f => f.endsWith('.md')).length
     assert.equal(count('phase-1'), 8, 'docs say Phase 1 has eight steps')

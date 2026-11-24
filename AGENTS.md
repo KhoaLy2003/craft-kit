@@ -66,6 +66,7 @@ The two kits are released together (one `package.json` version, one `kit/CHANGEL
 | `kit/templates/` | Output templates copied to `<project>/docs/`; **never edit during a run** |
 | `kit/guides/` | On-demand detail (`conventions-detail.md`, `design-reference.md`, `session-handover.md`, `admin-checklist.md`, `change-control.md`, `diagrams.md`, `design-mcp.md`, `test-accounts.md`, `phase-2-feature-scope.md`); read only when a rule points there |
 | `kit/scripts/` | `lint-docs.js`, `render-backlog.js`, `docs-index.js`, `view-docs.js`, and a `package.json` pinning them to CommonJS (keep it, or ESM projects break) |
+| `kit/skills/` | Kit-owned skills (`report-kit-issue`); the installer copies them to `<project>/.claude/skills/` for both kits, listed in `.craft-kit-skills.json`. Each skill must be named in the install docs (`tests/docs-site.test.mjs`) |
 | `kit/viewer/` | VitePress config (`config.mts`) and theme used by `view-docs.js`; ESM, copied into a per-project site folder on every run |
 | `kit/resource/` | `step-specification-template.md` — dev-only, not installed |
 | `tests/fixtures/lint-docs/`, `tests/fixtures/viewer/` | Fixture projects for the docs lint and viewer tests |

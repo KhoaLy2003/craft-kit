@@ -26,7 +26,7 @@ npx github:KhoaLy2003/craft-kit --lite
 
 The kit lands in `kit-lite/`, directly under the folder you ran it in. A target that is nested deeper, or `.`, is rejected before anything is written, because the wiring files below live in the project root.
 
-Besides copying the kit, the installer writes four things into the project:
+Besides copying the kit, the installer writes these into the project:
 
 | Path | What it is |
 |---|---|
@@ -34,6 +34,7 @@ Besides copying the kit, the installer writes four things into the project:
 | `.claude/settings.json` | Three Claude Code hooks that record the conversation (see [Conversation audit](#conversation-audit)) |
 | `.gitignore` | A `docs/audit/` entry, so the recordings stay out of git |
 | `kit-lite/.craft-kit-version`, `kit-lite/.craft-kit-manifest.json` | Installed version and file list, used by `--force` upgrades |
+| `.claude/skills/report-kit-issue/SKILL.md`, `.craft-kit-skills.json` | The kit's own `/report-kit-issue` skill, and the list of skill files it wrote (used by `--force`). Written only when the install folder sits directly in the folder you ran the command from |
 
 Every write is idempotent and touches only its own marked block or entries. Your own text in `CLAUDE.md`, other hooks and other settings in `.claude/settings.json`, and existing `.gitignore` lines are kept.
 
@@ -49,6 +50,8 @@ The installer prints no skill prompts and makes no network calls for lite.
 ---
 
 ## Using it
+
+Found a problem with the kit itself (a step that is wrong, an installer failure)? Type `/report-kit-issue` in Claude Code. The skill checks the problem is about the kit, redacts your project details, shows you the issue, and files it only after you approve. Problems in your own app do not go there.
 
 Open your AI tool in the project folder and describe what you want:
 

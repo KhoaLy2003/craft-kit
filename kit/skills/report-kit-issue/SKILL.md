@@ -17,7 +17,7 @@ Turn a problem with the craft-kit workflow into a GitHub issue on `KhoaLy2003/cr
 
 Read these if they exist. Do not edit anything in the project.
 
-- `.craft-kit-version` → kit version. If missing, the project may be on an old kit or on the lite kit; check for `kit-lite/` or a lite block in `CLAUDE.md`.
+- Kit version: `kit/.craft-kit-version` (full kit) or `kit-lite/.craft-kit-version` (lite kit). If neither exists, the project may be on an old kit; check for a lite block in `CLAUDE.md` or `AGENTS.md`.
 - Kit type: `kit-lite/` present → **Lite kit**; `docs/.craft-kit.json` present → **Full kit**; `bin/` or CLI output mentioned → **Installer / CLI**.
 - Current workflow and step: the newest `docs/phase-*-session.md`, `docs/bug-session.md`, `docs/maintenance-session.md` or `docs/adopt-session.md` (last entries only), or `docs/NOTES.md` for lite. Take the workflow and step name from there.
 - Keep only what the form needs. Do not read the whole docs folder into the report.
@@ -76,6 +76,16 @@ gh issue list --repo KhoaLy2003/craft-kit --state all --search "<two or three di
 
 If a matching open issue exists, show it to the user and offer to add a comment with the new facts instead. Only create a new issue if the user says it is different. Comments follow the same redaction and approval rules.
 
+## 5a. Merge into an existing issue (only when the user asks)
+
+Use this when the user wants the new facts combined into an open issue, not kept as a separate report.
+
+1. Read the issue: `gh issue view <n> --repo KhoaLy2003/craft-kit --json title,body,labels`.
+2. Draft the merged body. Keep every form heading. Keep the existing facts unless the user says they are wrong, and add the new facts under the matching heading. If the merged issue is also both a bug and an enhancement, add the matching label (Step 6 rule).
+3. Show the current and the merged title, body and labels. Apply the redaction rules (Step 3), then ask: "Update issue #<n> with this? (yes / edit / cancel)".
+4. On a yes, write the merged body to a file in the scratchpad directory and run `gh issue edit <n> --repo KhoaLy2003/craft-kit --title "<title>" --body-file <file>`, adding `--add-label` for any new label.
+5. Report the issue URL. Edit only the issue the user chose in this run.
+
 ## 6. File the issue
 
 Write the approved body to a file in the scratchpad directory, then:
@@ -84,9 +94,21 @@ Write the approved body to a file in the scratchpad directory, then:
 gh issue create --repo KhoaLy2003/craft-kit --title "<title>" --label kit-issue --label needs-triage --body-file <scratchpad>/kit-issue-body.md
 ```
 
-Use the `Issue type` value to choose the label: add `bug` for a bug, and `enhancement` for a missing feature. Do not add `ready-for-fix`; only the maintainer sets that.
+Use the `Issue type` value to choose the label: add `bug` for a bug, and `enhancement` for a missing feature. If one problem is both (for example a crash plus checks the kit should have had), add both labels; the body's `Issue type` stays the main kind. Do not add `ready-for-fix`; only the maintainer sets that.
 
 Report the URL that `gh` prints.
+
+## 6b. Many findings in one report
+
+A report can hold several kit problems, often from an older kit version. Do not file one issue for all of them, and do not file each one separately without a plan:
+
+1. **Re-check each point against the installed kit.** Read the file the point names in the project's kit folder (`kit/`, `kit-lite/`, or `.claude/skills/`). If the installed text already does what the point asks, drop the point and say so. Name the kit version you checked against.
+2. **Search for duplicates** for each remaining point (Step 5).
+3. **Group related points** that name the same file or step. One group becomes one issue, and its title makes one claim.
+4. **Show every draft at once**: title, labels and body for each issue, plus the points dropped and why. Ask for one approval round: "Post these N issues? (yes / edit / cancel), or name any to drop."
+5. **File the approved drafts** one at a time with Step 6, each with its own body file. Report every URL at the end.
+
+Every draft follows the same redaction and form-heading rules.
 
 ## 7. If `gh` is missing or not logged in
 
@@ -102,3 +124,4 @@ Tell them to paste the approved body into the form. Ask them to re-check the red
 - Never fix the kit or change the kit's code from here. The maintainer does that.
 - Never include the user's name, email, or project details in anything beyond the approved issue body.
 - Never add labels other than `kit-issue`, `needs-triage`, `bug` and `enhancement`.
+- Never edit or close an existing issue except the one the user chose to merge into (Step 5a).

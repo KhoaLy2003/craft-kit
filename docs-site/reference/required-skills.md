@@ -14,7 +14,7 @@ For most users, getting started requires nothing beyond an AI assistant. Follow 
 
 Skills are instruction sets for a specific task. The kit uses them when they exist. They live in per-tool locations (a plugin, a skills folder such as `.agents/skills/`), which depends on your platform.
 
-**Installer.** `npx github:KhoaLy2003/craft-kit` copies `kit/`, then prints install instructions for the plugin skills. In an interactive terminal it offers to install `design-taste-frontend`, `archify` and the four review skills (`npx skills add <name>`). Run it with `--skip-setup` to skip this. The paths it writes are in [Getting Started](/getting-started#what-the-installer-writes).
+**Installer.** `npx github:KhoaLy2003/craft-kit` copies `kit/`, then prints install instructions for the plugin skills. In an interactive terminal it offers to install `design-taste-frontend`, `archify` and the four review skills (`npx skills add <name>`). Run it with `--skip-setup` to skip this. The paths it writes are in [Getting Started](/getting-started#what-the-installer-writes). It also copies the kit's own `report-kit-issue` skill (`/report-kit-issue`) into `.claude/skills/`; this is not an optional add-on and needs no install step.
 
 **Pre-flight.** When Phase 1 starts, the AI checks that the items below are available, using your platform's skill list. It tells you which are missing and which step each affects. The check is defined in `kit/phase-1-bootstrap.md` (*Skills and agents pre-flight*) and repeats for Phase 2.
 
