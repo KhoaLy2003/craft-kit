@@ -1,0 +1,106 @@
+name: Kit issue
+description: Report a problem with the craft-kit workflow itself (not with your own app)
+title: "[Kit] "
+labels: ["kit-issue", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for problems in **craft-kit** (the workflow, steps, templates, installer, CLI, docs).
+        For bugs in **your own app**, use your project's own bug-fix flow instead.
+        Filling this in by hand works too. The `/report-kit-issue` skill fills it in for you.
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue type
+      options:
+        - Bug (the kit did something wrong or failed)
+        - Unclear (a step or template is confusing or contradicts another)
+        - Missing (the kit should handle something it does not)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kit
+    attributes:
+      label: Kit
+      options:
+        - Full kit (kit/)
+        - Lite kit (kit-lite/)
+        - Installer / CLI (npx github:KhoaLy2003/craft-kit)
+    validations:
+      required: true
+
+  - type: input
+    id: kit-version
+    attributes:
+      label: Kit version
+      description: Value of `.craft-kit-version` in the project (or the CLI `--version` output)
+      placeholder: "0.0.57"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: workflow
+    attributes:
+      label: Workflow
+      options:
+        - Phase 1 Bootstrap
+        - Phase 2 Build
+        - Maintenance
+        - Adopt / Upgrade
+        - Bug Fix
+        - Onboarding
+        - Lite kit
+        - Not sure
+    validations:
+      required: true
+
+  - type: input
+    id: step
+    attributes:
+      label: Step
+      description: The step file or step name, if known (for example `p2-03-implement`)
+  
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What the kit did, or did not do. Be specific.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The sequence that leads to the problem. Start from a fresh install if you can.
+      placeholder: |
+        1. Run ...
+        2. Answer ...
+        3. ...
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Relevant output (redacted)
+      description: Error text or the AI's reply that shows the problem. Remove project names, paths, emails, tokens and any customer data before pasting.
+      render: text
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and found no duplicate
+          required: true
+        - label: I removed project names, paths, emails, tokens and customer data from this report
+          required: true

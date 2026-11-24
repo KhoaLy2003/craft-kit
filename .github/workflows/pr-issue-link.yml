@@ -1,0 +1,48 @@
+name: PR issue link
+
+# Every PR must name the issue it fixes ("Fixes #N"), or carry the no-issue label for chores and docs.
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  issue-link:
+    name: Issue link
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a closing keyword for an open issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          set -euo pipefail
+          if [[ ",$PR_LABELS," == *",no-issue,"* ]]; then
+            echo "no-issue label: no issue link required."
+            exit 0
+          fi
+
+          NUMS=$(printf '%s\n' "$PR_BODY" \
+            | grep -oiE '(fix|fixes|fixed|close|closes|closed|resolve|resolves|resolved):?[[:space:]]+#[0-9]+' \
+            | grep -oE '[0-9]+$' | sort -un || true)
+          if [[ -z "$NUMS" ]]; then
+            echo "::error::The PR description must name the issue it fixes, e.g. 'Fixes #12'. Add the no-issue label only for chores, docs or release changes."
+            exit 1
+          fi
+
+          OPEN=""
+          for N in $NUMS; do
+            KIND=$(gh api "repos/$REPO/issues/$N" --jq 'if .pull_request then "pr" else .state end' 2>/dev/null || echo missing)
+            if [[ "$KIND" == "open" ]]; then OPEN="$OPEN #$N"; fi
+          done
+          if [[ -z "$OPEN" ]]; then
+            echo "::error::None of the referenced numbers (${NUMS//$'\n'/ }) is an open issue. Check the number, or reopen the issue."
+            exit 1
+          fi
+          echo "Linked to open issue(s):$OPEN"

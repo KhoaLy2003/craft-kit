@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
 
     steps:
       - name: Checkout repository
@@ -84,3 +85,76 @@ jobs:
           gh release create "$TAG" \
             --title "craft-kit ${TAG}" \
             --notes-file release_notes.md
+
+      - name: Comment on and label issues fixed in this release
+        if: steps.check.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+        run: |
+          set -euo pipefail
+          TAG="$GITHUB_REF_NAME"  # env var, not pasted into the script text
+          RELEASE_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/$TAG"
+          KEYWORDS='(fix|fixes|fixed|close|closes|closed|resolve|resolves|resolved):?[[:space:]]+#[0-9]+'
+
+          PREVIOUS_TAG=$(git tag -l 'v*' --sort=-version:refname | grep -vx "$TAG" | head -n 1 || true)
+          if [[ -z "$PREVIOUS_TAG" ]]; then
+            echo "No earlier tag: nothing to report."
+            exit 0
+          fi
+
+          # Closing keywords in commit messages since the previous tag.
+          REFS=$(git log --no-merges --format=%B "$PREVIOUS_TAG..$TAG" | grep -oiE "$KEYWORDS" || true)
+
+          # Pull requests merged in the range. Squash merges often leave the keyword in the PR body only, so read the bodies too.
+          PR_NUMS=""
+          for SHA in $(git rev-list "$PREVIOUS_TAG..$TAG"); do
+            PR_NUMS="$PR_NUMS $(gh api "repos/$GITHUB_REPOSITORY/commits/$SHA/pulls" --jq '.[] | select(.merged_at != null) | .number' 2>/dev/null || true)"
+          done
+          PR_NUMS=$(tr ' ' '\n' <<< "$PR_NUMS" | grep -E '^[0-9]+$' | sort -un || true)
+          for P in $PR_NUMS; do
+            BODY=$(gh pr view "$P" --json body --jq '.body // ""')
+            LABELS=$(gh pr view "$P" --json labels --jq '[.labels[].name] | join(",")')
+            PR_REFS=$(grep -oiE "$KEYWORDS" <<< "$BODY" || true)
+            if [[ -z "$PR_REFS" && ",$LABELS," != *",no-issue,"* ]]; then
+              echo "::warning::PR #$P was merged without a closing keyword (Fixes #N) or the no-issue label."
+            fi
+            REFS="$REFS"$'\n'"$PR_REFS"
+          done
+
+          ISSUES=$(printf '%s\n' "$REFS" | grep -oE '[0-9]+$' | sort -un || true)
+          if [[ -z "$ISSUES" ]]; then
+            echo "No issues referenced since $PREVIOUS_TAG."
+            exit 0
+          fi
+
+          gh label create released --color 0E8A16 --description "Fixed in a released version of craft-kit" --force >/dev/null
+
+          for N in $ISSUES; do
+            # Only issues: pull requests and missing numbers are skipped.
+            KIND=$(gh api "repos/$GITHUB_REPOSITORY/issues/$N" --jq 'if .pull_request then "pr" else .state end' 2>/dev/null || echo missing)
+            case "$KIND" in
+              open|closed) ;;
+              *) echo "#$N: $KIND, skipping"; continue ;;
+            esac
+
+            # Re-running the job (or a later release that repeats the reference) must not comment twice.
+            LABELS=$(gh issue view "$N" --json labels --jq '.labels[].name')
+            if grep -qx released <<< "$LABELS"; then
+              echo "#$N: already marked released, skipping"
+              continue
+            fi
+
+            gh issue comment "$N" --body "Fixed in craft-kit $TAG: $RELEASE_URL
+
+          To get the fix, run \`npx github:KhoaLy2003/craft-kit --force\` in your project (add \`--lite\` if you use the lite kit)."
+            gh issue edit "$N" --add-label released
+            if [[ "$KIND" == "open" ]]; then
+              gh issue close "$N" --reason completed
+              echo "#$N: commented, labelled released, closed"
+            else
+              echo "#$N: commented, labelled released (already closed)"
+            fi
+          done
+
