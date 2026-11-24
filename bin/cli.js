@@ -404,7 +404,11 @@ async function main () {
   }
   const prevVersion  = (readKitFile(target, VERSION_FILE) || '').trim() || null
   const prevManifest = readManifest(target)
-  const prevSkills   = readJsonList(target, SKILLS_MANIFEST_FILE)
+  // Only entries under .claude/skills/ may ever be removed; anything else in the manifest is ignored.
+  const prevSkills   = (readJsonList(target, SKILLS_MANIFEST_FILE) || []).filter(f => f.startsWith(SKILLS_DEST + '/'))
+  // Skills go into .claude/skills/ of the project root, so only install them when the target sits inside the working directory (the project).
+  // A target elsewhere would put .claude/skills into an unrelated parent folder.
+  const withSkills   = projectRoot === cwd
 
   if (existing.length > 0 && !force) {
     const versionLine = !prevVersion
@@ -434,7 +438,7 @@ ${versionLine}
       fs.copyFileSync(path.join(src, ...file.split('/')), dest)
     }
     // Skills come from the full kit's kit/skills/ for both kits: the lite kit ships no skills of its own.
-    skillFiles = installKitSkills(path.join(__dirname, '..', 'kit'), projectRoot)
+    if (withSkills) skillFiles = installKitSkills(path.join(__dirname, '..', 'kit'), projectRoot)
   } catch (err) {
     die(`Copy failed: ${err.message}`)
   }
@@ -447,7 +451,7 @@ ${versionLine}
       if (!current.has(file) && removeStale(target, file)) removed++
     }
   }
-  if (force && prevSkills) {
+  if (force && withSkills) {
     const current = new Set(skillFiles)
     for (const file of prevSkills) {
       if (!current.has(file) && removeStale(projectRoot, file)) removed++
@@ -456,7 +460,7 @@ ${versionLine}
 
   fs.writeFileSync(path.join(target, VERSION_FILE), kitVersion + '\n', 'utf8')
   fs.writeFileSync(path.join(target, MANIFEST_FILE), JSON.stringify(files, null, 2) + '\n', 'utf8')
-  fs.writeFileSync(path.join(target, SKILLS_MANIFEST_FILE), JSON.stringify(skillFiles, null, 2) + '\n', 'utf8')
+  if (withSkills) fs.writeFileSync(path.join(target, SKILLS_MANIFEST_FILE), JSON.stringify(skillFiles, null, 2) + '\n', 'utf8')
 
   if (force && prevVersion && prevVersion !== kitVersion) {
     console.log(`  ${SYM.check}  Kit upgraded  ${SYM.arrow}  ${dim('v' + prevVersion)} ${SYM.arrow} ${bold('v' + kitVersion)}  ${dim('(' + rel + '/')}\n`)

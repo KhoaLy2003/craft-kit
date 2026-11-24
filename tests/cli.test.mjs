@@ -249,7 +249,7 @@ describe('kit skills', () => {
     mkdirSync(dirname(mine), { recursive: true }); writeFileSync(mine, 'mine')
     const list = JSON.parse(readFileSync(join(target, '.craft-kit-skills.json'), 'utf8'))
     writeFileSync(join(target, '.craft-kit-skills.json'), JSON.stringify([...list, '.claude/skills/old-skill/SKILL.md']))
-    const res = run([target, '--skip-setup', '--force'], { cwd: tempDir() })
+    const res = run([target, '--skip-setup', '--force'], { cwd: project })
     assert.equal(res.status, 0, res.stderr)
     assert.equal(existsSync(stale), false, 'stale skill removed')
     assert.equal(existsSync(join(project, '.claude', 'skills', 'old-skill')), false, 'emptied skill folder pruned')
@@ -262,9 +262,28 @@ describe('kit skills', () => {
     const outside = join(project, '..', 'escape-skill.md')
     writeFileSync(outside, 'keep')
     writeFileSync(join(target, '.craft-kit-skills.json'), JSON.stringify(['../escape-skill.md']))
-    const res = run([target, '--skip-setup', '--force'], { cwd: tempDir() })
+    const res = run([target, '--skip-setup', '--force'], { cwd: project })
     assert.equal(res.status, 0, res.stderr)
     assert.equal(existsSync(outside), true)
+  })
+
+  test('--force only removes manifest entries under .claude/skills/, never other project files', () => {
+    const { target, project } = installIn()
+    const doc = join(project, 'docs', 'spec.md')
+    mkdirSync(dirname(doc), { recursive: true }); writeFileSync(doc, 'keep')
+    writeFileSync(join(target, '.craft-kit-skills.json'), JSON.stringify(['docs/spec.md', '.claude/settings.json']))
+    const res = run([target, '--skip-setup', '--force'], { cwd: project })
+    assert.equal(res.status, 0, res.stderr)
+    assert.equal(existsSync(doc), true)
+  })
+
+  test('a target outside the working directory gets no skills: nothing is written next to it', () => {
+    const base = tempDir()
+    const target = join(base, 'kit')
+    const res = run([target, '--skip-setup'], { cwd: tempDir() })
+    assert.equal(res.status, 0, res.stderr)
+    assert.equal(existsSync(join(base, '.claude')), false)
+    assert.equal(existsSync(join(target, '.craft-kit-skills.json')), false)
   })
 })
 
