@@ -7,12 +7,20 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.59] - 2026-11-24
+
+**Summary:** report-kit-issue merge and many-findings flow · install docs list the kit skill
+
 **Summary:** report-kit-issue: mixed labels, merge, many findings · install docs list the skill
 
 - **`kit/skills/report-kit-issue/SKILL.md`** — both labels for bug + feature; new 5a merge and 6b many-findings flows; version paths fixed.
 - **`docs-site/`** (getting-started, guides/lite-kit, reference/required-skills) — install tables list the kit skill and `.craft-kit-skills.json`.
 - **`tests/docs-site.test.mjs`** — every shipped kit skill must be named in the install docs.
 - **`AGENTS.md`** — key directories row for `kit/skills/`.
+
+---
 
 ---
 
