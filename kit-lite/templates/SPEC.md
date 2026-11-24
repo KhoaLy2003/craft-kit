@@ -8,6 +8,8 @@
 
 ## F1 — <Feature name>
 
+**Needs data:** <what it reads (for example all files for a total), where it comes from, when it is loaded; "none" if empty>
+
 | ID | Criterion | Status |
 |---|---|---|
 | F1-AC1 | | pending |
@@ -17,3 +19,7 @@
 ## Interactions
 
 <!-- Behavior that spans two features. Delete if none. -->
+
+## Amendments
+
+<!-- Changes after approval, one line each, oldest first. Delete if none. -->

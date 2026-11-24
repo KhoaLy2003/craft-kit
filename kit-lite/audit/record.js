@@ -8,6 +8,7 @@
 // Reads the hook payload (JSON) from stdin and appends to
 // <project>/docs/audit/<YYYY-MM-DD>-<session>.md. It never throws and always exits 0, so a recorder
 // problem can never block the conversation; failures are noted in docs/audit/.errors.log.
+// kit-lite/audit/package.json pins this folder to CommonJS, so the recorder also runs in a "type": "module" host.
 
 'use strict'
 
