@@ -7,6 +7,16 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+**Summary:** Lite kit: fixes for the open lite issues (#91–#94): audit recorder in ESM projects, Setup hook check, spec data needs and amendments, agent choice, review gate, safer ship, user rules first
+
+- **`kit-lite/audit/package.json`** — new, `"type": "commonjs"`: `record.js` runs in `"type": "module"` projects (#91).
+- **`kit-lite/step-1-setup.md`** — checks the three hooks and smoke-tests the recorder before the questions (#91).
+- **`kit-lite/step-2-spec.md`, `step-3-plan.md`, `templates/SPEC.md`, `templates/PLAN.md`** — `Needs data` per feature, `needs:` per task, amendment format (#92).
+- **`kit-lite/step-4-build.md`, `step-5-verify.md`** — best-fitting agent; review verdict required at the gate; clean-start definition; report scales with criteria; audit tag check (#91, #92, #94).
+- **`kit-lite/step-6-ship.md`** — plan commit recorded before deletion; landing commands with checks, no `git branch -M` (#93).
+- **`kit-lite/START.md`** — the user's own instructions take precedence over the kit rules (#94).
+- **`docs-site/guides/lite-kit.md`**, **`tests/kit-lite.test.mjs`** — audit notes; ESM-host recorder test.
+
 ---
 
 ## [0.0.59] - 2026-11-24

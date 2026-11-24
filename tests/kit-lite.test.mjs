@@ -354,6 +354,26 @@ describe('audit recorder', () => {
   })
 })
 
+// ─── Recorder in an ESM host project ──────────────────────────────────────────
+
+describe('audit recorder in a "type": "module" project', () => {
+  test('the installed recorder writes a record and exits 0 under an ESM package.json', () => {
+    const dir = tempDir()
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ name: 'esm-app', type: 'module' }))
+    const r = spawnSync('node', [CLI, '--lite', '--skip-setup'], { cwd: dir, input: '', encoding: 'utf8' })
+    assert.equal(r.status, 0, r.stderr)
+    const run = spawnSync('node', [join(dir, 'kit-lite', 'audit', 'record.js'), 'prompt'], {
+      cwd: dir, input: JSON.stringify({ session_id: 'esm00001', prompt: 'hi' }), encoding: 'utf8',
+      env: { ...process.env, CLAUDE_PROJECT_DIR: dir },
+    })
+    assert.equal(run.status, 0, run.stderr)
+    assert.equal(existsSync(join(dir, 'docs', 'audit', '.errors.log')), false)
+    const files = readdirSync(join(dir, 'docs', 'audit'))
+    assert.equal(files.length, 1)
+    assert.match(readFileSync(join(dir, 'docs', 'audit', files[0]), 'utf8'), /## Turn 1 · [^\n]* · user\n> hi/)
+  })
+})
+
 // ─── Independence from the full kit ───────────────────────────────────────────
 
 describe('one project, one kit', () => {

@@ -38,6 +38,8 @@ One session cannot carry all six steps. Two tools keep it small. Pick by what th
 
 Where the harness has no subagents, every subagent below becomes a new-session offer.
 
+**Choosing the agent.** Each subagent is the installed agent that fits its task best: a frontend or React specialist for UI work, a code reviewer for the review, the general-purpose agent when none fits. Name the agent in the dispatch.
+
 **Per step:**
 
 | Step | How |
@@ -59,11 +61,13 @@ At other gates, go straight on to the next step.
 
 ## Rules
 
+The user's own instructions come first. Where a rule below conflicts with an instruction the user gave, in their own settings (for example a global `CLAUDE.md`) or in a message, follow the user's instruction, say in one line which rule it overrides, and record that in `docs/NOTES.md` → Decisions.
+
 1. **No code before the brief, spec and plan are approved.**
 2. **Clarity before speed in Step 1.** Ask as many questions as it takes, one per message, until nothing important is a guess. Propose a default when the user has no preference.
 3. **Done means run.** A task is done only after its tests pass and the app (or CLI) was started and the changed path exercised. Say what you ran and saw.
 4. **Tests for core logic only**: calculations, data handling, parsing, APIs. Test first for those. No tests for layout, config or glue.
-5. **Git.** If the folder is not inside a git work tree (`git rev-parse --is-inside-work-tree` fails), run `git init` first. Work on `feature/<slug>`; one commit per feature, `feat: ...`, `fix: ...`, `chore: ...`.
+5. **Git.** If the folder is not inside a git work tree (`git rev-parse --is-inside-work-tree` fails), run `git init` first. Work on `feature/<slug>`; one commit per feature, `feat: ...`, `fix: ...`, `chore: ...`. If the user forbids per-feature commits, commit once right after the Step 4 gate approval.
 6. **Few documents.** Only `docs/BRIEF.md`, `docs/SPEC.md`, `docs/PLAN.md` (temporary), `docs/NOTES.md` and `README.md`. Each stays short. Do not create logs, roadmaps, per-screen docs or design documents.
 7. **Write, then verify.** After writing a file, confirm it exists and has the expected content before saying it is written.
 8. **UI projects.** Build screens from the brief's visual line. If the `design-taste-frontend` skill is installed, use it.

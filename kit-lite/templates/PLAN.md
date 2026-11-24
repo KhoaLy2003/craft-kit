@@ -10,7 +10,7 @@
 
 ## Tasks
 
-- [ ] T0 scaffold — project with the brief's stack and commands, test runner, builds or starts. Test-first: no
-- [ ] T1 (F1) <what it delivers> — covers F1-AC1. Test-first: yes | no
+- [ ] T0 scaffold — project with the brief's stack and commands, test runner, builds or starts. Test-first: no. needs: none
+- [ ] T1 (F1) <what it delivers> — covers F1-AC1. Test-first: yes | no. needs: T0
 
 **Parallel groups:** <task IDs that can run together because they touch different files; "none" if empty>

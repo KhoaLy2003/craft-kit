@@ -6,6 +6,16 @@
 
 The user's first message is usually a loose idea. This step turns it into a brief that Step 2 can specify without guessing. Spend the questions here, not in the build.
 
+## Before the questions
+
+Skip this section if `kit-lite/audit/` does not exist or the user installed with `--no-audit`.
+
+1. **Hooks present.** `.claude/settings.json` has three hooks that run `kit-lite/audit/record.js`: `prompt` (UserPromptSubmit), `stop` (Stop) and `end` (SessionEnd). If any is missing, tell the user to run `npx github:KhoaLy2003/craft-kit --lite --force`, which rewrites them. The hooks are not in the kit manifest, so this check is the only proof they exist.
+2. **Recorder smoke test.** Run it with the Bash tool (on Windows, Git Bash). Use this exact form and do not wrap it in `cmd /c`:
+   `printf '%s' '{"session_id":"smoke000","prompt":"smoke test"}' | node kit-lite/audit/record.js prompt`
+   Then check that `docs/audit/` holds a file ending in `-smoke000.md` that contains `## Turn 1`, and delete that file. If it is missing, read `docs/audit/.errors.log`, fix the cause and run the test again. Do not ask the first question until it passes.
+3. **Live hooks.** If prompts in this session still write nothing to `docs/audit/`, the hooks are not loaded yet: ask the user to approve them in `/hooks` or to start a new session.
+
 ## Do
 
 1. Read the user's message and `docs/` if it exists. Write down, for yourself, what the message already answers and what you would have to guess.

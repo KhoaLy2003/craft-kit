@@ -95,6 +95,7 @@ Where your AI tool has no subagents, those offers become new-session offers.
 - **Tests for core logic only:** calculations, data handling, parsing, APIs. Not for layout, config or glue.
 - **One commit per feature**, `feat:` / `fix:` / `chore:`, on `feature/<slug>`.
 - **Few documents.** No logs, roadmaps or per-screen design docs.
+- **Your rules first.** Instructions you give in your own settings or in a message override a kit rule where they conflict. The AI says which rule it set aside and notes it in `docs/NOTES.md`.
 - **No re-asking.** It reads `docs/` before asking you anything.
 
 ### Documents
@@ -124,6 +125,9 @@ Output goes to `docs/audit/<date>-<session>.md`, one file per session, git-ignor
 - **Never blocks the conversation.** The recorder always exits 0. If it cannot record, it notes why in `docs/audit/.errors.log` rather than failing silently.
 - **Works the same on every shell.** The hooks use Claude Code's exec form (`node` plus an argument list with `${CLAUDE_PROJECT_DIR}`), so they behave the same under bash, Git Bash and PowerShell. Claude Code substitutes the placeholder itself.
 - **Invalid `.claude/settings.json`.** If the file is not valid JSON, it is left untouched, the hooks are skipped, and the AI is **not** asked for audit tags (they would be recorded nowhere). Fix the file and re-run `npx github:KhoaLy2003/craft-kit --lite --force`.
+- **Checked at Setup.** Step 1 checks the three hooks and smoke-tests the recorder before any question. Run that check from Git Bash on Windows; quoting with `cmd /c` breaks it.
+- **Kept, not shipped.** Ship neither commits nor deletes `docs/audit/`. The files stay on your machine.
+- **Any project type.** The recorder ships with its own `package.json` (`"type": "commonjs"`), so it also works in a project whose `package.json` sets `"type": "module"`, such as a Vite app.
 
 ---
 
