@@ -28,7 +28,7 @@ const CLI  = join(ROOT, 'bin', 'cli.js')
 const KIT  = join(ROOT, 'kit')
 const PKG  = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
 
-const META_FILES = ['.craft-kit-version', '.craft-kit-manifest.json']
+const META_FILES = ['.craft-kit-version', '.craft-kit-manifest.json', '.craft-kit-skills.json']
 
 process.setMaxListeners(100) // one 'exit' cleanup handler per tempDir()
 
@@ -123,7 +123,7 @@ describe('fresh install', () => {
 
   test('excludes resource/ and CHANGELOG.md; installed files match the kit source exactly', () => {
     const target = install()
-    const expected = walk(KIT).filter(f => f !== 'CHANGELOG.md' && !f.startsWith('resource/'))
+    const expected = walk(KIT).filter(f => f !== 'CHANGELOG.md' && !f.startsWith('resource/') && !f.startsWith('skills/'))
     assert.deepEqual(walk(target).filter(f => !META_FILES.includes(f)), expected)
     assert.ok(!existsSync(join(target, 'resource')))
     assert.ok(!existsSync(join(target, 'CHANGELOG.md')))
@@ -214,6 +214,59 @@ describe('non-empty target', () => {
 })
 
 // ─── Post-install output ──────────────────────────────────────────────────────
+
+describe('kit skills', () => {
+  const skillSrc = (name) => readFileSync(join(KIT, 'skills', name, 'SKILL.md'), 'utf8')
+  // Install with the project root as cwd, so the skills land in <base>/.claude/skills.
+  function installIn() {
+    const base = tempDir()
+    const target = join(base, 'kit')
+    const res = run([target, '--skip-setup'], { cwd: base })
+    assert.equal(res.status, 0, res.stderr)
+    return { target, project: base }
+  }
+
+  test('fresh install copies kit skills into .claude/skills and records them in .craft-kit-skills.json', () => {
+    const { target, project } = installIn()
+    const dest = join(project, '.claude', 'skills', 'report-kit-issue', 'SKILL.md')
+    assert.ok(existsSync(dest), 'skill copied into .claude/skills')
+    assert.equal(readFileSync(dest, 'utf8'), skillSrc('report-kit-issue'))
+    const list = JSON.parse(readFileSync(join(target, '.craft-kit-skills.json'), 'utf8'))
+    assert.deepEqual(list, ['.claude/skills/report-kit-issue/SKILL.md'])
+  })
+
+  test('skills are not copied into the kit folder and are not in the kit manifest', () => {
+    const { target } = installIn()
+    assert.equal(existsSync(join(target, 'skills')), false)
+    assert.ok(!readManifest(target).some(f => f.startsWith('skills/')))
+  })
+
+  test('--force removes a skill the old skills manifest lists but this kit no longer ships, keeps user skills', () => {
+    const { target, project } = installIn()
+    const stale = join(project, '.claude', 'skills', 'old-skill', 'SKILL.md')
+    const mine  = join(project, '.claude', 'skills', 'my-own', 'SKILL.md')
+    mkdirSync(dirname(stale), { recursive: true }); writeFileSync(stale, 'old')
+    mkdirSync(dirname(mine), { recursive: true }); writeFileSync(mine, 'mine')
+    const list = JSON.parse(readFileSync(join(target, '.craft-kit-skills.json'), 'utf8'))
+    writeFileSync(join(target, '.craft-kit-skills.json'), JSON.stringify([...list, '.claude/skills/old-skill/SKILL.md']))
+    const res = run([target, '--skip-setup', '--force'], { cwd: tempDir() })
+    assert.equal(res.status, 0, res.stderr)
+    assert.equal(existsSync(stale), false, 'stale skill removed')
+    assert.equal(existsSync(join(project, '.claude', 'skills', 'old-skill')), false, 'emptied skill folder pruned')
+    assert.equal(existsSync(mine), true, 'user skill kept')
+    assert.equal(existsSync(join(project, '.claude', 'skills', 'report-kit-issue', 'SKILL.md')), true, 'current skill kept')
+  })
+
+  test('--force never deletes outside the project root even if the skills manifest says so', () => {
+    const { target, project } = installIn()
+    const outside = join(project, '..', 'escape-skill.md')
+    writeFileSync(outside, 'keep')
+    writeFileSync(join(target, '.craft-kit-skills.json'), JSON.stringify(['../escape-skill.md']))
+    const res = run([target, '--skip-setup', '--force'], { cwd: tempDir() })
+    assert.equal(res.status, 0, res.stderr)
+    assert.equal(existsSync(outside), true)
+  })
+})
 
 describe('--skip-setup', () => {
   test('prints the quick start and none of the setup instructions', () => {

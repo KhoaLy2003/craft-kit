@@ -7,6 +7,13 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+**Summary:** Kit skill `report-kit-issue` installed into `.claude/skills/` for reporting kit issues
+
+- **`kit/skills/report-kit-issue/SKILL.md`** — new: files a `kit-issue` GitHub issue on KhoaLy2003/craft-kit after a scope check, read-only context gathering, redaction and explicit approval; duplicate search; `gh` fallback to the form link.
+- **`bin/cli.js`** — `kit/skills/` is copied to `<project>/.claude/skills/` (not into the kit folder), listed in `.craft-kit-skills.json`; `--force` removes stale skills only inside the project root. Full and lite kits.
+- **`tests/cli.test.mjs`**, **`tests/kit-lite.test.mjs`** — skill install, stale removal and path-guard tests.
+- **`.github/ISSUE_TEMPLATE/kit-issue.yml`** — new issue form (not part of `kit/`).
+
 ---
 
 ## [0.0.57] - 2026-11-23
