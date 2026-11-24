@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.60] - 2026-11-24
+
+**Summary:** Lite kit fixes for issues 91-94 · audit recorder works in ESM projects · safer ship step
+
 **Summary:** Lite kit: fixes for the open lite issues (#91–#94): audit recorder in ESM projects, Setup hook check, spec data needs and amendments, agent choice, review gate, safer ship, user rules first
 
 - **`kit-lite/audit/package.json`** — new, `"type": "commonjs"`: `record.js` runs in `"type": "module"` projects (#91).
@@ -16,6 +22,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit-lite/step-6-ship.md`** — plan commit recorded before deletion; landing commands with checks, no `git branch -M` (#93).
 - **`kit-lite/START.md`** — the user's own instructions take precedence over the kit rules (#94).
 - **`docs-site/guides/lite-kit.md`**, **`tests/kit-lite.test.mjs`** — audit notes; ESM-host recorder test.
+
+---
 
 ---
 
