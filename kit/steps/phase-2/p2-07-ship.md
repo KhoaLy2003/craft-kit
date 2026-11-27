@@ -6,12 +6,12 @@
 - **Agent/Skill**: `finishing-a-development-branch` skill + general-purpose agent
 - **Model**: `fast`
 - **Gate**: `none`
-- **Inputs**: the feature branch (changes uncommitted unless a handover committed some); `docs/backlog.json`
+- **Inputs**: the feature branch (changes uncommitted unless a handover committed some); `docs/backlog.json`; `docs/ship-checklist.md`
 - **Outputs**:
   - committed branch; pushed branch and PR against the base branch (conventions rule 17; unless local-only) from `kit/templates/pr-description.md`
   - `shipped` event in `docs/backlog.json` per shipped feature; regenerated `docs/roadmap.md` table (`docs/backlog.html` is regenerated locally and git-ignored)
   - the unit collapsed in the session log and the E2E doc, archived under `docs/archive/`; the unit's `plan.md` deleted; CI status reported to the user
-- **Template**: `kit/templates/pr-description.md`
+- **Template**: `kit/templates/pr-description.md`, `kit/templates/ship-checklist.md`
 
 ## Rules
 
@@ -19,6 +19,11 @@ Work in this order.
 
 ### 1. Before the commit
 
+- **Ship checklist.**
+  - **Generate if missing.** If `docs/ship-checklist.md` is missing or `draft`, run Steps 1–4 of `kit/phase-ship-checklist-backfill.md` now (its review is the gate).
+  - **Evaluate and fix.** For every item whose `Applies when` matches this cycle's changes, evaluate its `Check`; complete the item when it is a file edit inside this unit's scope (docs, changelog, version, env example) and re-check it. Show one table with `pass | fixed | n/a | blocked` (or waived by the user) and the evidence per item; never `pass` without evidence. A user-waived item is shown as `waived` and recorded in the Outcome line, not as `pass`. Where an item overlaps a bullet below (changelog, `AGENTS.md` sync, Impact merge), report that bullet's result rather than repeating the work.
+  - **Blocked or stale stops Ship.** Any `blocked` item, or a stale item (its evidence path or command no longer exists), stops Ship: ask the user to resolve or waive it, and record a waiver in the Outcome line.
+  - **Zero items.** A checklist the user approved with no items is recorded and not asked about again.
 - **Impact merge (once per cycle).** Merge the unit's records into the shared docs, then keep each `Status: approved` and refresh `Last updated`:
   - spec `## Data & Flow Impact` → `docs/data-model.md` and `docs/flows.md` (extend the §4 matrix and screen inventory, update the §2 `erDiagram`). Compare fields, relationships, screens, and transitions, not just names; never duplicate rows. A wave-design feature has nothing to merge beyond its slice.
   - plan `## Architecture Impact` → `docs/architecture.md` (`ENV_SETUP.md` and `.env.example` were done at Step 2).
@@ -80,6 +85,7 @@ Read the PR's check status **once** (needs a CI row in Verification Commands or 
 - [ ] Committed; user-confirmed remote pushed and PR open, or the local-only fallback recorded in the Outcome line
 - [ ] CI status reported (a failing run returned to Step 4 at most once)
 - [ ] `shipped` events with PR (or local commit) evidence for every feature built; releases closed; render script exits 0
+- [ ] Ship checklist shown with every applicable item `pass`, `fixed`, or user-waived
 - [ ] Impact merge done; unit collapsed and archived; plan deleted; `AGENTS.md` and root `CHANGELOG.md` updated where applicable; lint-docs reports no errors and no growth warning for this unit
 - [ ] `scope: feature` with `pending` features left: the user answered the next-step question; nothing started unprompted
 

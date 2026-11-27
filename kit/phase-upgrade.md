@@ -44,8 +44,9 @@ Order matters: a later module may read what an earlier one writes.
 | 5 | `docs/api.md` | `docs/architecture.md` exists, `docs/api.md` does not, and the code exposes an API (route or controller files, server actions, or an OpenAPI or GraphQL schema) | `kit/phase-api-backfill.md` |
 | 6 | `docs/phase-2-session.md`, `docs/E2E-TESTS.md` (shipped units collapsed) | `node kit/scripts/lint-docs.js` reports a `growth:` warning on `docs/phase-2-session.md` or `docs/E2E-TESTS.md` | `kit/phase-log-collapse.md` |
 | 7 | `docs/specs/**/plan.md` (shipped plans deleted) | a `plan.md` exists for a unit whose features all have a `shipped` event in `docs/backlog.json` (`docs/specs/<slug>/plan.md` for one feature; `docs/specs/plan.md` when every feature it covers shipped) | Inline: see **Row 7 procedure** below |
+| 8 | `docs/ship-checklist.md` | `docs/.craft-kit.json` exists with `kit_version` older than 0.0.61, and `docs/ship-checklist.md` does not exist | `kit/phase-ship-checklist-backfill.md` |
 
-**Retirement.** Rows 2–5 are permanent: Adopt runs them for any existing codebase. Row 1 was retired once Phase 1 had written `backlog.json` for many releases. Row 6 is new (0.0.45); review it at 0.0.50. Retire a module by deleting its file and registry row and pointing the row at the last release that ships it, as row 1 does.
+**Retirement.** Rows 2–5 are permanent: Adopt runs them for any existing codebase. Row 1 was retired once Phase 1 had written `backlog.json` for many releases. Row 6 is new (0.0.45); review it at 0.0.50. Row 8 is new (0.0.61); review it at 0.0.66. Retire a module by deleting its file and registry row and pointing the row at the last release that ships it, as row 1 does.
 
 ## Row 7 procedure — delete shipped plans
 

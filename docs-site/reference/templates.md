@@ -36,6 +36,7 @@ Most steps have a fill-in-the-blank template in `kit/templates/`. The agent fill
 | `templates/craft-kit.json` | `docs/.craft-kit.json` | Agent | Phase 1 Step 8, Adopt closeout, Project Upgrade report (records the kit version) |
 | `templates/adopt-survey.md` | `docs/adopt/survey.md` | Agent | Adopt Step 1 |
 | `templates/pr-description.md` | The pull request body | Agent | Phase 2 Step 7 (Ship) |
+| `templates/ship-checklist.md` | `docs/ship-checklist.md` | Agent | Phase 2 Step 7 (Ship, when missing), Project Upgrade (row 8) |
 
 ---
 

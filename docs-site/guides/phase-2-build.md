@@ -45,6 +45,8 @@ The AI reads the roadmap, backlog, constitution, architecture, and design, then 
 
 The AI never merges to `main`, never pushes to it, and never deploys. Pushing and opening a pull request publish your code outside this machine, so the AI asks first. With no remote or no sign-in, it commits on the feature branch, skips the push, and tells you how to publish later. If CI fails, the AI returns to Review once with the error output and fixes it; if it fails again, it asks you how to proceed. The spec and the manual check are the two moments that decide what ships, so take them seriously.
 
+Before the commit, Ship reads `docs/ship-checklist.md`, a per-project list of what must not be forgotten (docs, changelog, config and env, migrations, tests and CI, tracking, PR and release), and reports each applicable item as `pass`, `fixed`, `n/a` or `blocked` with evidence. Ship has no gate of its own: it stops and asks only when an applicable item is unmet or the checklist is missing. A missing checklist is generated first from a scan of your project, and you review it once before it is used. Projects on an older kit get it from the [project upgrade](/phases/upgrade).
+
 Shipped features are recorded as `shipped` events in `docs/backlog.json`; `docs/backlog.html` and the roadmap table are generated from it.
 
 ---

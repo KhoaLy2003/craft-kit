@@ -231,3 +231,53 @@ describe('resume and handover coverage', () => {
     assert.match(start, /\*\*Resume\.\*\*[\s\S]*docs\/\*-session\.md[\s\S]*rule 18/)
   })
 })
+
+describe('ship checklist', () => {
+  const tpl = read(join(KIT, 'templates', 'ship-checklist.md'))
+  const ship = read(join(KIT, 'steps', 'phase-2', 'p2-07-ship.md'))
+  const upgrade = read(join(KIT, 'phase-upgrade.md'))
+  const modulePath = join(KIT, 'phase-ship-checklist-backfill.md')
+
+  test('template exists with the five columns and the seven categories', () => {
+    for (const col of ['#', 'Item', 'Applies when', 'Check (evidence)', 'Source']) {
+      assert.ok(tpl.includes(`| ${col} `), `missing column ${col}`)
+    }
+    for (const h of ['Docs', 'Changelog and version', 'Config and env', 'Data/migrations', 'Tests and CI', 'Tracking (issues/backlog)', 'PR/release']) {
+      assert.match(tpl, new RegExp(`^## ${h.replace(/[()/]/g, '\\$&')}\\s*$`, 'm'), `missing heading ${h}`)
+    }
+  })
+
+  test('Ship step reads docs/ship-checklist.md and states the report rule', () => {
+    assert.ok(ship.includes('docs/ship-checklist.md'))
+    assert.ok(ship.includes('kit/templates/ship-checklist.md'))
+    assert.ok(ship.includes('pass | fixed | n/a | blocked'))
+    assert.match(ship, /never `pass` without evidence/)
+  })
+
+  test('review-focus cases are covered in prose', () => {
+    const mod = read(modulePath)
+    assert.match(ship, /stale/)
+    assert.match(ship, /not asked about again/)
+    assert.match(mod, /No items by user decision/)
+    assert.match(mod, /Monorepo/)
+    assert.ok(mod.includes('n/a — <reason>'))
+  })
+
+  test('upgrade registry row 8 names an existing module', () => {
+    const row = upgrade.split('\n').find(l => l.startsWith('| 8 |'))
+    assert.ok(row, 'row 8 missing')
+    assert.ok(row.includes('docs/ship-checklist.md'))
+    assert.ok(row.includes('kit_version') && row.includes('0.0.61'))
+    assert.ok(row.includes('kit/phase-ship-checklist-backfill.md'))
+    assert.ok(statSync(modulePath).isFile())
+  })
+
+  test('module has one hard gate and the standard sections', () => {
+    const text = read(modulePath)
+    for (const h of ['Limitations', 'How to start', 'Steps', 'Completion criteria', 'Exceptions']) {
+      assert.ok(headings(text).some(x => x.startsWith(h)), `missing ## ${h}`)
+    }
+    const rows = text.split('\n').filter(l => /^\| \d+ \|/.test(l))
+    assert.equal(rows.filter(l => l.split('|')[3].trim() === 'hard').length, 1)
+  })
+})
