@@ -9,7 +9,7 @@ It is installed separately and never touches the full kit.
 | Use it for | Small personal or practice projects, up to about 8 features | Products with real users, data and standards |
 | Steps | 6 (Setup, Spec, Plan, Build, Verify, Ship) | Phase 1 (8 steps), Phase 2 (7 steps), plus maintenance workflows |
 | Hard gates | Every step | Several per phase |
-| Documents | `docs/BRIEF.md`, `docs/SPEC.md`, `docs/PLAN.md` (temporary), `docs/NOTES.md`, `README.md` | The full `docs/` set |
+| Documents | `docs/BRIEF.md`, `docs/SPEC.md`, `docs/PLAN.md` (temporary), `docs/NOTES.md`, `docs/SHIP-CHECKLIST.md`, `README.md` | The full `docs/` set |
 | Installed into | `kit-lite/` | `kit/` |
 
 If a project grows past lite (several users, a backend with real data, more than about 8 features), switch to the full kit in a new project folder. The lite workflow tells the AI to say so.
@@ -76,7 +76,7 @@ Or, without the workflow block: `Start using kit-lite/START.md.`
 | 3 | Plan | **hard** | A subagent drafts one-line tasks in dependency order, each tied to criteria; you approve | `docs/PLAN.md` |
 | 4 | Build | **hard** | On `feature/<slug>`, subagents implement the tasks (failing test first for core logic, a real run of each task), one commit per feature. A separate fresh subagent reviews the diff against the spec; gaps and serious findings are fixed | Working code, reviewed |
 | 5 | Verify | **hard** | A subagent runs the tests and walks every criterion through the real app and marks it PASS, FAIL or BLOCKED. Then you try the app yourself and approve | Statuses in `docs/SPEC.md` |
-| 6 | Ship | **hard** | README from commands that were actually run, notes closed, plan deleted. You choose: merge, open a PR, or leave the branch | `README.md`, final `docs/NOTES.md` |
+| 6 | Ship | **hard** | README from commands that were actually run, notes closed, plan deleted. The AI checks your ship checklist (building it from a scan of the project on the first run) and stops on any item that is not done. You choose: merge, open a PR, or leave the branch | `README.md`, final `docs/NOTES.md`, `docs/SHIP-CHECKLIST.md` |
 
 `hard` stops until you say yes. **No code is written before the brief, spec and plan are approved.**
 
@@ -104,6 +104,7 @@ Where your AI tool has no subagents, those offers become new-session offers.
 - **`docs/SPEC.md`** — acceptance criteria per feature, with a Status column filled in at Verify.
 - **`docs/PLAN.md`** — task list for the build; deleted at Ship.
 - **`docs/NOTES.md`** — resume state, not a log: status, one specific next action, the task checklist, decisions a later session would otherwise re-ask, and open issues. It is rewritten, not appended, and stays under about 40 lines.
+- **`docs/SHIP-CHECKLIST.md`** — what Ship must check before the commit (docs, changelog, config and env, migrations, tests and CI, tracking, PR and release), each item with its evidence. Created at your first Ship from a scan of the project; you keep, correct or drop each item. Any item that is not `pass`, `fixed` or waived by you stops Ship. Without a git remote, PR items are `n/a`.
 
 Resuming after a break needs nothing from you beyond opening a new session in the same folder and saying what you want, or `Start using kit-lite/START.md.`.
 

@@ -21,11 +21,11 @@ Not for production work. If the project needs several users, a backend with real
 | 3 | Plan | `hard` | `kit-lite/step-3-plan.md` | `docs/PLAN.md` (approved, deleted at Step 6) |
 | 4 | Build | `hard` | `kit-lite/step-4-build.md` | code on `feature/<slug>`, reviewed against the spec |
 | 5 | Verify | `hard` | `kit-lite/step-5-verify.md` | test and run results, user's manual check |
-| 6 | Ship | `hard` | `kit-lite/step-6-ship.md` | `README.md`, final `docs/NOTES.md`, merge or PR |
+| 6 | Ship | `hard` | `kit-lite/step-6-ship.md` | `README.md`, final `docs/NOTES.md`, `docs/SHIP-CHECKLIST.md` (approved), merge or PR |
 
 `hard` stops with a short summary and waits for an explicit yes. Open each step with a banner: `## Step N — <Name> | Gate: hard`.
 
-Templates: `kit-lite/templates/BRIEF.md`, `kit-lite/templates/SPEC.md`, `kit-lite/templates/PLAN.md`, `kit-lite/templates/NOTES.md`.
+Templates: `kit-lite/templates/BRIEF.md`, `kit-lite/templates/SPEC.md`, `kit-lite/templates/PLAN.md`, `kit-lite/templates/NOTES.md`, `kit-lite/templates/SHIP-CHECKLIST.md`.
 
 ## Context
 
@@ -68,7 +68,7 @@ The user's own instructions come first. Where a rule below conflicts with an ins
 3. **Done means run.** A task is done only after its tests pass and the app (or CLI) was started and the changed path exercised. Say what you ran and saw.
 4. **Tests for core logic only**: calculations, data handling, parsing, APIs. Test first for those. No tests for layout, config or glue.
 5. **Git.** If the folder is not inside a git work tree (`git rev-parse --is-inside-work-tree` fails), run `git init` first. Work on `feature/<slug>`; one commit per feature, `feat: ...`, `fix: ...`, `chore: ...`. If the user forbids per-feature commits, commit once right after the Step 4 gate approval.
-6. **Few documents.** Only `docs/BRIEF.md`, `docs/SPEC.md`, `docs/PLAN.md` (temporary), `docs/NOTES.md` and `README.md`. Each stays short. Do not create logs, roadmaps, per-screen docs or design documents.
+6. **Few documents.** Only `docs/BRIEF.md`, `docs/SPEC.md`, `docs/PLAN.md` (temporary), `docs/NOTES.md`, `docs/SHIP-CHECKLIST.md` (created at Step 6) and `README.md`. Each stays short. Do not create logs, roadmaps, per-screen docs or design documents.
 7. **Write, then verify.** After writing a file, confirm it exists and has the expected content before saying it is written.
 8. **UI projects.** Build screens from the brief's visual line. If the `design-taste-frontend` skill is installed, use it.
 9. **English only** in files and replies, unless the user asks otherwise.

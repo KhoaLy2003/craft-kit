@@ -149,7 +149,7 @@ All work uses your platform's general-purpose agent.
 | `phase-2.md` | Phase 2 orchestration (scope `all` / `feature`) |
 | `phase-maintenance.md`, `phase-bug-fix.md`, `phase-onboarding.md`, `phase-adopt.md` | Other workflows (experimental) |
 | `guides/admin-checklist.md` | Admin site reference, loaded by Maintenance intake for admin features |
-| `phase-upgrade.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
+| `phase-upgrade.md`, `phase-docs-backfill.md`, `phase-api-backfill.md`, `phase-test-accounts-backfill.md`, `phase-verification-backfill.md`, `phase-ship-checklist-backfill.md`, `phase-log-collapse.md` | Project upgrade entry point and its one-time modules |
 | `scripts/` | `render-backlog.js` (backlog validator and renderer), `lint-docs.js` (read-only lint of a project's `docs/`), `docs-index.js` + `view-docs.js` (docs viewer) |
 | `viewer/` | VitePress config and theme used by `scripts/view-docs.js` |
 | `session-logging.md` | Session log format |

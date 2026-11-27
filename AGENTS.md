@@ -37,7 +37,7 @@ This repo is the development and test harness for the kit, not an application:
 | Phase 1 Bootstrap (once) | `kit/phase-1-bootstrap.md` | 8 steps → `docs/` foundation, `docs/.craft-kit.json`, one commit |
 | Phase 2 Build | `kit/phase-2.md` | 7 steps; scope `all` (validated) or `feature` (experimental), set in `docs/roadmap.md` |
 | Maintenance | `kit/phase-maintenance.md` | bug → `phase-bug-fix.md`; feature → intake + fit check → backlog/roadmap → Phase 2 `scope: feature`; admin features load `kit/guides/admin-checklist.md` |
-| Adopt / Upgrade | `kit/phase-adopt.md`, `kit/phase-upgrade.md` | existing code without kit docs / older kit projects; upgrade modules in `kit/phase-*-backfill.md`, `phase-log-collapse.md` |
+| Adopt / Upgrade | `kit/phase-adopt.md`, `kit/phase-upgrade.md` | existing code without kit docs / older kit projects; upgrade modules in `kit/phase-*-backfill.md` (including `phase-ship-checklist-backfill.md`), `phase-log-collapse.md` |
 | Bug Fix, Onboarding | `kit/phase-bug-fix.md`, `kit/phase-onboarding.md` | |
 
 Everything except Phase 1 and Phase 2 `scope: all` is experimental. One session log per phase (`docs/phase-N-session.md`, `bug-session`, `adopt-session`, `maintenance-session`; format in `kit/session-logging.md`); START.md keeps none.
@@ -52,7 +52,7 @@ Hard gates: Phase 1 Steps 1, 3, 4, 5, 6; Phase 2 Steps 1, 2, 6; Adopt Steps 2, 3
 
 ## Lite kit
 
-`kit-lite/` is a separate, deliberately small kit for small personal projects (`node bin/cli.js --lite`, default target `./kit-lite`): `START.md`, six step files (Setup, Spec, Plan, Build, Verify, Ship, all `hard`; Setup asks without a question cap until nothing is a guess), `templates/` (`BRIEF.md`, `SPEC.md`, `PLAN.md`, `NOTES.md`), and `audit/record.js`. `START.md` → Context says per step whether a subagent or a new session keeps the context small; `docs/NOTES.md` is the only handover. It shares nothing with `kit/` and is outside the kit-consistency drift lint and the docs site. `bin/lite.js` writes the project wiring: a marked workflow block in `CLAUDE.md` (and `AGENTS.md` when present), Claude Code hooks (`UserPromptSubmit`, `Stop`, `SessionEnd`; exec form with `${CLAUDE_PROJECT_DIR}`) in `.claude/settings.json` that run the recorder, and a `docs/audit/` `.gitignore` entry. `--no-hook` and `--no-audit` opt out. Its changes are recorded in `kit/CHANGELOG.md` like any kit change.
+`kit-lite/` is a separate, deliberately small kit for small personal projects (`node bin/cli.js --lite`, default target `./kit-lite`): `START.md`, six step files (Setup, Spec, Plan, Build, Verify, Ship, all `hard`; Setup asks without a question cap until nothing is a guess), `templates/` (`BRIEF.md`, `SPEC.md`, `PLAN.md`, `NOTES.md`, `SHIP-CHECKLIST.md`), and `audit/record.js`. `START.md` → Context says per step whether a subagent or a new session keeps the context small; `docs/NOTES.md` is the only handover. It shares nothing with `kit/` and is outside the kit-consistency drift lint and the docs site. `bin/lite.js` writes the project wiring: a marked workflow block in `CLAUDE.md` (and `AGENTS.md` when present), Claude Code hooks (`UserPromptSubmit`, `Stop`, `SessionEnd`; exec form with `${CLAUDE_PROJECT_DIR}`) in `.claude/settings.json` that run the recorder, and a `docs/audit/` `.gitignore` entry. `--no-hook` and `--no-audit` opt out. Its changes are recorded in `kit/CHANGELOG.md` like any kit change.
 
 The two kits are released together (one `package.json` version, one `kit/CHANGELOG.md`; lite changes go under `[Unreleased]` there) but installed independently: a normal install or `--force` never touches `kit-lite/`, and `--lite` never touches `kit/`. The upgrade hint for lite names `--lite`.
 
@@ -63,7 +63,7 @@ The two kits are released together (one `package.json` version, one `kit/CHANGEL
 | Path | Purpose |
 |---|---|
 | `kit/steps/phase-1/`, `kit/steps/phase-2/` | `p1-01-ideation.md` … `p1-08-scaffold.md`, `p2-01-spec.md` … `p2-07-ship.md` |
-| `kit/templates/` | Output templates copied to `<project>/docs/`; **never edit during a run** |
+| `kit/templates/` | Output templates copied to `<project>/docs/`; **never edit during a run**. `ship-checklist.md` is the per-project Ship checklist (Phase 2 Ship, upgrade row 8) |
 | `kit/guides/` | On-demand detail (`conventions-detail.md`, `design-reference.md`, `session-handover.md`, `admin-checklist.md`, `change-control.md`, `diagrams.md`, `design-mcp.md`, `test-accounts.md`, `phase-2-feature-scope.md`); read only when a rule points there |
 | `kit/scripts/` | `lint-docs.js`, `render-backlog.js`, `docs-index.js`, `view-docs.js`, and a `package.json` pinning them to CommonJS (keep it, or ESM projects break) |
 | `kit/skills/` | Kit-owned skills (`report-kit-issue`); the installer copies them to `<project>/.claude/skills/` for both kits, listed in `.craft-kit-skills.json`. Each skill must be named in the install docs (`tests/docs-site.test.mjs`) |

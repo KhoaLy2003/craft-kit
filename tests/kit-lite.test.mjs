@@ -103,6 +103,39 @@ describe('install --lite', () => {
     }
   })
 
+  test('step 6 ships through docs/SHIP-CHECKLIST.md', () => {
+    const body = readFileSync(join(LITE, 'step-6-ship.md'), 'utf8')
+    for (const s of ['docs/SHIP-CHECKLIST.md', 'kit-lite/templates/SHIP-CHECKLIST.md', 'blocked']) assert.ok(body.includes(s), `step-6-ship.md lacks ${s}`)
+    const tpl = readFileSync(join(LITE, 'templates', 'SHIP-CHECKLIST.md'), 'utf8')
+    assert.match(tpl, /\| # \| Item \| Applies when \| Check \(evidence\) \| Source \|/)
+  })
+
+  test('step 6 checklist rules: order, evidence, stale, no remote, zero items', () => {
+    const body = readFileSync(join(LITE, 'step-6-ship.md'), 'utf8')
+    const at = re => { const m = body.match(re); assert.ok(m, `step-6-ship.md lacks ${re}`); return m.index }
+    assert.ok(at(/^1\. Write `README\.md`/m) < at(/^2\. Finish `docs\/NOTES\.md`/m))
+    assert.ok(at(/^2\. Finish `docs\/NOTES\.md`/m) < at(/^4\. \*\*Ship checklist\.\*\*/m))
+    assert.ok(at(/^4\. \*\*Ship checklist\.\*\*/m) < at(/^5\. Commit /m))
+    at(/Never mark a checklist item `pass` without evidence/)
+    at(/stale item/)
+    at(/stops Ship before item 5: do not commit past it, do not push or merge/)
+    at(/do not ask again/)
+    at(/n\/a — no remote/)
+    at(/waived \(by user\)/)
+  })
+
+  test('START.md lists the checklist among the allowed documents', () => {
+    const start = readFileSync(join(LITE, 'START.md'), 'utf8')
+    assert.match(start, /^6\. \*\*Few documents\.\*\*.*docs\/SHIP-CHECKLIST\.md/m)
+    assert.match(start, /^Templates:.*kit-lite\/templates\/SHIP-CHECKLIST\.md/m)
+  })
+
+  test('the lite kit ships the checklist template, and it stays small', () => {
+    const p = join(LITE, 'templates', 'SHIP-CHECKLIST.md')
+    assert.ok(existsSync(p))
+    assert.ok(readFileSync(p, 'utf8').split('\n').length < 60)
+  })
+
   test('a manifest from the earlier three-step lite kit is still recognised as lite', () => {
     const dir = tempDir()
     mkdirSync(join(dir, 'kit-lite'))

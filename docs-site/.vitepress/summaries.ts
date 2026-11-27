@@ -93,6 +93,11 @@ const WORKFLOWS: Record<string, Summary> = {
     'A Verification Commands table in `docs/constitution.md`, copied from your scripts and CI config.',
     'Run the verification backfill using kit/phase-verification-backfill.md.',
     ['Review the table; commands with no source are marked `unknown`.'], true),
+  'phases/ship-checklist-backfill': module_(
+    'The project was built on a kit older than 0.0.61 and has no `docs/ship-checklist.md`, so Ship has no list of what to check before a commit.',
+    'A `docs/ship-checklist.md` built from a scan of your docs, changelog, config, CI and issue tracking, with the evidence for every item.',
+    'Run the ship checklist backfill using kit/phase-ship-checklist-backfill.md.',
+    ['Keep, correct or drop each proposed item, and add what you keep reminding the AI about.'], true),
   'phases/log-collapse': module_(
     '`docs/phase-2-session.md` or `docs/E2E-TESTS.md` still holds the full text of shipped features.',
     'Shipped units moved unchanged to `docs/archive/`, with a short stub left behind. Nothing is deleted.',

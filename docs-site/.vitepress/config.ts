@@ -35,6 +35,7 @@ const PHASES: Page[] = [
   kit('phase-api-backfill',     'phases/api-backfill',   'API Backfill'),
   kit('phase-test-accounts-backfill', 'phases/test-accounts-backfill', 'Test Accounts Backfill'),
   kit('phase-verification-backfill',  'phases/verification-backfill',  'Verification Backfill'),
+  kit('phase-ship-checklist-backfill', 'phases/ship-checklist-backfill', 'Ship Checklist Backfill'),
   kit('phase-log-collapse',     'phases/log-collapse',   'Log Collapse'),
   kit('phase-onboarding',       'phases/onboarding',     'Developer Onboarding'),
 ]
@@ -150,7 +151,7 @@ const pick = (...tos: string[]): Page[] => tos.map(t => {
 // One-time upgrade modules are run by Project Upgrade, not entered directly.
 const UPGRADE_MODULES = pick(
   'phases/docs-backfill', 'phases/api-backfill',
-  'phases/test-accounts-backfill', 'phases/verification-backfill', 'phases/log-collapse',
+  'phases/test-accounts-backfill', 'phases/verification-backfill', 'phases/ship-checklist-backfill', 'phases/log-collapse',
 )
 
 // Task-first sidebar, shared by every page.
