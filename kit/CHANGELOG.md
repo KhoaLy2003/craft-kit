@@ -7,6 +7,12 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 <!-- insert new changelog below this comment -->
 ## [Unreleased]
 
+---
+
+## [0.0.61] - 2026-11-27
+
+**Summary:** Ship checklist for full and lite kits · upgrade module for existing projects
+
 **Summary:** Ship checklist for both kits · full-kit upgrade row 8 · users kept reminding the agent about docs and changelog at Ship
 
 - **`kit/templates/ship-checklist.md`** — new per-project checklist (Docs, Changelog and version, Config and env, Data/migrations, Tests and CI, Tracking, PR/release); items carry an applies-when condition, evidence and source.
@@ -14,6 +20,8 @@ Each entry notes what changed, which file(s), and what round or discussion promp
 - **`kit/phase-ship-checklist-backfill.md`, `kit/phase-upgrade.md`** — new one-time module and registry row 8: scan the project, propose the checklist, one review.
 - **`kit-lite/step-6-ship.md`, `START.md`, `templates/SHIP-CHECKLIST.md`** — Step 6 builds `docs/SHIP-CHECKLIST.md` on first run if missing and stops on unmet items; no remote makes PR items `n/a`.
 - **`docs-site/`** (config, summaries, templates reference, phase-2-build, lite-kit, existing-projects guides), **`README.md`**, **`AGENTS.md`**, **`tests/`** — page, module and template registered; guides describe the checklist.
+
+---
 
 ---
 
